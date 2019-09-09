@@ -16,7 +16,7 @@
   <table>
     <tbody>
       <tr *ngFor="let status of statuses.status_histories">
-        <td class="bold">Payment {{ status.status == 'cancelled'? 'Failed' : status.status }}</td>
+        <td class="bold">Payment {{ status.status == 'Cancelled'? 'Failed' : status.status }}</td>
         <td>£{{ statuses.amount | number:'.2' }}</td>
         <td>{{ status.date_created | date:'dd MMM yyyy hh:mm:ss'}}</td>
       </tr>
