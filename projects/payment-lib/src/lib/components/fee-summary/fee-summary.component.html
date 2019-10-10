@@ -48,7 +48,7 @@
           <table class="govuk-table">
             <tr class="govuk-table__row">
               <td class="no-border grey-text subcolumn-1">Fee amount:</td>
-              <td class="no-border subcolumn-2">{{ fee.calculated_amount/fee.volume | currency:'GBP':'symbol-narrow':'1.2-2' }}</td>
+              <td class="no-border subcolumn-2">{{ fee.fee_amount | currency:'GBP':'symbol-narrow':'1.2-2' }}</td>              
               <td class="no-border subcolumn-3"><a (click)="confirmRemoveFee(fee.id)">remove fee</a></td>
             </tr>
             <tr class="govuk-table__row" *ngIf="fee.volume && fee.volume > 0">

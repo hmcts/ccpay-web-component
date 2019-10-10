@@ -11,5 +11,5 @@ export interface IFee {
   jurisdiction2: string;
   reference: string;
   memo_line: string;
-  volume_amount?: number;
+  fee_amount?: number;
 }

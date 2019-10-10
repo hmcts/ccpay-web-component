@@ -40,8 +40,6 @@ export class FeeSummaryComponent implements OnInit {
 
   ngOnInit() {
     this.viewStatus = 'main';
-    // this.paymentGroupRef = '2018-15310089885';
-    //this.paymentGroupRef = '2019-15496299273';
     this.getPaymentGroup();
   }
 
