@@ -76,7 +76,6 @@ export class CaseTransactionsComponent implements OnInit {
           this.paymentGroups = paymentGroups['payment_groups'];
           this.calculateAmounts();
           this.calculateRefundAmount();
-          this.checkForExceptionRecord();
         },
         (error: any) => {
           this.errorMessage = <any>error;
@@ -97,6 +96,7 @@ export class CaseTransactionsComponent implements OnInit {
         }
       );
     }
+    this.checkForExceptionRecord();
   }
 
   setDefaults(): void {
@@ -116,8 +116,8 @@ getAllocationStatus(payments: any){
 }
 
 checkForExceptionRecord(): void {
-  if(this.paymentGroups.length === 0 && this.selectedOption.toLocaleLowerCase() === 'ccdorexception') {
-    this.bulkScaningPaymentService.getBSPaymentsByCCD(this.ccdCaseNumber).subscribe(
+  if(this.paymentGroups.length === 0 && (this.selectedOption.toLocaleLowerCase() === 'ccdorexception') || this.selectedOption.toLocaleLowerCase() === 'rc')  {
+   this.bulkScaningPaymentService.getBSPaymentsByCCD(this.ccdCaseNumber).subscribe(
       recordData => {
        if(recordData['data'] && recordData['data'].exception_record_reference && recordData['data'].exception_record_reference.length > 0 && recordData['data'].ccd_reference >0) {
           this.isExceptionRecord = false;
