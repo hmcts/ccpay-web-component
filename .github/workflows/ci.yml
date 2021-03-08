@@ -10,20 +10,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [12.20.0]
-
-    env:
-      CI: true
-      NODE_OPTIONS: --max-old-space-size=4096
-
     steps:
       - uses: actions/checkout@v2
-      - name: use node.js ${{ matrix.node-version }}
+      - name: use node.js 12.20.0
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12.20.0
           registry-url: https://registry.npmjs.org/ 
       - name: cache all node_modules
         id: cache-modules
@@ -48,9 +40,7 @@ jobs:
       - name: Build library
         run: yarn run build:library
       - name: Publish to registry
+        if: startsWith(github.ref, 'refs/tags')
         run: |
           cd dist/payment-lib
-          npm publish --ignore-scripts
-        if: startsWith(github.ref, 'refs/tags')
-        env:
-          NPM_TOKEN: p6NubYaXsvw+0Qrh4XRstRU7LBhyp9PH+A1HSgpcvUvIlIdVCcyz7USJ5ZkSGSgjJMkMc/2JSz5wYups3PoWt3k1JqbZvwA5tQZapRaXkPukPu+DivLbeH8TVAsZjzgwRD/7dhjH5SCsX4wMEPZjmGIMPMKFhk8hW07bxC/JXFfAbm+eVv+0OECz7c3l5tN1aqNPsivy0wpVonGrVHqOm4IwAPNiZDQmTMXz4m7tyHb9rr0Mubt1INE3H8z9MfULKPJrOk41RcsO4/4FTg2YtmMmIU0di/1HqTMRl1N3abvbHu3fAd91csQtKRNJ1tT7Fv5r+bZaDD7VYOXFswKcALSN+ZJ1VstoAeMNdjlMEc5Dpq3Yh3i6kc3TDbfpbWAWSzo5ZGow3zh2/C35m/9ZNuZ/00is25YajXJRtOz1T+xXVFOHSwckANaLIx77qdvMOSVIRVTdXRc3kNylY6URvyn5H1VMTNAhvCcZl0d8fT3zujYJksSlvKwzv9XzgPmwGjKjjSaNHz+L8wZhoH2zoRt0Wfm654gCQZ7yedCotvfEFIm81UDY1yaGUdg+iEwP8jIkbMfdrYuBK70t20x04i7C4uMAlA3kqJB3YfrKfTlwJo6YpcRFRGK0ETl2Y7qneHp5hb4nw0Ko4I62I+DNv+dyR9iisRLbVV+i6kkVRqg=
+          yarn publish
