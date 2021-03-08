@@ -21,13 +21,13 @@ jobs:
           node-version: 10.6.0
           registry-url: https://registry.npmjs.org/
       - name: yarn install packages
-        run: yarn install --frozen-lockfile
+        run: yarn --frozen-lockfile
       - name: Build library
         run: |
           node -v
-          yarn run build:library
+          yarn build:library
       - name: Publish to registry
         if: startsWith(github.ref, 'refs/tags')
         run: |
           cd dist/payment-lib
-          yarn publish
+          npm publish
