@@ -21,7 +21,7 @@ jobs:
           node-version: 10.6.0
           registry-url: https://registry.npmjs.org/
       - name: Yarn install
-        run: yarn dependency-setup-with-yarn-lock
+        run: yarn --frozen-lockfile
       - name: Build library
         run: yarn run build:library
       - name: Publish library
