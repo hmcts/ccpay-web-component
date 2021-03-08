@@ -1,4 +1,4 @@
-# This workflow will have a CI flow for ccpay web component(angular) project
+# This workflow will have a CI flow for ccpay web(angular) project
 name: ccpay-web-component - CI
 on:
   push:
@@ -20,14 +20,11 @@ jobs:
         with:
           node-version: 10.6.0
           registry-url: https://registry.npmjs.org/
-      - name: yarn install packages
-        run: yarn --frozen-lockfile
+      - name: Yarn install
+        run: yarn dependency-setup-with-yarn-lock
       - name: Build library
-        run: |
-          node -v
-          yarn build:library
-      - name: Publish to registry
-        if: startsWith(github.ref, 'refs/tags')
-        run: |
-          cd dist/payment-lib
-          npm publish
+        run: yarn run build:library
+      - name: Publish library
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
