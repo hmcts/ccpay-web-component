@@ -1,58 +1,101 @@
 <div class="govuk-width-container">
 
   <main class="govuk-main-wrapper">
-    <div *ngIf="viewStatus === 'main'&& !isTurnOff && takePayment">
+  <div *ngIf="viewStatus === 'main'&& !isTurnOff">
 
 
     <div   *ngIf="takePayment" class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-xl">Case transactions</h1>
-      </div>
-    </div>
-
-    <div   *ngIf="takePayment" class="govuk-grid-row">
-      <div *ngIf='!isExceptionRecord' class="govuk-grid-column-two-thirds govuk-!-padding-bottom-6 govuk-!-padding-top-6">
-        <h3 class="heading-medium">CCD reference:</h3>
-        <span> {{ ccdCaseNumber | ccdHyphens }}</span>
-      </div>
-
-      <div *ngIf='isExceptionRecord' class="govuk-grid-column-two-thirds govuk-!-padding-bottom-6 govuk-!-padding-top-6">
-        <h3 class="heading-medium">Exception reference:</h3>
-        <span> {{ ccdCaseNumber | ccdHyphens }}</span>
-      </div>
-
-      <div class="govuk-grid-column-full govuk-!-padding-bottom-3">
-        <hr class="govuk-section-break govuk-section-break--visible">
+        <h1 class="govuk-grid-column-two-thirds govuk-heading-l govuk-!-margin-top-0">Case transactions</h1>
+        <ng-container *ngIf='!isExceptionRecord' class=" govuk-!-margin-bottom-6" style="align-self: flex-end;">
+            <b>Case reference: {{ ccdCaseNumber | ccdHyphens }}</b>
+        </ng-container>
+        <ng-container *ngIf='isExceptionRecord' class=" govuk-!-margin-bottom-3 col-55" style="align-self: flex-end;">
+            <b>Exception reference: {{ ccdCaseNumber | ccdHyphens }}</b>
+        </ng-container>
+        <div class="govuk-grid-row">
         <table class="govuk-table">
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
               <td class="govuk-table__header" scope="col">Total payments</td>
+              <td class="govuk-table__header govuk-table__header--custom" scope="col" *ngIf="isBulkScanEnable">Unallocated payments</td>
               <td class="govuk-table__header" scope="col">Total remissions</td>
               <td class="govuk-table__header" scope="col">Amount due</td>
-              <td class="govuk-table__header govuk-table__header--custom" scope="col" *ngIf="isBulkScanEnable">Unallocated payments</td>
+              
             </tr>
           </thead>
           <tbody class="govuk-table__body">
             <tr class="totalpayments govuk-table__row">
               <td class="govuk-table__cell summary-table-font">{{ totalPayments | currency :'GBP':'symbol':'1.2-2' }}</td>
+              <td class="govuk-table__cell case-transaction__color summary-table-font" *ngIf="isBulkScanEnable">{{unprocessedRecordCount}}</td>
+           
               <td class="govuk-table__cell summary-table-font">{{ totalRemissions | currency :'GBP':'symbol':'1.2-2' }}</td>
               <td class="govuk-table__cell summary-table-font">{{ clAmountDue | currency :'GBP':'symbol':'1.2-2'}}</td>
-              <td class="govuk-table__cell case-transaction__color summary-table-font" *ngIf="isBulkScanEnable">{{unprocessedRecordCount}}</td>
-            </tr>
+               </tr>
           </tbody>
         </table>
       </div>
-
-      <div class="govuk-grid-column-two-thirds" *ngIf="takePayment">
-        <button type="submit" (click)="redirectToFeeSearchPage($event)"
-          [disabled]="!isAddFeeBtnEnabled"
-          [ngClass]='!isAddFeeBtnEnabled ? "govuk-button govuk-button--secondary govuk-button--disabled govuk-!-margin-right-1" : "govuk-button govuk-button--secondary govuk-!-margin-right-1"'>
-          Take telephony payment
-        </button>
+     
      </div>
+    
+    <!-- <div class="govuk-grid-row">
 
-    </div>
-    <div class="govuk-grid-row">
+      <ccpay-app-unprocessed-payments
+      *ngIf="isBulkScanEnable"
+      [IS_BUTTON_ENABLE]="takePayment"
+      [FEE_RECORDS_EXISTS]="isAnyFeeGroupAvilable"
+      [ISTURNOFF]="isTurnOff"
+      [ISSFENABLE]="isStrategicFixEnable"
+      [PAYMENTREF]="paymentRef"
+      [ISNEWPCIPALOFF]="isNewPcipalOff"
+      [ISOLDPCIPALOFF]="isOldPcipalOff"
+      (getUnprocessedFeeCount) = "getUnprocessedFeeCount($event)"
+      (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)">
+      </ccpay-app-unprocessed-payments>
+    </div> -->
+        <input #myInput type='hidden' id='iFrameDrivenImageValue' value='ORDERIDDETAILS'>
+        <!--Payment Request-->
+        <div>
+            <h3 class="heading-medium">Payment requests</h3>
+            <table class="govuk-table">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__header" scope="col">Status</td>
+                  <td class="govuk-table__header" scope="col">Amount</td>
+                  <td class="govuk-table__header" scope="col">Party</td>
+                  <td class="govuk-table__header" scope="col">Request reference	</td>
+                  <td class="govuk-table__header" scope="col"></td>
+                  <td class="govuk-table__header" scope="col"></td>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body" *ngFor="let orderRef of orderLevelFees;let i = index;">
+                  <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">{{orderRef.orderStatus}}</td>
+                    <td class="govuk-table__cell">{{orderRef.orderTotalFees}}</td>
+                    <td class="govuk-table__cell">{{orderRef.orderParty}}</td> 
+                    <td class="govuk-table__cell">{{orderRef.orderRefId}}</td> 
+                    <td class="govuk-table__cell">	
+                        <a href="javascript:void(0)" (click)="goToOrderViewDetailSection(orderRef)">View details</a>
+                   </td>
+                    <td> <button type="submit" *ngIf="orderRef.orderAddBtnEnable" (click)="redirectToOrderFeeSearchPage($event,orderRef.orderRefId)"
+                      [disabled]="!orderRef.orderAddBtnEnable"
+                      [ngClass]='!orderRef.orderAddBtnEnable ? "govuk-button govuk-button--secondary govuk-button--disabled govuk-!-margin-right-1" : "govuk-button govuk-button--secondary govuk-!-margin-right-1"'>
+                      Take telephony payment
+                    </button></td>
+                  </tr>
+                </tbody>
+                <tbody class="govuk-table__body" *ngIf="orderLevelFees?.length === 0">
+                  <tr class="govuk-table__row" >
+                    <td class="govuk-table__cell" colspan="7" style="text-align:left;">No payment requests on this case.</td>
+                  </tr>
+                </tbody>
+            </table>
+            <span>
+                <a (click)="redirectToFeeSearchPage($event)"
+                  [class.disabled]="!isAddFeeBtnEnabled">Create payment request and pay</a>
+           </span>
+        
+        </div>
+       <div class="govuk-grid-row">
 
       <ccpay-app-unprocessed-payments
       *ngIf="isBulkScanEnable"
@@ -67,63 +110,9 @@
       (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)">
       </ccpay-app-unprocessed-payments>
     </div>
-    <div  *ngIf="takePayment" class=" govuk-!-margin-top-9">
-
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-            <h3 class="heading-medium">Fees</h3>
-        </div>
-        <div class="govuk-grid-column-full">
-          <table class="govuk-table">
-            <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-              <td class="govuk-table__header" scope="col">Code</td>
-              <td class="govuk-table__header" scope="col">Description</td>
-              <td class="govuk-table__header" scope="col">Volume</td>
-              <td class="govuk-table__header" scope="col">Fee amount</td>
-              <td class="govuk-table__header" scope="col">Calculated amount</td>
-              <td class="govuk-table__header" scope="col">Amount due</td>
-              <td class="govuk-table__header" scope="col">Action</td>
-
-            </tr>
-            </thead>
-            <tbody class="govuk-table__body" *ngFor="let paymentGroup of paymentGroups;">
-              <tr class="govuk-table__row" *ngFor="let fee of paymentGroup.fees; let i = index;">
-                <td class="govuk-table__cell">	{{fee.code}} </td>
-                <td class="govuk-table__cell">{{fee.description}}</td>
-                <td class="govuk-table__cell">{{fee.volume? fee.volume : '-'}}</td>
-                <td class="govuk-table__cell">{{ fee.fee_amount | currency:'GBP':'symbol-narrow':'1.2-2' }}</td>
-                <td class="govuk-table__cell">{{fee.calculated_amount | currency:'GBP':'symbol-narrow':'1.2-2' }}</td>
-                <td class="govuk-table__cell govuk-!-font-weight-bold"  [attr.rowspan]="paymentGroup.fees.length" *ngIf="paymentGroup.old && i==0"> {{getGroupOutstandingAmount(paymentGroup)| currency:'GBP':'symbol-narrow':'1.2-2'}}* </td>
-                <td class="govuk-table__cell" *ngIf="!paymentGroup.old"> {{calculateAmountDue(fee) | currency:'GBP':'symbol-narrow':'1.2-2'}} </td>
-                <td class="govuk-table__cell" *ngIf="!paymentGroup.old">
-                   <a (click)="confirmRemoveFee(fee.id)" [ngClass]='!isCheckAmountdueExist(fee.amount_due) || fee.remissions ? "disable-link" : ""'>Remove</a>
-                </td>
-                <td class="govuk-table__cell" *ngIf="paymentGroup.old">
-                  <a (click)="confirmRemoveFee(fee.id)" [ngClass]='paymentGroup.payments?.length > 0 || paymentGroup.remissions?.length > 0 ? "disable-link" : ""'>Remove</a>
-               </td>
-              </tr>
-            </tbody>
-            <tbody class="govuk-table__body" *ngIf="paymentGroups?.length === 0">
-              <tr class="govuk-table__row" >
-                <td class="govuk-table__cell" colspan="7">No fees recorded</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="hmcts-banner" *ngIf="isHistoricGroupAvailable">
-        <svg class="hmcts-banner__icon" fill="currentColor" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" height="25" width="25">
-            <path d="M13.7,18.5h-2.4v-2.4h2.4V18.5z M12.5,13.7c-0.7,0-1.2-0.5-1.2-1.2V7.7c0-0.7,0.5-1.2,1.2-1.2s1.2,0.5,1.2,1.2v4.8
-          C13.7,13.2,13.2,13.7,12.5,13.7z M12.5,0.5c-6.6,0-12,5.4-12,12s5.4,12,12,12s12-5.4,12-12S19.1,0.5,12.5,0.5z"></path>
-        </svg>
-        <div class="hmcts-banner__message">
-          <span class="hmcts-banner__assistive">information</span>
-          * These fees have already been processed offline. Check the notes in CCD for more information.
-        </div>
-      </div>
-      <div class="panel panel-no--style" *ngIf="allPayments?.length > 0 || remissions?.length > 0">
-          <!-- payments -->
+     
+      <!-- <div class="panel panel-no--style" *ngIf="allPayments?.length > 0 || remissions?.length > 0">
+          
           <h3 class="heading-medium">Payments</h3>
             <table class="govuk-table">
               <thead class="govuk-table__head">
@@ -155,7 +144,7 @@
               </tbody>
             </table>
 
-            <!-- remissions -->
+           
             <h3 class="heading-medium">Remissions</h3>
             <table class="govuk-table">
               <thead class="govuk-table__head">
@@ -180,10 +169,17 @@
                 <td class="govuk-table__cell" colspan="5">No remissions recorded</td>
               </tbody>
             </table>
-      </div>
+      </div> -->
+  
     </div>
-</div>
-    <div  *ngIf="takePayment && isTurnOff">
+
+
+
+
+
+
+
+  <div  *ngIf="takePayment && isTurnOff">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl">Case transactions</h1>
@@ -364,7 +360,7 @@
     </details>
   
 
-        <div *ngIf="takePayment">
+        <div>
             <button type="submit" (click)="loadFeeSummaryPage(paymentGroup)"
               [disabled]="(getGroupOutstandingAmount(paymentGroup) <= 0 || isUnprocessedRecordSelected)"
               [ngClass]='(getGroupOutstandingAmount(paymentGroup) <= 0 || isUnprocessedRecordSelected) ? "govuk-button govuk-button--secondary govuk-button--disabled govuk-!-margin-right-1" : "govuk-button govuk-button--secondary govuk-!-margin-right-1"'>
@@ -393,7 +389,7 @@
       </div>
     </div>
   </div>
-  <ccpay-app-unprocessed-payments
+  <!-- <ccpay-app-unprocessed-payments
   *ngIf="isBulkScanEnable && !takePayment"
   [IS_BUTTON_ENABLE]="takePayment"
   [ISTURNOFF]="isTurnOff"
@@ -401,8 +397,169 @@
   [FEE_RECORDS_EXISTS]="isFeeRecordsExist" 
   [IS_OS_AMT_AVAILABLE]="isGrpOutstandingAmtPositive" 
   (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)">
-</ccpay-app-unprocessed-payments>
+</ccpay-app-unprocessed-payments> -->
 
+
+
+<!-- Order Full View Details-->
+<div *ngIf="viewStatus === 'order-full-view'">
+    <div class="govuk-breadcrumbs">
+        <ol class="govuk-breadcrumbs__list">
+          <li class="govuk-breadcrumbs__list-item">
+            <a href="#" (click)="goToCaseTransationPage($event)" class="govuk-back-link">Back</a>
+          </li>
+        </ol>
+      </div>
+    <div class="govuk-grid-column-full">
+        <div class="column">
+          <h1 class="heading-large govuk-!-margin-top-0">Payment request</h1>
+        </div>
+        <table >
+            <tbody>
+            <tr class="section">
+                <td class="bold tb-col-w">Payment request reference</td>
+                <td>{{orderRef}}</td>
+              </tr>
+             <tr class="section">
+              <td class="bold tb-col-w">Status</td>
+              <td>{{orderStatus}}</td>
+            </tr>
+            <tr class="section">
+                <td class="bold tb-col-w">Date created</td>
+                <td>{{orderCreated}}</td>
+              </tr>
+            <tr class="section">
+              <td class="bold tb-col-w">Party</td>
+              <td>{{orderParty}}</td>
+            </tr>
+          
+           
+            <tr class="section">
+              <td class="bold tb-col-w">CCD event</td>
+              <td>{{orderCCDEvent}}</td>
+            </tr>
+            </tbody>
+          </table>
+    </div>
+
+    <div class="govuk-grid-column-full order-class">
+        <div class="column">
+          <table class="govuk-table ">
+            <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__header" scope="col">Fee</td>
+              <td class="govuk-table__header" scope="col">Quantity</td>
+              <td class="govuk-table__header" scope="col">Amount</td>
+              <td class="govuk-table__header" scope="col">Total</td>
+            </tr>
+            </thead>
+            <tbody class="govuk-table__body" *ngFor="let order of orderDetail;">
+              <tr class="govuk-table__row" *ngFor="let fee of order.fees; let i = index;">
+                <td class="govuk-table__cell col-60">{{fee.description}}</td>
+                <td class="govuk-table__cell">{{fee.volume? fee.volume : '-'}}</td>
+                <td class="govuk-table__cell">{{ fee.fee_amount | currency:'GBP':'symbol-narrow':'1.2-2' }}</td>
+                <td class="govuk-table__cell">{{ (fee.volume *fee.fee_amount) | currency:'GBP':'symbol-narrow':'1.2-2' }}</td>
+              </tr>
+            </tbody>
+            <tbody class="govuk-table__body" *ngFor="let order of orderDetail;">
+              <tr class="govuk-table__row" *ngIf="order.fees?.length === 0" >
+                <td class="govuk-table__cell" colspan="7" style="text-align:left;">No fees recorded</td>
+              </tr>
+            </tbody>
+          </table>
+         
+        </div>
+        <div style="width: 100%;">
+            <p style="float: right;">Total fees:{{orderFeesTotal | currency:'GBP':'symbol-narrow':'1.2-2' }}</p>
+        </div>
+    </div>
+    <div class="hmcts-banner" *ngIf="isHistoricGroupAvailable">
+      <svg class="hmcts-banner__icon" fill="currentColor" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" height="25" width="25">
+          <path d="M13.7,18.5h-2.4v-2.4h2.4V18.5z M12.5,13.7c-0.7,0-1.2-0.5-1.2-1.2V7.7c0-0.7,0.5-1.2,1.2-1.2s1.2,0.5,1.2,1.2v4.8
+        C13.7,13.2,13.2,13.7,12.5,13.7z M12.5,0.5c-6.6,0-12,5.4-12,12s5.4,12,12,12s12-5.4,12-12S19.1,0.5,12.5,0.5z"></path>
+      </svg>
+      <div class="hmcts-banner__message">
+        <span class="hmcts-banner__assistive">information</span>
+        * These fees have already been processed offline. Check the notes in CCD for more information.
+      </div>
+    </div>
+
+     <!-- remissions -->
+     <div class="govuk-grid-column-full order-class"> 
+     <table class="govuk-table">
+       <thead class="govuk-table__head">
+         <tr class="govuk-table__row">
+            <td class="govuk-table__header col-10" scope="col">Help with fees or remission code</td>
+             <td class="govuk-table__header" scope="col">Reference</td>
+             <td class="govuk-table__header" scope="col">Fee</td>
+             <td class="govuk-table__header" scope="col">Amount</td>
+           </tr>
+       </thead>
+       <tbody class="govuk-table__body" *ngFor="let order of orderDetail;">
+         <tr class="govuk-table__row" *ngFor="let remission of order.remissions">
+            <td class="govuk-table__cell whitespace-inherit">{{ remission.hwf_reference }}</td>
+             <td class="govuk-table__cell whitespace-inherit">{{ remission.remission_reference }}</td>
+             <td class="govuk-table__cell whitespace-inherit">{{ remission.fee_code }}</td>
+             <td class="govuk-table__cell whitespace-inherit">{{ remission.hwf_amount | currency:'GBP':'symbol-narrow':'1.2-2'}}</td>
+           </tr>
+       </tbody>
+       <tbody class="govuk-table__body" *ngFor="let order of orderDetail;">
+          <tr class="govuk-table__row" *ngIf="order.remissions?.length === 0" >
+            <td class="govuk-table__cell" colspan="7" style="text-align:left;">No help with fees or remissions.</td>
+          </tr>
+        </tbody>
+      
+     </table>
+    </div>
+    <div style="width: 100%;text-align: right;">
+        <p>Total reductions:{{orderRemissionTotal | currency:'GBP':'symbol-narrow':'1.2-2'  }}</p>
+    </div>
+    <div style="width: 100%;text-align:right;">
+      <br>
+        <p style="float: right;">Fees minus reductions:{{(orderFeesTotal - orderRemissionTotal) | currency:'GBP':'symbol-narrow':'1.2-2'  }}</p>
+    </div>
+
+   
+     <!--Payments-->
+     <div class="govuk-grid-column-full order-class"> 
+     <table class="govuk-table ">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+              <td class="govuk-table__header" scope="col">Payment reference</td>
+              <td class="govuk-table__header" scope="col">Date created</td>
+              <td class="govuk-table__header" scope="col">Amount</td>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body" *ngFor="let order of orderDetail;">
+          <tr class="govuk-table__row"  *ngFor="let payment of order.payments">
+              <td class="govuk-table__cell whitespace-inherit">
+                <a href="javascript:void(0)" (click)="goToPayementView(payment.paymentGroupReference, payment.reference, payment.method)">{{ payment.reference }}</a>
+              </td>
+              <td class="govuk-table__cell whitespace-inherit">{{ payment.date_created | date:'dd MMM yyyy HH:mm:ss' }}</td>
+              <td class="govuk-table__cell whitespace-inherit">{{ payment.amount | currency:'GBP':'symbol-narrow':'1.2-2' }}</td>
+            </tr>
+        </tbody>
+        <tbody class="govuk-table__body" *ngFor="let order of orderDetail;">
+            <tr class="govuk-table__row" *ngIf="order.payments?.length === 0" >
+              <td class="govuk-table__cell" colspan="7" style="text-align:left;">No Payments</td>
+            </tr>
+          </tbody>
+        
+      </table>
+    </div>
+    <div style="width: 100%;">
+        <p style="float: right;">Total left to pay:{{((orderFeesTotal - orderRemissionTotal)- orderTotalPayments )| currency:'GBP':'symbol-narrow':'1.2-2' }}</p>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- 
 <div *ngIf="!takePayment" class="govuk-grid-row govuk-grid__surplus-payments">
       <div class="govuk-grid-column-full">
     <span class="heading-medium">Processed payments</span>
@@ -438,7 +595,7 @@
       </tbody>
     </table>
 </div>
-</div>
+</div> -->
 
 <input #myInput type='hidden' id='iFrameDrivenImageValue' value='FEEREMOVALCONFIRMATION_2'>
 <ng-container *ngIf="viewStatus === 'feeRemovalConfirmation'">

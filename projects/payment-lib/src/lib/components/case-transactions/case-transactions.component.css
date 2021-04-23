@@ -45,6 +45,7 @@
 }
 .govuk-button {
   font-size: 19px;
+  margin-bottom: 0px !important;
 }
 
 .groupamount.govuk-table__header,
@@ -109,9 +110,22 @@ details summary {
     width: 28%;
 }
 
+.col-60 {
+    width: 60%;
+}
+
 .col-15 {
     width: 15%;
 }
+
+.col-15 {
+    width: 10%;
+}
+
+.col-55 {
+    width:55%;
+}
+
 .hmcts-banner > .hmcts-banner__message {
     font-size:19px;
     line-height: 1.25;
@@ -119,4 +133,26 @@ details summary {
 
 .summary-table-font {
   font-size: 36px;
+}
+
+.order-class {
+    padding-top:3em;
+}
+
+.govuk-table__header:last-child {
+text-align: right;
+}
+
+.govuk-table__cell:last-child {
+    text-align: right;
+}
+
+.govuk-grid-column-two-thirds  {
+    width: 64% !important;
+    padding: 0 !important;
+}
+
+.govuk-heading-l {
+    font-size: 36px;
+    margin-bottom: 10px;
 }

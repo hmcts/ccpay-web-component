@@ -52,6 +52,7 @@ export class PaymentLibComponent implements OnInit {
   isNewPcipalOff: boolean;
   unProcessedPayment: IBSPayments = null;
 
+
   constructor(private paymentLibService: PaymentLibService) { }
 
   ngOnInit() {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {PaymentLibComponent} from '../../payment-lib.component';
 import {IPaymentGroup} from '../../interfaces/IPaymentGroup';
+import {IOrderReferenceFee} from '../../interfaces/IOrderReferenceFee';
 import {CaseTransactionsService} from '../../services/case-transactions/case-transactions.service';
 import { BulkScaningPaymentService } from '../../services/bulk-scaning-payment/bulk-scaning-payment.service';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
@@ -8,6 +9,8 @@ import {IFee} from '../../interfaces/IFee';
 import {IPayment} from '../../interfaces/IPayment';
 import {IRemission} from '../../interfaces/IRemission';
 import {Router} from '@angular/router';
+
+const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 
 @Component({
   selector: 'ccpay-case-transactions',
@@ -19,6 +22,8 @@ export class CaseTransactionsComponent implements OnInit {
   ccdCaseNumber: string;
   excReference: string;
   paymentGroups: any[] = [];
+  orderDetail: any[] = [];
+  orderRemissionDetails: any[] = [];
   payments: IPayment[] = [];
   nonPayments: IPayment[] = [];
   allPayments: IPayment[] = [];
@@ -52,6 +57,17 @@ export class CaseTransactionsComponent implements OnInit {
   isFeeRecordsExist: boolean = false;
   isGrpOutstandingAmtPositive: boolean = false;
   totalRefundAmount: Number;
+  orderLevelFees: IOrderReferenceFee[] = [];
+  orderRef: string;
+  orderStatus: string;
+  orderParty: string;
+  orderCreated: Date;
+  orderCCDEvent: string;
+  orderAddBtnEnable: boolean;
+  orderFeesTotal: number= 0.00;
+  orderRemissionTotal: number = 0.00;
+  orderTotalPayments: number = 0.00;
+  orderPendingPayments: number =0.00;
 
   constructor(private router: Router,
   private paymentViewService: PaymentViewService,
@@ -80,6 +96,7 @@ export class CaseTransactionsComponent implements OnInit {
           this.paymentGroups = paymentGroups['payment_groups'];
           this.calculateAmounts();
           this.calculateRefundAmount();
+          this.calculateOrderFeesAmounts();
         },
         (error: any) => {
           this.errorMessage = <any>error;
@@ -92,6 +109,7 @@ export class CaseTransactionsComponent implements OnInit {
         paymentGroups => {
           this.paymentGroups = paymentGroups['payment_groups'];
           this.calculateAmounts();
+          this.calculateOrderFeesAmounts();
           this.totalRefundAmount = this.calculateRefundAmount();
         },
         (error: any) => {
@@ -169,12 +187,59 @@ checkForExceptionRecord(): void {
   });
 }
 
+  calculateOrderFeesAmounts(): void {
+    let feesTotal = 0.00;
+    this.paymentGroups.forEach(paymentGroup => {
+      this.resetOrderVariables();
+          if (paymentGroup.fees) {
+                paymentGroup.fees.forEach(fee => {
+                  this.orderFeesTotal = this.orderFeesTotal + fee.calculated_amount
+            }
+          )}
+          if (paymentGroup.remissions) {
+            paymentGroup.remissions.forEach(remission => {
+              this.orderRemissionTotal = this.orderRemissionTotal + remission.hwf_amount;
+            });
+          }
+
+          if (paymentGroup.payments) {
+            paymentGroup.payments.forEach(payment => {
+              if (payment.status.toUpperCase() === 'SUCCESS') {
+                this.orderTotalPayments = this.orderTotalPayments + payment.amount;
+              }
+            });
+          }  
+
+    this.orderPendingPayments = (this.orderFeesTotal - this.orderRemissionTotal) - this.orderTotalPayments;
+    if(this.orderPendingPayments === 0){
+      this.orderStatus = 'Paid';
+      this.orderAddBtnEnable = false;
+    } else if (this.orderFeesTotal > 0 && this.orderTotalPayments > 0 && ( this.orderTotalPayments < this.orderPendingPayments) ) {
+      this.orderStatus = 'Partially paid'
+      this.orderAddBtnEnable = true;
+    } else {
+      this.orderStatus = 'Not paid'
+      this.orderAddBtnEnable = true;
+    } 
+      this.orderLevelFees.push({orderRefId:paymentGroup['payment_group_reference'],orderTotalFees: this.orderFeesTotal,orderStatus: this.orderStatus,orderParty:'Santosh', orderCCDEvent:'Case Creation',orderCreated: new Date(), orderAddBtnEnable: this.orderAddBtnEnable});
+  });
+  };
+
+  resetOrderVariables(): void {
+    this.orderFeesTotal = 0.00;
+    this.orderTotalPayments = 0.00;
+    this.orderRemissionTotal = 0.00;
+    this.orderPendingPayments = 0.00;
+    this.isAddFeeBtnEnabled = true;
+
+  }
   calculateAmounts(): void {
     let feesTotal = 0.00,
       paymentsTotal = 0.00,
       remissionsTotal = 0.00,
       nonOffLinePayment = 0.00;
-  
+
+
     this.paymentGroups.forEach(paymentGroup => {
       if (paymentGroup.fees) {
         paymentGroup.fees.forEach(fee => {
@@ -360,6 +425,17 @@ checkForExceptionRecord(): void {
 
   redirectToFeeSearchPage(event: any) {
     event.preventDefault();
+    let url = this.isBulkScanEnable ? '&isBulkScanning=Enable' : '&isBulkScanning=Disable';
+    url += this.isTurnOff ? '&isTurnOff=Enable' : '&isTurnOff=Disable';
+    url += this.isStrategicFixEnable ? '&isStFixEnable=Enable' : '&isStFixEnable=Disable';
+    url += this.isNewPcipalOff ? '&isNewPcipalOff=Enable' : '&isNewPcipalOff=Disable';
+    url += this.isOldPcipalOff ? '&isOldPcipalOff=Enable' : '&isOldPcipalOff=Disable';
+
+  this.router.navigateByUrl(`/fee-search?selectedOption=${this.selectedOption}&ccdCaseNumber=${this.ccdCaseNumber}${url}`);
+  }
+
+  redirectToOrderFeeSearchPage(event: any, orderef: any) {
+    event.preventDefault();
     if(!this.isAnyFeeGroupAvilable || this.isTurnOff) {
     let url = this.isBulkScanEnable ? '&isBulkScanning=Enable' : '&isBulkScanning=Disable';
       url += this.isTurnOff ? '&isTurnOff=Enable' : '&isTurnOff=Disable';
@@ -370,11 +446,12 @@ checkForExceptionRecord(): void {
     this.router.navigateByUrl(`/fee-search?selectedOption=${this.selectedOption}&ccdCaseNumber=${this.ccdCaseNumber}${url}`);
     } else {
       this.paymentLibComponent.bspaymentdcn = null;
-      this.paymentLibComponent.paymentGroupReference = this.paymentRef;
+      this.paymentLibComponent.paymentGroupReference = orderef;
       this.paymentLibComponent.isTurnOff = this.isTurnOff;
       this.paymentLibComponent.viewName = 'fee-summary';
     }
   }
+
 
   redirectToReportsPage(event: any) {
     event.preventDefault();
@@ -392,6 +469,61 @@ checkForExceptionRecord(): void {
     this.paymentLibComponent.paymentGroupReference = paymentGroup.paymentGroupReference;
     this.paymentLibComponent.paymentReference = paymentGroup.paymentReference;
     this.paymentLibComponent.viewName = 'payment-view';
+  }
+
+  goToOrderViewDetailSection(orderReferenceObj: any){
+     this.orderFeesTotal = 0.00;
+     this.orderRemissionTotal = 0.00;
+     this.orderTotalPayments = 0.00;
+     this.orderPendingPayments =0.00;
+
+    this.orderDetail = this.paymentGroups.filter(x=> x.payment_group_reference === orderReferenceObj.orderRefId);
+    this.orderDetail.forEach(orderDetail => {
+      if (orderDetail.fees) {
+          orderDetail.fees.forEach(fee => {
+            this.orderFeesTotal = this.orderFeesTotal + fee.calculated_amount;
+          });
+      }
+      if (orderDetail.remissions) {
+        orderDetail.remissions.forEach(remission => {
+          this.orderRemissionTotal = this.orderRemissionTotal + remission.hwf_amount;
+        });
+      if (orderDetail.payments) {
+        orderDetail.payments.forEach(payment => {
+          if (payment.status.toUpperCase() === 'SUCCESS') {
+            this.orderTotalPayments = this.orderTotalPayments + payment.amount;
+          }
+        });
+      }  
+    }
+    });
+    this.orderPendingPayments = (this.orderFeesTotal - this.orderRemissionTotal) - this.orderTotalPayments;
+    this.orderRef = orderReferenceObj.orderRefId;
+    if(this.orderPendingPayments === 0){
+      this.orderStatus = 'Paid';
+    } else if (this.orderFeesTotal > 0 && this.orderTotalPayments && ( this.orderTotalPayments < this.orderPendingPayments) ) {
+      this.orderStatus = 'Partially paid'
+    } else {
+      this.orderStatus = 'Not paid'
+    }
+    this.orderParty = 'Santosh';
+    this.orderCreated = new Date();
+    this.orderCCDEvent = 'Create Case';
+    this.viewStatus= 'order-full-view';
+  }
+
+  goToCaseTransationPage(event: any) {
+    event.preventDefault()
+    this.paymentLibComponent.viewName = 'case-transactions';
+    this.paymentViewService.getBSfeature().subscribe(
+      features => {
+        let result = JSON.parse(features).filter(feature => feature.uid === BS_ENABLE_FLAG);
+        this.paymentLibComponent.ISBSENABLE = result[0] ? result[0].enable : false;
+      },
+      err => {
+        this.paymentLibComponent.ISBSENABLE = false;
+      }
+    );
   }
 
   goToPayementView(paymentGroupReference: string, paymentReference: string, paymentMethod: string) {

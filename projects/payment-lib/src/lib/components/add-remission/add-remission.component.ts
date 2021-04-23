@@ -5,6 +5,8 @@ import {Router} from '@angular/router';
 import { AddRemissionRequest } from '../../interfaces/AddRemissionRequest';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { PaymentLibComponent } from '../../payment-lib.component';
+import { IPaymentGroup } from '../../interfaces/IPaymentGroup';
+import { BulkScaningPaymentService } from '../../services/bulk-scaning-payment/bulk-scaning-payment.service';
 
 const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 
@@ -37,11 +39,19 @@ export class AddRemissionComponent implements OnInit {
   isAmountEmpty: boolean = false;
   amountHasError: boolean = false;
   isRemissionLessThanFeeError: boolean = false;
+  totalAfterRemission: number;
+  isFeeAmountZero: boolean;
+  isRemissionsMatch: boolean;
+  outStandingAmount: number;
+  paymentGroup: IPaymentGroup;
+  isPaymentExist: boolean;
+  isRemissionsExist: boolean;
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
     private paymentViewService: PaymentViewService,
-    private paymentLibComponent: PaymentLibComponent) { }
+    private paymentLibComponent: PaymentLibComponent,
+    private bulkScaningPaymentService: BulkScaningPaymentService) { }
 
   ngOnInit() {
     this.option = this.paymentLibComponent.SELECTED_OPTION;
@@ -113,7 +123,14 @@ export class AddRemissionComponent implements OnInit {
             this.router.onSameUrlNavigation = 'reload';
             this.router.navigateByUrl(`/payment-history/${this.ccdCaseNumber}?view=fee-summary&selectedOption=${this.option}&paymentGroupRef=${this.paymentGroupRef}&dcn=${this.paymentLibComponent.bspaymentdcn}${LDUrl}`);
           }else {
-            this.gotoCasetransationPage();
+            // this.getPaymentGroup();
+            // // this.gotoCasetransationPage();
+            // console.log("Santosh"+this.outStandingAmount);
+            // if(this.outStandingAmount === 0)
+            // {
+            //   this.gotoCasetransationPage();
+            // }
+            this.gotoSummaryPage();
           }
 
         }
@@ -124,6 +141,40 @@ export class AddRemissionComponent implements OnInit {
       }
     );
   }
+
+  gotoSummaryPage() {
+    this.getPaymentGroup();
+    if(this.outStandingAmount === 0) {
+      this.gotoCasetransationPage();
+    }
+    this.paymentLibComponent.viewName = 'fee-summary';
+    this.paymentLibComponent.TAKEPAYMENT = true;
+    this.paymentLibComponent.ISTURNOFF = this.isTurnOff;
+    this.paymentLibComponent.ISNEWPCIPALOFF = this.isNewPcipalOff;
+    this.paymentLibComponent.ISOLDPCIPALOFF = this.isOldPcipalOff;
+
+    this.paymentViewService.getBSfeature().subscribe(
+      features => {
+        let result = JSON.parse(features).filter(feature => feature.uid === BS_ENABLE_FLAG);
+        this.paymentLibComponent.ISBSENABLE = result[0] ? result[0].enable : false;
+      },
+      err => {
+        this.paymentLibComponent.ISBSENABLE = false;
+      }
+    );
+
+    let partUrl = this.bsPaymentDcnNumber ? `&dcn=${this.bsPaymentDcnNumber}` : '';
+     partUrl += this.paymentLibComponent.ISBSENABLE ? '&isBulkScanning=Enable' : '&isBulkScanning=Disable';
+     partUrl += this.paymentLibComponent.ISTURNOFF ? '&isTurnOff=Enable' : '&isTurnOff=Disable';
+     partUrl += this.isStrategicFixEnable ? '&isStFixEnable=Enable' : '&isStFixEnable=Disable';
+  
+
+    const url = `/payment-history/${this.ccdCaseNumber}?view=fee-summary&paymentGroupRef=${this.paymentGroupRef}&selectedOption=${this.option}${partUrl}`;
+    this.router.navigateByUrl(url).then(() => {
+      window.location.reload();
+    });
+  }
+
   gotoCasetransationPage() {
     this.paymentLibComponent.viewName = 'case-transactions';
     this.paymentLibComponent.TAKEPAYMENT = true;
@@ -150,5 +201,41 @@ export class AddRemissionComponent implements OnInit {
 
     const url = `/payment-history/${this.ccdCaseNumber}?view=case-transactions&takePayment=true&selectedOption=${this.option}${partUrl}`;
     this.router.navigateByUrl(url);
+  }
+
+  getPaymentGroup() {
+    let fees = [];
+    this.paymentViewService.getPaymentGroupDetails(this.paymentGroupRef).subscribe(
+      paymentGroup => {
+        this.paymentGroup = paymentGroup;
+        this.isPaymentExist = paymentGroup.payments ? paymentGroup.payments.length > 0 : false;
+        this.isRemissionsExist = paymentGroup.remissions ? paymentGroup.remissions.length > 0 : false;
+
+        if (paymentGroup.fees) {
+          paymentGroup.fees.forEach(fee => {
+              this.totalAfterRemission  = this.totalAfterRemission  + fee.net_amount;
+              if(fee.calculated_amount === 0) {
+                this.isFeeAmountZero = true;
+              }
+              this.isRemissionsMatch = false;
+              paymentGroup.remissions.forEach(rem => {
+                if(rem.fee_code === fee.code) {
+                  this.isRemissionsMatch = true;
+                  fee['remissions'] = rem;
+                  fees.push(fee);
+                }
+              });
+    
+              if(!this.isRemissionsMatch) {
+                fees.push(fee);
+              }
+          });
+          paymentGroup.fees = fees;
+        }
+
+        this.outStandingAmount = this.bulkScaningPaymentService.calculateOutStandingAmount(paymentGroup);
+      },
+      (error: any) => this.errorMessage = error
+    );
   }
 }

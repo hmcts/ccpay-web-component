@@ -15,11 +15,11 @@
   }
 
   table th, table td {
-    font-size: 15px;
-    font-weight: 500;
+    font-family: "GDS Transport", arial, sans-serif;
+    line-height: 1.31579;
     vertical-align: top;
     max-width: 320px;
-  
+    padding: .63158em 0.05264em 0.07368em 0;
     .no-padding {
       padding: 0;
     }
@@ -48,6 +48,10 @@
     }
 }
 
+.govuk-button--secondary{
+  font-size: 19px;
+}
+
 .govuk-form-group--mg {
    margin-top: 10px !important;
 }
@@ -58,6 +62,11 @@
 .remissionDisable{
       color: grey;
     cursor: default;
+    padding-left: 10px;
+}
+
+.a:active {
+  color: #2b8cc4;
 }
 
 .heading-xlarge{
@@ -71,4 +80,26 @@
   cursor: default;
   pointer-events: none;
   color: #8e8c8c;
+}
+
+.govuk-table__header, .govuk-table__cell_border {
+  padding: 10px 0px 0px 0;
+  border-top: 1px solid #bfc1c3;
+  text-align: left;
+}
+.govuk-table__header, .govuk-table__cell_rmborder {
+  padding: 10px 0px 0px 0;
+  border-top: 1px solid #bfc1c3;
+  text-align: left;
+}
+
+.govuk-table__fessheader{
+  font-weight: 700;
+}
+.feeAddButton {
+  padding-left: 69rem;
+}
+
+.remissionActive {
+  padding-left: 10px;
 }
