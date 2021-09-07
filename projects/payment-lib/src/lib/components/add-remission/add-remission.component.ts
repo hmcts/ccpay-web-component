@@ -95,7 +95,7 @@ export class AddRemissionComponent implements OnInit {
 
   ngOnInit() {
 
-    
+
     if(this.remission) {
       this.cd.detectChanges();
     }
@@ -125,10 +125,10 @@ export class AddRemissionComponent implements OnInit {
     if(this.viewCompStatus === ''){
     this.viewStatus = 'main';
     }
- 
+
     if(this.viewCompStatus === 'issuerefund'){
       this.refundService.getRefundReasons().subscribe(
-        refundReasons => { 
+        refundReasons => {
           this.refundReasons = refundReasons['data'].filter((data) => data.recently_used === false);
           this.cd.detectChanges();
           this.commonRefundReasons = refundReasons['data'].filter((data) => data.recently_used === true);
@@ -137,7 +137,7 @@ export class AddRemissionComponent implements OnInit {
       }
 
       // this.refundService.getUserDetails().subscribe(
-      //   userdetail => { 
+      //   userdetail => {
       //     console.log(userdetail);
       //     console.log(userdetail['data']);
       //   } );
@@ -145,9 +145,10 @@ export class AddRemissionComponent implements OnInit {
   }
 
   addRemission() {
+
     this.resetRemissionForm([false, false, false, false, false, false], 'All');
     const remissionctrls=this.remissionForm.controls,
-      isRemissionLessThanFee = this.fee.calculated_amount > remissionctrls.amount.value; 
+      isRemissionLessThanFee = this.fee.calculated_amount > remissionctrls.amount.value;
       this.remissionForm.controls['refundReason'].setErrors(null);
       this.remissionForm.controls['amount'].setErrors(null);
     if (this.remissionForm.dirty && this.remissionForm.valid && isRemissionLessThanFee) {
@@ -226,7 +227,7 @@ export class AddRemissionComponent implements OnInit {
   addRemissionCode() {
     this.resetRemissionForm([false, false, false, false, false, false], 'All');
     const remissionctrls=this.remissionForm.controls,
-      isRemissionLessThanFee = this.fee.calculated_amount >= remissionctrls.amount.value; 
+      isRemissionLessThanFee = this.fee.calculated_amount >= remissionctrls.amount.value;
       this.remissionForm.controls['refundReason'].setErrors(null);
       this.remissionForm.controls['amount'].setErrors(null);
     if (this.remissionForm.dirty && this.remissionForm.valid && isRemissionLessThanFee) {
@@ -252,7 +253,7 @@ export class AddRemissionComponent implements OnInit {
       if(remissionctrls.amount.valid && !isRemissionLessThanFee){
         this.resetRemissionForm([false, false, false, false, true], 'amount');
       }
-    
+
     }
   }
 
@@ -268,7 +269,7 @@ export class AddRemissionComponent implements OnInit {
     this.errorMessage = '';
     this.resetRemissionForm([false, false, false, false, false], 'All');
     var remissionctrls=this.remissionForm.controls,
-      isRemissionLessThanFee = this.fee.calculated_amount >= remissionctrls.amount.value; 
+      isRemissionLessThanFee = this.fee.calculated_amount >= remissionctrls.amount.value;
     if (this.remissionForm.dirty ) {
       if(remissionctrls['amount'].value == '' ) {
         this.resetRemissionForm([false, false, true, false, false], 'amount');
@@ -299,7 +300,7 @@ export class AddRemissionComponent implements OnInit {
     //   if(this.fee.calculated_amount.toString() === this.remissionForm.controls.amount.value) {
     //     this.remissionamt =this.remissionForm.controls.amount.value
     //   }
-    //   else 
+    //   else
     //   {
     //     this.remissionamt = this.fee.calculated_amount - this.remissionForm.controls.amount.value;
     //   }
@@ -325,7 +326,7 @@ export class AddRemissionComponent implements OnInit {
           //       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
           //       this.router.onSameUrlNavigation = 'reload';
           //       this.router.navigateByUrl(`/payment-history/${this.ccdCaseNumber}?view=fee-summary&selectedOption=${this.option}&paymentGroupRef=${this.paymentGroupRef}&dcn=${this.paymentLibComponent.bspaymentdcn}${LDUrl}`);
-              
+
           //     }else {
           //       this.gotoCasetransationPage();
           //     }
@@ -351,7 +352,7 @@ export class AddRemissionComponent implements OnInit {
       this.remissionReference = this.remission.remission_reference;
     }
     const requestBody = new PostIssueRefundRetroRemission(this.remissionReference);
-  
+
     this.paymentViewService.postRefundRetroRemission(requestBody).subscribe(
         response => {
       if (JSON.parse(response)) {
@@ -386,7 +387,7 @@ export class AddRemissionComponent implements OnInit {
         this.viewCompStatus = '';
         this.viewStatus = 'checkissuerefundpage';
       }
-      
+
     } else {
       if ( this.isFromRefundListPage ) {
         this.refundListReason.emit(this.selectedRefundReason);
@@ -394,7 +395,7 @@ export class AddRemissionComponent implements OnInit {
         this.viewCompStatus = '';
         this.viewStatus = 'checkissuerefundpage';
       }
-   
+
     }
   }
 
@@ -420,7 +421,7 @@ export class AddRemissionComponent implements OnInit {
     if( this.isRefundRemission) {
       this.retroRemission = true;
     }
-   
+
     const requestBody = new PostRefundRetroRemission(this.payment.reference,this.refundReason);
     this.paymentViewService.postRefundsReason(requestBody).subscribe(
       response => {
@@ -451,7 +452,7 @@ export class AddRemissionComponent implements OnInit {
 
     const requestBody = new PostRefundRetroRemission(this.payment.reference,'RR004-Retrospective remission');
     // const requestBody = new IssueRefundRequest(this.payment.reference,'RR004-Retro remission',this.payment.amount);
-  
+
     this.paymentViewService.postRefundsReason(requestBody).subscribe(
       response => {
           if (JSON.parse(response)) {
@@ -483,6 +484,13 @@ export class AddRemissionComponent implements OnInit {
     }
   }
 
+  getFormattedCurrency(currency:number){
+    if(currency.toString().includes(".")){
+      return currency
+    }
+     return currency.toString().concat(".00");
+  }
+
   selectchange(args) {
     // const remissionctrls=this.remissionForm.controls;
     // remissionctrls['refundReason'].reset();
@@ -497,6 +505,44 @@ export class AddRemissionComponent implements OnInit {
     }
 
 
+  }
+
+
+  
+  gotoPaymentDetailsPage(){
+    this.errorMessage = '';
+    this.viewStatus = 'main'
+    console.log("GO TO PAY HIST");
+    this.paymentLibComponent.viewName = 'payment-view';
+    this.paymentLibComponent.TAKEPAYMENT = false;
+    this.paymentLibComponent.ISTURNOFF = this.isTurnOff;
+    this.paymentLibComponent.ISNEWPCIPALOFF = this.isNewPcipalOff;
+    this.paymentLibComponent.ISOLDPCIPALOFF = this.isOldPcipalOff;
+    console.log(this.paymentLibComponent)
+
+    this.paymentViewService.getBSfeature().subscribe(
+      features => {
+        let result = JSON.parse(features).filter(feature => feature.uid === BS_ENABLE_FLAG);
+        this.paymentLibComponent.ISBSENABLE = result[0] ? result[0].enable : false;
+      },
+      err => {
+        this.paymentLibComponent.ISBSENABLE = false;
+      }
+    );
+
+    let partUrl = this.bsPaymentDcnNumber ? `&dcn=${this.bsPaymentDcnNumber}` : '';
+     partUrl += this.paymentLibComponent.ISBSENABLE ? '&isBulkScanning=Enable' : '&isBulkScanning=Disable';
+     partUrl += this.paymentLibComponent.ISTURNOFF ? '&isTurnOff=Enable' : '&isTurnOff=Disable';
+     partUrl += this.isStrategicFixEnable ? '&isStFixEnable=Enable' : '&isStFixEnable=Disable';
+     partUrl += `&caseType=${this.caseType}`;
+     partUrl += this.paymentLibComponent.ISNEWPCIPALOFF ? '&isNewPcipalOff=Enable' : '&isNewPcipalOff=Disable';
+     partUrl += this.paymentLibComponent.ISOLDPCIPALOFF ? '&isOldPcipalOff=Enable' : '&isOldPcipalOff=Disable';
+     partUrl += '&prev=true'
+
+    const url = `/payment-history/${this.ccdCaseNumber}?&selectedOption=${this.option}${partUrl}`;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigateByUrl(url);
   }
 
   gotoCasetransationPage() {
@@ -534,7 +580,7 @@ export class AddRemissionComponent implements OnInit {
   // continueRemission(){
   //   this.resetRemissionForm([false, false, false, false, false], 'All');
   //   const remissionctrls=this.remissionForm.controls,
-  //     isRemissionLessThanFee = this.fee.calculated_amount > remissionctrls.amount.value; 
+  //     isRemissionLessThanFee = this.fee.calculated_amount > remissionctrls.amount.value;
   //   if (this.remissionForm.dirty && this.remissionForm.valid && isRemissionLessThanFee) {
   //     this.viewCompStatus = '';
   //     this.viewStatus = "processretroremissonpage";
@@ -558,9 +604,9 @@ export class AddRemissionComponent implements OnInit {
   //     if(remissionctrls.amount.valid && !isRemissionLessThanFee){
   //       this.resetRemissionForm([false, false, false, false, true], 'amount');
   //     }
-    
+
   //   }
- 
+
   // }
 
 }
