@@ -1,4 +1,4 @@
-<div class="add-remission">
+<div class="add-remission pagesize">
     <div *ngIf="errorMessage">
       <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
         <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
@@ -194,7 +194,7 @@
           </tr>
           <tr class="govuk-table__row">
               <td class="govuk-table__cell govuk-!-font-weight-bold">Fee</td>
-              <td class="govuk-table__cell">{{ fee.code }} - {{ fee.description }} </td>
+              <td class="govuk-table__cell">{{ fee.code }} - {{ fee.description }} ({{ fee.calculated_amount/fee.volume| currency:'GBP':'symbol-narrow':'1.2-2' }}) </td>
           </tr>
           <tr class="govuk-table__row">
               <td class="govuk-table__cell govuk-!-font-weight-bold">Help with fees or remission reference</td>
@@ -233,9 +233,11 @@
           <div *ngIf="remessionPayment.status === 'Success'" >
               <button type="submit" [disabled]="!isRemissionApplied" [ngClass]='isConfirmationBtnDisabled ? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"' (click)="processRefund()">Submit refund </button>
             </div>
-        <p class="govuk-body">
-          <a href="javascript:void(0)" (click)="gotoCasetransationPage()"  class="govuk-link">Return to case</a>
-       </p>
+            <p class="govuk-body">
+            <a href="javascript:void(0)" (click)="gotoCasetransationPageCancelBtnClicked($event)" class="govuk-link" data-module="govuk-button">
+              Return to case
+          </a>
+            </p>
       </div>
     </div>
   </ng-container>
@@ -260,17 +262,98 @@
             A refund request for {{refundAmount  | currency:'GBP':'symbol-narrow':'1.2-2' }} has been created and will be passed to a team leader to approve.
           </p>
         </div>
-          <p class="govuk-body">
-            <a href="javascript:void(0)" (click)="gotoCasetransationPage()"  class="govuk-link">Return to case</a>
-         </p>
+        <p class="govuk-body">
+        <a href="javascript:void(0)" (click)="gotoCasetransationPageCancelBtnClicked($event)" class="govuk-link" data-module="govuk-button">
+          Return to case
+      </a>
+        </p>
         </div>
       </div>
     
   </ng-container>
 
   <!-- Issue Refund Section -->
-
   <ng-container *ngIf="viewCompStatus === 'issuerefund' && isRefundRemission">
+    <div class="govuk-form-group">
+      <form [formGroup]="remissionForm" novalidate>
+      <h1 class="heading-large">Issue refund</h1>
+      <h2 class="heading-medium">Case reference:#{{ccdCaseNumber | ccdHyphens }}</h2>
+      <span id="how-contacted-conditional-hint" class="form-hint">
+        Payment reference: RC-8368-2367-1858-4562
+      </span>
+      <h3 class="heading-small">Select fees to be refunded</h3>
+      <!---TABLE--->
+      <div>
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__header  col-1" scope="col">Select</td>
+              <td class="govuk-table__header col-18" scope="col">Fee description</td>
+              <td class="govuk-table__header col-6" scope="col">Fee amount</td>
+              <td class="govuk-table__header col-6" scope="col">Total paid</td>
+              <td class="govuk-table__header col-6" scope="col">Quantity</td>
+              <td class="govuk-table__header col-8" scope="col">Amount to refund</td>
+              <td class="govuk-table__header" scope="col"></td>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row" *ngFor="let fee of fees; let i = index;">
+              <td class="govuk-table__cell">
+                <div class="govuk-checkboxes govuk-checkboxes--large" data-module="govuk-checkboxes">
+                  <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" id="{{fee.id}}" name="organisation" type="checkbox" value="{{fee.id}}" >
+                    <label class="govuk-label govuk-checkboxes__label" for="{{fee.id}}">
+                      <span style="display:none">Select</span>
+                    </label>
+                  </div>
+                </div>
+              </td>
+              <td class="govuk-table__cell  whitespace-inherit">{{fee.description}}</td>
+              <td class="govuk-table__cell  whitespace-inherit left" >{{fee.calculated_amount}}</td>
+              <td class="govuk-table__cell  whitespace-inherit left" >{{fee.volume}} * {{fee.net_amount}}</td>
+              <td class="govuk-table__cell  whitespace-inherit left"  *ngIf="fee.volume === 1">
+                {{fee.volume}}
+              </td>
+              <td class="govuk-table__cell  whitespace-inherit left"  *ngIf="fee.volume >1">
+                <input class="govuk-input govuk-input--width-4 center"  id="event-name" name="event-name" type="text"  value="fee.volume">
+              </td>
+              <td class="govuk-table__cell  whitespace-inherit center" scope="row">
+              
+                  <div class="hmcts-currency-input">
+                    <div class="hmcts-currency-input__symbol" aria-hidden="true">£</div>
+                    <input class="govuk-input govuk-input--width-10" id="{{fee.id}}" name="{{fee.calculated_amount}}" value= {{fee.calculated_amoun}} type="text" aria-describedby="amount-currency " pattern="[0-9]*" formControlName="feeAmount">
+                  </div>
+   
+              </td>
+            </tr>
+          </tbody>
+          <tbody class="govuk-table__body" *ngIf="fees?.length === 0">
+            <td class="govuk-table__cell" colspan="6">No fees recorded</td>
+          </tbody>
+        </table>
+      </div>
+      <div class="govuk-button-group">
+  
+    
+    <a  (click)="gotoServiceRequestPage($event)"  draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+      Previous
+    </a>
+    
+      
+    <button (click)="gotoIssuePage()" class="govuk-button">
+      Continue
+    </button>
+    
+      </div>
+      <p>
+        <a  (click)="gotoCasetransationPageCancelBtnClicked($event)" class="govuk-link" data-module="govuk-button">Cancel</a>
+      </p>
+    </form>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="viewCompStatus === 'issuerefundpage1' && isRefundRemission">
+
       <input #myInput type='hidden' id='iFrameDrivenImageValue' value='ISSUEREFUNDPAGE'> 
       <h1 class="heading-large">Process refund</h1>
       <h1 class="heading-medium">#{{ccdCaseNumber | ccdHyphens }}</h1>
@@ -465,11 +548,52 @@
           A refund request for {{ refundAmount| currency:'GBP':'symbol-narrow':'1.2-2'}} has been passed to a team leader to approve.
         </p>
       </div>
-        <p class="govuk-body">
-          <a (click)="gotoCasetransationPage()"  class="govuk-link">Return to case</a>
-       </p>
+      <p class="govuk-body">
+      <a href="javascript:void(0)" (click)="gotoCasetransationPageCancelBtnClicked($event)" class="govuk-link" data-module="govuk-button">
+        Return to case
+    </a>
+      </p>
       </div>
     </div>
+  </ng-container>
+
+  <ng-container *ngIf="viewStatus === 'order-full-view'">
+    <ccpay-service-request
+    [viewStatus] = "viewStatus"
+    [orderRef] = "orderRef"
+    [orderStatus] = "orderStatus"
+    [orderCreated] = "orderCreated"
+    [orderParty] = "orderParty"
+    [orderCCDEvent] = "orderCCDEvent"
+    [orderDetail] = "orderDetail"
+    [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES"
+    [takePayment] = "takePayment"
+    [ccdCaseNumber] = "ccdCaseNumber"
+    [orderFeesTotal] = "orderFeesTotal"
+    [orderTotalPayments] = "orderTotalPayments"
+    [orderRemissionTotal] = "orderRemissionTotal">
+  </ccpay-service-request>
+  </ng-container>
+
+  <ng-container *ngIf="viewStatus === 'payment-view'">
+    <ccpay-payment-view 
+    [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES"
+    [isTurnOff] = "isTurnOff" 
+    [isTakePayment] = "takePayment"  
+    [caseType] = "caseType"
+    [isOldPcipalOff] = "isOldPcipalOff"
+    [isNewPcipalOff] = "isNewPcipalOff"
+    [orderRef] = "orderRef"
+    [orderStatus] = "orderStatus"
+    [orderCreated] = "orderCreated"
+    [orderParty] = "orderParty"
+    [orderCCDEvent] = "orderCCDEvent"
+    [orderDetail] = "orderDetail"
+    [orderFeesTotal] = "orderFeesTotal"
+    [orderTotalPayments] = "orderTotalPayments"
+    [orderRemissionTotal] = "orderRemissionTotal"
+    >
+  </ccpay-payment-view>
   </ng-container>
 
 </div>

@@ -53,18 +53,7 @@
 
           </div>
           <div class="govuk-grid-row">
-            <!-- <ccpay-app-unprocessed-payments
-            *ngIf="isBulkScanEnable"
-            [IS_BUTTON_ENABLE]="takePayment"
-            [FEE_RECORDS_EXISTS]="isAnyFeeGroupAvilable"
-            [ISTURNOFF]="isTurnOff"
-            [ISSFENABLE]="isStrategicFixEnable"
-            [PAYMENTREF]="paymentRef"
-            [ISNEWPCIPALOFF]="isNewPcipalOff"
-            [ISOLDPCIPALOFF]="isOldPcipalOff"
-            (getUnprocessedFeeCount) = "getUnprocessedFeeCount($event)"
-            (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)">
-            </ccpay-app-unprocessed-payments> -->
+            
           </div>
           <div  *ngIf="takePayment" class=" govuk-!-margin-top-9">
 
@@ -415,17 +404,7 @@
       </div>
 
       <div *ngIf="!takePayment" class="govuk-grid-row govuk-grid__surplus-payments">
-          <!-- <div *ngIf="errorMessage">
-              <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
-                <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
-                    Sorry, there is a problem with the service
-                </h2>
-                <p>Payment requests and payments cannot currently be shown. Try again.</p>
-                <div class="govuk-error-summary__body">
-                  {{ errorMessage }}
-                </div>
-              </div>
-          </div> -->
+          
         <div class="govuk-grid-column-full">
           
           <span class="heading-medium">Payments</span>
@@ -452,10 +431,7 @@
                       </td>
                   </tr>
               </tbody>
-                    
-              <!-- <tbody class="govuk-table__body" *ngIf="allPayments?.length === 0">
-                <td class="govuk-table__cell" colspan="8">No payments recorded</td>
-              </tbody> -->
+          
             </table>
             <ccpay-app-unprocessed-payments class="govuk-table"
             *ngIf="isBulkScanEnable && !takePayment"
@@ -600,7 +576,7 @@
               </ng-container>
         
           </div>
-          <div>
+          <div *ngIf="!check4AllowedRoles2AccessPBApayment()">
               <span class="heading-medium"><br/>Refunds</span>
               <ccpay-refund-status
               [ccdCaseNumber]="ccdCaseNumber" 
@@ -613,22 +589,52 @@
       </div>
    </ng-container>
 
-   <ng-container *ngIf="!takePayment && viewStatus === 'main'">
-      <!-- <div *ngIf="errorMessage">
-          <div *ngIf="isCPODown && isAnyFeeGroupAvilable" class=" error govuk-inset-text govuk-!-margin-top-7">
-              No party information currently available - try again later.
-          </div>
-          <div *ngIf="!isAnyFeeGroupAvilable" class="error">
-              <h3 class="govuk-heading-m govuk-!-margin-top-7 govuk-!-margin-bottom-1">Sorry, there is a problem with the service</h3>
-              <p>Payment requests and payments cannot currently be shown. Try again.</p>
-        </div>
-        </div> -->
-       
-      <div  class="govuk-grid-row govuk-grid__surplus-payments">
-          
+   <ng-container *ngIf="!takePayment && viewStatus === 'main'">       
+      <div  class="govuk-grid-column-full">
+        <span *ngIf="serviceRequestValue !== 'false'" class="heading-medium">Service requests</span>
+        <ng-container *ngIf="!(orderLevelFees?.length === 0 && !isAnyFeeGroupAvilable) && serviceRequestValue !== 'false' ">
+          <table class="govuk-table">
+              <thead class="govuk-table__head">
+              <tr class="govuk-table__row">
+                <td class="govuk-table__header col-14" scope="col">Status</td>
+                <td class="govuk-table__header col-10" scope="col">Amount</td>
+                <td class="govuk-table__header col-18" scope="col">Party</td>
+                <td class="govuk-table__header col-21" scope="col">Request reference	</td>
+                <td class="govuk-table__header col-9" scope="col"></td>
+                <td class="govuk-table__header" scope="col"></td>
+              </tr>
+              </thead>
+              <tbody class="govuk-table__body" *ngIf="orderLevelFees?.length > 0">
+                <tr class="govuk-table__row"  *ngFor="let orderRef of orderLevelFees;let i = index;">
+                  <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderStatus}}</td>
+                  <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2'}}</td>
+                  <td *ngIf="cpoDetails !== null" class="govuk-table__cell  whitespace-inherit">{{cpoDetails['responsibleParty']}}</td> 
+                  <td *ngIf="cpoDetails === null" class="govuk-table__cell  whitespace-inherit"></td> 
+                  <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderRefId}}</td> 
+                  <td class="govuk-table__cell of-visible"> <a href="javascript:void(0)" (click)="loadPBAAccountPage(orderRef)" *ngIf="serviceRequestValue !== 'false' && check4AllowedRoles2AccessPBApayment() && orderRef.orderStatus === 'Not paid'"> Pay now</a></td> 
+                  <td class="govuk-table__cell">	
+                      <a href="javascript:void(0)" (click)="goToOrderViewDetailSection(orderRef)">Review</a>
+                </td>
+                </tr>
+              </tbody>
+              <tbody class="govuk-table__body" *ngIf="orderLevelFees?.length === 0 && serviceRequestValue === 'false'">
+                <tr class="govuk-table__row" >
+                  <td class="alignleft" colspan="7">No service requests on this case.</td>
+                </tr>
+              </tbody>
+          </table>
+        </ng-container>
+        <ng-container *ngIf="orderLevelFees?.length === 0 && serviceRequestValue !== 'false' && !isAnyFeeGroupAvilable">
+          <h1 class="govuk-heading-l govuk-heading-lw">If you are expecting to pay and are not able to see a service request,</h1>
+          <p>please refresh and try in some time.</p>
+        </ng-container>
+
+    <!-- </div> -->
+
+      </div>
         
         <div class="govuk-grid-column-full">
-            <div  *ngIf="serviveRequestValue === 'false'">
+            <div  *ngIf="serviceRequestValue === 'false'">
             <span class="heading-medium"><br/>Payments</span>
             <ng-container >
               <table class="govuk-table">
@@ -637,7 +643,7 @@
                     <td class="govuk-table__header col-14" scope="col">Status</td>
                     <td class="govuk-table__header col-10" scope="col">Amount</td>
                     <td class="govuk-table__header col-17" scope="col">Date</td>
-                    <td class="govuk-table__header col-24" scope="col">Request reference</td>
+                    <td class="govuk-table__header col-24" scope="col">Payment reference</td>
                     <td class="govuk-table__header col-13" scope="col"></td>
                     <td class="govuk-table__header" scope="col"></td>
                   </tr>
@@ -647,7 +653,7 @@
                     <td class="govuk-table__cell whitespace-inherit">{{ payment.status }}</td>
                     <td class="govuk-table__cell whitespace-inherit">{{ payment.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
                     <td class="govuk-table__cell whitespace-inherit">{{ payment.date_created | date:'dd MMM yyyy' }}</td>
-                    <td class="govuk-table__cell whitespace-inherit">{{ payment.paymentGroupReference }}</td>
+                    <td class="govuk-table__cell whitespace-inherit">{{ payment?.reference }}</td>
                     <td class="govuk-table__cell whitespace-inherit"></td>
                     <td class="govuk-table__cell whitespace-inherit">
                         <a href="javascript:void(0)" (click)="goToPayementView(payment.paymentGroupReference, payment.reference, payment.method)">Review</a>
@@ -674,20 +680,13 @@
               </ccpay-app-unprocessed-payments>
             </ng-container>
 
-            <!-- <ng-container *ngIf="allPayments?.length  === 0">
-                <br/>No payments.
-            </ng-container> -->
           </div>
         </div>
-        <div class="govuk-grid-column-full">
+        <div class="govuk-grid-column-full" *ngIf="!check4AllowedRoles2AccessPBApayment()">
             <span class="heading-medium"><br/>Refunds</span>
             <ccpay-refund-status [ccdCaseNumber]="ccdCaseNumber" ></ccpay-refund-status>
         </div>
 
-          
-      </div>
-
-     
    </ng-container>
 
 
@@ -695,177 +694,21 @@
 
 <!-- Order Full View Details-->
 <ng-container *ngIf="viewStatus === 'order-full-view'">
-    <div *ngIf="takePayment" class="govuk-breadcrumbs">
-        <ol class="govuk-breadcrumbs__list">
-          <li class="govuk-breadcrumbs__list-item">
-            <a href="javascript:void(0)" (click)="goToCaseTransationPage($event)" class="govuk-back-link">Back</a>
-          </li>
-        </ol>
-      </div>
-    <div class="govuk-grid-column-full">
-        <div class="column">
-          <h1 class="heading-large govuk-!-margin-top-0">Service request</h1>
-        </div>
-        <table >
-            <tbody>
-            <tr class="section">
-                <td class="bold tb-col-w">Service request reference</td>
-                <td>{{orderRef}}</td>
-              </tr>
-             <tr class="section">
-              <td class="bold tb-col-w">Status</td>
-              <td>{{orderStatus}}</td>
-            </tr>
-            <tr class="section">
-                <td class="bold tb-col-w">Date created</td>
-                <td>{{orderCreated | date:'dd MMMM yyyy'}}</td>
-              </tr>
-            <tr class="section">
-              <td class="bold tb-col-w">Party</td>
-              <td>{{orderParty}}</td>
-            </tr>
-
-
-            <tr class="section">
-              <td class="bold tb-col-w">CCD event</td>
-              <td>{{orderCCDEvent}}</td>
-            </tr>
-            </tbody>
-          </table>
-    </div>
-
-    <div class="govuk-grid-column-full order-class">
-        <div class="column">
-          <table class="govuk-table ">
-            <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-              <td class="govuk-table__header col-51" scope="col">Fee</td>
-              <td class="govuk-table__header" scope="col">Amount</td>
-              <td class="govuk-table__header" scope="col">Total</td>
-              <td  class="govuk-table__header" scope="col"></td>
-            </tr>
-            </thead>
-            <tbody class="govuk-table__body" *ngFor="let order of orderDetail;">
-              <tr class="govuk-table__row" *ngFor="let fee of order.fees; let i = index;">
-                <td class="govuk-table__cell col-60 whitespace-inherit">{{fee.description}}</td>
-                <td class="govuk-table__cell">{{fee.volume? fee.volume : '-'}} X {{ fee.calculated_amount/fee.volume| currency:'GBP':'symbol-narrow':'1.2-2' }}</td>
-                <td class="govuk-table__cell">{{ fee.net_amount | currency:'GBP':'symbol-narrow':'1.2-2' }}</td>
-                <td class="govuk-table__cell alignright">
-                    <button  [disabled]="!chkForAddRemission(fee.code)"  (click)="addRemission(fee)" class="govuk-button govuk-button--secondary"> Add remission</button>
-                </td>
-            
-              </tr>
-            </tbody>
-            <tbody class="govuk-table__body" *ngFor="let order of orderDetail;">
-              <tr class="govuk-table__row" *ngIf="order.fees?.length === 0" >
-                <td class="govuk-table__cell alignleft" colspan="7">No fees recorded</td>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
-        <div class="maxwidth">  
-            <p class="totalfees">Total fees: {{orderFeesTotal | currency:'GBP':'symbol-narrow':'1.2-2' }}</p>
-        </div>
-    </div>
-    <!-- <div class="hmcts-banner" *ngIf="isHistoricGroupAvailable">
-      <svg class="hmcts-banner__icon" fill="currentColor" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" height="25" width="25">
-          <path d="M13.7,18.5h-2.4v-2.4h2.4V18.5z M12.5,13.7c-0.7,0-1.2-0.5-1.2-1.2V7.7c0-0.7,0.5-1.2,1.2-1.2s1.2,0.5,1.2,1.2v4.8
-        C13.7,13.2,13.2,13.7,12.5,13.7z M12.5,0.5c-6.6,0-12,5.4-12,12s5.4,12,12,12s12-5.4,12-12S19.1,0.5,12.5,0.5z"></path>
-      </svg>
-      <div class="hmcts-banner__message">
-        <span class="hmcts-banner__assistive">information</span>
-        * These fees have already been processed offline. Check the notes in CCD for more information.
-      </div>
-    </div> -->
-
-     <!-- remissions -->
-  <ng-container *ngFor="let order of orderDetail;" >
-     <div class="govuk-grid-column-full order-class"> 
-     <table class="govuk-table">
-       <thead class="govuk-table__head">
-         <tr class="govuk-table__row">
-            <td class="govuk-table__header col-24 whitespace-inherit" scope="col">Help with fees or remission code</td>
-             <td class="govuk-table__header col-27 whitespace-inherit" scope="col">Reference</td>
-             <td class="govuk-table__header whitespace-inherit" scope="col">Fee</td>
-             <td class="govuk-table__header whitespace-inherit" scope="col">Amount</td>
-             <td  class="govuk-table__header whitespace-inherit refundBtn" scope="col"></td>
-           </tr>
-       </thead>
-       <tbody  *ngIf="order.remissions?.length > 0"  class="govuk-table__body" >
-         <tr class="govuk-table__row" *ngFor="let remission of order.remissions">
-            <td class="govuk-table__cell whitespace-inherit">{{ remission.hwf_reference }}</td>
-             <td class="govuk-table__cell whitespace-inherit">{{ remission.remission_reference }}</td>
-             <td class="govuk-table__cell whitespace-inherit">{{ remission.fee_code }}</td>
-             <td class="govuk-table__cell whitespace-inherit">{{ remission.hwf_amount | currency:'GBP':'symbol-narrow':'1.2-2'}}</td>
-             <td class="govuk-table__cell refundBtn whitespace-inherit"  >
-                <button [disabled]="!chkIsRefundRemissionBtnEnable()" (click)="addRefundForRemission(order.payments[0],remission,order.fees)" class="govuk-button govuk-button--secondary"> Add refund</button>
-             </td>
-             <!-- <td  class="govuk-table__cell refundBtn whitespace-inherit"  >
-              
-           </td> -->
-           </tr>
-       </tbody>
-       
-
-     </table>
-     <div *ngIf="order.remissions?.length === 0">
-      <span >No help with fees or remissions.</span>
-   </div>
-     <div class="summarypagealign">
-        <p>Total reductions: {{orderRemissionTotal | currency:'GBP':'symbol-narrow':'1.2-2'  }}</p>
-    </div>
-    <div class="summarypagealign">
-          <p class="summarypage">Total fees to pay: {{(orderFeesTotal - orderRemissionTotal) | currency:'GBP':'symbol-narrow':'1.2-2'  }}</p>
-      </div>
-    </div>
-    
-    
-  </ng-container>
-    
-   
-     <!--Payments-->
-    <ng-container *ngFor="let order of orderDetail;" >
-     <div class="govuk-grid-column-full"> 
-        <h3 class="heading-medium">Payments</h3>
-     <table class="govuk-table ">
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-              <td class="govuk-table__header col-25" scope="col"></td>
-              <td class="govuk-table__header" scope="col">Date created</td>
-              <td class="govuk-table__header" scope="col">Amount</td>
-              <td class="govuk-table__header" scope="col"></td>
-            </tr>
-        </thead>
-        <tbody  *ngIf="order.payments?.length > 0" class="govuk-table__body">
-          <tr class="govuk-table__row"  *ngFor="let payment of order.payments">
-              <td class="govuk-table__cell whitespace-inherit">
-                <a href="javascript:void(0)" (click)="goToPayementView(payment.paymentGroupReference, payment.reference, payment.method)">Review</a>
-              </td>
-              <td class="govuk-table__cell whitespace-inherit">{{ payment.date_created | date:'dd MMM yyyy' }}</td>
-              <td class="govuk-table__cell whitespace-inherit">{{ payment.amount | currency:'GBP':'symbol-narrow':'1.2-2' }}</td>
-              <td class="govuk-table__cell alignright">
-                <button [disabled] = "!chkIssueRefundBtnEnable(payment)" (click)="issueRefund(payment)" class="govuk-button govuk-button--secondary">Issue refund</button>
-              </td>
-              <!-- <td  *ngIf="!chkIssueRefundBtnEnable(payment)" class="govuk-table__cell" style="text-align: right;">
-              </td> -->
-            </tr>
-        </tbody>
-      </table>
-    </div>
-    <div *ngIf="order.payments === undefined || order.payments === null">
-        <!-- <h3 class="heading-medium mar-17">Payments</h3> -->
-              <span class="mar-17" >No Payments recorded</span>
-    </div>
-    
-  </ng-container>
-    <div *ngIf="((orderFeesTotal - orderRemissionTotal)- orderTotalPayments) > 0" >
-        <p class="totalPay">Total left to pay: <b>{{((orderFeesTotal - orderRemissionTotal)- orderTotalPayments )| currency:'GBP':'symbol-narrow':'1.2-2' }}</b> </p>
-    </div>
-    <div *ngIf="((orderFeesTotal - orderRemissionTotal)- orderTotalPayments) < 0" >
-        <p class="totalPay">Total left to pay: <b>0</b> </p>
-    </div>
-
+  <ccpay-service-request
+  [viewStatus] = "viewStatus"
+  [orderRef] = "orderRef"
+  [orderStatus] = "orderStatus"
+  [orderCreated] = "orderCreated"
+  [orderParty] = "orderParty"
+  [orderCCDEvent] = "orderCCDEvent"
+  [orderDetail] = "orderDetail"
+  [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES"
+  [ccdCaseNumber] = "ccdCaseNumber"
+  [orderFeesTotal] = "orderFeesTotal"
+  [orderTotalPayments] = "orderTotalPayments"
+  [orderRemissionTotal] = "orderRemissionTotal"
+  [isServiceRequest] = "serviceRequestValue"
+  ></ccpay-service-request>
    
 </ng-container>
 <ccpay-add-remission *ngIf="viewStatus === 'addremission' && feeId"
@@ -940,3 +783,5 @@
 
 </main>
 </div>
+
+

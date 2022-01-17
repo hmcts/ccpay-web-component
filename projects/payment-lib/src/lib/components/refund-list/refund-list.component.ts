@@ -19,8 +19,10 @@ export class RefundListComponent implements OnInit {
   tableRejectedHeader: string;
   submittedRefundList: IRefundList[] = [];
   rejectedRefundList: IRefundList[] = [];
-  approvalStatus = 'sent for approval';
-  rejectStatus = 'sent back';
+  approvalStatus = 'Sent for approval';
+  rejectStatus = 'Update required';
+  // approvalStatus = 'sent for approval';
+  // rejectStatus = 'sent back';
   errorMessage = null;
   isApproveTableVisible:boolean;
   isRejectTableVisible:boolean;
@@ -33,7 +35,6 @@ export class RefundListComponent implements OnInit {
 
     
     if(this.LOGGEDINUSERROLES.some(i =>i.includes('payments-refund-approver'))){
-    //  this.isApproveTableVisible = true;
       this.isAuthorized = true;
     } else {
       this.isApproveTableVisible = false;
@@ -43,12 +44,6 @@ export class RefundListComponent implements OnInit {
   
     this.tableApprovalHeader = 'Refunds to be approved';
     this.tableRejectedHeader = 'Refunds returned to caseworker';
-
-    // if(this.dropdownvalue !== 'caseworker-probate-authorize') {
-    //   this.isAuthorized = false;
-    // } else {
-    //   this.isAuthorized = true;
-    // }
 
    if(this.isAuthorized) {
     this.refundService.getRefundList(this.approvalStatus,true).subscribe(
@@ -73,16 +68,5 @@ export class RefundListComponent implements OnInit {
     };
 
   }
-
-  // selectchange(args){ 
-  //   this.dropdownvalue = args.target.value;
-  //   if(args.target.value === 'caseworker-probate-authorize') {
-  //     this.isApproveTableVisible = true;
-  //   } else {
-  //     this.isApproveTableVisible = false;
-  //   }
-  //   this.ngOnInit();
-    
-  // } 
   
 }

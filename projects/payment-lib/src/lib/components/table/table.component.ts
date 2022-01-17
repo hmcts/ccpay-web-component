@@ -7,6 +7,7 @@ import {MatPaginator } from '@angular/material/paginator';
 import { IRefundList } from '../../interfaces/IRefundList';
 import { OrderslistService } from '../../services/orderslist.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { ActivatedRoute,Router } from '@angular/router';
 @Component({
   selector: 'ccpay-table',
   templateUrl: './table.component.html',
@@ -18,7 +19,7 @@ export class TableComponent {
   @Input('errorMessage') errorMessage: string;
   isApprovalFlow: boolean;
   // displayedColumns = ['ccdCaseNumber', 'refundReference', 'reason', 'createBy', 'updateDate', 'Action'];
-  displayedColumns = ['ccd_case_number', 'refund_reference', 'reason', 'user_full_name', 'date_updated', 'Action'];
+  displayedColumns = ['ccd_case_number', 'refund_reference', 'user_full_name','date_created', 'date_updated', 'Action'];
   
   dataSource: MatTableDataSource<any>;
   userLst;
@@ -30,7 +31,9 @@ export class TableComponent {
   constructor(
     private paymentLibComponent: PaymentLibComponent,
     private cdRef: ChangeDetectorRef,
-    private OrderslistService: OrderslistService
+    private OrderslistService: OrderslistService,
+    private router: Router,
+    private activeRoute: ActivatedRoute
   ) {}
   ngOnInit() {
     this.errorMessage = this.errorMessage;
@@ -74,8 +77,8 @@ export class TableComponent {
     this.actualcount = this.dataSource.data.length;
     this.dataSource.paginator = this.paginator;
   }
-  goToRefundProcessComponent(refundReference: string, refundDate: IRefundList ) {
-    this.paymentLibComponent.refundlistsource = refundDate;
+  goToRefundProcessComponent(refundReference: string, refundData: IRefundList ) {
+    this.paymentLibComponent.refundlistsource = refundData;
     this.paymentLibComponent.refundReference = refundReference;
     this.paymentLibComponent.viewName = 'process-refund';
   }
@@ -87,6 +90,6 @@ export class TableComponent {
     this.paymentLibComponent.isCallFromRefundList = true;
   }
   goToCaseReview(ccdCaseNumber: string, refundData: IRefundList ) {
-    window.location.href =`/cases/case-details/:${ccdCaseNumber}`;
+    this.router.navigate([`/cases/case-details/${ccdCaseNumber}`], {relativeTo: this.activeRoute});
   }
 }

@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { PaymentLibService } from './payment-lib.service';
 import { IBSPayments } from './interfaces/IBSPayments';
+import { OrderslistService } from './services/orderslist.service';
+import { IPayment } from './interfaces/IPayment';
 
 @Component({
   selector: 'ccpay-payment-lib',
@@ -17,8 +19,10 @@ import { IBSPayments } from './interfaces/IBSPayments';
     [refundReference]="refundReference"
     [refundlistsource]="refundlistsource"
     ></ccpay-process-refund>
-
-    <ccpay-case-transactions [LOGGEDINUSERROLES]="LOGGEDINUSERROLES" *ngIf="viewName === 'case-transactions'"></ccpay-case-transactions>
+    <ccpay-pba-payment *ngIf="viewName === 'pba-payment'"
+    [pbaPayOrderRef]="pbaPayOrderRef"
+    ></ccpay-pba-payment>
+    <ccpay-case-transactions [isTakePayment]="isTakePayment" [LOGGEDINUSERROLES]="LOGGEDINUSERROLES" *ngIf="viewName === 'case-transactions'"></ccpay-case-transactions>
     <app-mark-unidentified-payment *ngIf="viewName === 'unidentifiedPage'"
     [caseType]="CASETYPE"></app-mark-unidentified-payment>
     <app-mark-unsolicited-payment *ngIf="viewName === 'unsolicitedPage'"
@@ -85,10 +89,25 @@ export class PaymentLibComponent implements OnInit {
   isFromRefundStatusPage: boolean;
   iscancelClicked : boolean;
   isFromPaymentDetailPage: boolean;
-  // isFromServiceRequestPage: boolean;
+  pbaPayOrderRef: IPayment;
+  isTakePayment: boolean;
+
+  orderDetail: any[];
+  orderRef: string;
+  orderStatus: string;
+  orderParty: string;
+  orderCreated: Date;
+  orderCCDEvent: string;
+  serviceRequestValue: string;
+  orderAddBtnEnable: boolean;
+  orderFeesTotal: number = 0.00;
+  orderRemissionTotal: number = 0.00;
+  orderTotalPayments: number = 0.00;
+  orderPendingPayments: number = 0.00;
 
   constructor(private paymentLibService: PaymentLibService,
-    private cd: ChangeDetectorRef) { }
+    private cd: ChangeDetectorRef,
+    private OrderslistService: OrderslistService) { }
   ngAfterContentChecked(): void {
     this.cd.detectChanges();
  }  
@@ -98,6 +117,9 @@ export class PaymentLibComponent implements OnInit {
     this.paymentLibService.setApiRootUrl(this.API_ROOT);
     this.paymentLibService.setBulkScanApiRootUrl(this.BULKSCAN_API_ROOT);
     this.paymentLibService.setRefundndsApiRootUrl(this.REFUNDS_API_ROOT);
+    if(this.LOGGEDINUSERROLES.length > 0) {
+      this.OrderslistService.setUserRolesList(this.LOGGEDINUSERROLES);
+    }
     if (this.PAYMENT_GROUP_REF) {
       this.paymentGroupReference = this.PAYMENT_GROUP_REF;
     }
@@ -114,6 +136,10 @@ export class PaymentLibComponent implements OnInit {
       this.viewName = 'case-transactions';
     } else {
       this.viewName = this.VIEW;
+    }
+
+    if (this.isTakePayment) {
+      this.TAKEPAYMENT = true;
     }
   }
 }

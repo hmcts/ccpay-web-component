@@ -92,7 +92,7 @@
                 <span *ngIf="reasonFieldMinHasError">Reason should be at least 3 characters.</span>
                 <span *ngIf="reasonFieldMaxHasError">Reason should be 255 characters or under.</span>
               </p>
-                <textarea class="govuk-textarea govuk-!-width-one-third"
+                <textarea class="govuk-textarea govuk-!-width-one-third reason-font"
                 [ngClass]="{'inline-error-class': isReasonFieldEmpty || isReasonFieldInvalid || reasonFieldMinHasError || reasonFieldMaxHasError}"
                   id="sendmeback"
                   name="sendMeBackField" 
@@ -137,13 +137,14 @@
           <label class="govuk-label process-refund-font " for="contact-by-text">
             Enter reason
           </label>
-          <input class="govuk-input govuk-!-width-one-third" id="otherReason" 
-          [ngClass]="{'inline-error-class': isReasonEmpty || isReasonInvalid}"
-          formControlName="enterReasonField" name="enterReasonField" type="text"></div>
           <p class="inline-error-message" *ngIf="isReasonEmpty || isReasonInvalid">
             <span *ngIf="isReasonEmpty">Enter reason.</span>
             <span *ngIf="isReasonInvalid">Enter a valid reason</span>
           </p>
+          <input class="govuk-input govuk-!-width-one-third reason-font" id="otherReason" 
+          [ngClass]="{'inline-error-class': isReasonEmpty || isReasonInvalid}"
+          formControlName="enterReasonField" name="enterReasonField" type="text"></div>
+        
       </div>
       
         </fieldset>
@@ -158,9 +159,9 @@
       <br/><br/>
     </div>
    
-  <div class="govuk-button-group margin">
+  <div *ngIf="!isFromRefundListPage" class="govuk-button-group margin">
 
-  <p><a (click)="loadRefundListPage()" class="govuk-link" data-module="govuk-button">Cancel</a></p>
+  <p><a (click)="loadRefundsHomePage()" class="govuk-link right" data-module="govuk-button">Cancel</a></p>
 </div>
 </form>
   </div>
@@ -176,7 +177,7 @@
           </h1>
         </div>
         <p class="govuk-body process-refund-font">
-        <a href="/orders/pages/v1caseinccd?result=approved" class="govuk-link">Return to case</a>
+        <a (click) = "goToCaseReview()" class="govuk-link">Return to case</a>
         </p>
       </div>
   </main>

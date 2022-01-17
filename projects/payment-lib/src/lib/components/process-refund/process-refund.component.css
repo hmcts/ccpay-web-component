@@ -10,9 +10,9 @@
 }
 
 .govuk-button {
-    font-size: 2.1875rem;
-    float: left;
-    margin-top:2em
+    float: left !important;
+    font-size: 19px;
+    margin-top:2em !important;
 }
 
 .remission {
@@ -67,4 +67,12 @@
 
 .govuk-textarea {
     line-height: 2.25;
+}
+
+.reason-font {
+    font-size: 19px!important;
+}
+
+.right {
+    cursor: pointer;
 }

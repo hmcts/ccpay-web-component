@@ -1,0 +1,272 @@
+<ng-container *ngIf="viewStatus === 'pba-payment'">
+
+  <div class="govuk-breadcrumbs" *ngIf="!errorMsg && !isPBAAccountPaymentSuccess && !isCardPaymentSuccess">
+    <ol class="govuk-breadcrumbs__list">
+      <li class="govuk-breadcrumbs__list-item">
+        <a href="javascript:void(0)" (click)="gotoCasetransationPage()" class="govuk-back-link pba-payments-16-font">Back</a>
+      </li>
+    </ol>
+  </div>
+  <div class="pba-payment" *ngIf="(pbaAccountList?.length > 0 || errorMsg) && !isInSufficiantFund && !isPBAAccountNotExist && !isPBAServerError && !isPBAAccountPaymentSuccess && isCardPaymentSuccess">
+    
+    <div *ngIf="errorMsg" class="govuk-error-summary pba-payments-error-box--size" aria-labelledby="error-summary-title" >
+      <h2 class="govuk-error-summary__title govuk-error-summary__title-custom pba-payments-24-font" id="error-summary-title">
+        There is a problem
+      </h2>
+      <div class="govuk-error-summary__body">
+        <ul class="govuk-list govuk-error-summary__list">
+          <li class="pba-payments-error-16-font">
+            Your PBA account cannot be found.
+          </li>
+          <li class="pba-payments-error-16-font">
+            If you know your organisation has a PBA, try again.
+          </li>
+          <li class="pba-payments-error-16-font">
+            You can also pay by credit or debit card.
+          </li>
+        </ul>
+      </div>
+    </div>
+    <h1 class="heading-medium margin-top-10-px">Pay fee using Payment by Account (PBA)</h1>
+    <div class="govuk-form-group">
+      <label class="govuk-label pba-payments-govuk__label pba-payments-19-font">
+        Amount to pay 
+      </label>
+      <span class="pba-payments-19-font">{{pbaPayOrderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2'}}</span>
+    </div>
+
+    <div class="govuk-form-group pba-payments-select-box--size" *ngIf="!errorMsg">
+      <label class="govuk-label pba-payments-govuk__label pba-payments-19-font" for="pbaAccountNumber">
+        Select a PBA  
+      </label>
+      <select class="form-control short-input" id="pbaAccountNumber" (change)="selectpbaaccount($event)">
+        <option value="" selected='selected'>Select option</option>
+        <option  *ngFor="let pbaAccount of pbaAccountList;" value="{{pbaAccount}}">{{pbaAccount}}</option>
+      </select>
+    </div>
+    <div class="govuk-form-group" *ngIf="!errorMsg && selectedPbaAccount">
+      <label class="govuk-label pba-payments-govuk__label pba-payments-24-font" for="pbaAccountNumber">
+        Enter a reference for your PBA account statements 
+      </label>
+      <div id="event-name-hint" class="govuk-hint pba-payments-19-font pba-payment-width">
+        This should be your own unique reference to identify the case. It will appear on your statements.
+    </div>
+    <input class="govuk-input pba-payments-ref-box--size pba-payments-19-font" id="pbaAccountRef" (change)="selectpbaaccount($event)" name="pbaAccountRef" type="text" aria-describedby="pbaAccountRef-hint">
+    </div>
+    <div class="govuk-button--group"  *ngIf="errorMsg">
+      <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
+        View Service Request
+      </button>
+      <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
+        Pay by card
+      </button>
+    </div>
+    <div class="govuk-button--group"  *ngIf="!errorMsg">
+      <button type="submit" [disabled]="isContinueButtondisabled" class="button pba-payments-19-font pba-payments-20-margin" (click)="saveAndContinue()">
+        Continue
+      </button>
+    </div>
+  </div>
+<ng-container *ngIf="pbaAccountList?.length <= 0 && !errorMsg && isGetPBAAccountSucceed && isCardPaymentSuccess">
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-warning-text">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+            <h2 class="warning-heading-m">You don’t have a registered PBA.</h2>
+          </strong>
+        </div>
+        <div class="pba-payments-margin-top-10">
+          <h2 class="heading-medium">Pay by credit or debit card</h2>
+          <p class="govuk-body pba-payments-19-font">
+            We recommend that you apply to get a new PBA to pay for fees.
+          </p>
+          <p class="govuk-bod ypba-payments-19-font">
+            you can also pay by credit or debit card if you need to pay now
+          </p>
+          <p class="govuk-body">
+            <button type="submit" (click)="cardPayment()" class="button pba-payments-19-font pba-payments-20-margin">
+              Pay by card
+            </button>
+          </p>
+          
+        </div>
+        <div class="pba-payments-margin-top-10">
+          <h2 class="heading-medium">Register an existing PBA with MyHMCTS</h2>
+          <p class="govuk-body pba-payments-19-font">
+            You may find it easier in future to pay by PBA, your organisation administrator will need to 
+            email <a href="mailto: MyHMCTSsupport@justice.gov.uk">MyHMCTSsupport@justice.gov.uk</a> to ask for your PBA to be registered with your 
+            MyHMCTS account. You should include your organisation name and PBA number.
+          </p>
+          <p class="govuk-body pba-payments-19-font">
+            It can then take up to 3 days for your account to be updated. You’ll need to start your claim 
+            again to pay the fee.
+          </p>
+        </div>
+        <div class="pba-payments-margin-top-10">
+          <h2 class="heading-medium">Apply to get a new PBA </h2>
+          <p class="govuk-body pba-payments-19-font">
+            You’ll need to provide details for you and your organisation, including the required credit
+             limit for your account.
+          </p>
+          <p class="govuk-body pba-payments-19-font">
+            Once your account has been registered, you’ll need to start your claim again to pay the fee.
+          </p>
+          <p class="govuk-body pba-payments-19-font">
+            Read more information on <a target="_blank" href="https://www.gov.uk/guidance/hmcts-payment-by-account-for-online-services">registering for PBA</a>.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="isInSufficiantFund && isCardPaymentSuccess">
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-error-summary pba-payments-error-box--size" aria-labelledby="error-summary-title">
+          <h2 class="govuk-error-summary__title govuk-error-summary__title-custom pba-payments-24-font" id="error-summary-title">
+            There is a problem
+          </h2>
+          <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list">
+              <li class="pba-payments-error-16-font">
+                You don't have enough funds in your PBA account to pay for this fee.
+              </li>
+              <li class="pba-payments-error-16-font">
+                If you have already topped up your PBA account, wait up to 24 hours for the new balance to become available.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="pba-payments-margin-top-10">
+          <h2 class="heading-medium">Should you need any further advice</h2>
+          <p class="govuk-body pba-payments-19-font">
+            Email <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices@liberata.com</a>or call <a href="tel:01633-652-125">01633 652 125</a> (option 3) to try to fix the issue.
+          </p>
+          <p class="govuk-body pba-payments-19-font">
+            you can also pay by credit or debit card.
+          </p>
+          <div class="govuk-button--group">
+            <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
+              View Service Request
+            </button>
+            <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
+              Pay by card
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</ng-container>
+<ng-container *ngIf="isPBAAccountNotExist && isCardPaymentSuccess">
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-error-summary pba-payments-error-box--size" aria-labelledby="error-summary-title">
+          <h2 class="govuk-error-summary__title govuk-error-summary__title-custom pba-payments-24-font" id="error-summary-title">
+            There is a problem
+          </h2>
+          <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list">
+              <li class="pba-payments-error-16-font">
+                Your PBA account ({{selectedPbaAccount}}) no longer exists.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="pba-payments-margin-top-10">
+          <h2 class="heading-medium">Should you need any further advice</h2>
+          <p class="govuk-body pba-payments-19-font govuk-body-width">
+            Email <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices@liberata.com</a>or call <a href="tel:01633-652-125">01633 652 125</a> (option 3) to try to fix the issue.
+          </p>
+          <p class="govuk-body pba-payments-19-font">
+            you can also pay by credit or debit card.
+          </p>
+          <div class="govuk-button--group">
+            <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
+              View Service Request
+            </button>
+            <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
+              Pay by card
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</ng-container>
+<ng-container *ngIf="isPBAServerError && isCardPaymentSuccess">
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="pba-payments-margin-top-10">
+          <h2 class="pba-payments-heading-lg">Sorry, there is a problem with the service</h2>
+          <p class="govuk-body pba-payments-19-font">
+            Try again later.
+          </p>
+          <p class="govuk-body pba-payments-19-font">
+            you can also pay by credit or debit card.
+          </p>
+          <div class="govuk-button--group">
+            <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
+              View Service Request
+            </button>
+            <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
+              Pay by card
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="isPBAAccountPaymentSuccess && isCardPaymentSuccess">
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-panel govuk-panel--confirmation pba-payments--confirmation">
+          <h1 class="govuk-panel__title pba-payments--title">
+              Payment successful
+          </h1>
+          <div class="govuk-panel__body pba-payments__body">
+              Your payment reference is <br><strong>{{pbaAccountrPaymentResult.payment_reference}}</strong>
+          </div>
+      </div>
+      <p class="govuk-body pba-payments-19-font">
+        <a href="javascript:void(0)" (click)="gotoCasetransationPage()">View service requests</a>
+      </p>
+      </div>
+    </main>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!isCardPaymentSuccess">
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="pba-payments-margin-top-10">
+          <h2 class="pba-payments-heading-lg">Sorry, there is a problem with the service</h2>
+          <p class="govuk-body pba-payments-19-font">
+            Try again later.
+          </p>
+          <!-- <p class="govuk-body pba-payments-19-font">
+            you can also <a href="javascript:void(0)" (click)="cardPayment()" >pay by credit or debit card</a>.
+          </p> -->
+          <p class="govuk-body pba-payments-19-font">
+            <a href="javascript:void(0)" (click)="gotoCasetransationPage()">View service requests</a>
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+</ng-container>
+</ng-container>
+
+
+

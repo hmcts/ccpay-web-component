@@ -243,9 +243,7 @@ text-align: right;
     font-size: 36px;
     margin-bottom: 10px;
 }
-.govuk-heading-lw {
-    width:70%;
-}
+
 .paymentrequest {
     margin-top: 1em;
 }
@@ -310,9 +308,7 @@ th, td {
 .col-25 {
     width:25% !important;
 }
-.of-visible {
-    overflow: visible !important;
-}
+
 .col-51 {
     width:51% !important;
 }
@@ -331,7 +327,4 @@ th, td {
 
 .maxwidth {
     width: 100%;
-}
-.govuk-padding-btm {
-    padding-bottom: 50px;
 }

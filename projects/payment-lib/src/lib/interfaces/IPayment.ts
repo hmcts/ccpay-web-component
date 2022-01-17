@@ -28,5 +28,6 @@ export interface IPayment {
   fees: IFee[];
   status_histories: IStatusHistory[];
   payment_group_reference: string;
-  paymentGroupReference?: string
+  paymentGroupReference?: string;
+  refund_enable?: boolean;
 }

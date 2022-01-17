@@ -1,3 +1,4 @@
+
 <div *ngIf="errorMessage">
   <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
     <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
@@ -102,13 +103,15 @@
   </div>
 
   <ng-container *ngIf="viewName==='refundview'">
-    <div *ngIf="refundButtonState==='sent back'">
+    <div *ngIf="refundButtonState==='Update required'">
+      <!-- <div *ngIf="refundButtonState==='sent back'"> -->
       <br />
       <button type="submit" class="button govuk-button--secondary btnmargin"
         (click)="gotoReviewAndReSubmitPage()">Resubmit
         refund</button>
     </div>
-    <div *ngIf="isProcessRefund && !isLastUpdatedByCurrentUser && refundButtonState==='sent for approval'">
+    <div *ngIf="isProcessRefund && !isLastUpdatedByCurrentUser && refundButtonState==='Sent for approval'" >
+      <!-- <div *ngIf="isProcessRefund && !isLastUpdatedByCurrentUser && refundButtonState==='sent for approval'"> -->
       <br />
       <button type="submit" class="button govuk-button--secondary"
         (click)="goToRefundProcessComponent(refundlist.refund_reference,refundlist)">Process refund</button>
@@ -192,7 +195,7 @@
 </ng-container>
 
 <ng-container *ngIf="viewName === 'reviewrefundconfirmationpage'">
-  <div class="govuk-grid-row">
+  <div class="govuk-grid-row pagesize">
     <div>
       <div class="govuk-panel govuk-panel--confirmation">
         <h1 class="govuk-panel__title">
@@ -211,7 +214,7 @@
       </p>
 
       <p class="govuk-body">
-        <a href="javascript:void(0)" (click)="loadCaseTransactionPage()" class="govuk-link">Return to case</a>
+        <a href="javascript:void(0)" (click)="loadRefundListPage()" class="govuk-link">Return to case</a>
       </p>
     </div>
   </div>

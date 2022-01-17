@@ -23,7 +23,6 @@ export class CcdSearchComponent implements OnInit {
 
   showCaseTransactions() {
     this.ccdCaseNumber = this.searchForm.get('searchInput').value;
-    console.log('Search ccdCaseNumber: ', this.ccdCaseNumber);
     this.router.navigateByUrl(`/payment-lib-int/${this.ccdCaseNumber}?view=case-transactions&takePayment=true`);
   }
 }

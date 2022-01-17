@@ -22,6 +22,7 @@ export class StatusHistoryComponent implements OnInit {
       statuses => this.statuses = statuses,
       (error: any) => this.errorMessage = <any>error.replace(/"/g,"")
     );
+    
   }
 
 }

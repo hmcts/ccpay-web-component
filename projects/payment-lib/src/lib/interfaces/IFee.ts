@@ -19,4 +19,5 @@ export interface IFee {
   date_created?: string;
   date_updated?: string;
   amount_due?: number;
+  remission_enable?: boolean;
 }

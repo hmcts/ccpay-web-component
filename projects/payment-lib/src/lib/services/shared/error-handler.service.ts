@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { _throw } from 'rxjs/observable/throw';
 import { Observable } from 'rxjs/internal/Observable';
 import { HttpErrorResponse } from '@angular/common/http';
+import { stringify } from '@angular/core/src/util';
 
 @Injectable({
   providedIn: 'root'
@@ -26,33 +27,53 @@ export class ErrorHandlerService {
         } else {
           errorMessage = err.error;
         }
-      } else if (err.status === 400) {
-        if (typeof err !== 'string') {
-          if(JSON.parse(err.error)["error"] !== undefined) {
-            errorMessage = JSON.parse(err.error)["error"];  
-          } else {
-            JSON.parse(err.error)["err"].split('-')[1];
-          }
-
-        } 
-        if (errorMessage === '') {
-            errorMessage = err.error.toString().replace(/"/g,"");
-        }
-      } else if (err.error) {
-        if (typeof err.error === 'string') {
-          errorMessage = err.error.toString().replace(/"/g,"");
-        } else {
-          errorMessage = Object.values(err.error)[0].toString().replace(/"/g,"");
-        }
       }
-       else if (err.error.messsage === undefined) {
-        errorMessage = 'Server error';
+      else if (err.status === 500) {
+        errorMessage = 'Internal server error';
+      } else if (err.error.messsage === undefined) {
+        if( typeof err.error === 'object') {
+          errorMessage =  JSON.parse(JSON.stringify(err.error)).error;
+        } else {
+          if (typeof err.error === 'string' && err.error !== undefined) {
+            // if (JSON.parse(err.error).statusCode !== undefined && JSON.parse(err.error).statusCode === 500)
+            // {
+            //   errorMessage = 'Internal server error';
+            // } else {
+            //   errorMessage =  err.error;
+            // }
+            if(err.error.length > 60) {
+              if (JSON.parse(err.error).statusCode !== undefined && JSON.parse(err.error).statusCode === 500)
+              {
+                errorMessage = 'Internal server error';
+              } else {
+                if(err.error.length > 60) {
+                  errorMessage =  JSON.parse(err.error).error;
+                } else {
+                  errorMessage =  err.error;
+                }
+             
+              }
+            } else {
+              errorMessage =  err.error;
+            }
+          } else {
+            errorMessage =  JSON.parse(err.error).error;
+          }
+          
+        }
+       
       } else {
-        errorMessage = `${err.error.message}`;
+        if (err.error.message !== undefined) {
+          errorMessage = `${err.error.message}`;
+        } else {
+          errorMessage = `${err.error}`;
+        }
+        
       }
     }
     return _throw(errorMessage);
   }
+
 
   getServerErrorMessage(isErrorExist) {
     return {

@@ -6,6 +6,7 @@ import { IRefundList } from '../../interfaces/IRefundList';
 import { IRefundRejectReason } from '../../interfaces/IRefundRejectReason';
 import { OrderslistService } from '../../services/orderslist.service';
 import { PaymentLibComponent } from '../../payment-lib.component';
+import { ActivatedRoute,Router } from '@angular/router';
 
 @Component({
   selector: 'ccpay-process-refund',
@@ -38,12 +39,16 @@ export class ProcessRefundComponent implements OnInit {
   isReasonInvalid: boolean = false;
   successMsg: string = null;
   navigationpage: string;
+  ccdCaseNumber: string;
+  isFromRefundListPage: boolean;
 
   isConfirmButtondisabled: boolean = true;
   constructor(private RefundsService: RefundsService,
               private formBuilder: FormBuilder,
               private OrderslistService: OrderslistService,
-              private paymentLibComponent: PaymentLibComponent,) {
+              private paymentLibComponent: PaymentLibComponent,
+              private router: Router,
+              private activeRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -73,13 +78,21 @@ export class ProcessRefundComponent implements OnInit {
       enterReasonField: new FormControl('', Validators.compose([
         Validators.required,
         Validators.maxLength(30),
-        Validators.pattern('^([a-zA-Z0-9\\s]*)$'),
+        Validators.pattern('^([a-zA-Z0-9.\\s]*)$'),
       ])),
     });
-   
+   this.ccdCaseNumber = this.refundlistsource.ccd_case_number;
+
+   if((typeof this.paymentLibComponent.TAKEPAYMENT === 'string' && this.paymentLibComponent.TAKEPAYMENT === 'false') || (typeof this.paymentLibComponent.TAKEPAYMENT === 'boolean' && !this.paymentLibComponent.TAKEPAYMENT) ) {
+    this.isFromRefundListPage = true;
+   }
   }
   checkRefundActions(code: string) {
-
+    this.refundActionsHasError = false;
+    this.isReasonFieldEmpty = false;
+    this.isReasonEmpty = false;
+    this.isReasonInvalid = false;
+    this.refundRejectReasonHasError = false;
     if(code === 'Return to caseworker') {
       this.isConfirmButtondisabled = true;
       this.isSendMeBackClicked = true;
@@ -204,14 +217,38 @@ export class ProcessRefundComponent implements OnInit {
   loadRefundListPage() {
     this.OrderslistService.getnavigationPageValue().subscribe((data) => this.navigationpage = data);
     if (this.navigationpage === 'casetransactions') {
-      window.location.href='/refund-list?takePayment=false&refundlist=true';
+      // window.location.href='/refund-list?takePayment=false&refundlist=true';
+      // // this.OrderslistService.setnavigationPage('casetransactions');
+      // // this.OrderslistService.setisFromServiceRequestPage(false);
+      // // this.paymentLibComponent.VIEW ='case-transactions';
+      // // this.paymentLibComponent.viewName = 'case-transactions';
+      // // this.paymentLibComponent.ISBSENABLE = true;
+      // // this.paymentLibComponent.isRefundStatusView = false;
+      this.paymentLibComponent.viewName = 'refundstatuslist';
+      this.paymentLibComponent.isRefundStatusView = true;
     } else {
-      this.paymentLibComponent.viewName = 'refund-list';
+      this.paymentLibComponent.viewName = 'refundstatuslist';
+      this.paymentLibComponent.isRefundStatusView = true;
     }
   }
+  loadRefundsHomePage() {
+    if(typeof this.paymentLibComponent.TAKEPAYMENT === 'string' && this.paymentLibComponent.TAKEPAYMENT === 'false') {
+      //window.location.href='/refund-list?takePayment=false&refundlist=true';
+      this.paymentLibComponent.viewName = 'refund-list';
+     }
+     else {
+      this.OrderslistService.setnavigationPage('casetransactions');
+      this.OrderslistService.setisFromServiceRequestPage(false);
+      this.paymentLibComponent.VIEW ='case-transactions';
+      this.paymentLibComponent.viewName = 'case-transactions';
+      this.paymentLibComponent.ISBSENABLE = true;
+      this.paymentLibComponent.isRefundStatusView = false;
+     }
+  }
  redirecttoRefundListPage() {
-   if(this.paymentLibComponent.API_ROOT === 'api/payment-history') {
-    window.location.href='/refund-list?takePayment=false&refundlist=true';
+   if((typeof this.paymentLibComponent.TAKEPAYMENT === 'string' && this.paymentLibComponent.TAKEPAYMENT === 'false') || (typeof this.paymentLibComponent.TAKEPAYMENT === 'boolean' && !this.paymentLibComponent.TAKEPAYMENT) ) {
+   // window.location.href='/refund-list?takePayment=false&refundlist=true';
+   this.paymentLibComponent.viewName = 'refund-list';
    }
    else {
     this.loadRefundListPage();
@@ -260,5 +297,9 @@ export class ProcessRefundComponent implements OnInit {
       this.isReasonEmpty = vals[6];
       this.isReasonInvalid = vals[7];
     }
+  }
+
+  goToCaseReview() {
+    this.router.navigate([`/cases/case-details/${this.ccdCaseNumber}`], {relativeTo: this.activeRoute});
   }
 }

@@ -20,11 +20,17 @@ export class PaymentViewComponent implements OnInit {
   @Input() caseType: boolean;
   @Input() isNewPcipalOff: boolean;
   @Input() isOldPcipalOff: boolean;
-  @Input() orderRef: boolean;
-  @Input() orderStatus: boolean;
-  @Input() orderTotalPayments: boolean;
+  @Input() orderRef: string;
+  @Input() orderStatus: string;
+  @Input() orderTotalPayments: number;
   @Input() payment: IPayment;
-  @Input('LOGGEDINUSERROLES') LOGGEDINUSERROLES: string[];
+  @Input() LOGGEDINUSERROLES: string[];
+  @Input() orderParty: string;
+  @Input() orderCreated: Date;
+  @Input() orderCCDEvent: string;
+  @Input() orderFeesTotal: number;
+  @Input() orderRemissionTotal: number;
+  @Input() orderDetail: any[];
 
   paymentGroup: IPaymentGroup;
   errorMessage: string;
@@ -43,6 +49,9 @@ export class PaymentViewComponent implements OnInit {
   remissions: IRemission[] = [];
   remissionFeeAmt: number;
   isRefundRemissionBtnEnable: boolean;
+  serviceReference: string;
+  isFromServiceRequestPage: boolean;
+  isFromPaymentDetailPage: boolean;
 
   constructor(private paymentViewService: PaymentViewService,
     private paymentLibComponent: PaymentLibComponent,
@@ -59,6 +68,7 @@ export class PaymentViewComponent implements OnInit {
     this.selectedOption = this.paymentLibComponent.SELECTED_OPTION;
     this.dcnNumber = this.paymentLibComponent.DCN_NUMBER;
     this.isTurnOff = this.paymentLibComponent.ISTURNOFF;
+    this.serviceReference = this.paymentLibComponent.paymentGroupReference;
     this.viewStatus = 'paymentview';
     this.paymentViewService.getApportionPaymentDetails(this.paymentLibComponent.paymentReference).subscribe(
       paymentGroup => {
@@ -84,7 +94,7 @@ export class PaymentViewComponent implements OnInit {
           (paymentGroupObj => paymentGroupObj['reference'].includes(this.paymentLibComponent.paymentReference));
         const paymentAllocation = this.paymentGroup.payments[0].payment_allocation;
         this.isStatusAllocated = paymentAllocation.length > 0 && paymentAllocation[0].allocation_status === 'Allocated' || paymentAllocation.length === 0;
-        console.log(this.paymentGroup.payments[0] + '1');
+       
       },
       (error: any) => this.errorMessage = error
     );
@@ -105,19 +115,25 @@ export class PaymentViewComponent implements OnInit {
 
   goToCaseTransationPage(event: any) {
     event.preventDefault();
-    this.OrderslistService.setnavigationPage('casetransactions');
-    this.OrderslistService.setisFromServiceRequestPage(false);
-    this.paymentLibComponent.viewName = 'case-transactions';
-    this.paymentLibComponent.ISBSENABLE = true;
-    // this.paymentViewService.getBSfeature().subscribe(
-    //   features => {
-    //     let result = JSON.parse(features).filter(feature => feature.uid === BS_ENABLE_FLAG);
-    //     this.paymentLibComponent.ISBSENABLE = result[0] ? result[0].enable : false;
-    //   },
-    //   err => {
-    //     this.paymentLibComponent.ISBSENABLE = false;
-    //   }
-    // );
+
+    if (!this.paymentLibComponent.isFromServiceRequestPage) {
+        this.OrderslistService.setnavigationPage('casetransactions');
+        this.OrderslistService.setisFromServiceRequestPage(false);
+        this.paymentLibComponent.viewName = 'case-transactions';
+        this.paymentLibComponent.ISBSENABLE = true;
+        this.resetOrderData();
+    } else {
+      this.OrderslistService.getorderRefs().subscribe((data) => this.orderRef = data);
+      this.OrderslistService.getorderCCDEvents().subscribe((data) => this.orderCCDEvent = data);
+      this.OrderslistService.getorderCreateds().subscribe((data) => this.orderCreated = data);
+      this.OrderslistService.getorderDetail().subscribe((data) => this.orderDetail = data);
+      this.OrderslistService.getorderPartys().subscribe((data) => this.orderParty = data);
+      this.OrderslistService.getorderRemissionTotals().subscribe((data) => this.orderRemissionTotal = data);
+      this.OrderslistService.getorderFeesTotals().subscribe((data) => this.orderFeesTotal = data);
+      this.OrderslistService.getoorderTotalPaymentss().subscribe((data) => this.orderTotalPayments = data);
+      this.viewStatus = 'order-full-view';
+    }
+    
   }
 
   addRemission(fee: IFee) {
@@ -193,6 +209,9 @@ export class PaymentViewComponent implements OnInit {
     this.paymentGroup = paymentgrp;
     this.viewStatus = 'issuerefund';
     this.isRefundRemission = true;
+    this.paymentLibComponent.isFromPaymentDetailPage = true;
+    this.isFromPaymentDetailPage = true;
+    this.isFromServiceRequestPage = this.paymentLibComponent.isFromServiceRequestPage;
     }
   }
   }
@@ -202,7 +221,6 @@ export class PaymentViewComponent implements OnInit {
       for (const remission of remissions) {
         if (remission.fee_code === feeCode) {
           return remission;
-          // this.isAddFeeBtnEnabled = true;
         }
       }
     }
@@ -260,5 +278,16 @@ export class PaymentViewComponent implements OnInit {
     tmp4DayAgo.setDate(tmp4DayAgo.getDate() - 4);
     return tmp4DayAgo >= new Date(payment.date_created);
     }
+  }
+
+  resetOrderData() {
+    this.OrderslistService.setOrderRef(null);
+    this.OrderslistService.setorderCCDEvent(null);
+    this.OrderslistService.setorderCreated(null);
+    this.OrderslistService.setorderDetail(null);
+    this.OrderslistService.setorderParty(null);
+    this.OrderslistService.setorderTotalPayments(null);
+    this.OrderslistService.setorderRemissionTotal(null);
+    this.OrderslistService.setorderFeesTotal(null);
   }
 }
