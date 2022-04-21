@@ -659,14 +659,11 @@ export class CaseTransactionsComponent implements OnInit {
 
   addRefundForRemission(payment: IPayment, remission: IRemission[],fees:any) {
     this.viewStatus = 'addrefundforremission';
- 
-    this.payment = payment;
-    this.paymentViewService.getApportionPaymentDetails(this.payment.reference).subscribe(
+     this.paymentViewService.getApportionPaymentDetails(payment.reference).subscribe(
       paymentGroup => {
         this.paymentGroup = paymentGroup;
-
-        this.paymentGroup.payments = this.paymentGroup.payments.filter
-          (paymentGroupObj => paymentGroupObj['reference'].includes(this.payment.reference));
+        this.paymentGroup.payments = paymentGroup.payments.filter
+          (paymentGroupObj => paymentGroupObj['reference'].includes(payment.reference));
         this.payment = this.paymentGroup.payments[0];
         this.remissions = remission;
         this.remissionFeeAmt = fees.filter(data=>data.code === this.remissions['fee_code'])[0].net_amount;
