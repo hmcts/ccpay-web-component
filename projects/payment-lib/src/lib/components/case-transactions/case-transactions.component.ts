@@ -658,7 +658,6 @@ export class CaseTransactionsComponent implements OnInit {
   }
 
   addRefundForRemission(payment: IPayment, remission: IRemission[],fees:any) {
-    this.viewStatus = 'addrefundforremission';
      this.paymentViewService.getApportionPaymentDetails(payment.reference).subscribe(
       paymentGroup => {
         this.paymentGroup = paymentGroup;
@@ -667,6 +666,7 @@ export class CaseTransactionsComponent implements OnInit {
         this.payment = this.paymentGroup.payments[0];
         this.remissions = remission;
         this.remissionFeeAmt = fees.filter(data=>data.code === this.remissions['fee_code'])[0].net_amount;
+        this.viewStatus = 'addrefundforremission';
         // const paymentAllocation = this.paymentGroup.payments[0].payment_allocation;
         // this.isStatusAllocated = paymentAllocation.length > 0 && paymentAllocation[0].allocation_status === 'Allocated' || paymentAllocation.length === 0;
       },

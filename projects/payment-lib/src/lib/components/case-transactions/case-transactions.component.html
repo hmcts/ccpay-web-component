@@ -748,7 +748,6 @@
 [caseType]="caseType" 
 [paymentGroupRef]="orderRef" 
 [ccdCaseNumber]="ccdCaseNumber"></ccpay-add-remission>
-{{viewStatus}} {{payment | json}}
 <ccpay-add-remission *ngIf="viewStatus === 'addrefundforremission' && payment"
 [isTurnOff]="isTurnOff"
 [isStrategicFixEnable]="isStrategicFixEnable" 
