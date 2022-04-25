@@ -144,6 +144,7 @@ export class AddRemissionComponent implements OnInit {
     private OrderslistService: OrderslistService) { }
 
   ngOnInit() {
+    console.log(this.viewCompStatus);
     this.errorMessage = '';
     this.errorMsg = [];
     this.default = 'Select a different reason';
