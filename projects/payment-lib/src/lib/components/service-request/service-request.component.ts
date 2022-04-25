@@ -193,9 +193,9 @@ export class ServiceRequestComponent implements OnInit {
 
        // this.paymentGroup.payments = this.paymentGroup.payments.filter
           //(paymentGroupObj => paymentGroupObj.reference === payment.reference);
-        this.payment = paymentGroup.payments[0];
-        this.remissions = remission;
-        this.remissionFeeAmt = fees.filter(data=>data.code === this.remissions['fee_code'])[0].net_amount;
+        this.payment = <any>'true';
+       // this.remissions = remission;
+        //this.remissionFeeAmt = fees.filter(data=>data.code === this.remissions['fee_code'])[0].net_amount;
         this.viewStatus = 'addrefundforremission';
         // const paymentAllocation = this.paymentGroup.payments[0].payment_allocation;
         // this.isStatusAllocated = paymentAllocation.length > 0 && paymentAllocation[0].allocation_status === 'Allocated' || paymentAllocation.length === 0;
