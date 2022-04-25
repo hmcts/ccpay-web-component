@@ -662,7 +662,7 @@ export class CaseTransactionsComponent implements OnInit {
       paymentGroup => {
         this.paymentGroup = paymentGroup;
         this.paymentGroup.payments = paymentGroup.payments.filter
-          (paymentGroupObj => paymentGroupObj['reference'].includes(payment.reference));
+          (paymentGroupObj => paymentGroupObj.reference === payment.reference);
         this.payment = this.paymentGroup.payments[0];
         this.remissions = remission;
         this.remissionFeeAmt = fees.filter(data=>data.code === this.remissions['fee_code'])[0].net_amount;
