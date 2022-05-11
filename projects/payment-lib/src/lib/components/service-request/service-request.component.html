@@ -228,34 +228,6 @@
 [isOldPcipalOff]="isOldPcipalOff" 
 [viewCompStatus]= "viewStatus"
 [isNewPcipalOff]="isNewPcipalOff" 
-[fee]="feeId" 
-[payment] = "payment"
-[orderStatus] ="paymentGroup.payments[0].status"
-[paidAmount]= "paymentGroup.payments[0].amount"
-[isRefundRemission]="isRefundRemission"
-[caseType]="caseType" 
-[paymentGroupRef]="paymentGroup.payment_group_reference" 
-[isFromPaymentDetailPage] = "true"
-[ccdCaseNumber]="ccdCaseNumber"
-[orderFeesTotal] = "orderFeesTotal"
-[orderTotalPayments] = "orderTotalPayments"
-[orderRemissionTotal] = "orderRemissionTotal"
-[orderRef] = "orderRef"
-[orderCreated] = "orderCreated"
-[orderParty] = "orderParty"
-[orderCCDEvent] = "orderCCDEvent"
-[orderDetail] = "orderDetail"
-[LOGGEDINUSERROLES] = "LOGGEDINUSERROLES"></ccpay-add-remission>
-</ng-container>
-
-<ng-container *ngIf="viewStatus === 'addrefundforremission' && payment && viewCompStatus !== 'overpayment' && viewCompStatus !== 'overPaymentAddressCapture' && viewCompStatus !== 'overpaymentcheckandanswer'">
-
-<ccpay-add-remission 
-[isTurnOff]="isTurnOff"
-[isStrategicFixEnable]="isStrategicFixEnable" 
-[isOldPcipalOff]="isOldPcipalOff" 
-[viewCompStatus]= "viewStatus"
-[isNewPcipalOff]="isNewPcipalOff" 
 [payment]="payment" 
 [orderStatus] ="orderStatus"
 [paidAmount]= "orderTotalPayments"
@@ -264,7 +236,7 @@
 [feeamount]="remissionFeeAmt"
 [remission] = "remissions"
 [isFromServiceRequestPage]="false" 
-[paymentGroupRef]="paymentGroup.payment_group_reference"
+[paymentGroupRef]=""
 [ccdCaseNumber]="ccdCaseNumber"
 [orderFeesTotal] = "orderFeesTotal"
 [orderTotalPayments] = "orderTotalPayments"
@@ -275,35 +247,6 @@
 [orderCCDEvent] = "orderCCDEvent"
 [orderDetail] = "orderDetail"
 [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES"></ccpay-add-remission>
-</ng-container>
-
-    <ccpay-add-remission 
-    [isTurnOff]="isTurnOff"
-    [isStrategicFixEnable]="isStrategicFixEnable" 
-    [isOldPcipalOff]="isOldPcipalOff" 
-    [payment] = 'payment'
-    [viewCompStatus]= "viewStatus"
-    [isNewPcipalOff]="isNewPcipalOff" 
-    [orderStatus] =""
-    [paidAmount]= ""
-    [isRefundRemission]="isRefundRemission"
-    [caseType]="caseType" 
-    [isFromServiceRequestPage]="true"
-    [isFromPaymentDetailPage] = "false"
-    [paymentGroupRef]="" 
-    [ccdCaseNumber]="ccdCaseNumber"
-    [orderFeesTotal] = "orderFeesTotal"
-    [orderTotalPayments] = "orderTotalPayments"
-    [orderRemissionTotal] = "orderRemissionTotal"
-    [orderRef] = "orderRef"
-    [orderCreated] = "orderCreated"
-    [orderParty] = "orderParty"
-    [orderCCDEvent] = "orderCCDEvent"
-    [orderDetail] = "orderDetail"
-    [fees] =""
-    [isFullyRefund] = ""
-    [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES">
-  </ccpay-add-remission>
 
 <!-- <ccpay-add-remission
 [isTurnOff]="isTurnOff"
