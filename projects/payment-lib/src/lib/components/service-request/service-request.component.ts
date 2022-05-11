@@ -103,6 +103,7 @@ export class ServiceRequestComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    this.isTurnOff = this.paymentLibComponent.ISTURNOFF;
     this.isServiceRequest = 'false';
     if (this.viewStatus === undefined) {
       this.viewStatus = this.paymentLibComponent.viewName;
