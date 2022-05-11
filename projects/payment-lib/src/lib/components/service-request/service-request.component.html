@@ -222,7 +222,7 @@
 [orderTotalPayments] = "orderTotalPayments"
 [orderRemissionTotal] = "orderRemissionTotal"></ccpay-add-remission>
 
-<ccpay-add-remission *ngIf="viewStatus === 'addrefundforremission' && payment"
+<ccpay-add-remission
 [isTurnOff]="isTurnOff"
 [isStrategicFixEnable]="isStrategicFixEnable" 
 [isOldPcipalOff]="isOldPcipalOff" 
@@ -247,7 +247,8 @@
 [takepayment] = "takePayment"
 [orderFeesTotal] = "orderFeesTotal"
 [orderTotalPayments] = "orderTotalPayments"
-[orderRemissionTotal] = "orderRemissionTotal"></ccpay-add-remission>
+[orderRemissionTotal] = "orderRemissionTotal">
+</ccpay-add-remission>
 
 <ccpay-payment-view *ngIf="viewStatus === 'payment-view'"
 [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES"
