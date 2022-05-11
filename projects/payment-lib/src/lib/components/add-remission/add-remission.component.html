@@ -240,7 +240,7 @@
           Remission added
         </h1>
         <div *ngIf="remessionPayment.status === 'Success'" class="govuk-panel__body">
-            <p class="govuk-body white"><strong>The amount to be refunded should be {{remissionForm.controls.amount.value | currency:'GBP':'symbol-narrow':'1.2-2' }}</strong></p>
+            <p class="govuk-body"><strong>The amount to be refunded should be {{remissionForm.controls.amount.value | currency:'GBP':'symbol-narrow':'1.2-2' }}</strong></p>
            
           </div>
         </div>
