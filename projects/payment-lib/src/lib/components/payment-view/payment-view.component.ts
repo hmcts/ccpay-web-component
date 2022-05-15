@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { PaymentLibComponent } from '../../payment-lib.component';
 import { IPaymentGroup } from '../../interfaces/IPaymentGroup';
@@ -16,6 +16,7 @@ import { IRefundContactDetails } from '../../interfaces/IRefundContactDetails';
   templateUrl: './payment-view.component.html',
   styleUrls: ['./payment-view.component.scss']
 })
+
 export class PaymentViewComponent implements OnInit {
   @Input() isTurnOff: boolean;
   @Input() isTakePayment: boolean;

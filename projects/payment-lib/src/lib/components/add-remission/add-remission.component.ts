@@ -5,7 +5,6 @@ import {Router} from '@angular/router';
 import { AddRemissionRequest } from '../../interfaces/AddRemissionRequest';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { PaymentLibComponent } from '../../payment-lib.component';
-import { PaymentViewComponent } from '../payment-view/payment-view.component';
 
 import { IPayment } from '../../interfaces/IPayment';
 import { RefundsService } from '../../services/refunds/refunds.service';
@@ -138,7 +137,6 @@ export class AddRemissionComponent implements OnInit {
     private router: Router,
     private paymentViewService: PaymentViewService,
     private paymentLibComponent: PaymentLibComponent,
-    private PaymentViewComponent: PaymentViewComponent,
     private refundService: RefundsService,
     private cd: ChangeDetectorRef,
     private OrderslistService: OrderslistService) { }
@@ -262,7 +260,7 @@ export class AddRemissionComponent implements OnInit {
     this.paymentLibComponent.paymentMethod = this.payment.method;
     this.paymentLibComponent.paymentGroupReference = this.paymentGroupRef;
     this.paymentLibComponent.paymentReference = this.paymentReference;
-    this.PaymentViewComponent.viewCompStatus = 'overpayment';
+    //this.PaymentViewComponent.viewCompStatus = 'overpayment';
     this.paymentLibComponent.viewName = 'payment-view';
   }
   refundFeesList() {

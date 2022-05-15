@@ -147,18 +147,22 @@ export class FeeSummaryComponent implements OnInit {
               if(fee.calculated_amount === 0) {
                 this.isFeeAmountZero = true;
               }
-              this.isRemissionsMatch = false;
-              paymentGroup.remissions.forEach(rem => {
-                if(rem.fee_code === fee.code) {
-                  this.isRemissionsMatch = true;
-                  fee['remissions'] = rem;
+              if(paymentGroup.remissions) {
+                this.isRemissionsMatch = false;
+                paymentGroup.remissions.forEach(rem => {
+                  if(rem.fee_code === fee.code) {
+                    this.isRemissionsMatch = true;
+                    fee['remissions'] = rem;
+                    fees.push(fee);
+                  }
+                });
+
+                if(!this.isRemissionsMatch) {
                   fees.push(fee);
                 }
-              });
-    
-              if(!this.isRemissionsMatch) {
-                fees.push(fee);
-              }
+            } else {
+              fees.push(fee);
+            }
           });
           paymentGroup.fees = fees;
         }
