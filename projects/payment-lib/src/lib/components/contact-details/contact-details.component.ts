@@ -216,13 +216,14 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   postcodeValidation(str) {
+    this.resetForm([false,false,false,false,false,false,false,false,false,false,false,false,false,false,false], 'all');
     const postcodeField = this.postCodeForm.controls.postcode;
     if (this.postCodeForm.valid) {
       if(str === 'FA') {
         this.notificationService.getAddressByPostcode(postcodeField.value).subscribe(
           refundsNotification => {
             this.addressPostcodeList = refundsNotification['data']['results'];
-            this.isShowPickAddress = true;
+            this.isShowPickAddress = refundsNotification['data']['results'].length > 0;
           }
         ),
         (error: any) => {
