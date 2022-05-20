@@ -59,7 +59,7 @@ export class ContactDetailsComponent implements OnInit {
     this.postCodeForm = this.formBuilder.group({
       postcode: new FormControl('', Validators.compose([
         Validators.required,
-        Validators.pattern('^([A-Z]{1,2}[0-9]{1,2}[A-Z]{0,1} ?[0-9][A-Z]{2})')
+        Validators.pattern('^([A-Za-z]{1,2}[0-9]{1,2}[A-Za-z]{0,1} ?[0-9][A-Za-z]{2})')
       ]))
     });
     this.manualAddressForm = this.formBuilder.group({
@@ -79,7 +79,7 @@ export class ContactDetailsComponent implements OnInit {
       ])),
       mpostcode: new FormControl('', Validators.compose([
         Validators.required,
-        Validators.pattern('^([A-Z]{1,2}[0-9]{1,2}[A-Z]{0,1} ?[0-9][A-Z]{2})')
+        Validators.pattern('^([A-Za-z]{1,2}[0-9]{1,2}[A-Za-z]{0,1} ?[0-9][A-Za-z]{2})')
       ])),
       country: new FormControl('', Validators.compose([
         Validators.required
@@ -223,7 +223,10 @@ export class ContactDetailsComponent implements OnInit {
         this.notificationService.getAddressByPostcode(postcodeField.value).subscribe(
           refundsNotification => {
             this.addressPostcodeList = refundsNotification['data']['results'];
-            this.isShowPickAddress = refundsNotification['data']['results'].length > 0;
+            this.isShowPickAddress = refundsNotification['data']['header'].totalresults > 0;
+            if(!this.isShowPickAddress) {
+              this.resetForm([false,false,false,true,false,false,false,false,false,false,false,false,false], 'postcode');
+            }
           }
         ),
         (error: any) => {
