@@ -24,16 +24,12 @@ describe('UnprocessedPaymentsComponent', () => {
       DCN_NUMBER: {},
       ISBSENABLE: {},
       ISTURNOFF: {},
-      ISNEWPCIPALOFF: {},
-      ISOLDPCIPALOFF: {},
       ISSFENABLE: {},
       CASETYPE: {},
       bspaymentdcn: {},
       viewName: {},
       unProcessedPaymentServiceId: {},
       isTurnOff: {},
-      isNewPcipalOff: {},
-      isOldPcipalOff: {},
       paymentGroupReference: {}
     });
     const routerStub = () => ({ navigateByUrl: arg => ({}) });

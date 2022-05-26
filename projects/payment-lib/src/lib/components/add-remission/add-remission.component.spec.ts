@@ -24,10 +24,10 @@ describe('AddRemissionComponent', () => {
     refundReason: new FormControl(),
     refundDDReason: new FormControl(),
     reason: new FormControl()
-  });       
-  
+  });
+
   form.setValue({remissionCode:"HWF-A1B-23C",amount:"100",refundReason:"Test Refund  Reason",refundDDReason:"Default Reason",reason:"Test Reason"});
-  
+
   let fee = {
     "code": "FEE0209",
     "version": "3",
@@ -49,7 +49,7 @@ describe('AddRemissionComponent', () => {
     "date_created":"2021-08-17T09:45:43.468+00:00",
     "date_updated": "2021-08-17T09:45:43.468+00:00",
     "amount_due": 100
-  }  
+  }
 
   beforeEach(() => {
     const formBuilderStub = () => ({ group: object => ({  remissionCode:"HWF-A1B-23C",amount: 10,refundReason: "Test Reason", refundDDReason:"Test Default reason", reason:"Testing"}) });
@@ -80,8 +80,6 @@ describe('AddRemissionComponent', () => {
       TAKEPAYMENT: {},
       SERVICEREQUEST: {},
       ISTURNOFF: {},
-      ISNEWPCIPALOFF: {},
-      ISOLDPCIPALOFF: {},
       isFromServiceRequestPage: {},
       ISBSENABLE: {},
       isFromPaymentDetailPage: {}
@@ -96,7 +94,7 @@ describe('AddRemissionComponent', () => {
       setpaymentPageView: object => ({})
     });
 
-  
+
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [AddRemissionComponent],
@@ -220,7 +218,7 @@ describe('AddRemissionComponent', () => {
       const changeDetectorRefStub: ChangeDetectorRef = fixture.debugElement.injector.get(
         ChangeDetectorRef
       );
-     
+
       component.fee = fee;
       spyOn(formBuilderStub, 'group').and.callThrough();
       spyOn(refundsServiceStub, 'getRefundReasons').and.callThrough();
@@ -295,7 +293,7 @@ describe('AddRemissionComponent', () => {
                               },
                               "remission_reference": "RF-1111-2222-3333-4444"
                             }
-                      
+
     component.remissionForm = form;
     component.fee = fee;
 
@@ -399,7 +397,7 @@ describe('AddRemissionComponent', () => {
         "refund_amount": 10,
         "refund_reference": "RF-1111-2222-3333-4444"
       }
-    
+
       const payment = <IPayment>{
                                   account_number: "PBA0066906",
                                   amount: 218,

@@ -18,8 +18,6 @@ export class PaymentViewComponent implements OnInit {
   @Input() isTurnOff: boolean;
   @Input() isTakePayment: boolean;
   @Input() caseType: boolean;
-  @Input() isNewPcipalOff: boolean;
-  @Input() isOldPcipalOff: boolean;
   @Input() orderRef: string;
   @Input() orderStatus: string;
   @Input() orderTotalPayments: number;
@@ -62,7 +60,7 @@ export class PaymentViewComponent implements OnInit {
 
   ngAfterContentChecked(): void {
     this.cd.detectChanges();
- }  
+ }
 
   ngOnInit() {
     this.ccdCaseNumber = this.paymentLibComponent.CCD_CASE_NUMBER;
@@ -95,7 +93,7 @@ export class PaymentViewComponent implements OnInit {
           (paymentGroupObj => paymentGroupObj['reference'].includes(this.paymentLibComponent.paymentReference));
         const paymentAllocation = this.paymentGroup.payments[0].payment_allocation;
         this.isStatusAllocated = paymentAllocation.length > 0 && paymentAllocation[0].allocation_status === 'Allocated' || paymentAllocation.length === 0;
-       
+
       },
       (error: any) => this.errorMessage = error
     );
@@ -139,7 +137,7 @@ export class PaymentViewComponent implements OnInit {
       this.OrderslistService.getoorderTotalPaymentss().subscribe((data) => this.orderTotalPayments = data);
       this.viewStatus = 'order-full-view';
     }
-    
+
   }
 
   addRemission(fee: IFee) {
@@ -168,7 +166,7 @@ export class PaymentViewComponent implements OnInit {
       if (paymentGroup.fees !== null && paymentGroup.fees !== undefined) {
         return true;
       }
-     
+
     }
     return false;
   }

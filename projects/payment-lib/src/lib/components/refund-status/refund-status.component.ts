@@ -18,8 +18,6 @@ const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 })
 export class RefundStatusComponent implements OnInit {
   @Input('LOGGEDINUSERROLES') LOGGEDINUSERROLES: string[] = [];
-  @Input() isOldPcipalOff: boolean;
-  @Input() isNewPcipalOff: boolean;
   @Input() ccdCaseNumber: string;
   @Input() isTurnOff: boolean;
   refundStatusForm: FormGroup;
@@ -105,7 +103,7 @@ export class RefundStatusComponent implements OnInit {
           this.refundButtonState = this.refundlist.refund_status.name;
           return;
         }
-    
+
         if (this.LOGGEDINUSERROLES.some(i => i.includes('payments-refund'))) {
           this.isProcessRefund = false;
           this.refundButtonState = this.refundlist.refund_status.name;
@@ -113,7 +111,7 @@ export class RefundStatusComponent implements OnInit {
       }
    //}
   }
-  
+
 
   check4AllowedRoles2AccessRefund = (): boolean => {
     return this.allowedRolesToAccessRefund.some(role =>
@@ -131,7 +129,7 @@ export class RefundStatusComponent implements OnInit {
     ),
       (error: any) => {
         this.errorMessage = error.replace(/"/g,"");
-      }; 
+      };
     }
   }
 
