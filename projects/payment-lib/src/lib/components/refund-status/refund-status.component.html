@@ -316,7 +316,7 @@
     <ccpay-contact-details
     [isEditOperationInRefundList] = isEditDetailsClicked
     [addressObj] = notification
-    (assignContactDetailsInFefundsList)="getContactDetailsForRefundList($event)"
+    (assignContactDetailsInFefundsList)="getContactDetails($event)"
     (redirectToIssueRefund)="gotoCasetransationPageCancelBtnClicked($event)" ></ccpay-contact-details>
   <p>
       <a (click)="loadRefundListPage()" class="govuk-link" data-module="govuk-button">

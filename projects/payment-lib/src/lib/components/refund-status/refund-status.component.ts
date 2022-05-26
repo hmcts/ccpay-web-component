@@ -392,7 +392,8 @@ export class RefundStatusComponent implements OnInit {
 
   }
   gotoCasetransationPageCancelBtnClicked(Event: Event) {
-
+    event.preventDefault();
+    this.viewName  = 'refundstatuslist';
   }
 
   goToRefundProcessComponent(refundReference: string, refundList: IRefundList) {
