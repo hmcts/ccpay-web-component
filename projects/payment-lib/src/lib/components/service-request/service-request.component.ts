@@ -1,5 +1,5 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { PaymentLibComponent } from '../../payment-lib.component';
 import { IPayment } from '../../interfaces/IPayment';
 import { IRemission } from '../../interfaces/IRemission';
@@ -10,6 +10,8 @@ import { IPaymentGroup } from '../../interfaces/IPaymentGroup';
 import { Router } from '@angular/router';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { OrderslistService } from '../../services/orderslist.service';
+import { IRefundContactDetails } from '../../interfaces/IRefundContactDetails';
+import { PostRefundRetroRemission } from '../../interfaces/PostRefundRetroRemission';
 
 @Component({
   selector: 'ccpay-service-request',
@@ -33,16 +35,16 @@ export class ServiceRequestComponent implements OnInit {
   @Input("isServiceRequest") isServiceRequest: string;
   @Output() goToServiceRquestComponent: EventEmitter<any> = new EventEmitter();
 
-
+  viewCompStatus;
   servicerequest: string;
-  // ccdCaseNumber: string;
+  paymentType: string;
   excReference: string;
   paymentGroups: any[] = [];
   payments: IPayment[] = [];
   nonPayments: IPayment[] = [];
   allPayments: IPayment[] = [];
   remissions: IRemission[] = [];
-  fees: IFee[] = [];
+  fees: any;
   errorMessage: string;
   totalFees: number;
   totalPayments: number;
@@ -72,11 +74,12 @@ export class ServiceRequestComponent implements OnInit {
   isGrpOutstandingAmtPositive: boolean = false;
   totalRefundAmount: Number;
   caseType: String;
-  // lsCcdNumber: any = ls.get<any>('ccdNumber');
+  isConfirmationBtnDisabled: boolean;
+  refundReference: string;
+  refundAmount: string;
   payment: IPayment;
   paymentGroup: IPaymentGroup;
   paymentView: IPaymentView;
-
 
   isAddRemissionEnable: boolean = false;
   orderRemissionDetails: any[] = [];
@@ -84,7 +87,9 @@ export class ServiceRequestComponent implements OnInit {
   cpoDetails: any = null;
   serviceRequestValue: string;
   orderAddBtnEnable: boolean;
-
+  isFromPaymentDetailPage: boolean;
+  contactDetailsObj: IRefundContactDetails
+  notification: any;
   isCPODown: boolean;
   test: boolean;
   isPBA: boolean = false;
@@ -95,11 +100,14 @@ export class ServiceRequestComponent implements OnInit {
   isFromServiceRequestPage: boolean;
   navigationpage: string;
   remissionFeeAmt: number;
+  isContinueBtnDisabled: boolean = true;
+  isFullyRefund: boolean;
 
   constructor(
     private paymentLibComponent: PaymentLibComponent,
     private paymentViewService: PaymentViewService,
     private OrderslistService: OrderslistService,
+    private cd: ChangeDetectorRef,
     private router: Router) { }
 
   ngOnInit() {
@@ -222,13 +230,17 @@ export class ServiceRequestComponent implements OnInit {
 
   issueRefund(payment: IPayment) {
     if (payment !== null && payment !== undefined) {
-    if( this.chkIsIssueRefundBtnEnable(payment)) {
-    this.viewStatus = 'issuerefund';
-    this.payment = payment;
-    this.paymentLibComponent.isFromServiceRequestPage = true;
-    this.isRefundRemission = true;
+      if( this.chkIsIssueRefundBtnEnable(payment)) {
+        if(payment[0].over_payment > 0) {
+          this.viewCompStatus  = 'overpayment';
+        } else {
+          this.viewStatus = 'issuerefund';
+          this.payment = payment;
+          this.paymentLibComponent.isFromServiceRequestPage = true;
+          this.isRefundRemission = true;
+        }
+      }
     }
-  }
   }
 
   goToPayementView(paymentGroupReference: string, paymentReference: string, paymentMethod: string) {
@@ -285,94 +297,81 @@ export class ServiceRequestComponent implements OnInit {
     this.OrderslistService.setorderFeesTotal(null);
   }
 
-  // chkForAddRemission(feeCode: string): boolean {
-  //   if (this.chkForPBAPayment() && this.check4AllowedRoles2AccessRefund()) {
-  //     if (this.orderDetail[0]['remissions'].length > 0) {
-  //       for (const remission of this.orderDetail[0]['remissions']) {
-  //         if (remission.fee_code === feeCode) {
-  //           return false;
-  //         }
-  //       }
-  //     }
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
+  selectPymentOption(paymentType: string) {
+    this.paymentType = paymentType;
+    this.isContinueBtnDisabled = false;
+  }
+  goToPaymentViewComp() {
+    this.viewCompStatus  = '';
+    this.viewStatus = 'paymentview';
+  }
+  continuePayment(paymentgrp: IPaymentGroup) {
+    
+    if (this.paymentType === 'op') {
+      this.isFullyRefund = false
+      this.viewCompStatus  = 'overPaymentAddressCapture';
+    } else if(this.paymentType === 'fp') {
+      this.isFullyRefund = true
+      this.paymentGroup = paymentgrp;
+      this.viewStatus = 'issuerefund';
+      this.viewCompStatus = "";
+      this.isRefundRemission = true;
+      this.paymentLibComponent.isFromPaymentDetailPage = true;
+      this.isFromPaymentDetailPage = true;
+      this.isFromServiceRequestPage = this.paymentLibComponent.isFromServiceRequestPage;
+    }
+  }
+  getContactDetails(obj:IRefundContactDetails) {
+    this.contactDetailsObj = obj;
+    this.viewCompStatus = 'overpaymentcheckandanswer';
+  }
+  gotoPaymentSelectPage(event: Event) {
+    event.preventDefault();
+    this.viewCompStatus  = 'overpayment';
+  }
+  gotoAddressPage(note?: IRefundContactDetails) {
+    if (note) {
+      this.notification = { contact_details: note, notification_type: note.notification_type };
+    }
+    this.errorMessage = '';
+    this.viewCompStatus = 'overPaymentAddressCapture';
+  }
+  processRefund() {
+    this.isConfirmationBtnDisabled = true;
+    this.errorMessage = '';
+    const obj = this.paymentGroup.fees[0];
+    this.fees  = [{ id: obj.id, 
+      code: obj.code,
+      version:obj.version, 
+      apportion_amount: obj.apportion_amount,
+      calculated_amount: obj.calculated_amount,
+      updated_volume: obj.updated_volume ? obj.updated_volume : obj.volume,
+      volume: obj.volume,
+      refund_amount: this.getOverPaymentValue() }];
+    const requestBody = new PostRefundRetroRemission(this.contactDetailsObj,this.fees, this.paymentGroup.payments[0].reference, 'RR037', 
+    this.getOverPaymentValue());
+    this.paymentViewService.postRefundsReason(requestBody).subscribe(
+      response => {
+          if (JSON.parse(response)) {
+            this.viewCompStatus  = '';
+            this.viewStatus = 'refundconfirmationpage';
+            this.refundReference = JSON.parse(response).refund_reference;
+            this.refundAmount = JSON.parse(response).refund_amount;
+          }
+      },
+      (error: any) => {
+        this.errorMessage = error;
+        this.isConfirmationBtnDisabled = false;
+        this.cd.detectChanges();
+      })
+  }
 
-  // chkForPBAPayment(): boolean {
-  //   if (this.orderDetail !== null &&  this.orderDetail !== undefined) {
-  //   this.orderDetail.forEach(orderDetail => {
-  //     if (orderDetail.payments) {
-  //       orderDetail.payments.forEach(payment => {
-  //         if (payment.method.toLocaleLowerCase() === 'payment by account' && this.allowFurtherAccessAfter4Days(payment)) {
-  //           this.paymentLibComponent.paymentReference = payment.reference;
-  //           this.isPBA = true;
-  //         }
-  //       });
-  //     }
-  //   });
-  //   if (this.isPBA) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   };
-  // }
-  // }
-  // chkIssueRefundBtnEnable(payment: IPayment): boolean {
-  //   if (this.check4AllowedRoles2AccessRefund() && this.allowFurtherAccessAfter4Days(payment) &&
-  //     payment.method === 'payment by account' && payment.status.toLocaleLowerCase() === 'success') {
-  //     this.isIssueRefunfBtnEnable = true;
-  //   }
-  //   if (this.isIssueRefunfBtnEnable) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   };
-  // }
+  getOverPaymentValue() {
+    let feesOverPayment = 0;
+    this.paymentGroup.fees.forEach(fee => {
+      feesOverPayment += fee.over_payment;
+    });
+    return feesOverPayment > 0 ? feesOverPayment : this.paymentGroup.payments[0].over_payment;
 
-  // chkIsRefundRemissionBtnEnable(): boolean {
-  //   if (this.orderDetail !== null &&  this.orderDetail !== undefined) {
-  //     this.paymentLibComponent.isFromServiceRequestPage = true;
-  //   this.orderDetail.forEach(orderDetail => {
-  //     if (orderDetail.payments) {
-  //       orderDetail.payments.forEach(payment => {
-  //         if (payment.method.toLocaleLowerCase() === 'payment by account' && payment.status.toLocaleLowerCase() === 'success' && this.allowFurtherAccessAfter4Days(payment)) {
-  //           this.isRefundRemissionBtnEnable = true;
-  //         }
-  //       });
-  //     }
-  //   });
-  //   if (this.isRefundRemissionBtnEnable) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   };
-  // }
-  // }
-
-  // check4AllowedRoles2AccessRefund = (): boolean => {
-  //   return this.allowedRolesToAccessRefund.some(role =>
-  //     this.LOGGEDINUSERROLES.indexOf(role) !== -1
-  //   );
-  // }
-
-  // allowFurtherAccessAfter4Days = (payment: IPayment): boolean => {
-  //   if (payment !== null && payment !== undefined) {
-  //   let tmp4DayAgo = new Date();
-  //   tmp4DayAgo.setDate(tmp4DayAgo.getDate() - 4);
-  //   return tmp4DayAgo >= new Date(payment.date_created);
-  //   }
-  // }
-
-
-  // goToServiceRequestPage(event: any) {
-  //   event.preventDefault();
-  //   this.isFromServiceRequestPage = true;
-  //   this.viewStatus = 'main'
-  //   this.paymentLibComponent.viewName = 'case-transactions';
-  //   this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-  //   this.router.onSameUrlNavigation = 'reload';
-  // }
-
+  }
 }
