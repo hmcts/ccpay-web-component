@@ -30,6 +30,7 @@ export class ServiceRequestComponent implements OnInit {
   @Input('orderFeesTotal') orderFeesTotal: number;
   @Input('orderTotalPayments') orderTotalPayments: number;
   @Input('orderRemissionTotal') orderRemissionTotal: number;
+  @Input('paymentGroupList') paymentGroupList: IPaymentGroup;
   @Input('takePayment') takePayment: boolean;
   @Input('ccdCaseNumber') ccdCaseNumber: boolean;
   @Input("isServiceRequest") isServiceRequest: string;
@@ -133,15 +134,6 @@ export class ServiceRequestComponent implements OnInit {
     if(this.paymentLibComponent.isFromServiceRequestPage && this.paymentLibComponent.TAKEPAYMENT) {
       this.isServiceRequest = 'false';
     }
-
-    this.paymentViewService.getApportionPaymentDetails(this.paymentLibComponent.paymentReference).subscribe(
-      paymentGroup => {
-        this.paymentGroup = paymentGroup;
-        this.paymentGroup.payments = this.paymentGroup.payments.filter
-          (paymentGroupObj => paymentGroupObj['reference'].includes(this.paymentLibComponent.paymentReference));
-      },
-      (error: any) => this.errorMessage = error
-    );
   }
   goToServiceRequestPage() {
     this.goToServiceRquestComponent.emit();
@@ -238,6 +230,9 @@ export class ServiceRequestComponent implements OnInit {
   }
 
   issueRefund(payment: IPayment) {
+    this.paymentGroupList.payments = this.paymentGroupList.payments.filter
+    (paymentGroupObj => paymentGroupObj['reference'].includes(payment.reference));
+    
     if (payment !== null && payment !== undefined) {
       if( this.chkIsIssueRefundBtnEnable(payment)) {
         if(payment.over_payment > 0) {
@@ -354,7 +349,7 @@ export class ServiceRequestComponent implements OnInit {
   processRefund() {
     this.isConfirmationBtnDisabled = true;
     this.errorMessage = '';
-    const obj = this.paymentGroup.fees[0];
+    const obj = this.paymentGroupList.fees[0];
     this.fees  = [{ id: obj.id, 
       code: obj.code,
       version:obj.version, 
@@ -363,7 +358,7 @@ export class ServiceRequestComponent implements OnInit {
       updated_volume: obj.updated_volume ? obj.updated_volume : obj.volume,
       volume: obj.volume,
       refund_amount: this.getOverPaymentValue() }];
-    const requestBody = new PostRefundRetroRemission(this.contactDetailsObj,this.fees, this.paymentGroup.payments[0].reference, 'RR037', 
+    const requestBody = new PostRefundRetroRemission(this.contactDetailsObj,this.fees, this.paymentGroupList.payments[0].reference, 'RR037', 
     this.getOverPaymentValue());
     this.paymentViewService.postRefundsReason(requestBody).subscribe(
       response => {
@@ -383,10 +378,10 @@ export class ServiceRequestComponent implements OnInit {
 
   getOverPaymentValue() {
     let feesOverPayment = 0;
-    this.paymentGroup.fees.forEach(fee => {
+    this.paymentGroupList.fees.forEach(fee => {
       feesOverPayment += fee.over_payment;
     });
-    return feesOverPayment > 0 ? feesOverPayment : this.paymentGroup.payments[0].over_payment;
+    return feesOverPayment > 0 ? feesOverPayment : this.paymentGroupList.payments[0].over_payment;
 
   }
 }
