@@ -16,7 +16,7 @@ import { PostRefundRetroRemission } from '../../interfaces/PostRefundRetroRemiss
 @Component({
   selector: 'ccpay-service-request',
   templateUrl: './service-request.component.html',
-  styleUrls: ['./service-request.component.css']
+  styleUrls: ['./service-request.component.scss']
 })
 export class ServiceRequestComponent implements OnInit {
   @Input('LOGGEDINUSERROLES') LOGGEDINUSERROLES: string[];
