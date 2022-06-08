@@ -133,6 +133,15 @@ export class ServiceRequestComponent implements OnInit {
     if(this.paymentLibComponent.isFromServiceRequestPage && this.paymentLibComponent.TAKEPAYMENT) {
       this.isServiceRequest = 'false';
     }
+
+    this.paymentViewService.getApportionPaymentDetails(this.paymentLibComponent.paymentReference).subscribe(
+      paymentGroup => {
+        this.paymentGroup = paymentGroup;
+        this.paymentGroup.payments = this.paymentGroup.payments.filter
+          (paymentGroupObj => paymentGroupObj['reference'].includes(this.paymentLibComponent.paymentReference));
+      },
+      (error: any) => this.errorMessage = error
+    );
   }
   goToServiceRequestPage() {
     this.goToServiceRquestComponent.emit();
@@ -232,9 +241,11 @@ export class ServiceRequestComponent implements OnInit {
     if (payment !== null && payment !== undefined) {
       if( this.chkIsIssueRefundBtnEnable(payment)) {
         if(payment.over_payment > 0) {
+          this.viewStatus = '';
           this.viewCompStatus  = 'overpayment';
         } else {
           this.viewStatus = 'issuerefund';
+          this.viewCompStatus = '';
           this.payment = payment;
           this.paymentLibComponent.isFromServiceRequestPage = true;
           this.isRefundRemission = true;
@@ -309,6 +320,7 @@ export class ServiceRequestComponent implements OnInit {
     
     if (this.paymentType === 'op') {
       this.isFullyRefund = false
+      this.viewStatus = '';
       this.viewCompStatus  = 'overPaymentAddressCapture';
     } else if(this.paymentType === 'fp') {
       this.isFullyRefund = true
@@ -323,10 +335,12 @@ export class ServiceRequestComponent implements OnInit {
   }
   getContactDetails(obj:IRefundContactDetails) {
     this.contactDetailsObj = obj;
+    this.viewStatus = '';
     this.viewCompStatus = 'overpaymentcheckandanswer';
   }
   gotoPaymentSelectPage(event: Event) {
     event.preventDefault();
+    this.viewStatus = '';
     this.viewCompStatus  = 'overpayment';
   }
   gotoAddressPage(note?: IRefundContactDetails) {
@@ -334,6 +348,7 @@ export class ServiceRequestComponent implements OnInit {
       this.notification = { contact_details: note, notification_type: note.notification_type };
     }
     this.errorMessage = '';
+    this.viewStatus = '';
     this.viewCompStatus = 'overPaymentAddressCapture';
   }
   processRefund() {
