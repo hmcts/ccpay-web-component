@@ -321,13 +321,10 @@ export class ServiceRequestComponent implements OnInit {
       this.viewCompStatus  = 'overPaymentAddressCapture';
     } else if(this.paymentType === 'fp') {
       this.isFullyRefund = true
-      this.paymentGroup = paymentgrp;
+      this.paymentGroupList = paymentgrp;
       this.viewStatus = 'issuerefund';
       this.viewCompStatus = "";
       this.isRefundRemission = true;
-      this.paymentLibComponent.isFromPaymentDetailPage = true;
-      this.isFromPaymentDetailPage = true;
-      this.isFromServiceRequestPage = this.paymentLibComponent.isFromServiceRequestPage;
     }
   }
   getContactDetails(obj:IRefundContactDetails) {
