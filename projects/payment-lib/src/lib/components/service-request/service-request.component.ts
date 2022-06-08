@@ -231,7 +231,7 @@ export class ServiceRequestComponent implements OnInit {
   issueRefund(payment: IPayment) {
     if (payment !== null && payment !== undefined) {
       if( this.chkIsIssueRefundBtnEnable(payment)) {
-        if(payment[0].over_payment > 0) {
+        if(payment.over_payment > 0) {
           this.viewCompStatus  = 'overpayment';
         } else {
           this.viewStatus = 'issuerefund';
