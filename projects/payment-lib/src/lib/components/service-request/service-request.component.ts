@@ -45,6 +45,7 @@ export class ServiceRequestComponent implements OnInit {
   nonPayments: IPayment[] = [];
   allPayments: IPayment[] = [];
   remissions: IRemission[] = [];
+  paymentFees: IFee[];
   fees: any;
   errorMessage: string;
   totalFees: number;
@@ -241,6 +242,7 @@ export class ServiceRequestComponent implements OnInit {
         } else {
           this.viewStatus = 'issuerefund';
           this.viewCompStatus = '';
+          this.paymentFees = this.paymentGroupList[0].fees;
           this.payment = payment;
           this.paymentLibComponent.isFromServiceRequestPage = true;
           this.isRefundRemission = true;
