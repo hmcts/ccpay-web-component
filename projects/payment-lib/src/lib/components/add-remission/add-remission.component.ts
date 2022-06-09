@@ -142,7 +142,6 @@ export class AddRemissionComponent implements OnInit {
     private OrderslistService: OrderslistService) { }
 
   ngOnInit() {
-    console.log(this.viewCompStatus,'hhh');
     this.errorMessage = '';
     this.errorMsg = [];
     this.default = 'Select a different reason';
@@ -251,8 +250,13 @@ export class AddRemissionComponent implements OnInit {
       this.viewStatus = 'processretroremissonpage';
     }
     if(this.orderDetail !== undefined){
-      this.fees = this.orderDetail[0].fees;
-      this.paymentReference = this.orderDetail[0].payments[0].reference;
+      this.paymentViewService.getApportionPaymentDetails(this.orderDetail[0].payments[0].reference).subscribe(
+        paymentGroup => {
+      this.fees = paymentGroup.fees;
+      this.paymentReference = paymentGroup.payments[0].reference;
+      },
+      (error: any) => this.errorMessage = error
+    );
     }
 
   }
