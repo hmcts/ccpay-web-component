@@ -859,8 +859,8 @@ if(isFullyRefund) {
                                         version:obj.version, 
                                         apportion_amount: obj.apportion_amount,
                                         calculated_amount: obj.calculated_amount,
-                                        updated_volume: obj.updated_volume,
-                                        refund_amount:obj.refund_amount }));
+                                        updated_volume: obj.updated_volume ? obj.updated_volume : obj.volume,
+                                        refund_amount:this.totalRefundAmount }));
  
   
     const requestBody = new PostRefundRetroRemission(this.contactDetailsObj, this.fees,this.payment.reference, this.refundReason, 
