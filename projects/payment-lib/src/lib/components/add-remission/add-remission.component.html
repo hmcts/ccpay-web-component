@@ -388,7 +388,6 @@
             <td class="govuk-table__header" scope="col"></td>
           </tr>
         </thead>
-        {{isFullyRefund}}{{fees | json}}
         <tbody class="govuk-table__body" *ngIf="!isFullyRefund">
           <tr class="govuk-table__row" formArrayName="feesList" *ngFor="let fee of feesList?.controls; let i = index">
             <td class="govuk-table__cell">

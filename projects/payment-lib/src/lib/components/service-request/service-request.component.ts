@@ -135,6 +135,8 @@ export class ServiceRequestComponent implements OnInit {
     if(this.paymentLibComponent.isFromServiceRequestPage && this.paymentLibComponent.TAKEPAYMENT) {
       this.isServiceRequest = 'false';
     }
+
+
   }
   goToServiceRequestPage() {
     this.goToServiceRquestComponent.emit();
@@ -231,9 +233,6 @@ export class ServiceRequestComponent implements OnInit {
   }
 
   issueRefund(payment: IPayment) {
-    this.paymentGroupList[0].payments = this.paymentGroupList[0].payments.filter
-    (paymentGroupObj => paymentGroupObj['reference'].includes(payment.reference));
-
     if (payment !== null && payment !== undefined) {
       if( this.chkIsIssueRefundBtnEnable(payment)) {
         if(payment.over_payment > 0) {
@@ -241,12 +240,20 @@ export class ServiceRequestComponent implements OnInit {
           this.payment = payment;
           this.viewCompStatus  = 'overpayment';
         } else {
-          this.viewStatus = 'issuerefund';
-          this.viewCompStatus = '';
-          this.paymentFees = this.paymentGroupList[0].fees;
-          this.payment = payment;
-          this.paymentLibComponent.isFromServiceRequestPage = true;
-          this.isRefundRemission = true;
+          this.paymentViewService.getApportionPaymentDetails(payment.reference).subscribe(
+            paymentGroup => {
+              paymentGroup.payments = paymentGroup.payments.filter
+              (paymentGroupObj => paymentGroupObj['reference'].includes(payment.reference));
+              this.viewStatus = 'issuerefund';
+              this.viewCompStatus = '';
+              this.paymentFees = paymentGroup.fees;
+              this.payment = payment;
+              this.paymentLibComponent.isFromServiceRequestPage = true;
+              this.isRefundRemission = true;
+            },
+            (error: any) => this.errorMessage = error
+          );
+
         }
       }
     }
