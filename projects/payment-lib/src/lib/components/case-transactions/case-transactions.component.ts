@@ -808,15 +808,20 @@ export class CaseTransactionsComponent implements OnInit {
   }
 
   chkIssueRefundBtnEnable(payment: IPayment): boolean {
-    if (this.check4AllowedRoles2AccessRefund() && this.allowFurtherAccessAfter4Days(payment) &&
-      payment.method === 'payment by account' && payment.status.toLocaleLowerCase() === 'success') {
-      this.isIssueRefunfBtnEnable = true;
-    }
-    if (this.isIssueRefunfBtnEnable) {
-      return true;
+    if (payment !== null && payment !== undefined) {
+      return payment.issue_refund && payment.refund_enable
     } else {
       return false;
-    };
+    }
+    // if (this.check4AllowedRoles2AccessRefund() && this.allowFurtherAccessAfter4Days(payment) &&
+    //   payment.method === 'payment by account' && payment.status.toLocaleLowerCase() === 'success') {
+    //   this.isIssueRefunfBtnEnable = true;
+    // }
+    // if (this.isIssueRefunfBtnEnable) {
+    //   return true;
+    // } else {
+    //   return false;
+    // };
   }
 
   chkIsRefundRemissionBtnEnable(): boolean {
