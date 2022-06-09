@@ -238,6 +238,7 @@ export class ServiceRequestComponent implements OnInit {
       if( this.chkIsIssueRefundBtnEnable(payment)) {
         if(payment.over_payment > 0) {
           this.viewStatus = '';
+          this.payment = payment;
           this.viewCompStatus  = 'overpayment';
         } else {
           this.viewStatus = 'issuerefund';
