@@ -194,7 +194,7 @@
 [orderTotalPayments] = "orderTotalPayments"
 [orderRemissionTotal] = "orderRemissionTotal"
 ></ccpay-add-remission>
-
+{{viewStatus}} {{payment|json}}
 <ccpay-add-remission *ngIf="viewStatus === 'issuerefund' && payment"
 [isTurnOff]="isTurnOff"
 [isStrategicFixEnable]="isStrategicFixEnable" 
