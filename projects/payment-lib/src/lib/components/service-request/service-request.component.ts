@@ -325,6 +325,9 @@ export class ServiceRequestComponent implements OnInit {
       this.viewStatus = 'issuerefund';
       this.viewCompStatus = "";
       this.isRefundRemission = true;
+      this.paymentLibComponent.isFromPaymentDetailPage = true;
+      this.isFromPaymentDetailPage = true;
+      this.isFromServiceRequestPage = this.paymentLibComponent.isFromServiceRequestPage;
     }
   }
   getContactDetails(obj:IRefundContactDetails) {
