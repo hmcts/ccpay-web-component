@@ -359,7 +359,7 @@ export class ServiceRequestComponent implements OnInit {
   processRefund() {
     this.isConfirmationBtnDisabled = true;
     this.errorMessage = '';
-    const obj = this.paymentGroupList[0].fees[0];
+    const obj = this.paymentGroupList.fees[0];
     this.fees  = [{ id: obj.id, 
       code: obj.code,
       version:obj.version, 
@@ -368,7 +368,7 @@ export class ServiceRequestComponent implements OnInit {
       updated_volume: obj.updated_volume ? obj.updated_volume : obj.volume,
       volume: obj.volume,
       refund_amount: this.getOverPaymentValue() }];
-    const requestBody = new PostRefundRetroRemission(this.contactDetailsObj,this.fees, this.paymentGroupList[0].payments[0].reference, 'RR037', 
+    const requestBody = new PostRefundRetroRemission(this.contactDetailsObj,this.fees, this.paymentGroupList.payments[0].reference, 'RR037', 
     this.getOverPaymentValue());
     this.paymentViewService.postRefundsReason(requestBody).subscribe(
       response => {
@@ -388,10 +388,10 @@ export class ServiceRequestComponent implements OnInit {
 
   getOverPaymentValue() {
     let feesOverPayment = 0;
-    this.paymentGroupList[0].fees.forEach(fee => {
+    this.paymentGroupList.fees.forEach(fee => {
       feesOverPayment += fee.over_payment;
     });
-    return feesOverPayment > 0 ? feesOverPayment : this.paymentGroupList[0].payments[0].over_payment;
+    return feesOverPayment > 0 ? feesOverPayment : this.paymentGroupList.payments[0].over_payment;
 
   }
 }
