@@ -235,26 +235,26 @@ export class ServiceRequestComponent implements OnInit {
   issueRefund(payment: IPayment) {
     if (payment !== null && payment !== undefined) {
       if( this.chkIsIssueRefundBtnEnable(payment)) {
-        if(payment.over_payment > 0) {
-          this.viewStatus = '';
-          this.payment = payment;
-          this.viewCompStatus  = 'overpayment';
-        } else {
-          this.paymentViewService.getApportionPaymentDetails(payment.reference).subscribe(
-            paymentGroup => {
-              paymentGroup.payments = paymentGroup.payments.filter
-              (paymentGroupObj => paymentGroupObj['reference'].includes(payment.reference));
-              this.viewStatus = 'issuerefund';
-              this.viewCompStatus = '';
-              this.paymentFees = paymentGroup.fees;
-              this.payment = payment;
-              this.paymentLibComponent.isFromServiceRequestPage = true;
-              this.isRefundRemission = true;
-            },
-            (error: any) => this.errorMessage = error
-          );
-
-        }
+        this.paymentViewService.getApportionPaymentDetails(payment.reference).subscribe(
+        paymentGroup => {
+          paymentGroup.payments = paymentGroup.payments.filter
+          (paymentGroupObj => paymentGroupObj['reference'].includes(payment.reference));
+          if(payment.over_payment > 0) {
+            this.viewStatus = '';
+            this.payment = payment;
+            this.paymentGroupList = paymentGroup;
+            this.viewCompStatus  = 'overpayment';
+          } else {
+            this.viewStatus = 'issuerefund';
+            this.viewCompStatus = '';
+            this.paymentFees = paymentGroup.fees;
+            this.payment = payment;
+            this.paymentLibComponent.isFromServiceRequestPage = true;
+            this.isRefundRemission = true;
+          }
+        },
+        (error: any) => this.errorMessage = error
+        );
       }
     }
   }
