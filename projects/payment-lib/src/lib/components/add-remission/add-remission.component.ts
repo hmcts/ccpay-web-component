@@ -868,7 +868,7 @@ if(isFullyRefund) {
  
   
     const requestBody = new PostRefundRetroRemission(this.contactDetailsObj, this.fees,this.payment.reference, this.refundReason, 
-      this.totalRefundAmount);
+      this.totalRefundAmount, 'op');
     this.paymentViewService.postRefundsReason(requestBody).subscribe(
       response => {
           if (JSON.parse(response)) {

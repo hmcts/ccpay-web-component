@@ -369,7 +369,7 @@ export class ServiceRequestComponent implements OnInit {
       volume: obj.volume,
       refund_amount: this.getOverPaymentValue() }];
     const requestBody = new PostRefundRetroRemission(this.contactDetailsObj,this.fees, this.paymentGroupList.payments[0].reference, 'RR037', 
-    this.getOverPaymentValue());
+    this.getOverPaymentValue(), 'op');
     this.paymentViewService.postRefundsReason(requestBody).subscribe(
       response => {
           if (JSON.parse(response)) {
