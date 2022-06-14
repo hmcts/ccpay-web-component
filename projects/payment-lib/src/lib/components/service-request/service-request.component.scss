@@ -332,6 +332,9 @@ th, td {
 }
 
 .over-payment {
+    .govuk-table-mb {
+        margin-bottom: 20px;
+    }
     .contactDetails-width {
       width: 70%;
     }
@@ -356,6 +359,7 @@ th, td {
   
       td.govuk-table__cell {
         width: 50%;
+        text-align: left;
       }
   
   
