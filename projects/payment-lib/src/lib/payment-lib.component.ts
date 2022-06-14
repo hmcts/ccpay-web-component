@@ -32,12 +32,10 @@ import { IPayment } from './interfaces/IPayment';
     [caseType]="CASETYPE"
     ></app-allocate-payments>
     <ccpay-fee-summary *ngIf="viewName === 'fee-summary'"
-      [ccdCaseNumber]="CCD_CASE_NUMBER" 
+      [ccdCaseNumber]="CCD_CASE_NUMBER"
       [paymentGroupRef]="paymentGroupReference"
       [isTurnOff]="ISTURNOFF"
       [caseType]="CASETYPE"
-      [isOldPcipalOff]="ISOLDPCIPALOFF"
-      [isNewPcipalOff]="ISNEWPCIPALOFF"
       ></ccpay-fee-summary>
     <ccpay-reports *ngIf="viewName === 'reports'"></ccpay-reports>
     `
@@ -81,8 +79,6 @@ export class PaymentLibComponent implements OnInit {
   viewName: string;
   isTurnOff: boolean;
   caseType: string;
-  isOldPcipalOff: boolean;
-  isNewPcipalOff: boolean;
   unProcessedPayment: IBSPayments = null;
   isRefundStatusView: boolean;
   isRedirectFromCaseTransactionPage: string;

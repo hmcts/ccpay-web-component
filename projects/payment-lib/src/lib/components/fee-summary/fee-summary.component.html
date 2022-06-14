@@ -30,7 +30,7 @@
               Add a new fee
             </button>
 
-            <a *ngIf="isTurnOff" (click)="redirectToFeeSearchPage($event,'summary')" class="button">Add a new fee</a>	
+            <a *ngIf="isTurnOff" (click)="redirectToFeeSearchPage($event,'summary')" class="button">Add a new fee</a>
     </div>
   </div> -->
 
@@ -85,12 +85,12 @@
             <tr class="govuk-table__row">
               <td class="no-border grey-text subcolumn-1">Remission amount:</td>
               <td class="no-border subcolumn-2">{{ getRemissionByFeeCode(fee.code)?.hwf_amount? ( getRemissionByFeeCode(fee.code)?.hwf_amount  | currency:'GBP':'symbol-narrow':'1.2-2') : '-' }}</td>
-              <td class="no-border subcolumn-3" *ngIf="!isTurnOff"> 
+              <td class="no-border subcolumn-3" *ngIf="!isTurnOff">
                 <a (click)="addRemission(fee)" *ngIf="(getRemissionByFeeCode(fee.code)?.hwf_amount === 0 || !getRemissionByFeeCode(fee.code)?.hwf_amount) && !isPaymentExist">
                   Deduct remission
                 </a>
               </td>
-              <td class="no-border subcolumn-3" *ngIf="isTurnOff"> 
+              <td class="no-border subcolumn-3" *ngIf="isTurnOff">
                 <a (click)="addRemission(fee)" *ngIf="getRemissionByFeeCode(fee.code)?.hwf_amount === 0 || !getRemissionByFeeCode(fee.code)?.hwf_amount">
                 Deduct remission
               </a>
@@ -123,34 +123,11 @@
           </table>
         </td>
       </tr>
-      <tr class="govuk-table__row" *ngIf="!bsPaymentDcnNumber && isOldPcipalOff && isNewPcipalOff">
+      <tr class="govuk-table__row" *ngIf="!bsPaymentDcnNumber">
         <td class="no-border"></td>
         <td class="no-border"></td>
         <td class="no-border"></td>
         <td class="no-border">
-          <div class="govuk-form-group govuk-form-group--mg">
-            <fieldset class="govuk-fieldset">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                <span class="govuk-fieldset__heading govuk-fieldset__heading--fz">
-                  Which system are you using to take the payment?
-                </span>
-              </legend>
-              <div class="govuk-radios govuk-radios--small">
-                <div class="govuk-radios__item">
-                  <input id="changed-name" class="govuk-radios__input" [(ngModel)]="platForm" type="radio" aria-label="8x8" value="8x8">	
-                  <label class="govuk-label govuk-radios__label" for="changed-name">	
-                    8x8	
-                  </label>	
-                </div>	
-                <div class="govuk-radios__item">	
-                  <input id="changed-name-2" class="govuk-radios__input" [(ngModel)]="platForm" type="radio" aria-label="Antenna" value="Antenna">	
-                  <label class="govuk-label govuk-radios__label" for="changed-name-2">	
-                    Antenna	
-                  </label>	
-                </div>	
-              </div>	
-            </fieldset>
-          </div>
         </td>
       </tr>
     </tbody>
@@ -161,7 +138,7 @@
       <td class="no-border">
           <table class="govuk-table">
             <tr class="govuk-table__row">
-              <td class="no-border subcolumn-2"> 
+              <td class="no-border subcolumn-2">
                 <button *ngIf="!bsPaymentDcnNumber" type="submit" (click)="takePayment()"
                 [disabled]="totalFee <= 0 || !platForm || isConfirmationBtnDisabled"
                 [ngClass]='totalFee <= 0 || !platForm || isConfirmationBtnDisabled? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'>
@@ -347,6 +324,7 @@
           <button type="submit" class="button govuk-button--secondary" (click)="cancelRemission()">
             Cancel
           </button>
+
           <button type="submit" class="button" 
           *ngIf ="!isRemoveBtnDisabled"
           [ngClass]='isRemoveBtnDisabled ? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'
@@ -358,13 +336,10 @@
     </ng-container>
 <ccpay-add-remission *ngIf="viewStatus === 'add_remission' && currentFee"
  [isTurnOff]="isTurnOff"
- [isStrategicFixEnable]="isStrategicFixEnable" 
- [isOldPcipalOff]="isOldPcipalOff" 
- [isNewPcipalOff]="isNewPcipalOff" 
- [fee]="currentFee" 
- [caseType]="caseType" 
- [ccdCaseNumber]="ccdCaseNumber" 
- [paymentGroupRef]="paymentGroupRef" 
+ [isStrategicFixEnable]="isStrategicFixEnable"
+ [fee]="currentFee"
+ [caseType]="caseType"
+ [ccdCaseNumber]="ccdCaseNumber"
+ [paymentGroupRef]="paymentGroupRef"
  (cancelRemission)="cancelRemission()"></ccpay-add-remission>
  <input *ngIf="viewStatus === 'payhub_view' && payhubHtml" #myInput type='hidden' id='iFrameDrivenImageValue' value='PCIPAL'>
-<div *ngIf="viewStatus === 'payhub_view' && payhubHtml" [innerHTML]="payhubHtml | sanitizeHtml" id="payhub-html-id"></div>

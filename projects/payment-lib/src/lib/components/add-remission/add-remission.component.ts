@@ -34,8 +34,6 @@ export class AddRemissionComponent implements OnInit {
   @Input() paymentGroupRef: string;
   @Input() isTurnOff: boolean;
   @Input() isRefundRemission: boolean;
-  @Input() isOldPcipalOff: boolean;
-  @Input() isNewPcipalOff: boolean;
   @Input() isStrategicFixEnable: boolean;
   @Input() paidAmount: any;
   @Input() isFromRefundListPage: boolean;
@@ -180,9 +178,10 @@ export class AddRemissionComponent implements OnInit {
   addRemission() {
     this.resetRemissionForm([false, false, false, false, false, false], 'All');
     const remissionctrls=this.remissionForm.controls,
-      isRemissionLessThanFee = this.fee.calculated_amount > remissionctrls.amount.value; 
-      this.remissionForm.controls['refundReason'].setErrors(null);
-      this.remissionForm.controls['refundDDReason'].setErrors(null);
+    isRemissionLessThanFee = this.fee.calculated_amount > remissionctrls.amount.value; 
+    this.remissionForm.controls['refundReason'].setErrors(null);
+    this.remissionForm.controls['refundDDReason'].setErrors(null);
+
     if (this.remissionForm.dirty && this.remissionForm.valid && isRemissionLessThanFee) {
       this.viewStatus = 'confirmation';
     }else {
@@ -216,8 +215,6 @@ export class AddRemissionComponent implements OnInit {
         if (JSON.parse(response).success) {
           let LDUrl = this.isTurnOff ? '&isTurnOff=Enable' : '&isTurnOff=Disable'
             LDUrl += `&caseType=${this.caseType}`
-            LDUrl += this.isNewPcipalOff ? '&isNewPcipalOff=Enable' : '&isNewPcipalOff=Disable'
-            LDUrl += this.isOldPcipalOff ? '&isOldPcipalOff=Enable' : '&isOldPcipalOff=Disable'
           if (this.paymentLibComponent.bspaymentdcn) {
             this.router.routeReuseStrategy.shouldReuseRoute = () => false;
             this.router.onSameUrlNavigation = 'reload';
@@ -656,8 +653,7 @@ export class AddRemissionComponent implements OnInit {
     this.paymentLibComponent.viewName = 'case-transactions';
     this.paymentLibComponent.VIEW = 'case-transactions';
     this.paymentLibComponent.ISTURNOFF = this.isTurnOff;
-    this.paymentLibComponent.ISNEWPCIPALOFF = this.isNewPcipalOff;
-    this.paymentLibComponent.ISOLDPCIPALOFF = this.isOldPcipalOff;
+
     this.paymentLibComponent.isFromServiceRequestPage = true;  
     this.resetOrderData();
     let partUrl = this.bsPaymentDcnNumber ? `&dcn=${this.bsPaymentDcnNumber}` : '';
@@ -665,14 +661,12 @@ export class AddRemissionComponent implements OnInit {
      partUrl += this.paymentLibComponent.ISTURNOFF ? '&isTurnOff=Enable' : '&isTurnOff=Disable';
      partUrl += this.isStrategicFixEnable ? '&isStFixEnable=Enable' : '&isStFixEnable=Disable';
      partUrl += `&caseType=${this.caseType}`;
-     partUrl += this.paymentLibComponent.ISNEWPCIPALOFF ? '&isNewPcipalOff=Enable' : '&isNewPcipalOff=Disable';
-     partUrl += this.paymentLibComponent.ISOLDPCIPALOFF ? '&isOldPcipalOff=Enable' : '&isOldPcipalOff=Disable';
     const url = `/payment-history/${this.ccdCaseNumber}?view=case-transactions&takePayment=${this.paymentLibComponent.TAKEPAYMENT}&selectedOption=${this.option}${partUrl}`;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigateByUrl(url);
   }
-
+  
   gotoCasetransationPageCancelBtnClicked(event: Event) {
     event.preventDefault();
     if( !this.paymentLibComponent.isFromServiceRequestPage) {
@@ -714,8 +708,6 @@ export class AddRemissionComponent implements OnInit {
     this.errorMessage = '';
     this.paymentLibComponent.viewName = 'case-transactions';
     this.paymentLibComponent.ISTURNOFF = this.isTurnOff;
-    this.paymentLibComponent.ISNEWPCIPALOFF = this.isNewPcipalOff;
-    this.paymentLibComponent.ISOLDPCIPALOFF = this.isOldPcipalOff;
     this.paymentLibComponent.isFromServiceRequestPage = true;  
     this.paymentLibComponent.ISBSENABLE = true;
     let partUrl = this.bsPaymentDcnNumber ? `&dcn=${this.bsPaymentDcnNumber}` : '';
@@ -723,8 +715,7 @@ export class AddRemissionComponent implements OnInit {
      partUrl += this.paymentLibComponent.ISTURNOFF ? '&isTurnOff=Enable' : '&isTurnOff=Disable';
      partUrl += this.isStrategicFixEnable ? '&isStFixEnable=Enable' : '&isStFixEnable=Disable';
      partUrl += `&caseType=${this.caseType}`;
-     partUrl += this.paymentLibComponent.ISNEWPCIPALOFF ? '&isNewPcipalOff=Enable' : '&isNewPcipalOff=Disable';
-     partUrl += this.paymentLibComponent.ISOLDPCIPALOFF ? '&isOldPcipalOff=Enable' : '&isOldPcipalOff=Disable';
+
      if(this.isFromPaymentDetailPage) {
        partUrl += this.paymentLibComponent.isFromPaymentDetailPage
      }
