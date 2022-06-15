@@ -61,7 +61,7 @@
               <td class="govuk-table__cell alignright" *ngIf="isServiceRequest === 'false'">
                   <button [disabled]="!chkForAddRemission(fee.code)" (click)="addRemission(fee)" class="govuk-button govuk-button--secondary"> Add remission</button>
               </td>
-          
+
             </tr>
           </tbody>
           <tbody class="govuk-table__body" *ngFor="let order of orderDetail;">
@@ -72,13 +72,13 @@
         </table>
 
       </div>
-      <div class="maxwidth">  
+      <div class="maxwidth">
           <p class="totalfees">Total fees: {{orderFeesTotal | currency:'GBP':'symbol-narrow':'1.2-2' }}</p>
       </div>
   </div>
    <!-- remissions -->
 <ng-container *ngFor="let order of orderDetail;" >
-   <div class="govuk-grid-column-full order-class" *ngIf="order.remissions"> 
+   <div class="govuk-grid-column-full order-class" *ngIf="order.remissions">
    <table class="govuk-table">
      <thead class="govuk-table__head">
        <tr class="govuk-table__row">
@@ -99,11 +99,11 @@
               <button  [disabled]="!chkIsRefundRemissionBtnEnable()" (click)="addRefundForRemission(order.payments[0],remission,order.fees)" class="govuk-button govuk-button--secondary"> Add refund</button>
            </td>
            <!-- <td  class="govuk-table__cell refundBtn whitespace-inherit"  >
-            
+
          </td> -->
          </tr>
      </tbody>
-     
+
 
    </table>
    <div *ngIf="order.remissions?.length === 0">
@@ -116,14 +116,14 @@
         <p class="summarypage">Total fees to pay: {{(orderFeesTotal - orderRemissionTotal) | currency:'GBP':'symbol-narrow':'1.2-2'  }}</p>
     </div>
   </div>
-  
-  
+
+
 </ng-container>
-  
- 
+
+
    <!--Payments-->
   <ng-container *ngFor="let order of orderDetail;" >
-   <div class="govuk-grid-column-full" *ngIf="order.payments"> 
+   <div class="govuk-grid-column-full" *ngIf="order.payments">
       <h3 class="heading-medium">Payments</h3>
    <table class="govuk-table ">
       <thead class="govuk-table__head">
@@ -149,7 +149,7 @@
           </tr>
       </tbody>
     </table>
- 
+
   <div *ngIf="order.payments === undefined || order.payments === null">
       <!-- <h3 class="heading-medium mar-17">Payments</h3> -->
             <span class="mar-17" >No Payments recorded</span>
@@ -164,20 +164,17 @@
       <p class="totalPay">Total left to pay: <b>0</b> </p>
   </div>
 </div>
- 
 </ng-container>
 <ccpay-add-remission *ngIf="viewStatus === 'addremission' && feeId"
 [isTurnOff]="isTurnOff"
-[isStrategicFixEnable]="isStrategicFixEnable" 
-[isOldPcipalOff]="isOldPcipalOff" 
+[isStrategicFixEnable]="isStrategicFixEnable"
 [viewCompStatus]= "viewStatus"
-[isNewPcipalOff]="isNewPcipalOff" 
-[fee]="feeId" 
+[fee]="feeId"
 [orderStatus] ="orderStatus"
 [paidAmount]= "orderTotalPayments"
 [isRefundRemission]="isRefundRemission"
-[caseType]="caseType" 
-[paymentGroupRef]="orderRef" 
+[caseType]="caseType"
+[paymentGroupRef]="orderRef"
 [isFromServiceRequestPage] = "true"
 [payment] = "payment"
 [ccdCaseNumber]="ccdCaseNumber"
@@ -196,17 +193,15 @@
 
 <ccpay-add-remission *ngIf="viewStatus === 'issuerefund' && payment"
 [isTurnOff]="isTurnOff"
-[isStrategicFixEnable]="isStrategicFixEnable" 
-[isOldPcipalOff]="isOldPcipalOff" 
+[isStrategicFixEnable]="isStrategicFixEnable"
 [viewCompStatus]= "viewStatus"
-[isNewPcipalOff]="isNewPcipalOff" 
 [isFromServiceRequestPage] = "true"
-[payment]="payment" 
+[payment]="payment"
 [orderStatus] ="orderStatus"
 [paidAmount]= "orderTotalPayments"
 [isRefundRemission]="isRefundRemission"
-[caseType]="caseType" 
-[paymentGroupRef]="orderRef" 
+[caseType]="caseType"
+[paymentGroupRef]="orderRef"
 [ccdCaseNumber]="ccdCaseNumber"
 [orderRef] = "orderRef"
 [orderStatus] = "orderStatus"
@@ -222,18 +217,16 @@
 
 <ccpay-add-remission *ngIf="viewStatus === 'addrefundforremission' && payment"
 [isTurnOff]="isTurnOff"
-[isStrategicFixEnable]="isStrategicFixEnable" 
-[isOldPcipalOff]="isOldPcipalOff" 
+[isStrategicFixEnable]="isStrategicFixEnable"
 [viewCompStatus]= "viewStatus"
-[isNewPcipalOff]="isNewPcipalOff" 
-[payment]="payment" 
+[payment]="payment"
 [orderStatus] ="orderStatus"
 [paidAmount]= "orderTotalPayments"
 [isRefundRemission]="isRefundRemission"
-[caseType]="caseType" 
+[caseType]="caseType"
 [feeamount]="remissionFeeAmt"
 [remission] = "remissions"
-[isFromServiceRequestPage]="true" 
+[isFromServiceRequestPage]="true"
 [ccdCaseNumber]="ccdCaseNumber"
 [orderRef] = "orderRef"
 [orderStatus] = "orderStatus"
@@ -249,8 +242,8 @@
 
 <ccpay-payment-view *ngIf="viewStatus === 'payment-view'"
 [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES"
-[isTurnOff] = "isTurnOff" 
-[isTakePayment] = "takePayment"  
+[isTurnOff] = "isTurnOff"
+[isTakePayment] = "takePayment"
 [caseType] = "caseType"
 [orderRef] = "orderRef"
 [orderStatus] = "orderStatus"
@@ -258,8 +251,6 @@
 [orderParty] = "orderParty"
 [orderCCDEvent] = "orderCCDEvent"
 [orderDetail] = "orderDetail"
-[isOldPcipalOff] = "isOldPcipalOff"
-[isNewPcipalOff] = "isNewPcipalOff"
 [orderFeesTotal] = "orderFeesTotal"
 [orderTotalPayments] = "orderTotalPayments"
 [orderRemissionTotal] = "orderRemissionTotal"

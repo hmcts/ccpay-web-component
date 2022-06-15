@@ -42,9 +42,7 @@ export class CaseTransactionsComponent implements OnInit {
   dcnNumber: string;
   paymentRef: string;
   isTurnOff: boolean;
-  isNewPcipalOff: boolean;
   isRefundRemission: boolean = true;
-  isOldPcipalOff: boolean;
   isStrategicFixEnable: boolean;
   isAddFeeBtnEnabled: boolean = true;
   isExceptionRecord: boolean = false;
@@ -118,8 +116,8 @@ export class CaseTransactionsComponent implements OnInit {
     if(this.OrderslistService.getnavigationPageValue() !== null) {
       this.OrderslistService.getnavigationPageValue().subscribe((data) => this.navigationpage = data);
     }
-    
-    
+
+
     if (this.paymentView !== undefined && this.paymentView !== null && this.paymentView.payment_group_reference !== undefined && this.navigationpage === 'paymentdetailspage') {
       this.goToPayementView(this.paymentView.payment_group_reference, this.paymentView.reference, this.paymentView.method);
     }
@@ -132,8 +130,8 @@ export class CaseTransactionsComponent implements OnInit {
     this.excReference = this.paymentLibComponent.EXC_REFERENCE;
     this.takePayment = this.paymentLibComponent.TAKEPAYMENT;
 
-    this.servicerequest = this.paymentLibComponent.SERVICEREQUEST.toString();
-    if (this.paymentLibComponent.SERVICEREQUEST.toString() === 'true') {
+    this.servicerequest = this.paymentLibComponent.SERVICEREQUEST;
+    if (this.paymentLibComponent.SERVICEREQUEST === 'true') {
       this.serviceRequestValue = 'true';
     } else {
       this.serviceRequestValue = 'false';
@@ -142,8 +140,6 @@ export class CaseTransactionsComponent implements OnInit {
     this.dcnNumber = this.paymentLibComponent.DCN_NUMBER;
     this.selectedOption = this.paymentLibComponent.SELECTED_OPTION.toLocaleLowerCase();
     this.isTurnOff = this.paymentLibComponent.ISTURNOFF;
-    this.isNewPcipalOff = this.paymentLibComponent.ISNEWPCIPALOFF;
-    this.isOldPcipalOff = this.paymentLibComponent.ISOLDPCIPALOFF;
     this.isStrategicFixEnable = this.paymentLibComponent.ISSFENABLE;
     if (!this.isTurnOff) {
       // if (this.lsCcdNumber !== this.ccdCaseNumber) {
@@ -164,17 +160,17 @@ export class CaseTransactionsComponent implements OnInit {
             this.paymentViewService.getPartyDetails(this.ccdCaseNumber).subscribe(
               response => {
                 this.cpoDetails = JSON.parse(response).content[0];
-  
+
               },
               (error: any) => {
                 this.errorMessage = <any>error ? error.replace(/"/g,"") : "";
                 this.isCPODown = true;
               }
             );
-  
+
           }
 
-        
+
         },
         (error: any) => {
           this.errorMessage = <any>error ? error.replace(/"/g,"") : "";
@@ -214,11 +210,11 @@ export class CaseTransactionsComponent implements OnInit {
     if( this.paymentGroups !== undefined) {
       this.checkForExceptionRecord();
     }
-   
+
     if(this.OrderslistService.getisFromServiceRequestPages() !== null) {
       this.OrderslistService.getisFromServiceRequestPages().subscribe((data) => this.isFromServiceRequestPage = data);
     }
-  
+
   }
 
   setDefaults(): void {
@@ -238,7 +234,7 @@ export class CaseTransactionsComponent implements OnInit {
   }
 
   checkForExceptionRecord(): void {
-   
+
     if (this.paymentGroups.length === 0 && (this.selectedOption.toLocaleLowerCase() === 'ccdorexception' || this.selectedOption.toLocaleLowerCase() === 'rc')) {
       this.bulkScaningPaymentService.getBSPaymentsByCCD(this.ccdCaseNumber).subscribe(
         recordData => {
@@ -319,7 +315,7 @@ export class CaseTransactionsComponent implements OnInit {
       } else if (paymentGroup.service_request_status === 'Partially paid' || paymentGroup.service_request_status === 'Not paid') {
         this.orderStatus = paymentGroup.service_request_status;
         this.orderAddBtnEnable = true;
-      } 
+      }
 
       //this.orderLevelFees.push({orderRefId:paymentGroup['payment_group_reference'],orderTotalFees: this.orderFeesTotal,orderStatus: this.orderStatus,orderParty:'Santosh', orderCCDEvent:'Case Creation',orderCreated: new Date(), orderAddBtnEnable: this.orderAddBtnEnable}); this.cpoDetails['createdTimestamp']
       if (this.cpoDetails !== null) {
@@ -413,7 +409,7 @@ export class CaseTransactionsComponent implements OnInit {
     }
   }
 
- 
+
 
 
   calculateAmounts(): void {
@@ -617,8 +613,6 @@ export class CaseTransactionsComponent implements OnInit {
     let url = this.isBulkScanEnable ? '&isBulkScanning=Enable' : '&isBulkScanning=Disable';
     url += this.isTurnOff ? '&isTurnOff=Enable' : '&isTurnOff=Disable';
     url += this.isStrategicFixEnable ? '&isStFixEnable=Enable' : '&isStFixEnable=Disable';
-    url += this.isNewPcipalOff ? '&isNewPcipalOff=Enable' : '&isNewPcipalOff=Disable';
-    url += this.isOldPcipalOff ? '&isOldPcipalOff=Enable' : '&isOldPcipalOff=Disable';
     url += `&caseType=${this.caseType}`
     this.router.navigateByUrl(`/fee-search?selectedOption=${this.selectedOption}&ccdCaseNumber=${this.ccdCaseNumber}${url}`);
   }
@@ -644,7 +638,7 @@ export class CaseTransactionsComponent implements OnInit {
 
   addRefundForRemission(payment: IPayment, remission: IRemission[],fees:any) {
     this.viewStatus = 'addrefundforremission';
- 
+
     this.payment = payment;
     this.paymentViewService.getApportionPaymentDetails(this.payment.reference).subscribe(
       paymentGroup => {
