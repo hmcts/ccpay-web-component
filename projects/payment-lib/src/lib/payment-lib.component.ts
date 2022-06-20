@@ -78,6 +78,7 @@ export class PaymentLibComponent implements OnInit {
   paymentGroupReference: string;
   paymentReference: string;
   refundReference: string;
+  isFromPayBubble: boolean = false;
   refundlistsource: any;
   viewName: string;
   isTurnOff: boolean;

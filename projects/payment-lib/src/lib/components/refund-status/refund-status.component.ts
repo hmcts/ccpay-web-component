@@ -399,6 +399,7 @@ export class RefundStatusComponent implements OnInit {
   goToRefundProcessComponent(refundReference: string, refundList: IRefundList) {
     this.paymentLibComponent.refundlistsource = refundList;
     this.paymentLibComponent.refundReference = refundReference;
+    this.paymentLibComponent.isFromPayBubble = true;
     this.paymentLibComponent.viewName = 'process-refund';
   }
 

@@ -268,31 +268,13 @@ export class ProcessRefundComponent implements OnInit {
     this.loadRefundListPage();
    }
   }
-  // loadCaseTransactionPage() {
-  //   this.paymentLibComponent.isRefundStatusView = false;
-  //   this.paymentLibCo}mponent.TAKEPAYMENT = true;
-  //   this.paymentLibComponent.viewName = 'case-transactions';
-  //   this.paymentViewService.getBSfeature().subscribe(
-  //     features => {
-  //       let result = JSON.parse(features).filter(feature => feature.uid === BS_ENABLE_FLAG);
-  //       this.paymentLibComponent.ISBSENABLE = result[0] ? result[0].enable : false;
-  //     },
-  //     err => {
-  //       this.paymentLibComponent.ISBSENABLE = false;
-  //     }
-  //   );
-
-  //   let partUrl = `selectedOption=${this.paymentLibComponent.SELECTED_OPTION}`;
-  //   partUrl += this.bsPaymentDcnNumber ? `&dcn=${this.bsPaymentDcnNumber}` : '';
-  //   partUrl += this.paymentLibComponent.ISBSENABLE ? '&isBulkScanning=Enable' : '&isBulkScanning=Disable';
-  //   partUrl += this.paymentLibComponent.ISTURNOFF ? '&isTurnOff=Enable' : '&isTurnOff=Disable';
-  //   partUrl += this.paymentLibComponent.ISSFENABLE ? '&isStFixEnable=Enable' : '&isStFixEnable=Disable';
-  //   partUrl += `&caseType=${this.paymentLibComponent.CASETYPE}`;
-  //   partUrl += this.isNewPcipalOff ? '&isNewPcipalOff=Enable' : '&isNewPcipalOff=Disable';
-  //   partUrl += this.isOldPcipalOff ? '&isOldPcipalOff=Enable' : '&isOldPcipalOff=Disable';
-  //   let url = `/payment-history/${this.ccdCaseNumber}?view=case-transactions&takePayment=true&${partUrl}`;
-  //   this.router.navigateByUrl(url);
-  // }
+  loadCaseTransactionPage() {
+    this.OrderslistService.setnavigationPage('casetransactions');
+    this.OrderslistService.setisFromServiceRequestPage(false);
+    this.paymentLibComponent.viewName = 'case-transactions';
+    this.paymentLibComponent.ISBSENABLE = true;
+    this.paymentLibComponent.isRefundStatusView = false;
+  }
 
   resetForm(vals, field) {
     if(field==='action' || field==='all') {
@@ -313,7 +295,12 @@ export class ProcessRefundComponent implements OnInit {
     }
   }
 
-  // goToCaseReview() {
-  //   this.router.navigate([`/cases/case-details/${this.ccdCaseNumber}`], {relativeTo: this.activeRoute});
-  // }
+  goToCaseReview() {
+    const isPayBubble = this.paymentLibComponent.isFromPayBubble;
+    if(isPayBubble) {
+      this.loadCaseTransactionPage();
+    } else {
+      this.router.navigate([`/cases/case-details/${this.ccdCaseNumber}`], {relativeTo: this.activeRoute});
+    }
+  }
 }
