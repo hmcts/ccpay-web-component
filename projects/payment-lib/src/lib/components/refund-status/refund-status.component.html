@@ -143,7 +143,7 @@
 
   </div>
 
-  <ng-container *ngIf="viewName==='refundview' && !isResendOperationSuccess && !isEditDetailsClicked">
+  <ng-container *ngIf="viewName==='refundview'  && !isFromPayBubble && !isResendOperationSuccess && !isEditDetailsClicked">
     <div  *ngIf="refundButtonState==='Update required'" >
       <!-- <div *ngIf="refundButtonState==='sent back'"> -->
       <br />
