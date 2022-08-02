@@ -75,7 +75,7 @@
     "tslint": "~5.12.1",
     "typescript": "3.2.4",
     "webpack-cli": "^4.9.1",
-    "xlsx": "^0.15.1"
+    "xlsx": "^0.17.0"
   },
   "resolutions": {
     "**/**/dot-prop": "^5.1.1",
