@@ -21,8 +21,6 @@ export class PaymentViewComponent implements OnInit {
   @Input() isTurnOff: boolean;
   @Input() isTakePayment: boolean;
   @Input() caseType: boolean;
-  @Input() isNewPcipalOff: boolean;
-  @Input() isOldPcipalOff: boolean;
   @Input() orderRef: string;
   @Input() orderStatus: string;
   @Input() orderTotalPayments: number;
@@ -75,7 +73,7 @@ export class PaymentViewComponent implements OnInit {
 
   ngAfterContentChecked(): void {
     this.cd.detectChanges();
- }  
+ }
 
   ngOnInit() {
     this.ccdCaseNumber = this.paymentLibComponent.CCD_CASE_NUMBER;
@@ -109,7 +107,7 @@ export class PaymentViewComponent implements OnInit {
           (paymentGroupObj => paymentGroupObj['reference'].includes(this.paymentLibComponent.paymentReference));
         const paymentAllocation = this.paymentGroup.payments[0].payment_allocation;
         this.isStatusAllocated = paymentAllocation.length > 0 && paymentAllocation[0].allocation_status === 'Allocated' || paymentAllocation.length === 0;
-       
+
       },
       (error: any) => this.errorMessage = error
     );
@@ -161,7 +159,7 @@ export class PaymentViewComponent implements OnInit {
       this.OrderslistService.getoorderTotalPaymentss().subscribe((data) => this.orderTotalPayments = data);
       this.viewStatus = 'order-full-view';
     }
-    
+
   }
 
   addRemission(fee: IFee) {
@@ -190,7 +188,7 @@ export class PaymentViewComponent implements OnInit {
       if (paymentGroup.fees !== null && paymentGroup.fees !== undefined) {
         return true;
       }
-     
+
     }
     return false;
   }
@@ -343,73 +341,4 @@ export class PaymentViewComponent implements OnInit {
     this.OrderslistService.setorderRemissionTotal(null);
     this.OrderslistService.setorderFeesTotal(null);
   }
-
-  // chkIssueRefundBtnEnable(payment: IPayment): boolean {
-  //   if (this.check4AllowedRoles2AccessRefund() && this.allowFurtherAccessAfter4Days(payment) &&
-  //     payment.method === 'payment by account' && payment.status.toLocaleLowerCase() === 'success') {
-  //     this.isIssueRefunfBtnEnable = true;
-  //   }
-  //   if (this.isIssueRefunfBtnEnable) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   };
-  // }
-
-  // chkForPBAPayment(): boolean {
-  //   if (this.paymentGroup !== null &&  this.paymentGroup !== undefined) {
-  //   let payment = this.paymentGroup.payments[0];
-  //   if (payment.method.toLocaleLowerCase() === 'payment by account' && this.allowFurtherAccessAfter4Days(payment)) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-  // }
-
-  // chkForAddRemission(feeCode: string): boolean {
-  //   if (this.chkForPBAPayment() && this.check4AllowedRoles2AccessRefund() && this.allowFurtherAccessAfter4Days(this.paymentGroup.payments[0])) {
-  //     if (this.paymentGroup.remissions && this.paymentGroup.remissions.length > 0) {
-  //       for (const remission of this.paymentGroup.remissions) {
-  //         if (remission.fee_code === feeCode) {
-  //           return false;
-  //         }
-  //       }
-  //       return true;
-  //     }
-  //     return true;
-
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
-  // check4AllowedRoles2AccessRefund = (): boolean => {
-  //   return this.allowedRolesToAccessRefund.some(role =>
-  //     this.LOGGEDINUSERROLES.indexOf(role) !== -1
-  //   );
-  // }
-
-  // allowFurtherAccessAfter4Days = (payment: IPayment): boolean => {
-  //   if(payment !== null && payment !== undefined) {
-  //   let tmp4DayAgo = new Date();
-  //   tmp4DayAgo.setDate(tmp4DayAgo.getDate() - 4);
-  //   return tmp4DayAgo >= new Date(payment.date_created);
-  //   }
-  // }
-
-  // chkIsRefundRemissionBtnEnable(): boolean {
-  //   if (this.paymentGroup !== null &&  this.paymentGroup !== undefined) {
-  //   this.paymentGroup.payments.forEach(payment => {
-  //         if (payment.method.toLocaleLowerCase() === 'payment by account' && payment.status.toLocaleLowerCase() === 'success' && this.allowFurtherAccessAfter4Days(payment)) {
-  //           this.isRefundRemissionBtnEnable = true;
-  //         }
-  //       });
-  //   if (this.isRefundRemissionBtnEnable) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   };
-  // }
-  // }
-
 }

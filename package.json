@@ -37,10 +37,9 @@
     "local-storage": "^2.0.0",
     "rxjs": "~6.4.0",
     "rxjs-compat": "^6.5.2",
+    "uuid": "7.0.3",
     "xlsx-style": "^0.8.13",
-    "zone.js": "~0.8.29",
-    "uuid": "7.0.3"
-
+    "zone.js": "~0.8.29"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.13.0",

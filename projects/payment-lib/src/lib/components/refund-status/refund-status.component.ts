@@ -24,8 +24,6 @@ const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 export class RefundStatusComponent implements OnInit {
   @Input('LOGGEDINUSERROLES') LOGGEDINUSERROLES: string[] = [];
   @Input('API_ROOT') API_ROOT: string;
-  @Input() isOldPcipalOff: boolean;
-  @Input() isNewPcipalOff: boolean;
   @Input() ccdCaseNumber: string;
   @Input() isTurnOff: boolean;
   @Input() orderParty: string;
@@ -125,7 +123,7 @@ export class RefundStatusComponent implements OnInit {
           this.refundButtonState = this.refundlist.refund_status.name;
           return;
         }
-    
+
         if (this.LOGGEDINUSERROLES.some(i => i.includes('payments-refund'))) {
           this.isProcessRefund = false;
           this.refundButtonState = this.refundlist.refund_status.name;
@@ -133,6 +131,7 @@ export class RefundStatusComponent implements OnInit {
       }
 
   }
+
   isFromPayBubble = (): boolean => { 
     return this.API_ROOT === 'api/payment-history';
   }
@@ -147,7 +146,7 @@ export class RefundStatusComponent implements OnInit {
     ),
       (error: any) => {
         this.errorMessage = error.replace(/"/g,"");
-      }; 
+      };
     }
   }
 

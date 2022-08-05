@@ -15,8 +15,7 @@ import { IPayment } from './interfaces/IPayment';
     *ngIf="viewName === 'refundstatuslist'"> </ccpay-refund-status >
     <ccpay-payment-view [LOGGEDINUSERROLES]="LOGGEDINUSERROLES" *ngIf="viewName === 'payment-view'"
     [isTurnOff]="ISTURNOFF" [isTakePayment]="TAKEPAYMENT"  [caseType]="CASETYPE"
-    [isOldPcipalOff]="ISOLDPCIPALOFF"
-    [isNewPcipalOff]="ISNEWPCIPALOFF"></ccpay-payment-view>
+    ></ccpay-payment-view>
 
     <ccpay-process-refund *ngIf="viewName === 'process-refund'"
     [refundReference]="refundReference"
@@ -35,12 +34,10 @@ import { IPayment } from './interfaces/IPayment';
     [caseType]="CASETYPE"
     ></app-allocate-payments>
     <ccpay-fee-summary *ngIf="viewName === 'fee-summary'"
-      [ccdCaseNumber]="CCD_CASE_NUMBER" 
+      [ccdCaseNumber]="CCD_CASE_NUMBER"
       [paymentGroupRef]="paymentGroupReference"
       [isTurnOff]="ISTURNOFF"
       [caseType]="CASETYPE"
-      [isOldPcipalOff]="ISOLDPCIPALOFF"
-      [isNewPcipalOff]="ISNEWPCIPALOFF"
       ></ccpay-fee-summary>
     <ccpay-reports *ngIf="viewName === 'reports'"></ccpay-reports>
     `
@@ -66,8 +63,6 @@ export class PaymentLibComponent implements OnInit {
   @Input('ISSFENABLE') ISSFENABLE: boolean;
   @Input('ISTURNOFF') ISTURNOFF: boolean;
   @Input('CASETYPE') CASETYPE: string;
-  @Input('ISOLDPCIPALOFF') ISOLDPCIPALOFF: boolean;
-  @Input('ISNEWPCIPALOFF') ISNEWPCIPALOFF: boolean;
   @Input('rootUrl') rootUrl: boolean;
   @Input('REFUNDLIST') REFUNDLIST: string;
   @Input('USERID') USERID: string;
@@ -86,8 +81,6 @@ export class PaymentLibComponent implements OnInit {
   viewName: string;
   isTurnOff: boolean;
   caseType: string;
-  isOldPcipalOff: boolean;
-  isNewPcipalOff: boolean;
   unProcessedPayment: IBSPayments = null;
   isRefundStatusView: boolean;
   isRedirectFromCaseTransactionPage: string;
@@ -116,7 +109,7 @@ export class PaymentLibComponent implements OnInit {
     private OrderslistService: OrderslistService) { }
   ngAfterContentChecked(): void {
     this.cd.detectChanges();
- }  
+ }
 
 
   ngOnInit() {

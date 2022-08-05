@@ -56,9 +56,7 @@ export class ServiceRequestComponent implements OnInit {
   dcnNumber: string;
   paymentRef: string;
   isTurnOff: boolean;
-  isNewPcipalOff: boolean;
   isRefundRemission: boolean = true;
-  isOldPcipalOff: boolean;
   isStrategicFixEnable: boolean;
   isAddFeeBtnEnabled: boolean = true;
   isExceptionRecord: boolean = false;
@@ -168,8 +166,6 @@ export class ServiceRequestComponent implements OnInit {
     partUrl += this.isStrategicFixEnable ? '&isStFixEnable=Enable' : '&isStFixEnable=Disable';
     partUrl += this.isServiceRequest !== 'false' ? '&servicerequest=true' : '&servicerequest=false';
     partUrl += `&caseType=${this.paymentLibComponent.CASETYPE}`;
-    partUrl += this.paymentLibComponent.ISNEWPCIPALOFF ? '&isNewPcipalOff=Enable' : '&isNewPcipalOff=Disable';
-    partUrl += this.paymentLibComponent.ISOLDPCIPALOFF ? '&isOldPcipalOff=Enable' : '&isOldPcipalOff=Disable';
     const url = `/payment-history/${this.paymentLibComponent.CCD_CASE_NUMBER}?view=case-transactions&selectedOption=${this.paymentLibComponent.SELECTED_OPTION}${partUrl}`;
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
       this.router.onSameUrlNavigation = 'reload';
