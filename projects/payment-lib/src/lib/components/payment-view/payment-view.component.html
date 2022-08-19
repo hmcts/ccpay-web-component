@@ -40,7 +40,7 @@
         </tr>
         <tr class="section">
           <td class="bold tb-col-w">Payment reference</td>
-          <td class="tb-col-w">{{  paymentGroup?.payments[0]?.reference }}</td>
+          <td class="tb-col-w">{{ paymentGroup?.payments[0]?.reference }}</td>
         </tr>
         <tr class="section">
           <td class="bold tb-col-w">Payment amount</td>
@@ -114,7 +114,46 @@
      <div class="remission">
         <button  [disabled]="!chkIsIssueRefundBtnEnable(paymentGroup?.payments[0])"  (click)="issueRefund(paymentGroup)" class="govuk-button govuk-button--secondary">Issue refund</button>
      </div>
+<div *ngIf="ISPAYMENTSTATUSENABLED === 'Enable'">
+     <div class="column">
+      <h2 class="heading-medium">Disputed payment history</h2>
+    </div>
+    
+    <div>
+      <table>
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Payment reference</th>
+              <th>Event</th>
+              <th></th>
+            </tr>
+          </thead> 
+          <tbody *ngIf="!errorMsg && allPaymentsFailure.length > 0">
+            <tr *ngFor="let payment of allPaymentsFailure">
+              <td>{{ payment.status }}</td>
+              <td>£{{ payment.disputed_amount | number:'.2' }}</td>
+              <td>{{(payment.representment_date ? payment.representment_date : payment.failure_event_date_time) | date:'dd MMM yyyy'}}</td>
+              <td>{{ payment.payment_reference }}</td>
+              <td >{{ payment.failure_type }}</td>
+              <td>
+                
+                <a href="javascript:void(0)" (click)="goToPaymentFailuePage(payment)">Show detail</a>
 
+              </td>
+            </tr>
+          </tbody>
+          <tbody  *ngIf="errorMsg || allPaymentsFailure.length === 0">
+            <tr>
+              <td colspan="6"> No disputed payment history available. </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+      
      <div  *ngIf="checkForFees(paymentGroup)">
       <div  *ngIf="paymentGroup.fees.length > 0">
         <div class="column">
@@ -148,7 +187,11 @@
 
           </tbody>
         </table>
+<<<<<<< HEAD
         <button [disabled]="!chkIsAddRemissionBtnEnable(fee)" (click)="addRemission(fee)" class="govuk-button govuk-button--secondary"> Add remission</button>
+=======
+        <button [disabled]="!chkForAddRemission(fee.code)" (click)="addRemission(fee)" class="govuk-button govuk-button--secondary"> Add remission</button>
+>>>>>>> 2723653942880e955e89c1ff01fae9ce92effb7a
       </div>
 
                 <!-- remissions -->
@@ -173,9 +216,6 @@
             <td class="govuk-table__cell refundBtn whitespace-inherit"  >
                <button  [disabled]="!chkIsAddRefundBtnEnable(remission)" (click)="addRefundForRemission(paymentGroup.payments[0],remission,paymentGroup.fees)" class="govuk-button govuk-button--secondary"> Add refund</button>
             </td>
-            <!-- <td *ngIf="!chkIsRefundRemissionBtnEnable()" class="govuk-table__cell refundBtn whitespace-inherit"  >
-
-          </td> -->
           </tr>
       </tbody>
 
@@ -188,19 +228,7 @@
    </div>
 
   </div>
-
-
-
-      <!-- card details -->
-      <!-- <ccpay-card-details *ngIf="isCardPayment && !isTelephonyPayment"></ccpay-card-details> -->
-
-      <!-- pba details -->
-      <!-- <ccpay-pba-details *ngIf="!isCardPayment" [payment]="paymentGroup.payments[0]"></ccpay-pba-details> -->
-
-
-
     </div>
-
   </main>
 </div>
 
@@ -305,10 +333,8 @@
 >
 </ccpay-service-request>
 
-
-
-
 </ng-container>
+<<<<<<< HEAD
 </div>
 <div class="over-payment">
 <ng-container *ngIf="viewCompStatus === 'overpayment'">
@@ -456,3 +482,75 @@
 
 </ng-container>
 </div>
+=======
+
+<ng-container *ngIf="viewStatus === 'payment-failure'">
+  <div class="payment-failure-alignment">
+    <div  class="govuk-breadcrumbs">
+      <ol class="govuk-breadcrumbs__list">
+        <li class="govuk-breadcrumbs__list-item">
+          <a href="javascript:void(0)" (click)="goBackToPaymentView($event)" class="govuk-back-link">Back</a>
+        </li>
+      </ol>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="column">
+        <h1 class="heading-large govuk-!-margin-top-0">Failure event details</h1>
+      </div>
+    </div>
+    <table>
+      <tbody>
+
+      <tr class="section">
+        <td class="bold">Failure reference</td>
+        <td>	{{selectedPaymentsStatus.failure_reference}}</td>
+      </tr>
+      <tr class="section">
+        <td class="bold">Failure reason</td>
+        <td>	{{selectedPaymentsStatus.failure_reason}}</td>
+      </tr>
+      <tr class="section">
+          <td class="bold">Payment reference</td>
+          <td>{{ selectedPaymentsStatus.payment_reference }}</td>
+      </tr>
+      <tr class="section">
+          <td class="bold">Payment amount</td>
+          <td> £{{ paymentGroup?.payments[0]?.amount | number:'.2' }}</td>
+
+      </tr>
+      <tr class="section">
+          <td class="bold">Disputed amount</td>
+          <td>	£{{selectedPaymentsStatus.disputed_amount  | number:'.2'}}</td>
+      </tr>
+      <tr class="section">
+        <td class="bold">Additional information</td>
+        <td>	{{selectedPaymentsStatus.additional_reference }}</td>
+      </tr>
+      <tr class="section">
+        <td class="bold">Failure type</td>
+        <td>	{{ selectedPaymentsStatus.failure_type }}</td>
+      </tr>
+      <tr class="section">
+        <td class="bold">Failure event date and time</td>
+        <td> {{ selectedPaymentsStatus.failure_event_date_time | date:'dd MMM yyyy HH:mm:ss' }}</td>
+      </tr>
+      <tr class="section" *ngIf="selectedPaymentsStatus.has_amount_debited">
+        <td class="bold">Has disputed amount debited</td>
+        <td>	{{selectedPaymentsStatus.has_amount_debited}}</td>
+      </tr>
+      <tr class="section" *ngIf="selectedPaymentsStatus.representment_status">
+        <td class="bold">Status following representation of payment</td>
+        <td>	{{(selectedPaymentsStatus.representment_status === 'Yes' || selectedPaymentsStatus.representment_status === 'yes') ? 'Success' : 'Failure'}}</td>
+      </tr>
+      <tr class="section" *ngIf="selectedPaymentsStatus.representment_date">
+        <td class="bold">Date payment represented</td>
+        <td>	{{selectedPaymentsStatus.representment_date  | date:'dd MMM yyyy HH:mm:ss'}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div>
+    </div>
+  </div>
+</ng-container>
+>>>>>>> 2723653942880e955e89c1ff01fae9ce92effb7a

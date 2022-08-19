@@ -119,7 +119,19 @@ downloadReport(){
           this.isDownLoadButtondisabled = false;
           this.errorMessage = this.errorHandlerService.getServerErrorMessage(true);
         })
-    } else {
+
+    // }else if(selectedReportName === 'PAYMENT_FAILURE_EVENT') {
+
+    //   this.paymentViewService.downloadFailureReport(selectedStartDate,selectedEndDate).subscribe(
+    //     response =>  {
+
+    //     },
+    //     (error: any) => {
+
+    //     })
+
+    // } 
+      } else {
       this.bulkScaningPaymentService.downloadSelectedReport(selectedReportName,selectedStartDate,selectedEndDate).subscribe(
         response =>  {
           this.errorMessage = this.errorHandlerService.getServerErrorMessage(false);
@@ -192,6 +204,10 @@ downloadReport(){
         result = 'Over Payment_Under Payment';
         break; 
       } 
+      case 'PAYMENT_FAILURE_EVENT': { 
+        result = 'Payment failure event';
+        break; 
+      }
       default: { 
         result = selectedOption;
         break; 

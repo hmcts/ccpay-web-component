@@ -1,0 +1,49 @@
+.tb-col-w {
+    width: 330px;
+}
+
+.tr-border {
+    border-bottom: 2px solid;
+}
+.payment-view-alignment {
+    margin-left: 30px;
+}
+
+.govuk-button {
+    font-size: 19px;
+    float: left;
+    margin-top:2em
+}
+
+.remission {
+    margin-bottom: 7em;
+}
+
+.govuk-error-summary__title {
+    font-size: 24px !important;
+  }
+  .govuk-table__cell, .govuk-table__header {
+    padding:0px;
+    line-height: 1.3;
+    vertical-align: middle;
+}
+.govuk-table__row {
+    line-height: 1.3;
+}
+.govuk-table__cell:last-child {
+    text-align: right;
+}
+
+.text-transform::first-letter {
+    text-transform: capitalize;
+}
+.govuk-link {
+    cursor: pointer;
+}
+
+.mar-17 {
+    font-size: 19px !important;
+}
+.payment-failure-alignment {
+    margin-bottom: 50px;
+}

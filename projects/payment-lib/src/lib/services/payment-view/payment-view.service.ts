@@ -145,6 +145,10 @@ export class PaymentViewService {
     const url = `${this.paymentLibService.API_ROOT}/report/data?date_from=${startDate}&date_to=${endDate}&report_type=${reportName}`;
     return this.https.get(url, { withCredentials: true }).pipe( catchError(this.errorHandlerService.handleError));
   }
+  downloadFailureReport(startDate: string, endDate:string): Observable<any> {
+    const url = `${this.paymentLibService.API_ROOT}/payment-failures/failure-report?date_from=${startDate}&date_to=${endDate}`;
+    return this.https.get(url, { withCredentials: true }).pipe( catchError(this.errorHandlerService.handleError));
+  }
   getBSfeature(): Observable<any> {
     return this.https.get('api/payment-history/bulk-scan-feature', { withCredentials: true }).pipe( catchError(this.errorHandlerService.handleError));
   }
@@ -179,6 +183,13 @@ export class PaymentViewService {
 
   postRefundRetroRemission(body:PostIssueRefundRetroRemission) {
     return this.https.post(`${this.paymentLibService.API_ROOT}/refund-retro-remission`, body).pipe(
+      catchError(this.errorHandlerService.handleError)
+    );
+  }
+ getPaymentFailure(paymentReference: string): Observable<any> {
+    return this.https.get(`${this.paymentLibService.API_ROOT}/payment-failures/${paymentReference}`, {
+      withCredentials: true
+    }).pipe(
       catchError(this.errorHandlerService.handleError)
     );
   }
