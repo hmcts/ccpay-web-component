@@ -187,11 +187,7 @@
 
           </tbody>
         </table>
-<<<<<<< HEAD
         <button [disabled]="!chkIsAddRemissionBtnEnable(fee)" (click)="addRemission(fee)" class="govuk-button govuk-button--secondary"> Add remission</button>
-=======
-        <button [disabled]="!chkForAddRemission(fee.code)" (click)="addRemission(fee)" class="govuk-button govuk-button--secondary"> Add remission</button>
->>>>>>> 2723653942880e955e89c1ff01fae9ce92effb7a
       </div>
 
                 <!-- remissions -->
@@ -334,7 +330,6 @@
 </ccpay-service-request>
 
 </ng-container>
-<<<<<<< HEAD
 </div>
 <div class="over-payment">
 <ng-container *ngIf="viewCompStatus === 'overpayment'">
@@ -482,7 +477,6 @@
 
 </ng-container>
 </div>
-=======
 
 <ng-container *ngIf="viewStatus === 'payment-failure'">
   <div class="payment-failure-alignment">
@@ -553,4 +547,3 @@
     </div>
   </div>
 </ng-container>
->>>>>>> 2723653942880e955e89c1ff01fae9ce92effb7a
