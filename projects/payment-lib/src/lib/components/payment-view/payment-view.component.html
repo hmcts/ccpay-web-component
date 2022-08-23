@@ -114,7 +114,7 @@
      <div class="remission">
         <button  [disabled]="!chkIsIssueRefundBtnEnable(paymentGroup?.payments[0])"  (click)="issueRefund(paymentGroup)" class="govuk-button govuk-button--secondary">Issue refund</button>
      </div>
-<div *ngIf="ISPAYMENTSTATUSENABLED === 'Enable'">
+<div *ngIf="ISPAYMENTSTATUSENABLED">
      <div class="column">
       <h2 class="heading-medium">Disputed payment history</h2>
     </div>

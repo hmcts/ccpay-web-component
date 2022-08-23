@@ -87,10 +87,11 @@ export class ErrorHandlerService {
   }
 
 
-  getServerErrorMessage(isErrorExist) {
+  getServerErrorMessage(isErrorExist, isDataNotExist = false, error='') {
+    const bodyContent = isDataNotExist ? error : 'Try again later';
     return {
       title: "There is a problem with the service",
-      body: "Try again later",
+      body: bodyContent,
       showError: isErrorExist
     };
   }

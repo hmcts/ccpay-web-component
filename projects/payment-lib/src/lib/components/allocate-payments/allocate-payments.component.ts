@@ -33,7 +33,7 @@ export class AllocatePaymentsComponent implements OnInit {
     amount: 0
   };
   siteID: string = null;
-  errorMessage = this.errorHandlerService.getServerErrorMessage(false);
+  errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
   paymentGroup: IPaymentGroup;
   paymentGroups: IPaymentGroup[] = [];	
   remainingAmount: number;
@@ -153,18 +153,18 @@ export class AllocatePaymentsComponent implements OnInit {
     if(!this.isTurnOff){
       this.paymentViewService.getPaymentGroupDetails(this.paymentRef).subscribe(
         paymentGroup => {
-          this.errorMessage = this.errorHandlerService.getServerErrorMessage(false);
+          this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
           this.paymentGroup  = paymentGroup;
           this.saveAndContinue();
         },
         (error: any) => {
-          this.errorMessage = this.errorHandlerService.getServerErrorMessage(true);
+          this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
         }
       );
     }else {
       this.caseTransactionsService.getPaymentGroups(this.ccdCaseNumber).subscribe(
         paymentGroups => {
-          this.errorMessage = this.errorHandlerService.getServerErrorMessage(false);
+          this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
         this.paymentGroups = paymentGroups['payment_groups'].filter(paymentGroup => {
             paymentGroup.fees.forEach(fee => {
               if(fee.calculated_amount === 0) {
@@ -177,7 +177,7 @@ export class AllocatePaymentsComponent implements OnInit {
         });
         },
         (error: any) => {
-          this.errorMessage = this.errorHandlerService.getServerErrorMessage(true);
+          this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
         }
       );
     }
@@ -296,14 +296,14 @@ export class AllocatePaymentsComponent implements OnInit {
       (this.ccdReference, this.unAllocatedPayment, this.caseType, this.exceptionReference, allocatedRequest);
       this.bulkScaningPaymentService.postBSPaymentStrategic(postStrategicBody , this.paymentGroup.payment_group_reference).subscribe(
         res => {
-          this.errorMessage = this.errorHandlerService.getServerErrorMessage(false);
+          this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
           let response = JSON.parse(res);
           if (response.success) {
            this.gotoCasetransationPage();
           }
         },
         (error: any) => {
-          this.errorMessage = this.errorHandlerService.getServerErrorMessage(true);
+          this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
           window.scrollTo(0, 0);
           this.isConfirmButtondisabled = false;
         });
@@ -311,14 +311,14 @@ export class AllocatePaymentsComponent implements OnInit {
     } else {
     this.bulkScaningPaymentService.patchBSChangeStatus(this.unAllocatedPayment.dcn_reference, 'PROCESSED').subscribe(
       res1 => {
-        this.errorMessage = this.errorHandlerService.getServerErrorMessage(false);
+        this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
         let response1 = JSON.parse(res1);
         if (response1.success) {
           const requestBody = new AllocatePaymentRequest
           (this.ccdReference, this.unAllocatedPayment, this.siteID, this.exceptionReference);
           this.bulkScaningPaymentService.postBSAllocatePayment(requestBody, this.paymentGroup.payment_group_reference).subscribe(
             res2 => {
-              this.errorMessage = this.errorHandlerService.getServerErrorMessage(false);
+              this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
               let response2 = JSON.parse(res2);
               const reqBody = new IAllocationPaymentsRequest
               (response2['data'].payment_group_reference, response2['data'].reference, this.paymentReason, this.otherPaymentExplanation, this.userName);
@@ -326,7 +326,7 @@ export class AllocatePaymentsComponent implements OnInit {
                 this.paymentViewService.postBSAllocationPayments(reqBody).subscribe(
   
                 res3 => {
-                  this.errorMessage = this.errorHandlerService.getServerErrorMessage(false);
+                  this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
                   let response3 = JSON.parse(res3);
                   if (response3.success) {
                    this.gotoCasetransationPage();
@@ -334,7 +334,7 @@ export class AllocatePaymentsComponent implements OnInit {
                 },
                 (error: any) => {
                   this.bulkScaningPaymentService.patchBSChangeStatus(this.unAllocatedPayment.dcn_reference, 'COMPLETE').subscribe();
-                  this.errorMessage = this.errorHandlerService.getServerErrorMessage(true);
+                  this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
                   window.scrollTo(0, 0);
                   this.isConfirmButtondisabled = false;
                 }
@@ -343,7 +343,7 @@ export class AllocatePaymentsComponent implements OnInit {
             },
             (error: any) => {
               this.bulkScaningPaymentService.patchBSChangeStatus(this.unAllocatedPayment.dcn_reference, 'COMPLETE').subscribe();
-              this.errorMessage = this.errorHandlerService.getServerErrorMessage(true);
+              this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
               window.scrollTo(0, 0);
               this.isConfirmButtondisabled = false;
             }
@@ -351,7 +351,7 @@ export class AllocatePaymentsComponent implements OnInit {
       }
       },
       (error: any) => {
-        this.errorMessage = this.errorHandlerService.getServerErrorMessage(true);
+        this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
         window.scrollTo(0, 0);
         this.isConfirmButtondisabled = false;
       }
@@ -394,7 +394,7 @@ export class AllocatePaymentsComponent implements OnInit {
    getUnassignedPayment() {
     this.bulkScaningPaymentService.getBSPaymentsByDCN(this.bspaymentdcn).subscribe(
       unassignedPayments => {
-        this.errorMessage = this.errorHandlerService.getServerErrorMessage(false);
+        this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
         this.unAllocatedPayment = unassignedPayments['data'].payments.filter(payment => {
           return payment && payment.dcn_reference == this.bspaymentdcn;
         })[0];
@@ -407,7 +407,7 @@ export class AllocatePaymentsComponent implements OnInit {
        this.getPaymentGroupDetails();
       },
       (error: any) => {
-        this.errorMessage = this.errorHandlerService.getServerErrorMessage(true);
+        this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
       }
     );
   }

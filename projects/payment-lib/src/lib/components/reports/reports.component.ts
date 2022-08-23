@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { formatDate } from "@angular/common";
 import {IPaymentGroup} from '../../interfaces/IPaymentGroup';
@@ -6,6 +6,7 @@ import { BulkScaningPaymentService } from '../../services/bulk-scaning-payment/b
 import { ErrorHandlerService } from '../../services/shared/error-handler.service';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import {XlFileService} from '../../services/xl-file/xl-file.service';
+import { FindValueSubscriber } from 'rxjs/internal/operators/find';
 
 @Component({
   selector: 'ccpay-reports',
@@ -13,14 +14,19 @@ import {XlFileService} from '../../services/xl-file/xl-file.service';
   styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
+  @Input() ISPAYMENTSTATUSENABLED: string;
+  fmt = 'dd/MM/yyyy';
+  loc = 'en-US';
   reportsForm: FormGroup;
   startDate: string;
   endDate: string;
+  errorMeaagse: string;
   ccdCaseNumber: string;
   isDownLoadButtondisabled:Boolean = false;
   isStartDateLesthanEndDate: Boolean = false;
+  isDateBetwnMonth: Boolean = false;
   isDateRangeBetnWeek: Boolean = false;
-  errorMessage = this.errorHandlerService.getServerErrorMessage(false);
+  errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
   paymentGroups: IPaymentGroup[] = [];
 
   constructor(
@@ -48,14 +54,22 @@ export class ReportsComponent implements OnInit {
   const selectedStartDate = this.tranformDate(this.reportsForm.get('startDate').value),
     selectedEndDate = this.tranformDate(this.reportsForm.get('endDate').value);
   const isDateRangeMoreThanWeek = (<any>new Date(selectedStartDate) - <any>new Date(selectedEndDate))/(1000 * 3600 * -24) > 7;
+  const isDateRangeMoreThanMonth = (<any>new Date(selectedStartDate) - <any>new Date(selectedEndDate))/(1000 * 3600 * -24) > 30;
   if(new Date(selectedStartDate) > new Date(selectedEndDate) && selectedEndDate !== ''){
     this.reportsForm.get('startDate').setValue('');
     this.isDateRangeBetnWeek = false;
+    this.isDateBetwnMonth = false;
     this.isStartDateLesthanEndDate = true;
   } else if(reportName && reportName ==='SURPLUS_AND_SHORTFALL' && isDateRangeMoreThanWeek ) {
     this.isDateRangeBetnWeek = true;
+    this.isDateBetwnMonth = false;
+    this.isStartDateLesthanEndDate = false;
+  } else if(reportName && reportName ==='PAYMENT_FAILURE_EVENT' && isDateRangeMoreThanMonth ) {
+    this.isDateRangeBetnWeek = false;
+    this.isDateBetwnMonth = true;
     this.isStartDateLesthanEndDate = false;
   } else {
+    this.isDateBetwnMonth = false;
     this.isDateRangeBetnWeek = false;
     this.isStartDateLesthanEndDate = false;
   }
@@ -83,7 +97,7 @@ downloadReport(){
     if(selectedReportName === 'PROCESSED_UNALLOCATED' || selectedReportName === 'SURPLUS_AND_SHORTFALL' ){
       this.paymentViewService.downloadSelectedReport(selectedReportName,selectedStartDate,selectedEndDate).subscribe(
         response =>  {
-          this.errorMessage = this.errorHandlerService.getServerErrorMessage(false);
+          this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
           const result = JSON.parse(response);
           let res= {data: this.applyDateFormat(result)};
           if(res['data'].length === 0 && selectedReportName === 'PROCESSED_UNALLOCATED' ){
@@ -117,24 +131,45 @@ downloadReport(){
         },
         (error: any) => {
           this.isDownLoadButtondisabled = false;
-          this.errorMessage = this.errorHandlerService.getServerErrorMessage(true);
+          this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
         })
 
-    // }else if(selectedReportName === 'PAYMENT_FAILURE_EVENT') {
+    } else if(selectedReportName === 'PAYMENT_FAILURE_EVENT') {
 
-    //   this.paymentViewService.downloadFailureReport(selectedStartDate,selectedEndDate).subscribe(
-    //     response =>  {
+      this.paymentViewService.downloadFailureReport(selectedStartDate,selectedEndDate).subscribe(
+        response =>  {
+          this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
+          const result = {data: JSON.parse(response)['payment_failure_report_list']};
+          let res = {data: this.applyDateFormat(result)};
+          if (result['data'].length > 0) {
+            for ( var i=0; i< res['data'].length; i++) {
+              if (res['data'][i]["disputed_amount"] !== undefined) {
+                res['data'][i]['disputed_amount'] = this.convertToFloatValue(res['data'][i]["disputed_amount"]);
+              }
+              if (res['data'][i]["representment_status"] !== undefined) {
+                res['data'][i]['representment_status'] = res['data'][i]["representment_status"].toLowerCase() === 'yes' ? 'Success' : 'Failure';
+              }
+            }
+          }
+          this.isDownLoadButtondisabled = false;
+          this.xlFileService.exportAsExcelFile(res['data'], this.getFileName(this.reportsForm.get('selectedreport').value, selectedStartDate, selectedEndDate ));
 
-    //     },
-    //     (error: any) => {
+        },
+        (error: any) => {
+          this.isDownLoadButtondisabled = false;
+          const errorContent = error.replace(/[^a-zA-Z ]/g, '').trim();
+          const statusCode = error.replace(/[^a-zA-Z0-9 ]/g, '').trim().split(' ')[0];
+          if(statusCode === '404') {
+            this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, true, errorContent);
+          }else {
+            this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
+          }
+        })
 
-    //     })
-
-    // } 
-      } else {
+    } else {
       this.bulkScaningPaymentService.downloadSelectedReport(selectedReportName,selectedStartDate,selectedEndDate).subscribe(
         response =>  {
-          this.errorMessage = this.errorHandlerService.getServerErrorMessage(false);
+          this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
           const result = JSON.parse(response);
           let res = {data: this.applyDateFormat(result)};
           if(res['data'].length === 0 && selectedReportName === 'DATA_LOSS' ){
@@ -158,7 +193,7 @@ downloadReport(){
         },
         (error: any) => {
           this.isDownLoadButtondisabled = false;
-          this.errorMessage = this.errorHandlerService.getServerErrorMessage(true);
+          this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
         })
     }
   }
@@ -216,14 +251,32 @@ downloadReport(){
    return result;
   }
   applyDateFormat(res) {
-    const fmt = 'dd/MM/yyyy',
-    loc = 'en-US';
     return res['data'].map(value => {
       if (value['date_banked']) {
-        value['date_banked'] = formatDate(value['date_banked'], fmt, loc);
+        value['date_banked'] = formatDate(value['date_banked'], this.fmt, this.loc);
+      }
+      if (value['event_date'] && value['event_date'].indexOf(',') === -1) {
+        value['event_date'] = formatDate(value['event_date'], this.fmt, this.loc);
+      } else if (value['event_date'] && value['event_date'].indexOf(',') !== -1) {
+        value['event_date'] = this.multiDateFormater(value['event_date'])
+      }
+
+      if (value['representment_date'] && value['representment_date'].indexOf(',') === -1) {
+        value['representment_date'] = formatDate(value['representment_date'], this.fmt, this.loc);
+      } else if (value['representment_date'] && value['representment_date'].indexOf(',') !== -1) {
+        value['representment_date'] = this.multiDateFormater(value['representment_date'])
+      }
+
+      if (value['refund_date'] && value['refund_date'].indexOf(',') === -1) {
+        value['refund_date'] = formatDate(value['refund_date'], this.fmt, this.loc);
+      } else if (value['refund_date'] && value['refund_date'].indexOf(',') !== -1) {
+        value['refund_date'] = this.multiDateFormater(value['refund_date'])
       }
       return value;
     });
+  }
+  multiDateFormater(dateStr) {
+   return dateStr.split(',').map((date) => formatDate(date, this.fmt, this.loc)).join(',');
   }
   
   convertToFloatValue(amt) {
