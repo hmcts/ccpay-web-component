@@ -28,7 +28,7 @@ export class XlFileService {
       worksheet =  this.setProcessedUnallocatedReportHeaders(worksheet);
       worksheet = this.autoFitColumns(worksheet,json);
     } else if(excelFileName.match('Payment failure')!== null){
-      worksheet =  XLSX.utils.json_to_sheet(json,{header:['payment_reference','ccd_reference','org_id','service_name','failure_reference','failure_reason','disputed_amount','event_name','event_date','representment_status','representment_date','refund_references','refund_amount','refund_date']});
+      worksheet =  XLSX.utils.json_to_sheet(json,{header:['payment_reference','ccd_reference','org_id','service_name','failure_reference','failure_reason','disputed_amount','event_name','event_date','representment_status','representment_date','refund_reference','refund_amount','refund_date']});
       worksheet =  this.setPaymentFailureReportHeaders(worksheet);
       worksheet = this.autoFitColumns(worksheet,json);
     } else {
