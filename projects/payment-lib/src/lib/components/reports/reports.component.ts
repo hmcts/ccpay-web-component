@@ -149,6 +149,21 @@ downloadReport(){
               if (res['data'][i]["representment_status"] !== undefined) {
                 res['data'][i]['representment_status'] = res['data'][i]["representment_status"].toLowerCase() === 'yes' ? 'Success' : 'Failure';
               }
+              if (res['data'][i]['representment_status'] === undefined) {
+                res['data'][i]['representment_status'] = 'No representment received';
+              }
+              if (res['data'][i]['representment_date'] === undefined) {
+                res['data'][i]['representment_date'] = 'N/A';
+              }
+              if (res['data'][i]['refund_reference'] === undefined) {
+                res['data'][i]['refund_reference'] = 'No refund available';
+              }
+              if (res['data'][i]['refund_amount'] === undefined) {
+                res['data'][i]['refund_amount'] = 'N/A';
+              }
+              if (res['data'][i]['refund_date'] === undefined) {
+                res['data'][i]['refund_date'] = 'N/A';
+              }
             }
           }
           this.isDownLoadButtondisabled = false;
