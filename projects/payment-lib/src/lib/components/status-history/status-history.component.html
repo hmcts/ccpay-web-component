@@ -20,12 +20,12 @@
           <th *ngIf="isTakePayment">Amount</th>
           <th>Date and time</th>
         </tr>
-      </thead> 
+      </thead>
       <tbody>
         <tr *ngFor="let status of statuses.status_histories">
           <td>{{ status.status }}</td>
           <td *ngIf="isTakePayment">£{{ statuses.amount | number:'.2' }}</td>
-          <td>{{ status.date_created | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+          <td>{{ status.date_created | date:'dd MMMM yyyy HH:mm:ss'}}</td>
         </tr>
     </tbody>
   </table>
