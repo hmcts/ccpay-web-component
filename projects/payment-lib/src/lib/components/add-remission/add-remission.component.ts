@@ -185,7 +185,7 @@ export class AddRemissionComponent implements OnInit {
     if(this.refundPaymentReference !== undefined && this.refundPaymentReference.length >0) {
       this.paymentReference = this.refundPaymentReference
     } else {
-      this.paymentReference = this.payment.reference;
+      this.paymentReference = (this.payment !== undefined) ? this.payment.reference : ''; 
     }
     
 
