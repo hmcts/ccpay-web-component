@@ -45,5 +45,6 @@
     font-size: 19px !important;
 }
 .payment-failure-alignment {
-    margin-bottom: 50px;
+    margin-bottom: 50px !important;
+    margin-left: 15px !important;
 }

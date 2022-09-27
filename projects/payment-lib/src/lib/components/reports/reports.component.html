@@ -65,7 +65,7 @@
             <span class="form-hint">Requests where balances are marked as Under payment/Over payment further case management.
                E.g: Refund approval, Customer contact</span>
          </div>
-         <!-- <div class="govuk-radios__item">
+         <div class="govuk-radios__item" *ngIf="ISPAYMENTSTATUSENABLED">
             <input 
             id="PaymentFailureEvent"
             class="govuk-radios__input"
@@ -77,7 +77,7 @@
             data-aria-controls="PaymentFailureEvent"/>
             <label class="govuk-label govuk-radios__label govuk-label--m" for="PaymentFailureEvent">Payment failure event</label>
             <span class="form-hint">Failed payment transaction details</span>
-         </div> -->
+         </div>
        </div>
      </div>
      <div  class="govuk-form-group">
@@ -91,9 +91,10 @@
       <input (change)="getSelectedFromDate()" [max]="getToday()" class="form-control" id="date-to" name="search" type="date" formControlName="endDate" required/>
       </div>
      </div>
-   <p class="inline-error-message" *ngIf="isStartDateLesthanEndDate || isDateRangeBetnWeek">
+   <p class="inline-error-message" *ngIf="isStartDateLesthanEndDate || isDateRangeBetnWeek || isDateBetwnMonth">
       <span *ngIf="isStartDateLesthanEndDate">Please select 'Date From' less than or equal to 'Date To'</span>
       <span *ngIf="isDateRangeBetnWeek"> Please select the date range between 7 days</span>
+      <span *ngIf="isDateBetwnMonth"> Please select the date range between 30 days</span>
    </p>
     <div class="btnsubmit">
      <button type="submit" (click)="downloadReport()" class="button" [disabled]="!reportsForm.valid || isDownLoadButtondisabled || isStartDateLesthanEndDate || isDateRangeBetnWeek">Download report</button>

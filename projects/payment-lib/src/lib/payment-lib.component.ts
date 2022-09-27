@@ -40,7 +40,9 @@ import { IPayment } from './interfaces/IPayment';
       [isTurnOff]="ISTURNOFF"
       [caseType]="CASETYPE"
       ></ccpay-fee-summary>
-    <ccpay-reports *ngIf="viewName === 'reports'"></ccpay-reports>
+    <ccpay-reports *ngIf="viewName === 'reports'"
+    [ISPAYMENTSTATUSENABLED] = "ISPAYMENTSTATUSENABLED"
+    ></ccpay-reports>
     `
 })
 

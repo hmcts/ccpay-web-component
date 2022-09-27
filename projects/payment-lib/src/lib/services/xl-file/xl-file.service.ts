@@ -15,6 +15,7 @@ export class XlFileService {
   public exportAsExcelFile(json: any[], excelFileName: string): void {
     let worksheet: XLSX.WorkSheet; 
     let workbook: XLSX.WorkBook; 
+    console.log(excelFileName);
 
     if(excelFileName.match('Data_Loss')!== null){
      worksheet =  XLSX.utils.json_to_sheet(json,{header:['loss_resp','payment_asset_dcn','env_ref','env_item','resp_service_id','resp_service_name','date_banked','bgc_batch','payment_method','amount']});
@@ -27,6 +28,10 @@ export class XlFileService {
     } else if(excelFileName.match('Processed_Unallocated')!== null){
       worksheet =  XLSX.utils.json_to_sheet(json,{header:['resp_service_id','resp_service_name','allocation_status','receiving_office','allocation_reason','ccd_exception_reference','ccd_case_reference','payment_asset_dcn','env_ref','env_item','date_banked','bgc_batch','payment_method','amount']});
       worksheet =  this.setProcessedUnallocatedReportHeaders(worksheet);
+      worksheet = this.autoFitColumns(worksheet,json);
+    } else if(excelFileName.match('Payment failure')!== null){
+      worksheet =  XLSX.utils.json_to_sheet(json,{header:['payment_reference','ccd_reference','org_id','service_name','failure_reference','failure_reason','disputed_amount','event_name','event_date','representment_status','representment_date','refund_reference','refund_amount','refund_date']});
+      worksheet =  this.setPaymentFailureReportHeaders(worksheet);
       worksheet = this.autoFitColumns(worksheet,json);
     } else {
       worksheet =  XLSX.utils.json_to_sheet(json,{header:['resp_service_id','resp_service_name','surplus_shortfall','balance','payment_amount','ccd_case_reference', 'ccd_exception_reference', 'processed_date', 'reason', 'explanation', 'user_name']});
@@ -112,6 +117,23 @@ private setProcessedUnallocatedReportHeaders (worksheet: XLSX.WorkSheet): XLSX.W
   return worksheet;
 }
 
+private setPaymentFailureReportHeaders (worksheet: XLSX.WorkSheet): XLSX.WorkSheet {
+  worksheet.A1.v = "Payment reference";
+  worksheet.B1.v = "CCD reference";
+  worksheet.C1.v = "OrgID";
+  worksheet.D1.v = "Service name";
+  worksheet.E1.v = "Failure reference";
+  worksheet.F1.v = "Failure reason";
+  worksheet.G1.v = "Disputed amount";
+  worksheet.H1.v = "Event name";
+  worksheet.I1.v = "Event date";
+  worksheet.J1.v = "Representment status";
+  worksheet.K1.v = "Representment date";
+  worksheet.L1.v = "Refund reference";
+  worksheet.M1.v = "Refund amount";
+  worksheet.N1.v = "Refund date";
+  return worksheet;
+}
 private setShortFallReportHeaders (worksheet: XLSX.WorkSheet): XLSX.WorkSheet {
   worksheet.A1.v = "Resp_Service ID";
   worksheet.B1.v = "Resp_Service Name";
