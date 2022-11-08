@@ -312,6 +312,9 @@ export class CaseTransactionsComponent implements OnInit {
       } else if (paymentGroup.service_request_status === 'Partially paid' || paymentGroup.service_request_status === 'Not paid') {
         this.orderStatus = paymentGroup.service_request_status;
         this.orderAddBtnEnable = true;
+      } else if (paymentGroup.service_request_status === 'Disputed'){
+        this.orderStatus = paymentGroup.service_request_status;
+        this.orderAddBtnEnable = true;
       }
 
       //this.orderLevelFees.push({orderRefId:paymentGroup['payment_group_reference'],orderTotalFees: this.orderFeesTotal,orderStatus: this.orderStatus,orderParty:'Santosh', orderCCDEvent:'Case Creation',orderCreated: new Date(), orderAddBtnEnable: this.orderAddBtnEnable}); this.cpoDetails['createdTimestamp']
