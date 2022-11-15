@@ -324,9 +324,21 @@
             {{contactDetailsObj?.address_line}}&nbsp;{{contactDetailsObj?.city}}&nbsp;{{contactDetailsObj?.county}}&nbsp;{{contactDetailsObj?.country}}&nbsp;{{contactDetailsObj?.postal_code}}
           </div>
           <a (click)="gotoProcessRetroRemission(contactDetailsObj)" class="govuk-link right margin-top--size" >Change</a>
+          <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="showNotificationPreview()">
+            Preview
+          </a>
+          <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="hideNotificationPreview()">
+            Hide Preview
+          </a>
       </td>
       </tr>
     </table>
+
+    <app-notification-preview *ngIf="notificationPreview" 
+    [payment]="remessionPayment" 
+    [contactDetails]="contactDetailsObj"
+    [refundReason]="'Retrospective remission'"
+    [refundAmount]="remissionForm.controls.amount.value"></app-notification-preview>
 
     <button type="submit" class="button govuk-button--secondary" (click)="gotoProcessRetroRemission(contactDetailsObj)">Previous</button>
     <button type="submit" [disabled]="isConfirmationBtnDisabled" [ngClass]='isConfirmationBtnDisabled ? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"' (click)="processRefund()"> Submit refund </button>
@@ -672,9 +684,23 @@
             {{contactDetailsObj?.address_line}}&nbsp;{{contactDetailsObj?.city}}&nbsp;{{contactDetailsObj?.county}}&nbsp;{{contactDetailsObj?.country}}&nbsp;{{contactDetailsObj?.postal_code}}
           </div>
           <a (click)="gotoContactDetailsPage(contactDetailsObj)" class="govuk-link right margin-top--size" >Change</a>
+          <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="showNotificationPreview()">
+            Preview
+          </a>
+          <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="hideNotificationPreview()">
+            Hide Preview
+          </a>
       </td>
     </tr>
     </table>
+
+    <app-notification-preview *ngIf="notificationPreview" 
+    [payment]="payment" 
+    [contactDetails]="contactDetailsObj"
+    [refundReason]="displayRefundReason"
+    [refundAmount]="isFullyRefund ? payment.amount : totalRefundAmount"></app-notification-preview>
+
+
     <div class="govuk-button-group">
     <button type="submit" class="button govuk-button--secondary" (click)="gotoContactDetailsPage(contactDetailsObj)"> Previous </button>
     <button type="submit"
@@ -755,8 +781,21 @@
             {{contactDetailsObj?.address_line}}&nbsp;{{contactDetailsObj?.city}}&nbsp;{{contactDetailsObj?.county}}&nbsp;{{contactDetailsObj?.country}}&nbsp;{{contactDetailsObj?.postal_code}}
           </div>
           <a (click)="gotoAddressPage(contactDetailsObj)" class="govuk-link right margin-top--size" >Change</a>
+          <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="showNotificationPreview()">
+            Preview
+          </a>
+          <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="hideNotificationPreview()">
+            Hide Preview
+          </a>
       </td>
     </table>
+
+    <app-notification-preview *ngIf="notificationPreview" 
+    [contactDetails]="contactDetailsObj"
+    [paymentReference]="paymentReference"
+    [refundReason]="'Retrospective remission'"
+    [refundAmount]="remission.hwf_amount"></app-notification-preview>
+
     <div class="govuk-button-group">
     <button type="submit" class="button govuk-button--secondary" (click)="gotoAddressPage(contactDetailsObj)">Previous</button>
     <button type="submit"

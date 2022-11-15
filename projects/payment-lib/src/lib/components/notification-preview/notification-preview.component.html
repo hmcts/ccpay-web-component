@@ -1,0 +1,69 @@
+<div class="govuk-grid-column-full">
+  <table class="govuk-table">
+    <tbody class="govuk-table__body">
+      <ng-container *ngIf="notification && notification.template_type === 'email'">
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell whitespace-inherit"><strong>From:</strong>
+            {{notification.from.from_email_address}}</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell whitespace-inherit"><strong>To:</strong>
+            {{notification.recipient_contact.recipient_email_address}}</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell whitespace-inherit"><strong>Subject:</strong>
+            {{notification.subject}}</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell whitespace-inherit">
+            <div [innerHTML]="notification.html"></div>
+          </td>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="notification && notification.template_type === 'letter'">
+        <tr class="govuk-table__row">
+          <td class="letter-row-border">
+            <ng-container *ngIf="notification.recipient_contact.recipient_mail_address.address_line">
+              {{notification.recipient_contact.recipient_mail_address.address_line}}<br /></ng-container>
+            <ng-container *ngIf="notification.recipient_contact.recipient_mail_address.city">
+              {{notification.recipient_contact.recipient_mail_address.city}}<br /></ng-container>
+            <ng-container *ngIf="notification.recipient_contact.recipient_mail_address.county">
+              {{notification.recipient_contact.recipient_mail_address.county}}<br /></ng-container>
+            <ng-container *ngIf="notification.recipient_contact.recipient_mail_address.country">
+              {{notification.recipient_contact.recipient_mail_address.country}}<br /></ng-container>
+            {{notification.recipient_contact.recipient_mail_address.postal_code}}
+          </td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="letter-row-border">
+            <div class="right">
+              From<br />
+              <ng-container *ngIf="notification.from.from_mail_address.address_line">
+                {{notification.from.from_mail_address.address_line}}<br /></ng-container>
+              <ng-container *ngIf="notification.from.from_mail_address.city">
+                {{notification.from.from_mail_address.city}}<br />
+              </ng-container>
+              <ng-container *ngIf="notification.from.from_mail_address.county">
+                {{notification.from.from_mail_address.county}}<br /></ng-container>
+              <ng-container *ngIf="notification.from.from_mail_address.country">
+                {{notification.from.from_mail_address.country}}<br /></ng-container>
+              {{notification.from.from_mail_address.postal_code}}
+            </div>
+          </td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="letter-row-border">{{ today | date:'d MMMM y' }}</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="letter-row-border"><strong>{{notification.subject}}</strong></td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell whitespace-inherit">
+            <div [innerHTML]="notification.body"></div>
+          </td>
+        </tr>
+      </ng-container>
+  
+    </tbody>
+  </table>
+</div>

@@ -69,6 +69,7 @@ export class RefundStatusComponent implements OnInit {
   changeRefundReason: string;
   fees: IFee [];
   refundFees: IRefundFee[];
+  notificationPreview: boolean;
   allowedRolesToAccessRefund = ['payments-refund-approver', 'payments-refund'];
 
   constructor(private formBuilder: FormBuilder,
@@ -401,6 +402,14 @@ export class RefundStatusComponent implements OnInit {
     this.paymentLibComponent.refundReference = refundReference;
     this.paymentLibComponent.isFromPayBubble = true;
     this.paymentLibComponent.viewName = 'process-refund';
+  }
+
+  showNotificationPreview(): void {
+    this.notificationPreview = true;
+  }
+
+  hideNotificationPreview(): void {
+    this.notificationPreview = false;
   }
 
 }

@@ -102,6 +102,7 @@ export class ServiceRequestComponent implements OnInit {
   remissionFeeAmt: number;
   isContinueBtnDisabled: boolean = true;
   isFullyRefund: boolean;
+  notificationPreview: boolean;
 
   constructor(
     private paymentLibComponent: PaymentLibComponent,
@@ -389,5 +390,13 @@ export class ServiceRequestComponent implements OnInit {
     });
     return feesOverPayment > 0 ? feesOverPayment : this.paymentGroupList.payments[0].over_payment;
 
+  }
+
+  showNotificationPreview(): void {
+    this.notificationPreview = true;
+  }
+
+  hideNotificationPreview(): void {
+    this.notificationPreview = false;
   }
 }

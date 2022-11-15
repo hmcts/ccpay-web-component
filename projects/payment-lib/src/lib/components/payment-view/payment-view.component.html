@@ -434,8 +434,21 @@
           {{contactDetailsObj?.address_line}}&nbsp;{{contactDetailsObj?.city}}&nbsp;{{contactDetailsObj?.county}}&nbsp;{{contactDetailsObj?.country}}&nbsp;{{contactDetailsObj?.postal_code}}
         </div>
         <a (click)="gotoAddressPage(contactDetailsObj)" class="govuk-link right margin-top--size" >Change</a>
+        <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="showNotificationPreview()">
+          Preview
+        </a>
+        <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="hideNotificationPreview()">
+          Hide Preview
+        </a>
     </td>
   </table>
+
+  <app-notification-preview *ngIf="notificationPreview" 
+  [payment]="paymentGroup.payments[0]" 
+  [contactDetails]="contactDetailsObj"
+  [refundReason]="'Over payment'"
+  [refundAmount]="getOverPaymentValue()"></app-notification-preview>
+
   <button type="submit" class="button govuk-button--secondary over-payment-alignment govuk-font19px" (click)="gotoAddressPage(contactDetailsObj)">Previous</button>
   <button type="submit"
   [ngClass]='isContinueBtnDisabled ? "button button--disabled govuk-!-margin-right-1 govuk-font19px" : "button govuk-!-margin-right-1 govuk-font19px"'

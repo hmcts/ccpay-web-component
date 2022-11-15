@@ -224,9 +224,22 @@
         <a class="govuk-link" href="Javascript:void(0)" *ngIf="refundlist?.contact_details !=null"  class="govuk-link right" (click)="gotoEditDetailsPage(refundlist?.contact_details)">
           Change
         </a>
+        <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
+          Preview
+        </a>
+        <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="hideNotificationPreview()">
+          Hide Preview
+        </a>
       </td>
     </tr> 
   </table>
+  <app-notification-preview *ngIf="notificationPreview" 
+  [paymentReference]="refundlist?.payment_reference" 
+  [contactDetails]="refundlist?.contact_details"
+  [refundReason]="refundlist?.reason"
+  [refundAmount]="changedAmount ? changedAmount : refundlist?.amount"
+  [refundReference]="refundlist?.refund_reference"></app-notification-preview>
+
   <div class="govuk-button-group">
     <button (click)="gotoReviewDetailsPage($event)" class="govuk-button govuk-button--secondary"> Previous</button>
     <button [disabled]="isRefundBtnDisabled" (click)="gotoReviewRefundConfirmationPage()" class="govuk-button button"

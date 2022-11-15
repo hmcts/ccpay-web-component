@@ -69,6 +69,7 @@ export class PaymentViewComponent implements OnInit {
   isConfirmationBtnDisabled: boolean;
   refundReference: string;
   refundAmount: string;
+  notificationPreview: boolean;
   constructor(private paymentViewService: PaymentViewService,
     private paymentLibComponent: PaymentLibComponent,
     private cd: ChangeDetectorRef,
@@ -368,5 +369,13 @@ export class PaymentViewComponent implements OnInit {
   goBackToPaymentView(event: any) {
     event.preventDefault();
     this.viewStatus = 'paymentview';
+  }
+
+  showNotificationPreview(): void {
+    this.notificationPreview = true;
+  }
+
+  hideNotificationPreview(): void {
+    this.notificationPreview = false;
   }
 }
