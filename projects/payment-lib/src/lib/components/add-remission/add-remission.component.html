@@ -223,7 +223,35 @@
                 <a (click)="gotoAmountRetroRemission()" class="govuk-link right" >Change</a>
             </td>
         </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell govuk-!-font-weight-bold">Send via</td>
+          <td class="govuk-table__cell">
+            <div *ngIf="contactDetailsObj?.notification_type === 'EMAIL'" class="contactDetails-width">
+              <strong>Email</strong>
+              <br/>
+              {{contactDetailsObj?.email}}
+            </div>
+            <div *ngIf="contactDetailsObj?.notification_type === 'LETTER'" class="contactDetails-width">
+              <strong>Post</strong>
+              <br/>
+              {{contactDetailsObj?.address_line}}&nbsp;{{contactDetailsObj?.city}}&nbsp;{{contactDetailsObj?.county}}&nbsp;{{contactDetailsObj?.country}}&nbsp;{{contactDetailsObj?.postal_code}}
+            </div>
+            <a (click)="gotoProcessRetroRemission(contactDetailsObj)" class="govuk-link right margin-top--size" >Change</a>
+            <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="showNotificationPreview()">
+              Preview
+            </a>
+            <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="hideNotificationPreview()">
+              Hide Preview
+            </a>
+        </td>
+        </tr>
     </table>
+
+    <app-notification-preview *ngIf="notificationPreview" 
+    [payment]="remessionPayment" 
+    [contactDetails]="contactDetailsObj"
+    [refundReason]="'Retrospective remission'"
+    [refundAmount]="remissionForm.controls.amount.value"></app-notification-preview>
 
     <button type="submit" class="button govuk-button--secondary" (click)="gotoAmountRetroRemission()">Previous</button>
     <button type="submit" [disabled]="isConfirmationBtnDisabled" [ngClass]='isConfirmationBtnDisabled ? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"' (click)="confirmRetroRemission()"> Add remission </button>
