@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { _throw } from 'rxjs/observable/throw';
 import { Observable } from 'rxjs/internal/Observable';
 import { HttpErrorResponse } from '@angular/common/http';
-import { stringify } from '@angular/core';
+import { ɵstringify } from '@angular/core';
 
 
 @Injectable({
