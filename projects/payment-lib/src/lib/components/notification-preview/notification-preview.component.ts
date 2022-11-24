@@ -36,23 +36,26 @@ export class NotificationPreviewComponent implements OnInit {
 
     console.log("1." + notficationPreviewRequestBody);
 
-    this.notificationService.getNotificationPreview(notficationPreviewRequestBody).subscribe(
-      res => {
-        this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
+    this.notificationService.getNotificationPreview(notficationPreviewRequestBody).subscribe(res => { console.log(JSON.parse(res)); })
 
-        const JsonResponse = JSON.parse(res);
-        console.log("2." + JsonResponse);
-        this.notification = JsonResponse['data'];
-        console.log("3." + this.notification);
+    // this.notificationService.getNotificationPreview(notficationPreviewRequestBody).subscribe(
+    //   res => {
+    //     this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
 
-        if (this.notification.template_type === 'letter') {
-          this.notification.body = this.notification.body.replace(/\r\n/g, '<br/>');
-        }
-      },
-      (error: any) => {
-        this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
-        window.scrollTo(0, 0);
-      });
+    //     const JsonResponse = JSON.parse(res);
+    //     console.log("2." + JsonResponse);
+    //     this.notification = JsonResponse['data'];
+    //     console.log("3." + this.notification);
+
+    //     if (this.notification.template_type === 'letter') {
+    //       this.notification.body = this.notification.body.replace(/\r\n/g, '<br/>');
+    //     }
+    //   },
+    //   (error: any) => {
+    //     this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
+    //     console.log(this.errorMessage);
+    //     window.scrollTo(0, 0);
+    //   });
 
     console.log('Notification app loaded');
   }
