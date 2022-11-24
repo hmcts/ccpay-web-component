@@ -34,7 +34,9 @@ export class NotificationPreviewComponent implements OnInit {
     const notficationPreviewRequestBody = new NotificationPreviewRequest(this.payment, this.contactDetails,
       this.refundReason, this.refundAmount, this.refundReference, this.paymentReference);
 
-    console.log("1." + notficationPreviewRequestBody);
+    for(const notifPrev in notficationPreviewRequestBody) {
+      console.log(notifPrev);
+    }
 
     this.notificationService.getNotificationPreview(notficationPreviewRequestBody).subscribe(res => { console.log(JSON.parse(res)); })
 
