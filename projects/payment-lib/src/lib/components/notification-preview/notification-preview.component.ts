@@ -36,22 +36,25 @@ export class NotificationPreviewComponent implements OnInit {
 
     this.notificationService.getNotificationPreview(notficationPreviewRequestBody).subscribe(
       res => {
-        this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
+        console.log('subscribed');
+       }
+      //   this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
 
-        const JsonResponse = JSON.parse(res);
-        console.log("2." + JsonResponse);
-        this.notification = JsonResponse['data'];
-        console.log("3." + this.notification);
+      //   const JsonResponse = JSON.parse(res);
+      //   console.log("2." + JsonResponse);
+      //   this.notification = JsonResponse['data'];
+      //   console.log("3." + this.notification);
 
-        if (this.notification.template_type === 'letter') {
-          this.notification.body = this.notification.body.replace(/\r\n/g, '<br/>');
-        }
-      },
-      (error: any) => {
-        this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
-        console.log(this.errorMessage);
-        window.scrollTo(0, 0);
-      });
+      //   if (this.notification.template_type === 'letter') {
+      //     this.notification.body = this.notification.body.replace(/\r\n/g, '<br/>');
+      //   }
+      // },
+      // (error: any) => {
+      //   this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
+      //   console.log(this.errorMessage);
+      //   window.scrollTo(0, 0);
+      // }
+    );
 
     console.log('Notification app loaded');
   }

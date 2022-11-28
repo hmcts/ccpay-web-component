@@ -38,9 +38,7 @@ export class NotificationService {
   }
 
   getNotificationPreview(body: NotificationPreviewRequest): Observable<any> {
-    return this.https.post(`${this.paymentLibService.NOTIFICATION_API_ROOT}/doc-preview`, body, {
-      withCredentials: true
-    }).pipe(
+    return this.https.post(`${this.paymentLibService.NOTIFICATION_API_ROOT}/doc-preview`, body).pipe(
       catchError(this.errorHandlerService.handleError));
   }
 }
