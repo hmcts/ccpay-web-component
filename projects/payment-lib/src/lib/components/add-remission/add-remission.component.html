@@ -358,13 +358,18 @@
             {{contactDetailsObj?.address_line}}&nbsp;{{contactDetailsObj?.city}}&nbsp;{{contactDetailsObj?.county}}&nbsp;{{contactDetailsObj?.country}}&nbsp;{{contactDetailsObj?.postal_code}}
           </div>
           <a (click)="gotoProcessRetroRemission(contactDetailsObj)" class="govuk-link right margin-top--size" >Change</a>
-          <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="showNotificationPreview()">
-            Preview
-          </a>
-          <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="hideNotificationPreview()">
-            Hide Preview
-          </a>
-      </td>
+        </td>
+      </tr>
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell govuk-!-font-weight-bold">Notification</td>
+        <td class="govuk-table__cell">Template ABC
+            <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="showNotificationPreview()">
+              Preview
+            </a>
+            <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link right margin-top--size" (click)="hideNotificationPreview()">
+              Hide Preview
+            </a>
+        </td>
       </tr>
     </table>
 
