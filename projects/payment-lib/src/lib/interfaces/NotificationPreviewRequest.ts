@@ -18,7 +18,7 @@ export class NotificationPreviewRequest {
         city?: string;
         county?: string;
         country?: string;
-        postal_code?: String;
+        postal_code?: string;
     }
     service_name?: string;
 

@@ -5,6 +5,7 @@ import { IRefundContactDetails } from '../../interfaces/IRefundContactDetails';
 import { NotificationPreviewRequest } from '../../interfaces/NotificationPreviewRequest';
 import { NotificationService } from '../../services/notification/notification.service';
 import { ErrorHandlerService } from '../../services/shared/error-handler.service';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-notification-preview',
@@ -18,6 +19,8 @@ export class NotificationPreviewComponent implements OnInit {
   @Input() refundAmount: number;
   @Input() paymentReference: string;
   @Input() refundReference: string;
+
+  @Output() notificationPreviewEvent = new EventEmitter<INotificationPreview>();
 
   notification: INotificationPreview;
   notificationPreviewRequest: NotificationPreviewRequest;
@@ -53,6 +56,8 @@ export class NotificationPreviewComponent implements OnInit {
         window.scrollTo(0, 0);
       }
     );
+
+    this.notificationPreviewEvent.emit(this.notification);
 
     console.log('Notification app loaded');
   }

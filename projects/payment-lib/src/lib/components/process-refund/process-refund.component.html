@@ -63,9 +63,27 @@
             <td class="bold tb-col-w">Date submitted</td>
             <td>	{{refundlistsource?.date_created | date:'d MMMM yyyy' }}</td>
         </tr>
+        <tr class="section">
+          <td class="bold tb-col-w">Notification</td>
+          <td>=
+            <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link" (click)="showNotificationPreview()">
+              Preview
+            </a>
+            <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link" (click)="hideNotificationPreview()">
+              Hide Preview
+            </a>
+        </td>
+
+      </tr>
 
         </tbody>
       </table>
+
+      <app-notification-preview *ngIf="notificationPreview" [contactDetails]="refundlistsource?.contact_details"
+        [refundReason]="refundlistsource?.reason" [refundAmount]="refundlistsource?.amount"
+        [refundReference]="refundlistsource?.refund_reference"
+        (notificationPreviewEvent) = "getNotificationPreviewObj($event)">
+      </app-notification-preview>
 
       <div>
       </div>

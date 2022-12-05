@@ -8,6 +8,7 @@ import { OrderslistService } from '../../services/orderslist.service';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { PaymentLibComponent } from '../../payment-lib.component';
 import { ActivatedRoute,Router } from '@angular/router';
+import { INotificationPreview } from '../../interfaces/INotificationPreview';
 
 @Component({
   selector: 'ccpay-process-refund',
@@ -45,6 +46,8 @@ export class ProcessRefundComponent implements OnInit {
   cpoDetails:any = null;
   isCPODown: boolean;
   isConfirmButtondisabled: boolean = true;
+  notificationPreview: boolean = false;
+  notificationPreviewObj: INotificationPreview;
   constructor(private RefundsService: RefundsService,
               private paymentViewService: PaymentViewService,
               private formBuilder: FormBuilder,
@@ -137,6 +140,11 @@ export class ProcessRefundComponent implements OnInit {
       this.isOtherClicked = false;
     }
   }
+
+  getNotificationPreviewObj(notificationPreviewObj : INotificationPreview){
+    this.notificationPreviewObj = notificationPreviewObj;
+  }
+
   processRefundSubmit() {
     let processRefundRequest;
     let status;
@@ -151,24 +159,105 @@ export class ProcessRefundComponent implements OnInit {
       || (controls.refundActionField.value == 'Return to caseworker' && controls.sendMeBackField.valid))) {
       if (controls.refundActionField.value === 'Approve'){
         status = 'APPROVE';
-        processRefundRequest = {
-          code:'',
-          reason: ''
-        };
+        if (this.notificationPreviewObj) {
+          processRefundRequest = {
+            code: '',
+            reason: '',
+            template_preview: {
+              body: this.notificationPreviewObj.body,
+              from: {
+                from_email_address: this.notificationPreviewObj.from.from_email_address,
+                from_mail_address: {
+                  address_line: this.notificationPreviewObj.from.from_mail_address.address_line,
+                  city: this.notificationPreviewObj.from.from_mail_address.city,
+                  country: this.notificationPreviewObj.from.from_mail_address.country,
+                  county: this.notificationPreviewObj.from.from_mail_address.county,
+                  postal_code: this.notificationPreviewObj.from.from_mail_address.postal_code
+                }
+              },
+              html: this.notificationPreviewObj.html,
+              id: this.notificationPreviewObj.template_id,
+              subject: this.notificationPreviewObj.subject,
+              template_type: this.notificationPreviewObj.template_type,
+              version: 0
+            }
+          };
+
+        } else {
+          processRefundRequest = {
+            code: '',
+            reason: ''
+          };
+        }
       } else if (controls.refundActionField.value === 'Reject') {
         status = 'REJECT';
 
-        processRefundRequest = {
-          code: controls.refundRejectReasonField.value ? controls.refundRejectReasonField.value : '',
-          reason: controls.refundRejectReasonField.value == 'RE005' ? controls.enterReasonField.value : ''
-        };
+        if (this.notificationPreviewObj) {
+          processRefundRequest = {
+            code: controls.refundRejectReasonField.value ? controls.refundRejectReasonField.value : '',
+            reason: controls.refundRejectReasonField.value == 'RE005' ? controls.enterReasonField.value : '',
+            template_preview: {
+              body: this.notificationPreviewObj.body,
+              from: {
+                from_email_address: this.notificationPreviewObj.from.from_email_address,
+                from_mail_address: {
+                  address_line: this.notificationPreviewObj.from.from_mail_address.address_line,
+                  city: this.notificationPreviewObj.from.from_mail_address.city,
+                  country: this.notificationPreviewObj.from.from_mail_address.country,
+                  county: this.notificationPreviewObj.from.from_mail_address.county,
+                  postal_code: this.notificationPreviewObj.from.from_mail_address.postal_code
+                }
+              },
+              html: this.notificationPreviewObj.html,
+              id: this.notificationPreviewObj.template_id,
+              subject: this.notificationPreviewObj.subject,
+              template_type: this.notificationPreviewObj.template_type,
+              version: 0
+            }
+          };
+        } else {
+          processRefundRequest = {
+            code: controls.refundRejectReasonField.value ? controls.refundRejectReasonField.value : '',
+            reason: controls.refundRejectReasonField.value == 'RE005' ? controls.enterReasonField.value : ''
+          };
+        }
+
+       
       } else if (controls.refundActionField.value === 'Return to caseworker') {
         status = 'SENDBACK';
 
-        processRefundRequest = {
-          code: '',
-          reason: controls.sendMeBackField.value
-        };
+        if (this.notificationPreviewObj) {
+          processRefundRequest = {
+            code: '',
+            reason: controls.sendMeBackField.value,
+            template_preview: {
+              body: this.notificationPreviewObj.body,
+              from: {
+                from_email_address: this.notificationPreviewObj.from.from_email_address,
+                from_mail_address: {
+                  address_line: this.notificationPreviewObj.from.from_mail_address.address_line,
+                  city: this.notificationPreviewObj.from.from_mail_address.city,
+                  country: this.notificationPreviewObj.from.from_mail_address.country,
+                  county: this.notificationPreviewObj.from.from_mail_address.county,
+                  postal_code: this.notificationPreviewObj.from.from_mail_address.postal_code
+                }
+              },
+              html: this.notificationPreviewObj.html,
+              id: this.notificationPreviewObj.template_id,
+              subject: this.notificationPreviewObj.subject,
+              template_type: this.notificationPreviewObj.template_type,
+              version: 0
+            }
+          };
+        } else {
+          processRefundRequest = {
+            code: '',
+            reason: controls.sendMeBackField.value
+          };
+
+        }
+
+      
       }
       this.RefundsService.patchRefundActions(processRefundRequest, this.refundReference, status).subscribe(
         response => {
@@ -302,5 +391,13 @@ export class ProcessRefundComponent implements OnInit {
     } else {
       this.router.navigate([`/cases/case-details/${this.ccdCaseNumber}`], {relativeTo: this.activeRoute});
     }
+  }
+
+  showNotificationPreview(): void {
+    this.notificationPreview = true;
+  }
+
+  hideNotificationPreview(): void {
+    this.notificationPreview = false;
   }
 }
