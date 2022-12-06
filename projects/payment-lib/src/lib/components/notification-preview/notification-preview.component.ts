@@ -19,6 +19,8 @@ export class NotificationPreviewComponent implements OnInit {
   @Input() refundAmount: number;
   @Input() paymentReference: string;
   @Input() refundReference: string;
+  @Input() previewJourney: string = null;
+  @Input() notificationSent: INotificationPreview;
 
   @Output() notificationPreviewEvent = new EventEmitter<INotificationPreview>();
 
@@ -34,30 +36,39 @@ export class NotificationPreviewComponent implements OnInit {
 
     console.log('Notification app started');
 
-    const notficationPreviewRequestBody = new NotificationPreviewRequest(this.payment, this.contactDetails,
-      this.refundReason, this.refundAmount, this.refundReference, this.paymentReference);
+    if (this.previewJourney && this.previewJourney === 'Notificaitons sent') {
 
-    this.notificationService.getNotificationPreview(notficationPreviewRequestBody).subscribe(
-      res => {
-        this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
+      console.log('notificaiton sent' + JSON.stringify(this.notificationSent));
+      this.notification = this.notificationSent;
 
-        const JsonResponse = JSON.parse(res);
-        console.log("2." + JsonResponse);
-        this.notification = JsonResponse['data'];
-        console.log("3." + this.notification);
-
-        if (this.notification.template_type === 'letter') {
-          this.notification.body = this.notification.body.replace(/\r\n/g, '<br/>');
-        }
-      },
-      (error: any) => {
-        this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
-        console.log(this.errorMessage);
-        window.scrollTo(0, 0);
+      if (this.notification.template_type === 'letter') {
+        this.notification.body = this.notification.body.replace(/\r\n/g, '<br/>');
       }
-    );
+    } else {
 
-    this.notificationPreviewEvent.emit(this.notification);
+      const notficationPreviewRequestBody = new NotificationPreviewRequest(this.payment, this.contactDetails,
+        this.refundReason, this.refundAmount, this.refundReference, this.paymentReference);
+
+      this.notificationService.getNotificationPreview(notficationPreviewRequestBody).subscribe(
+        res => {
+          this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
+
+          const JsonResponse = JSON.parse(res);
+          this.notification = JsonResponse['data'];
+
+          if (this.notification.template_type === 'letter') {
+            this.notification.body = this.notification.body.replace(/\r\n/g, '<br/>');
+          }
+        },
+        (error: any) => {
+          this.errorMessage = this.errorHandlerService.getServerErrorMessage(true, false, '');
+          console.log(this.errorMessage);
+        }
+      );
+
+      this.notificationPreviewEvent.emit(this.notification);
+
+    }
 
     console.log('Notification app loaded');
   }

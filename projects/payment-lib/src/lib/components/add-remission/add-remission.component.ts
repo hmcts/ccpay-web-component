@@ -641,6 +641,7 @@ export class AddRemissionComponent implements OnInit {
           this.isFromCheckAnsPage = false;
           this.viewStatus = 'checkissuerefundpage';
           this.viewCompStatus = '';
+          this.notificationPreview = false;
           return;
         }
         this.viewCompStatus = '';
@@ -773,6 +774,7 @@ if(isFullyRefund) {
           this.fees = this.remissionForm.value.feesList.filter(value => value.selected===true);
           this.viewStatus = 'checkissuerefundpage'
           this.viewCompStatus = '';
+          this.notificationPreview = false;
           return;
         } else if (this.isFromRefundStatusPage){
           var remissionctrls=this.remissionForm.controls;
@@ -959,6 +961,7 @@ if(isFullyRefund) {
     this.contactDetailsObj = obj;
     this.viewCompStatus = '';
     this.viewStatus = type;
+    this.notificationPreview = false;
   }
 
   gotoPartialFeeRefundScreen() {

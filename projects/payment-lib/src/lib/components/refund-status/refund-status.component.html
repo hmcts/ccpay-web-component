@@ -103,9 +103,12 @@
                 {{notification?.contact_details?.address_line}} {{notification?.contact_details?.city}} {{notification?.contact_details?.county}} {{notification?.contact_details?.country}} {{notification?.contact_details?.postal_code}}
               </div>
             </td>
-            <td class="govuk-table__cell whitespace-inherit" *ngIf="i === 0"><a href="Javascript:void(0);" (click)="putResend(notification)">Resend</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="Javascript:void(0);" (click)="gotoEditAddressDetails(notification)">Edit details</a></td>
+            <td class="govuk-table__cell whitespace-inherit" *ngIf="i === 0"><a href="Javascript:void(0);" (click)="putResend(notification)">Resend</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="Javascript:void(0);" (click)="gotoEditAddressDetails(notification)">Edit details</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a *ngIf="!notificationPreview" href="Javascript:void(0);" (click)="showNotificationPreview()">View</a><a *ngIf="notificationPreview" href="Javascript:void(0);" (click)="hideNotificationPreview()">Hide</a></td>
             <td class="govuk-table__cell whitespace-inherit" *ngIf="i > 0"> &nbsp; </td>
 
+            <app-notification-preview *ngIf="notificationPreview" [previewJourney]="'Notifications sent'"
+            [notificationSent]="notification.sent_notification">
+          </app-notification-preview>
           </tr>
         </tbody>
         <tbody class="govuk-table__body" *ngIf="!notificationList">
@@ -380,7 +383,30 @@
           </a>
         </dd>
       </div>
+      <div class="govuk-summary-list__row font-size-19px">
+        <dt class="govuk-summary-list__key">
+          Notification
+        </dt>
+        <dd class="govuk-summary-list__value">
+          Template ABC
+        </dd>
+        <span class="govuk-summary-list__actions">
+          <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
+            Preview
+          </a>
+          <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="hideNotificationPreview()">
+            Hide Preview
+          </a>
+        </span> 
+      </div>
     </dl>
+
+    <app-notification-preview *ngIf="notificationPreview" [contactDetails]="addressDetails"
+    [refundReference]="refundlist?.refund_reference">
+  </app-notification-preview>
+
+
+
     <div class="govuk-button-group">
       <button (click)="gotoEditDetailsPage(addressDetails)" class="govuk-button govuk-button--secondary"> Previous</button>
       <button (click)="submitEditDetail()" class="govuk-button button"

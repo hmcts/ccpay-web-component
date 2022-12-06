@@ -349,6 +349,7 @@ export class PaymentViewComponent implements OnInit {
   getContactDetails(obj:IRefundContactDetails) {
     this.contactDetailsObj = obj;
     this.viewCompStatus = 'overpaymentcheckandanswer';
+    this.notificationPreview = false;
   }
 
   resetOrderData() {

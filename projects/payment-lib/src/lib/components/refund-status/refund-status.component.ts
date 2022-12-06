@@ -279,6 +279,7 @@ export class RefundStatusComponent implements OnInit {
     } else {
       this.isRefundBtnDisabled = true;
     }
+    this.notificationPreview = false;
     this.viewName = 'reviewandsubmitview';
     this.paymentLibComponent.CCD_CASE_NUMBER = this.ccdCaseNumber;
   }
@@ -292,6 +293,7 @@ export class RefundStatusComponent implements OnInit {
     } else {
       this.isRefundBtnDisabled = true;
     }
+    this.notificationPreview = false;
     this.viewName = 'reviewandsubmitview';
     this.paymentLibComponent.CCD_CASE_NUMBER = this.ccdCaseNumber;
   }
@@ -333,6 +335,7 @@ export class RefundStatusComponent implements OnInit {
   getContactDetails(obj:IRefundContactDetails) {
     this.addressDetails = obj;
     this.viewName = 'revieweditdetailsconfirmationpage';
+    this.notificationPreview = false;
   }
   getContactDetailsForRefundList(obj:IRefundContactDetails) {
     this.refundlist.contact_details = obj;

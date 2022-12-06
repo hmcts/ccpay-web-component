@@ -339,6 +339,7 @@ export class ServiceRequestComponent implements OnInit {
     this.contactDetailsObj = obj;
     this.viewStatus = '';
     this.viewCompStatus = 'overpaymentcheckandanswer';
+    this.notificationPreview = false;
   }
   gotoPaymentSelectPage(event: Event) {
     event.preventDefault();
