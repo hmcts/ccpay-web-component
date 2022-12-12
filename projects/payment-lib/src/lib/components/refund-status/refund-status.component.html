@@ -90,22 +90,23 @@
           </tr>
         </thead>
         <tbody class="govuk-table__body" *ngIf="notificationList">
-          <tr class="govuk-table__row" *ngFor="let notification of notificationList; let i = index;">
-            <td class="govuk-table__cell whitespace-inherit">{{notification.date_created | date:'dd MMMM yyyy hh:mm:ss'}}</td>
-            <td class="govuk-table__cell whitespace-inherit">{{orderParty}}</td>
-            <td class="govuk-table__cell whitespace-inherit col-40">
-              <div *ngIf="notification?.notification_type === 'EMAIL'">
-                <strong>Email</strong><br>
-                {{notification?.contact_details?.email}}
-              </div>
-              <div *ngIf="notification?.notification_type === 'LETTER'">
-                <strong>Post</strong><br>
-                {{notification?.contact_details?.address_line}} {{notification?.contact_details?.city}} {{notification?.contact_details?.county}} {{notification?.contact_details?.country}} {{notification?.contact_details?.postal_code}}
-              </div>
-            </td>
-            <td class="govuk-table__cell whitespace-inherit" *ngIf="i === 0"><a href="Javascript:void(0);" (click)="putResend(notification)">Resend</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="Javascript:void(0);" (click)="gotoEditAddressDetails(notification)">Edit details</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a *ngIf="!notificationSentView" href="Javascript:void(0);" (click)="showNotificationSentView(i)">View</a><a *ngIf="notificationSentView" href="Javascript:void(0);" (click)="hideNotificationSentView()">Hide</a></td>
-            <td class="govuk-table__cell whitespace-inherit" *ngIf="i > 0"><a *ngIf="!notificationSentView" href="Javascript:void(0);" (click)="showNotificationSentView(i)">View</a><a *ngIf="notificationSentView" href="Javascript:void(0);" (click)="hideNotificationSentView()">Hide</a></td>
-
+          <ng-container *ngFor="let notification of notificationList; let i = index;">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell whitespace-inherit">{{notification.date_created | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+              <td class="govuk-table__cell whitespace-inherit">{{orderParty}}</td>
+              <td class="govuk-table__cell whitespace-inherit col-40">
+                <div *ngIf="notification?.notification_type === 'EMAIL'">
+                  <strong>Email</strong><br>
+                  {{notification?.contact_details?.email}}
+                </div>
+                <div *ngIf="notification?.notification_type === 'LETTER'">
+                  <strong>Post</strong><br>
+                  {{notification?.contact_details?.address_line}} {{notification?.contact_details?.city}} {{notification?.contact_details?.county}} {{notification?.contact_details?.country}} {{notification?.contact_details?.postal_code}}
+                </div>
+              </td>
+              <td class="govuk-table__cell whitespace-inherit" *ngIf="i === 0"><a href="Javascript:void(0);" (click)="putResend(notification)">Resend</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="Javascript:void(0);" (click)="gotoEditAddressDetails(notification)">Edit details</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a *ngIf="!notificationSentView" href="Javascript:void(0);" (click)="showNotificationSentView(i)">View</a><a *ngIf="notificationSentView" href="Javascript:void(0);" (click)="hideNotificationSentView()">Hide</a></td>
+              <td class="govuk-table__cell whitespace-inherit" *ngIf="i > 0"><a *ngIf="!notificationSentView" href="Javascript:void(0);" (click)="showNotificationSentView(i)">View</a><a *ngIf="notificationSentView" href="Javascript:void(0);" (click)="hideNotificationSentView()">Hide</a></td>
+            </tr>
             <tr *ngIf="i === notificationSentViewIndex && notificationSentView">
               <td class="govuk-table__cell" colspan="4">
                 <app-notification-preview
@@ -113,7 +114,8 @@
                 </app-notification-preview>
               </td>
             </tr>
-          </tr>
+          </ng-container>
+
         </tbody>
         <tbody class="govuk-table__body" *ngIf="!notificationList">
           <tr class="govuk-table__row">
@@ -236,7 +238,7 @@
 
     <tr class="govuk-table__row">
       <td class="govuk-table__cell govuk-!-font-weight-bold">Notification</td>
-      <td class="govuk-table__cell">{{getTemplateInstructionType(refundlist?.payment_reference)}} 
+      <td class="govuk-table__cell">{{getTemplateInstructionType(paymentObj, refundlist?.payment_reference)}} 
           <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
             Preview
           </a>
@@ -392,7 +394,7 @@
           Notification
         </dt>
         <dd class="govuk-summary-list__value">
-          {{getTemplateInstructionType(refundlist?.payment_reference)}} 
+          {{getTemplateInstructionType(paymentObj, refundlist?.payment_reference)}} 
         </dd>
         <span class="govuk-summary-list__actions">
           <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">

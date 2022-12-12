@@ -69,6 +69,7 @@ export class RefundStatusComponent implements OnInit {
   changeRefundReason: string;
   fees: IFee [];
   refundFees: IRefundFee[];
+  paymentObj: IPayment;
   notificationSentViewIndex: number = -1;
   notificationPreview: boolean = false;
   notificationSentView: boolean = false;

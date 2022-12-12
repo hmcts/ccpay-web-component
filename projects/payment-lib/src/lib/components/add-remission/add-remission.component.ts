@@ -128,6 +128,7 @@ export class AddRemissionComponent implements OnInit {
   isStatusAllocated: boolean;
   isFromCheckAnsPage: boolean;
   refundAmtForFeeVolumes: number;
+  paymentObj: IPayment;
   notificationPreview: boolean;
   
   component: { account_number: string; amount: number; case_reference: string; ccd_case_number: string; channel: string; currency: string; customer_reference: string; date_created: string; date_updated: string; description: string; method: string; organisation_name: string; payment_allocation: any[]; reference: string; service_name: string; site_id: string; status: string; };

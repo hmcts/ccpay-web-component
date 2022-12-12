@@ -65,7 +65,7 @@
         </tr>
         <tr class="section">
           <td class="bold tb-col-w">Notification</td>
-          <td>{{getTemplateInstructionType(refundlistsource?.payment_reference)}}</td>
+          <td>{{getTemplateInstructionType(paymentObj, refundlistsource?.payment_reference)}}</td>
           <td>
             <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
               Preview

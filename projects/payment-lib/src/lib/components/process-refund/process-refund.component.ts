@@ -47,6 +47,7 @@ export class ProcessRefundComponent implements OnInit {
   cpoDetails:any = null;
   isCPODown: boolean;
   isConfirmButtondisabled: boolean = true;
+  paymentObj: IPayment;
   notificationPreview: boolean = false;
   notificationPreviewObj: INotificationPreview;
   constructor(private RefundsService: RefundsService,
