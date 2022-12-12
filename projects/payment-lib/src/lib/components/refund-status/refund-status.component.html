@@ -103,12 +103,16 @@
                 {{notification?.contact_details?.address_line}} {{notification?.contact_details?.city}} {{notification?.contact_details?.county}} {{notification?.contact_details?.country}} {{notification?.contact_details?.postal_code}}
               </div>
             </td>
-            <td class="govuk-table__cell whitespace-inherit" *ngIf="i === 0"><a href="Javascript:void(0);" (click)="putResend(notification)">Resend</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="Javascript:void(0);" (click)="gotoEditAddressDetails(notification)">Edit details</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a *ngIf="!notificationPreview" href="Javascript:void(0);" (click)="showNotificationPreview()">View</a><a *ngIf="notificationPreview" href="Javascript:void(0);" (click)="hideNotificationPreview()">Hide</a></td>
-            <td class="govuk-table__cell whitespace-inherit" *ngIf="i > 0"> &nbsp; </td>
+            <td class="govuk-table__cell whitespace-inherit" *ngIf="i === 0"><a href="Javascript:void(0);" (click)="putResend(notification)">Resend</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="Javascript:void(0);" (click)="gotoEditAddressDetails(notification)">Edit details</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a *ngIf="!notificationSentView" href="Javascript:void(0);" (click)="showNotificationSentView(i)">View</a><a *ngIf="notificationSentView" href="Javascript:void(0);" (click)="hideNotificationSentView()">Hide</a></td>
+            <td class="govuk-table__cell whitespace-inherit" *ngIf="i > 0"><a *ngIf="!notificationSentView" href="Javascript:void(0);" (click)="showNotificationSentView(i)">View</a><a *ngIf="notificationSentView" href="Javascript:void(0);" (click)="hideNotificationSentView()">Hide</a></td>
 
-            <app-notification-preview *ngIf="notificationPreview" [previewJourney]="'Notifications sent'"
-            [notificationSent]="notification.sent_notification">
-          </app-notification-preview>
+            <tr *ngIf="i === notificationSentViewIndex && notificationSentView">
+              <td class="govuk-table__cell" colspan="4">
+                <app-notification-preview
+                  [previewJourney]="'Notifications sent'" [notificationSent]="notification?.sent_notification">
+                </app-notification-preview>
+              </td>
+            </tr>
           </tr>
         </tbody>
         <tbody class="govuk-table__body" *ngIf="!notificationList">
@@ -232,7 +236,7 @@
 
     <tr class="govuk-table__row">
       <td class="govuk-table__cell govuk-!-font-weight-bold">Notification</td>
-      <td class="govuk-table__cell">Template ABC
+      <td class="govuk-table__cell">{{getTemplateInstructionType(refundlist?.payment_reference)}} 
           <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
             Preview
           </a>
@@ -388,7 +392,7 @@
           Notification
         </dt>
         <dd class="govuk-summary-list__value">
-          Template ABC
+          {{getTemplateInstructionType(refundlist?.payment_reference)}} 
         </dd>
         <span class="govuk-summary-list__actions">
           <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
@@ -401,7 +405,8 @@
       </div>
     </dl>
 
-    <app-notification-preview *ngIf="notificationPreview" [contactDetails]="addressDetails"
+    <app-notification-preview *ngIf="notificationPreview" [paymentReference]="refundlist?.payment_reference"
+    [contactDetails]="addressDetails"
     [refundReference]="refundlist?.refund_reference">
   </app-notification-preview>
 

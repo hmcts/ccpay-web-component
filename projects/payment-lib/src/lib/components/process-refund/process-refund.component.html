@@ -65,11 +65,12 @@
         </tr>
         <tr class="section">
           <td class="bold tb-col-w">Notification</td>
-          <td>=
-            <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link" (click)="showNotificationPreview()">
+          <td>{{getTemplateInstructionType(refundlistsource?.payment_reference)}}</td>
+          <td>
+            <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
               Preview
             </a>
-            <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link" (click)="hideNotificationPreview()">
+            <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="hideNotificationPreview()">
               Hide Preview
             </a>
         </td>
@@ -79,7 +80,8 @@
         </tbody>
       </table>
 
-      <app-notification-preview *ngIf="notificationPreview" [contactDetails]="refundlistsource?.contact_details"
+      <app-notification-preview *ngIf="notificationPreview" [paymentReference]="refundlistsource?.payment_reference"
+        [contactDetails]="refundlistsource?.contact_details"
         [refundReason]="refundlistsource?.reason" [refundAmount]="refundlistsource?.amount"
         [refundReference]="refundlistsource?.refund_reference"
         (notificationPreviewEvent) = "getNotificationPreviewObj($event)">

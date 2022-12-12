@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import {RefundsService} from '../../services/refunds/refunds.service';
 import { IRefundAction } from '../../interfaces/IRefundAction';
 import { IRefundList } from '../../interfaces/IRefundList';
+import { IPayment } from '../../interfaces/IPayment';
 import { IRefundRejectReason } from '../../interfaces/IRefundRejectReason';
 import { OrderslistService } from '../../services/orderslist.service';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
@@ -391,6 +392,29 @@ export class ProcessRefundComponent implements OnInit {
     } else {
       this.router.navigate([`/cases/case-details/${this.ccdCaseNumber}`], {relativeTo: this.activeRoute});
     }
+  }
+
+  getTemplateInstructionType(payment?: IPayment, paymentReference?: string) {
+
+    if (payment == undefined && payment == null) {
+      return 'Template ABC';
+    }
+
+    if (payment.channel === 'bulk scan' && payment.method === 'postal order') {
+      return 'RefundWhenContacted';
+    } else if (payment.channel === 'bulk scan' && payment.method === 'cash') {
+      return 'RefundWhenContacted';
+    } else if (payment.channel === 'online' && payment.method === 'card') {
+      return 'SendRefund';
+    } else if (payment.channel === 'telephony' && payment.method === 'card') {
+      return 'SendRefund';
+    } else if (payment.channel === 'online' && payment.method === 'payment by account') {
+      return 'SendRefund';
+    } else if (payment.channel === 'bulk scan' && payment.method === 'cheque') {
+      return 'SendRefund';
+    }
+
+    return 'Template ABC';
   }
 
   showNotificationPreview(): void {

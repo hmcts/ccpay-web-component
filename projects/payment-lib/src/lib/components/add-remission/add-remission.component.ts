@@ -655,6 +655,7 @@ export class AddRemissionComponent implements OnInit {
         this.isFromCheckAnsPage = false;
         this.viewStatus = 'checkissuerefundpage';
         this.viewCompStatus = '';
+        this.notificationPreview = false;
         return;
       }
       if ( this.isFromRefundListPage ) {
@@ -1155,6 +1156,29 @@ if(isFullyRefund) {
 
   hideNotificationPreview(): void {
     this.notificationPreview = false;
+  }
+
+  getTemplateInstructionType(payment?: IPayment, paymentReference?: string) {
+
+    if (payment == undefined && payment == null) {
+      return 'Template ABC';
+    }
+
+    if (payment.channel === 'bulk scan' && payment.method === 'postal order') {
+      return 'RefundWhenContacted';
+    } else if (payment.channel === 'bulk scan' && payment.method === 'cash') {
+      return 'RefundWhenContacted';
+    } else if (payment.channel === 'online' && payment.method === 'card') {
+      return 'SendRefund';
+    } else if (payment.channel === 'telephony' && payment.method === 'card') {
+      return 'SendRefund';
+    } else if (payment.channel === 'online' && payment.method === 'payment by account') {
+      return 'SendRefund';
+    } else if (payment.channel === 'bulk scan' && payment.method === 'cheque') {
+      return 'SendRefund';
+    }
+
+    return 'Template ABC';
   }
 
 }

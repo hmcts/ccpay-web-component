@@ -76,3 +76,7 @@
 .pointer{
     cursor: pointer;
 }
+
+.right {
+    float: right;
+}

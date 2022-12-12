@@ -19,7 +19,7 @@ export class NotificationPreviewComponent implements OnInit {
   @Input() refundAmount: number;
   @Input() paymentReference: string;
   @Input() refundReference: string;
-  @Input() previewJourney: string = null;
+  @Input() previewJourney: string;
   @Input() notificationSent: INotificationPreview;
 
   @Output() notificationPreviewEvent = new EventEmitter<INotificationPreview>();
@@ -36,7 +36,9 @@ export class NotificationPreviewComponent implements OnInit {
 
     console.log('Notification app started');
 
-    if (this.previewJourney && this.previewJourney === 'Notificaitons sent') {
+    console.log('preivew Journey: ' + this.previewJourney);
+
+    if (this.previewJourney!== undefined && this.previewJourney!== null && this.previewJourney === 'Notificaitons sent') {
 
       console.log('notificaiton sent' + JSON.stringify(this.notificationSent));
       this.notification = this.notificationSent;

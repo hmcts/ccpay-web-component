@@ -328,7 +328,7 @@
       </tr>
       <tr class="govuk-table__row">
         <td class="govuk-table__cell govuk-!-font-weight-bold">Notification</td>
-        <td class="govuk-table__cell">Template ABC
+        <td class="govuk-table__cell">{{getTemplateInstructionType(remessionPayment)}}
             <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
               Preview
             </a>
@@ -694,7 +694,7 @@
 
       <tr class="govuk-table__row">
         <td class="govuk-table__cell govuk-!-font-weight-bold">Notification</td>
-        <td class="govuk-table__cell">Template ABC
+        <td class="govuk-table__cell">{{getTemplateInstructionType(payment)}}
             <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
               Preview
             </a>
@@ -797,7 +797,7 @@
 
       <tr class="govuk-table__row">
         <td class="govuk-table__cell govuk-!-font-weight-bold">Notification</td>
-        <td class="govuk-table__cell">Template ABC
+        <td class="govuk-table__cell">{{getTemplateInstructionType(paymentReference)}}
             <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
               Preview
             </a>

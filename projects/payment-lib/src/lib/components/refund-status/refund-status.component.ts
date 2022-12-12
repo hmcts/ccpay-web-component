@@ -69,7 +69,9 @@ export class RefundStatusComponent implements OnInit {
   changeRefundReason: string;
   fees: IFee [];
   refundFees: IRefundFee[];
-  notificationPreview: boolean;
+  notificationSentViewIndex: number = -1;
+  notificationPreview: boolean = false;
+  notificationSentView: boolean = false;
   allowedRolesToAccessRefund = ['payments-refund-approver', 'payments-refund'];
 
   constructor(private formBuilder: FormBuilder,
@@ -407,12 +409,45 @@ export class RefundStatusComponent implements OnInit {
     this.paymentLibComponent.viewName = 'process-refund';
   }
 
+  getTemplateInstructionType(payment?: IPayment, paymentReference?: string) {
+
+    if (payment == undefined && payment == null) {
+      return 'Template ABC';
+    }
+
+    if (payment.channel === 'bulk scan' && payment.method === 'postal order') {
+      return 'RefundWhenContacted';
+    } else if (payment.channel === 'bulk scan' && payment.method === 'cash') {
+      return 'RefundWhenContacted';
+    } else if (payment.channel === 'online' && payment.method === 'card') {
+      return 'SendRefund';
+    } else if (payment.channel === 'telephony' && payment.method === 'card') {
+      return 'SendRefund';
+    } else if (payment.channel === 'online' && payment.method === 'payment by account') {
+      return 'SendRefund';
+    } else if (payment.channel === 'bulk scan' && payment.method === 'cheque') {
+      return 'SendRefund';
+    }
+
+    return 'Template ABC';
+  }
+
   showNotificationPreview(): void {
     this.notificationPreview = true;
   }
 
   hideNotificationPreview(): void {
     this.notificationPreview = false;
+  }
+
+  showNotificationSentView(index: number): void {
+    this.notificationSentViewIndex = index;
+    this.notificationSentView = true;
+  }
+
+  hideNotificationSentView(): void {
+    this.notificationSentViewIndex = -1;
+    this.notificationSentView = false;
   }
 
 }
