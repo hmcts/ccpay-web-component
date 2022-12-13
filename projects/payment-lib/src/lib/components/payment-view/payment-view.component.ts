@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
+import { NotificationService } from '../../services/notification/notification.service';
 import { PaymentLibComponent } from '../../payment-lib.component';
 import { IPaymentGroup } from '../../interfaces/IPaymentGroup';
 import { IFee } from '../../interfaces/IFee';
@@ -71,6 +72,7 @@ export class PaymentViewComponent implements OnInit {
   refundAmount: string;
   notificationPreview: boolean;
   constructor(private paymentViewService: PaymentViewService,
+    private notificationService: NotificationService,
     private paymentLibComponent: PaymentLibComponent,
     private cd: ChangeDetectorRef,
     private OrderslistService: OrderslistService) {
@@ -372,27 +374,12 @@ export class PaymentViewComponent implements OnInit {
     this.viewStatus = 'paymentview';
   }
 
-  getTemplateInstructionType(payment?: IPayment, paymentReference?: string) {
+  getTemplateInstructionType(payment: IPayment) {
 
-    if (payment == undefined && payment == null) {
-      return 'Template ABC';
+    if (payment == undefined || payment == null) {
+      return 'Template';
     }
-
-    if (payment.channel === 'bulk scan' && payment.method === 'postal order') {
-      return 'RefundWhenContacted';
-    } else if (payment.channel === 'bulk scan' && payment.method === 'cash') {
-      return 'RefundWhenContacted';
-    } else if (payment.channel === 'online' && payment.method === 'card') {
-      return 'SendRefund';
-    } else if (payment.channel === 'telephony' && payment.method === 'card') {
-      return 'SendRefund';
-    } else if (payment.channel === 'online' && payment.method === 'payment by account') {
-      return 'SendRefund';
-    } else if (payment.channel === 'bulk scan' && payment.method === 'cheque') {
-      return 'SendRefund';
-    }
-
-    return 'Template ABC';
+    return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
   }
 
   showNotificationPreview(): void {

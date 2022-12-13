@@ -249,7 +249,8 @@
     </tr>
   </table>
   <app-notification-preview *ngIf="notificationPreview" 
-  [paymentReference]="refundlist?.payment_reference" 
+  [paymentReference]="refundlist?.payment_reference"
+  [payment]="paymentObj" 
   [contactDetails]="refundlist?.contact_details"
   [refundReason]="refundlist?.reason"
   [refundAmount]="changedAmount ? changedAmount : refundlist?.amount"
@@ -408,6 +409,7 @@
     </dl>
 
     <app-notification-preview *ngIf="notificationPreview" [paymentReference]="refundlist?.payment_reference"
+    [payment]="paymentObj"
     [contactDetails]="addressDetails"
     [refundReference]="refundlist?.refund_reference">
   </app-notification-preview>

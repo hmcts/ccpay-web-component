@@ -9,6 +9,7 @@ import { IFee } from '../../interfaces/IFee';
 import { IPaymentGroup } from '../../interfaces/IPaymentGroup';
 import { Router } from '@angular/router';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
+import { NotificationService } from '../../services/notification/notification.service';
 import { OrderslistService } from '../../services/orderslist.service';
 import { IRefundContactDetails } from '../../interfaces/IRefundContactDetails';
 import { PostRefundRetroRemission } from '../../interfaces/PostRefundRetroRemission';
@@ -108,6 +109,7 @@ export class ServiceRequestComponent implements OnInit {
     private paymentLibComponent: PaymentLibComponent,
     private paymentViewService: PaymentViewService,
     private OrderslistService: OrderslistService,
+    private notificationService: NotificationService,
     private cd: ChangeDetectorRef,
     private router: Router) { }
 
@@ -393,27 +395,12 @@ export class ServiceRequestComponent implements OnInit {
 
   }
 
-  getTemplateInstructionType(payment?: IPayment, paymentReference?: string) {
+  getTemplateInstructionType(payment: IPayment) {
 
-    if (payment == undefined && payment == null) {
-      return 'Template ABC';
+    if (payment == undefined || payment == null) {
+      return 'Template';
     }
-
-    if (payment.channel === 'bulk scan' && payment.method === 'postal order') {
-      return 'RefundWhenContacted';
-    } else if (payment.channel === 'bulk scan' && payment.method === 'cash') {
-      return 'RefundWhenContacted';
-    } else if (payment.channel === 'online' && payment.method === 'card') {
-      return 'SendRefund';
-    } else if (payment.channel === 'telephony' && payment.method === 'card') {
-      return 'SendRefund';
-    } else if (payment.channel === 'online' && payment.method === 'payment by account') {
-      return 'SendRefund';
-    } else if (payment.channel === 'bulk scan' && payment.method === 'cheque') {
-      return 'SendRefund';
-    }
-
-    return 'Template ABC';
+    return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
   }
 
   showNotificationPreview(): void {

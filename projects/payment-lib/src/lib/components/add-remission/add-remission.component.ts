@@ -8,6 +8,7 @@ import { PaymentLibComponent } from '../../payment-lib.component';
 
 import { IPayment } from '../../interfaces/IPayment';
 import { RefundsService } from '../../services/refunds/refunds.service';
+import { NotificationService } from '../../services/notification/notification.service';
 import { IRefundReasons } from '../../interfaces/IRefundReasons';
 import { AddRetroRemissionRequest } from '../../interfaces/AddRetroRemissionRequest';
 import { IRefundContactDetails } from '../../interfaces/IRefundContactDetails';
@@ -136,6 +137,7 @@ export class AddRemissionComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private router: Router,
     private paymentViewService: PaymentViewService,
+    private notificationService : NotificationService,
     private paymentLibComponent: PaymentLibComponent,
     private refundService: RefundsService,
     private cd: ChangeDetectorRef,
@@ -1159,27 +1161,20 @@ if(isFullyRefund) {
     this.notificationPreview = false;
   }
 
-  getTemplateInstructionType(payment?: IPayment, paymentReference?: string) {
+  getTemplateInstructionType(payment: IPayment, paymentReference?: string) {
 
-    if (payment == undefined && payment == null) {
-      return 'Template ABC';
+  if (payment == undefined || payment == null || (paymentReference != undefined && paymentReference != null && payment.reference != paymentReference)) {
+      this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
+        payment => {
+          this.paymentObj = payment;
+          return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
+        },
+        (error: any) => {
+          return 'Template ABC';
+        })
+    } else {
+      return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
     }
-
-    if (payment.channel === 'bulk scan' && payment.method === 'postal order') {
-      return 'RefundWhenContacted';
-    } else if (payment.channel === 'bulk scan' && payment.method === 'cash') {
-      return 'RefundWhenContacted';
-    } else if (payment.channel === 'online' && payment.method === 'card') {
-      return 'SendRefund';
-    } else if (payment.channel === 'telephony' && payment.method === 'card') {
-      return 'SendRefund';
-    } else if (payment.channel === 'online' && payment.method === 'payment by account') {
-      return 'SendRefund';
-    } else if (payment.channel === 'bulk scan' && payment.method === 'cheque') {
-      return 'SendRefund';
-    }
-
-    return 'Template ABC';
   }
 
 }

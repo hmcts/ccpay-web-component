@@ -41,10 +41,20 @@ export class PaymentViewService {
               private errorHandlerService: ErrorHandlerService,
               private paymentLibService: PaymentLibService) { }
 
-  getPaymentDetails(paymentReference: string, paymentMethod: string): Observable<IPayment> {
+  getPaymentDetails(paymentReference: string, paymentMethod?: string): Observable<IPayment> {
+
+
     this.logger.info('Payment-view-service getPaymentDetails for: ', paymentReference);
 
-    return this.http.get<IPayment>(paymentMethod === 'card' || paymentMethod === 'cash' || paymentMethod === 'cheque' || paymentMethod === 'postal order' ?
+    if(paymentMethod == undefined || paymentMethod == null){
+      return this.http.get<IPayment>(`${this.paymentLibService.API_ROOT}/payments/${paymentReference}`, {
+        withCredentials: true
+      })
+      .pipe(
+        catchError(this.errorHandlerService.handleError)
+      );
+    }else{
+      return this.http.get<IPayment>(paymentMethod === 'card' || paymentMethod === 'cash' || paymentMethod === 'cheque' || paymentMethod === 'postal order' ?
           `${this.paymentLibService.API_ROOT}/card-payments/${paymentReference}` :
           `${this.paymentLibService.API_ROOT}/credit-account-payments/${paymentReference}`, {
         withCredentials: true
@@ -52,6 +62,8 @@ export class PaymentViewService {
       .pipe(
         catchError(this.errorHandlerService.handleError)
       );
+
+    }
   }
 
   getPaymentGroupDetails(paymentGroupReference: string): Observable<IPaymentGroup> {

@@ -410,27 +410,21 @@ export class RefundStatusComponent implements OnInit {
     this.paymentLibComponent.viewName = 'process-refund';
   }
 
-  getTemplateInstructionType(payment?: IPayment, paymentReference?: string) {
+  getTemplateInstructionType(payment: IPayment, paymentReference: string) {
 
-    if (payment == undefined && payment == null) {
-      return 'Template ABC';
+    if (payment == undefined || payment == null || payment.reference != paymentReference) {
+
+      this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
+        payment => {
+          this.paymentObj = payment;
+          return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
+        },
+        (error: any) => {
+          return 'Template';
+        })
+    } else {
+      return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
     }
-
-    if (payment.channel === 'bulk scan' && payment.method === 'postal order') {
-      return 'RefundWhenContacted';
-    } else if (payment.channel === 'bulk scan' && payment.method === 'cash') {
-      return 'RefundWhenContacted';
-    } else if (payment.channel === 'online' && payment.method === 'card') {
-      return 'SendRefund';
-    } else if (payment.channel === 'telephony' && payment.method === 'card') {
-      return 'SendRefund';
-    } else if (payment.channel === 'online' && payment.method === 'payment by account') {
-      return 'SendRefund';
-    } else if (payment.channel === 'bulk scan' && payment.method === 'cheque') {
-      return 'SendRefund';
-    }
-
-    return 'Template ABC';
   }
 
   showNotificationPreview(): void {

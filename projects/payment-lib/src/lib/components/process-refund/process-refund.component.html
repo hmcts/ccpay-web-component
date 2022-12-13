@@ -25,23 +25,23 @@
 
         <tr class="section">
           <td class="bold tb-col-w">Payment to be refunded</td>
-          <td>	{{refundlistsource?.refund_reference}} ({{refundlistsource.amount  | currency :'GBP':'symbol':'1.2-2'  }})</td>
+          <td colspan="2">{{refundlistsource?.refund_reference}} ({{refundlistsource.amount  | currency :'GBP':'symbol':'1.2-2'  }})</td>
         </tr>
         <tr class="section">
           <td class="bold tb-col-w">Reason for refund</td>
-          <td>	{{refundlistsource?.reason}}</td>
+          <td colspan="2">{{refundlistsource?.reason}}</td>
         </tr>
         <tr class="section">
             <td class="bold tb-col-w">Amount to be refunded</td>
-            <td>{{refundlistsource?.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
+            <td colspan="2">{{refundlistsource?.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
         </tr>
         <tr class="section">
           <td class="bold tb-col-w">Sent to</td>
-          <td>{{cpoDetails?.responsibleParty}}</td>
+          <td colspan="2">{{cpoDetails?.responsibleParty}}</td>
         </tr>
         <tr class="section">
           <td class="bold tb-col-w">Sent via</td>
-          <td>
+          <td colspan="2">
           <div *ngIf="refundlistsource?.contact_details?.notification_type === 'EMAIL'" class="contactDetails-width font-size-19px">
             <strong>Email</strong>
             <br/>
@@ -56,12 +56,12 @@
         </tr>
         <tr class="section">
             <td class="bold tb-col-w">Submitted by</td>
-            <td>{{refundlistsource?.user_full_name}}</td>
+            <td colspan="2">{{refundlistsource?.user_full_name}}</td>
 
         </tr>
         <tr class="section">
             <td class="bold tb-col-w">Date submitted</td>
-            <td>	{{refundlistsource?.date_created | date:'d MMMM yyyy' }}</td>
+            <td colspan="2">{{refundlistsource?.date_created | date:'d MMMM yyyy' }}</td>
         </tr>
         <tr class="section">
           <td class="bold tb-col-w">Notification</td>
@@ -81,6 +81,7 @@
       </table>
 
       <app-notification-preview *ngIf="notificationPreview" [paymentReference]="refundlistsource?.payment_reference"
+        [payment]="paymentObj"
         [contactDetails]="refundlistsource?.contact_details"
         [refundReason]="refundlistsource?.reason" [refundAmount]="refundlistsource?.amount"
         [refundReference]="refundlistsource?.refund_reference"

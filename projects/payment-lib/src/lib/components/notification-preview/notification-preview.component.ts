@@ -38,9 +38,9 @@ export class NotificationPreviewComponent implements OnInit {
 
     console.log('preivew Journey: ' + this.previewJourney);
 
-    if (this.previewJourney!== undefined && this.previewJourney!== null && this.previewJourney === 'Notificaitons sent') {
+    if (this.previewJourney != undefined && this.previewJourney != null && this.previewJourney === 'Notifications sent') {
 
-      console.log('notificaiton sent' + JSON.stringify(this.notificationSent));
+      console.log('notification sent' + JSON.stringify(this.notificationSent));
       this.notification = this.notificationSent;
 
       if (this.notification.template_type === 'letter') {
