@@ -45,8 +45,8 @@
     background: #00703c;
 }
 .process-refund__panel {
-    display: flex;
-    flex-direction: column;
+    /*display: flex;
+    flex-direction: column;*/
     margin-left: 25px;
     margin-top: 30px;
 }

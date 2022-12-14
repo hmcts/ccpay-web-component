@@ -409,11 +409,14 @@ export class ProcessRefundComponent implements OnInit {
         },
         (error: any) => { })
 
-      if (this.paymentObj != undefined && this.paymentObj != null && this.paymentObj.reference == paymentReference) {
-        return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
-      } else {
-        return 'Template';
-      }
+        console.log('Retrieved Payment Object: ' + JSON.stringify(this.paymentObj));
+        if (this.paymentObj == undefined || this.paymentObj == null || this.paymentObj.reference != paymentReference) {
+          console.log('if condition');
+          return 'Template';
+        } else {
+          console.log('else condition');
+          return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
+        }
     } else {
       return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
     }

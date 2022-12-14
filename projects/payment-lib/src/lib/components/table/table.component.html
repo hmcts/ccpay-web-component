@@ -31,16 +31,6 @@
       <option  *ngFor="let name of serviceLst;" value="{{name}}">{{name}}</option>
     </select>
   </div>
-
-  <div *ngIf="dataSource.data.length > 0"  class="govuk-form-group float-left-padding">
-    <label class="govuk-label dropdpwn" for="sort" >
-      Filter by service:
-    </label>
-    <select class="govuk-select" id="sort" name="sort" (change)="selectchange($event)">
-      <option value="" selected='selected'>All services</option>
-      <option  *ngFor="let name of serviceLst;" value="{{name}}">{{name}}</option>
-    </select>
-  </div>
  
 <div *ngIf="dataSource.data.length > 0" class="example-container">
 
