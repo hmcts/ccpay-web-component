@@ -70,6 +70,7 @@ export class PaymentViewComponent implements OnInit {
   isConfirmationBtnDisabled: boolean;
   refundReference: string;
   refundAmount: string;
+  templateInstructionType: string;
   notificationPreview: boolean;
   constructor(private paymentViewService: PaymentViewService,
     private notificationService: NotificationService,
@@ -350,8 +351,10 @@ export class PaymentViewComponent implements OnInit {
   }
   getContactDetails(obj:IRefundContactDetails) {
     this.contactDetailsObj = obj;
-    this.viewCompStatus = 'overpaymentcheckandanswer';
     this.notificationPreview = false;
+    this.templateInstructionType = this.getTemplateInstructionType(this.paymentGroup.payments[0]);
+    this.viewCompStatus = 'overpaymentcheckandanswer';
+    
   }
 
   resetOrderData() {

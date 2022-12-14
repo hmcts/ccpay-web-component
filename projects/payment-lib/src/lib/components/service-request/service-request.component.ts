@@ -103,6 +103,7 @@ export class ServiceRequestComponent implements OnInit {
   remissionFeeAmt: number;
   isContinueBtnDisabled: boolean = true;
   isFullyRefund: boolean;
+  templateInstructionType: string;
   notificationPreview: boolean;
 
   constructor(
@@ -341,6 +342,7 @@ export class ServiceRequestComponent implements OnInit {
     this.contactDetailsObj = obj;
     this.viewStatus = '';
     this.viewCompStatus = 'overpaymentcheckandanswer';
+    this.templateInstructionType = this.getTemplateInstructionType(this.paymentGroupList.payments[0]);
     this.notificationPreview = false;
   }
   gotoPaymentSelectPage(event: Event) {

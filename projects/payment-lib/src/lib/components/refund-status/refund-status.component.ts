@@ -70,6 +70,7 @@ export class RefundStatusComponent implements OnInit {
   fees: IFee [];
   refundFees: IRefundFee[];
   paymentObj: IPayment;
+  templateInstructionType: string;
   notificationSentViewIndex: number = -1;
   notificationPreview: boolean = false;
   notificationSentView: boolean = false;
@@ -200,6 +201,7 @@ export class RefundStatusComponent implements OnInit {
 
   gotoReviewAndReSubmitPage() {
     this.viewName = 'reviewandsubmitview';
+    this.templateInstructionType = this.getTemplateInstructionType(this.paymentObj, this.refundlist.payment_reference);
     this.oldRefundReason = this.refundlist.reason;
     this.changedAmount = this.refundlist.amount;
     this.refundreason = this.refundStatusHistories.filter(data => data.status.toLowerCase() === 'update required')[0].notes;
@@ -337,8 +339,9 @@ export class RefundStatusComponent implements OnInit {
   }
   getContactDetails(obj:IRefundContactDetails) {
     this.addressDetails = obj;
-    this.viewName = 'revieweditdetailsconfirmationpage';
+    this.templateInstructionType = this.getTemplateInstructionType(this.paymentObj,this.refundlist.payment_reference);
     this.notificationPreview = false;
+    this.viewName = 'revieweditdetailsconfirmationpage';
   }
   getContactDetailsForRefundList(obj:IRefundContactDetails) {
     this.refundlist.contact_details = obj;
@@ -410,13 +413,12 @@ export class RefundStatusComponent implements OnInit {
     this.paymentLibComponent.viewName = 'process-refund';
   }
 
-  getTemplateInstructionType(paymentReference: string) {
+  getTemplateInstructionType(payment: IPayment, paymentReference: string) {
 
-    if (paymentReference != undefined && paymentReference != null) {
+    if (payment == undefined || payment == null || payment.reference != paymentReference) {
 
       this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
         payment => {
-          console.log('Payment Object received: ' + JSON.stringify(payment));
           this.paymentObj = payment;
           return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
         },
@@ -424,7 +426,7 @@ export class RefundStatusComponent implements OnInit {
           return 'Template';
         })
     } else {
-      return 'Template';
+      return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
     }
   }
 

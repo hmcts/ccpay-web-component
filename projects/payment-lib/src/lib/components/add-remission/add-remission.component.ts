@@ -130,6 +130,7 @@ export class AddRemissionComponent implements OnInit {
   isFromCheckAnsPage: boolean;
   refundAmtForFeeVolumes: number;
   paymentObj: IPayment;
+  templateInstructionType: string;
   notificationPreview: boolean;
   
   component: { account_number: string; amount: number; case_reference: string; ccd_case_number: string; channel: string; currency: string; customer_reference: string; date_created: string; date_updated: string; description: string; method: string; organisation_name: string; payment_allocation: any[]; reference: string; service_name: string; site_id: string; status: string; };
@@ -964,8 +965,15 @@ if(isFullyRefund) {
   getContactDetails(obj:IRefundContactDetails, type) {
     this.contactDetailsObj = obj;
     this.viewCompStatus = '';
-    this.viewStatus = type;
     this.notificationPreview = false;
+    if(type == 'checkaddRefundpage'){
+      this.templateInstructionType = this.getTemplateInstructionType(this.remessionPayment.reference,this.remessionPayment);
+    }else if (type == 'checkissuerefundpage'){
+      this.templateInstructionType = this.getTemplateInstructionType(this.payment.reference, this.payment);
+    }else if(type == 'addrefundcheckandanswer'){
+      this.templateInstructionType = this.getTemplateInstructionType(this.paymentReference, this.paymentObj);
+    }
+    this.viewStatus = type;
   }
 
   gotoPartialFeeRefundScreen() {
@@ -1161,7 +1169,7 @@ if(isFullyRefund) {
     this.notificationPreview = false;
   }
 
-  getTemplateInstructionType(paymentReference: string, payment?: IPayment) {
+  getTemplateInstructionType(paymentReference: string, payment?: IPayment): string {
 
     console.log('Hitting payment app');
 
@@ -1173,7 +1181,7 @@ if(isFullyRefund) {
           return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
         },
         (error: any) => {
-          return 'Template ABC';
+           return 'Template';
         })
     } else {
       return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);

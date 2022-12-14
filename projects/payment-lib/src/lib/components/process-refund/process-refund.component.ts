@@ -49,6 +49,7 @@ export class ProcessRefundComponent implements OnInit {
   isCPODown: boolean;
   isConfirmButtondisabled: boolean = true;
   paymentObj: IPayment;
+  templateInstructionType: string;
   notificationPreview: boolean = false;
   notificationPreviewObj: INotificationPreview;
   constructor(private RefundsService: RefundsService,
@@ -106,6 +107,7 @@ export class ProcessRefundComponent implements OnInit {
       this.isCPODown = true;
     }
   );
+  this.templateInstructionType = this.getTemplateInstructionType(this.paymentObj,this.refundlistsource.payment_reference);
   }
   
   checkRefundActions(code: string) {
@@ -397,14 +399,11 @@ export class ProcessRefundComponent implements OnInit {
     }
   }
 
-  getTemplateInstructionType(paymentReference: string) {
+  getTemplateInstructionType(payment: IPayment, paymentReference: string) {
 
-    console.log('hitting end point');
-    if (paymentReference != undefined && paymentReference != null) {
-
+    if (payment == undefined || payment == null || payment.reference != paymentReference) {
       this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
         payment => {
-          console.log('Payment Object received: ' + JSON.stringify(payment));
           this.paymentObj = payment;
           return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
         },
@@ -412,9 +411,8 @@ export class ProcessRefundComponent implements OnInit {
           return 'Template';
         })
     } else {
-      return 'Template';
+      return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
     }
-    
   }
 
   showNotificationPreview(): void {
