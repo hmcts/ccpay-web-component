@@ -399,6 +399,7 @@ export class ProcessRefundComponent implements OnInit {
 
   getTemplateInstructionType(paymentReference: string) {
 
+    console.log('hitting end point');
     if (paymentReference != undefined && paymentReference != null) {
 
       this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
