@@ -397,11 +397,13 @@ export class ProcessRefundComponent implements OnInit {
     }
   }
 
-  getTemplateInstructionType(payment: IPayment, paymentReference: string) {
+  getTemplateInstructionType(paymentReference: string) {
 
-    if (payment == undefined || payment == null || payment.reference != paymentReference) {
+    if (paymentReference != undefined && paymentReference != null) {
+
       this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
         payment => {
+          console.log('Payment Object received: ' + JSON.stringify(payment));
           this.paymentObj = payment;
           return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
         },
@@ -409,7 +411,7 @@ export class ProcessRefundComponent implements OnInit {
           return 'Template';
         })
     } else {
-      return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
+      return 'Template';
     }
     
   }

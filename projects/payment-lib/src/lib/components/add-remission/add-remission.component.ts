@@ -1161,11 +1161,12 @@ if(isFullyRefund) {
     this.notificationPreview = false;
   }
 
-  getTemplateInstructionType(payment: IPayment, paymentReference?: string) {
+  getTemplateInstructionType(paymentReference: string, payment?: IPayment) {
 
   if (payment == undefined || payment == null || (paymentReference != undefined && paymentReference != null && payment.reference != paymentReference)) {
       this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
         payment => {
+          console.log('Payment Object received: ' + JSON.stringify(payment));
           this.paymentObj = payment;
           return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
         },
