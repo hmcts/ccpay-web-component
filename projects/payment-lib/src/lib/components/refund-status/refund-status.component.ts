@@ -420,11 +420,17 @@ export class RefundStatusComponent implements OnInit {
       this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
         payment => {
           this.paymentObj = payment;
-          return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
+          this.paymentObj.reference = paymentReference;
         },
-        (error: any) => {
+        (error: any) => {})
+
+        if (this.paymentObj != undefined && this.paymentObj != null && this.paymentObj.reference == paymentReference) {
+          return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
+        } else {
           return 'Template';
-        })
+        }
+
+        
     } else {
       return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
     }
