@@ -1163,6 +1163,8 @@ if(isFullyRefund) {
 
   getTemplateInstructionType(paymentReference: string, payment?: IPayment) {
 
+    console.log('Hitting payment app');
+
   if (payment == undefined || payment == null || (paymentReference != undefined && paymentReference != null && payment.reference != paymentReference)) {
       this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
         payment => {
