@@ -1172,22 +1172,26 @@ if(isFullyRefund) {
   getTemplateInstructionType(paymentReference: string, payment?: IPayment): string {
 
   if (payment == undefined || payment == null || payment.reference != paymentReference) {
-      this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
-        payment => {
-          this.paymentObj = payment;
-          this.paymentObj.reference = paymentReference;
-        },
-        (error: any) => {})
+    console.log('payment reference: ' + paymentReference);
+    this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
+      payment => {
+        console.log('Retreived payment: ' + JSON.stringify(payment));
+        this.paymentObj = payment;
+        this.paymentObj.reference = paymentReference;
+        console.log('Retreived payment Obj inside: ' + JSON.stringify(this.paymentObj));
+      },
+      (error: any) => { })
 
-        console.log('Retrieved Payment Object: ' + JSON.stringify(this.paymentObj));
-        if (this.paymentObj == undefined || this.paymentObj == null || this.paymentObj.reference != paymentReference) {
-          console.log('if condition');
-          return 'Template';
-        } else {
-          console.log('else condition');
-          return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
-        }
+      console.log('Retrieved Payment Object: ' + JSON.stringify(this.paymentObj));
+      if (this.paymentObj == undefined || this.paymentObj == null || this.paymentObj.reference != paymentReference) {
+        console.log('if condition');
+        return 'Template';
+      } else {
+        console.log('else condition');
+        return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
+      }
     } else {
+      console.log('Retrieved Payment Object main outside: ' + JSON.stringify(this.paymentObj));
       return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
     }
   }

@@ -34,16 +34,11 @@ export class NotificationPreviewComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log('Notification app started');
-
-    console.log('preivew Journey: ' + this.previewJourney);
-
     if (this.previewJourney != undefined && this.previewJourney != null && this.previewJourney === 'Notifications sent') {
 
-      console.log('notification sent' + JSON.stringify(this.notificationSent));
       this.notification = this.notificationSent;
 
-      if (this.notification.template_type === 'letter') {
+      if (this.notification != undefined && this.notification != null && this.notification.template_type === 'letter') {
         this.notification.body = this.notification.body.replace(/\r\n/g, '<br/>');
       }
     } else {
@@ -58,7 +53,7 @@ export class NotificationPreviewComponent implements OnInit {
           const JsonResponse = JSON.parse(res);
           this.notification = JsonResponse['data'];
 
-          if (this.notification.template_type === 'letter') {
+          if (this.notification != undefined && this.notification != null && this.notification.template_type === 'letter') {
             this.notification.body = this.notification.body.replace(/\r\n/g, '<br/>');
           }
         },
@@ -71,8 +66,6 @@ export class NotificationPreviewComponent implements OnInit {
       this.notificationPreviewEvent.emit(this.notification);
 
     }
-
-    console.log('Notification app loaded');
   }
 
 }
