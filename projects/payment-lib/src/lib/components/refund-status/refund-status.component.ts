@@ -201,7 +201,7 @@ export class RefundStatusComponent implements OnInit {
 
   gotoReviewAndReSubmitPage() {
     this.viewName = 'reviewandsubmitview';
-    this.templateInstructionType = this.getTemplateInstructionType(this.paymentObj, this.refundlist.payment_reference);
+    this.getTemplateInstructionType(this.paymentObj, this.refundlist.payment_reference);
     this.oldRefundReason = this.refundlist.reason;
     this.changedAmount = this.refundlist.amount;
     this.refundreason = this.refundStatusHistories.filter(data => data.status.toLowerCase() === 'update required')[0].notes;
@@ -339,7 +339,7 @@ export class RefundStatusComponent implements OnInit {
   }
   getContactDetails(obj:IRefundContactDetails) {
     this.addressDetails = obj;
-    this.templateInstructionType = this.getTemplateInstructionType(this.paymentObj,this.refundlist.payment_reference);
+    this.getTemplateInstructionType(this.paymentObj,this.refundlist.payment_reference);
     this.notificationPreview = false;
     this.viewName = 'revieweditdetailsconfirmationpage';
   }
@@ -413,31 +413,21 @@ export class RefundStatusComponent implements OnInit {
     this.paymentLibComponent.viewName = 'process-refund';
   }
 
-  getTemplateInstructionType(payment: IPayment, paymentReference: string) {
+  getTemplateInstructionType(payment: IPayment, paymentReference: string): void {
 
     if (payment == undefined || payment == null || payment.reference != paymentReference) {
 
-      console.log('payment reference: ' + paymentReference);
       this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
         payment => {
-          console.log('Retreived payment: ' + JSON.stringify(payment));
           this.paymentObj = payment;
           this.paymentObj.reference = paymentReference;
-          console.log('Retreived payment Obj inside: ' + JSON.stringify(this.paymentObj));
+          this.templateInstructionType = this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
         },
-        (error: any) => { })
-
-        console.log('Retrieved Payment Object: ' + JSON.stringify(this.paymentObj));
-        if (this.paymentObj == undefined || this.paymentObj == null || this.paymentObj.reference != paymentReference) {
-          console.log('if condition');
-          return 'Template';
-        } else {
-          console.log('else condition');
-          return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
-        }
+        (error: any) => {
+          this.templateInstructionType = 'Template';
+        })
     } else {
-      console.log('Retrieved Payment Object main outside: ' + JSON.stringify(this.paymentObj));
-      return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
+      this.templateInstructionType = this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
     }
   }
 

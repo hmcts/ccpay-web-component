@@ -107,7 +107,7 @@ export class ProcessRefundComponent implements OnInit {
       this.isCPODown = true;
     }
   );
-  this.templateInstructionType = this.getTemplateInstructionType(this.paymentObj,this.refundlistsource.payment_reference);
+  this.getTemplateInstructionType(this.paymentObj,this.refundlistsource.payment_reference);
   }
   
   checkRefundActions(code: string) {
@@ -399,31 +399,21 @@ export class ProcessRefundComponent implements OnInit {
     }
   }
 
-  getTemplateInstructionType(payment: IPayment, paymentReference: string) {
+  getTemplateInstructionType(payment: IPayment, paymentReference: string): void {
 
     if (payment == undefined || payment == null || payment.reference != paymentReference) {
 
-      console.log('payment reference: ' + paymentReference);
       this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
         payment => {
-          console.log('Retreived payment: ' + JSON.stringify(payment));
           this.paymentObj = payment;
           this.paymentObj.reference = paymentReference;
-          console.log('Retreived payment Obj inside: ' + JSON.stringify(this.paymentObj));
+          this.templateInstructionType = this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
         },
-        (error: any) => { })
-
-        console.log('Retrieved Payment Object: ' + JSON.stringify(this.paymentObj));
-        if (this.paymentObj == undefined || this.paymentObj == null || this.paymentObj.reference != paymentReference) {
-          console.log('if condition');
-          return 'Template';
-        } else {
-          console.log('else condition');
-          return this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
-        }
+        (error: any) => {
+          this.templateInstructionType = 'Template';
+        })
     } else {
-      console.log('Retrieved Payment Object main outside: ' + JSON.stringify(this.paymentObj));
-      return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
+      this.templateInstructionType = this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
     }
   }
 

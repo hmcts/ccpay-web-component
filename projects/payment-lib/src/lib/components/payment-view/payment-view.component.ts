@@ -352,7 +352,7 @@ export class PaymentViewComponent implements OnInit {
   getContactDetails(obj:IRefundContactDetails) {
     this.contactDetailsObj = obj;
     this.notificationPreview = false;
-    this.templateInstructionType = this.getTemplateInstructionType(this.paymentGroup.payments[0]);
+    this.getTemplateInstructionType(this.paymentGroup.payments[0]);
     this.viewCompStatus = 'overpaymentcheckandanswer';
     
   }
@@ -377,12 +377,14 @@ export class PaymentViewComponent implements OnInit {
     this.viewStatus = 'paymentview';
   }
 
-  getTemplateInstructionType(payment: IPayment) {
+  getTemplateInstructionType(payment: IPayment): void {
 
     if (payment == undefined || payment == null) {
-      return 'Template';
+      this.templateInstructionType = 'Template';
+    }else{
+      this.templateInstructionType = this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
     }
-    return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
+     
   }
 
   showNotificationPreview(): void {

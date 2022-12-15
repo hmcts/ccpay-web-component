@@ -342,7 +342,7 @@ export class ServiceRequestComponent implements OnInit {
     this.contactDetailsObj = obj;
     this.viewStatus = '';
     this.viewCompStatus = 'overpaymentcheckandanswer';
-    this.templateInstructionType = this.getTemplateInstructionType(this.paymentGroupList.payments[0]);
+    this.getTemplateInstructionType(this.paymentGroupList.payments[0]);
     this.notificationPreview = false;
   }
   gotoPaymentSelectPage(event: Event) {
@@ -397,12 +397,14 @@ export class ServiceRequestComponent implements OnInit {
 
   }
 
-  getTemplateInstructionType(payment: IPayment) {
+  getTemplateInstructionType(payment: IPayment): void {
 
     if (payment == undefined || payment == null) {
-      return 'Template';
+      this.templateInstructionType = 'Template';
+    } else {
+      this.templateInstructionType = this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
     }
-    return this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
+    
   }
 
   showNotificationPreview(): void {
