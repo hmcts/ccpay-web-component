@@ -92,7 +92,7 @@
         <tbody class="govuk-table__body" *ngIf="notificationList">
           <ng-container *ngFor="let notification of notificationList; let i = index;">
             <tr class="govuk-table__row">
-              <td class="govuk-table__cell whitespace-inherit">{{notification.date_created | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+              <td class="govuk-table__cell whitespace-inherit">{{notification.date_created | date:'dd MMMM yyyy HH:mm:ss'}}</td>
               <td class="govuk-table__cell whitespace-inherit">{{orderParty}}</td>
               <td class="govuk-table__cell whitespace-inherit col-40">
                 <div *ngIf="notification?.notification_type === 'EMAIL'">
@@ -152,7 +152,7 @@
 
   </div>
 
-  <ng-container *ngIf="viewName==='refundview'  && !isFromPayBubble && !isResendOperationSuccess && !isEditDetailsClicked">
+  <ng-container *ngIf="viewName==='refundview' && !isResendOperationSuccess && !isEditDetailsClicked">
     <div  *ngIf="refundButtonState==='Update required'" >
       <!-- <div *ngIf="refundButtonState==='sent back'"> -->
       <br />

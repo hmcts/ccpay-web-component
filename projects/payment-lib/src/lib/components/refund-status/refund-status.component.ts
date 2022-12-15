@@ -74,7 +74,7 @@ export class RefundStatusComponent implements OnInit {
   notificationSentViewIndex: number = -1;
   notificationPreview: boolean = false;
   notificationSentView: boolean = false;
-  allowedRolesToAccessRefund = ['payments-refund-approver', 'payments-refund'];
+  allowedRolesToAccessRefund = ['payments-refund-approver', 'payments-refund', 'payments'];
 
   constructor(private formBuilder: FormBuilder,
     private refundService: RefundsService,
