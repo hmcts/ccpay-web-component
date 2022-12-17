@@ -27,7 +27,6 @@ export class RefundStatusComponent implements OnInit {
   @Input() ccdCaseNumber: string;
   @Input() isTurnOff: boolean;
   @Input() orderParty: string;
-  @Input() isEliginbleToAccess: boolean;
   refundStatusForm: FormGroup;
   selectedRefundReason: string;
   rejectedRefundList: IRefundList[] = [];
@@ -94,19 +93,14 @@ export class RefundStatusComponent implements OnInit {
       this.OrderslistService.getCCDCaseNumberforRefund.subscribe((data) => this.ccdCaseNumber = data);
     } else {
       this.viewName = 'refundstatuslist';
-      if(this.isEliginbleToAccess) {
-        this.refundService.getRefundStatusList(this.ccdCaseNumber).subscribe(
-          refundList => {
-            this.rejectedRefundList = refundList['refund_list'];
-          }
-        ),
+      this.refundService.getRefundStatusList(this.ccdCaseNumber).subscribe(
+        refundList => {
+          this.rejectedRefundList = refundList['refund_list'];
+        }
+      ),
         (error: any) => {
-          this.errorMessage = error.replace(/"/g,"");
+          this.errorMessage = error.replace(/"/g, "");
         };
-      } else {
-        this.rejectedRefundList = [];
-      }
-
     }
 
 
@@ -345,16 +339,18 @@ export class RefundStatusComponent implements OnInit {
   }
   getContactDetailsForRefundList(obj:IRefundContactDetails) {
     this.refundlist.contact_details = obj;
+    this.getTemplateInstructionType(this.paymentObj,this.refundlist.payment_reference);
+    this.notificationPreview = false;
     this.isEditDetailsClicked = false;
     this.isRefundBtnDisabled = false;
     this.viewName = 'reviewandsubmitview';
   }
-  gotoEditDetailsPage(note?: any) {
+  gotoEditDetailsPage(note?: any, view?: string) {
     if(note) {
       this.notification = { contact_details: note, notification_type: note.notification_type };
     }
     this.isEditDetailsClicked = true;
-    this.viewName = 'refundEditView'
+    this.viewName = view;
   }
   submitEditDetail() {
     this.isResendOperationSuccess = false;

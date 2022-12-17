@@ -230,7 +230,7 @@
           <br/>
           {{refundlist?.contact_details?.address_line}} {{refundlist?.contact_details?.city}} {{refundlist?.contact_details?.county}} {{refundlist?.contact_details?.country}} {{refundlist?.contact_details?.postal_code}}
         </div> 
-        <a class="govuk-link" href="Javascript:void(0)" *ngIf="refundlist?.contact_details !=null"  class="govuk-link right" (click)="gotoEditDetailsPage(refundlist?.contact_details)">
+        <a class="govuk-link" href="Javascript:void(0)" *ngIf="refundlist?.contact_details !=null"  class="govuk-link right" (click)="gotoEditDetailsPage(refundlist?.contact_details, 'reviewandsubmitEditview')">
           Change
         </a>
       </td>
@@ -273,6 +273,26 @@
   <!-- <p>
     <a (click)="loadRefundListPage()" href="" class="cancelbtn">Cancel</a>
   </p> -->
+</ng-container>
+
+<ng-container *ngIf="viewName === 'reviewandsubmitEditview' && isEditDetailsClicked">
+  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='EDITDETAILSPAGE'>      
+    <h1 class="govuk-heading-l">Edit contact details</h1>
+    <h2 class="govuk-heading-m govuk-font19px">Case reference: {{ccdCaseNumber | ccdHyphens }}</h2>
+    <span class="govuk-hint font-size-19px">
+      Refund reference: {{ refundlist?.refund_reference}}
+    </span>
+    <ccpay-contact-details
+    [isEditOperationInRefundList] = isEditDetailsClicked
+    [addressObj] = notification
+    (assignContactDetailsInFefundsList)="getContactDetailsForRefundList($event)"
+    (redirectToIssueRefund)="gotoCasetransationPageCancelBtnClicked($event)" ></ccpay-contact-details>
+  <p>
+      <a (click)="loadRefundListPage()" class="govuk-link" data-module="govuk-button">
+          Cancel
+      </a>
+  </p>
+
 </ng-container>
 
 <ng-container *ngIf="viewName === 'issuerefundpage1' && !isResendOperationSuccess && !isEditDetailsClicked">
@@ -385,7 +405,7 @@
           </div>        
         </dd>
         <dd class="govuk-summary-list__actions">
-          <a class="govuk-link" href="Javascript:void(0)" (click)="gotoEditDetailsPage(addressDetails)">
+          <a class="govuk-link" href="Javascript:void(0)" (click)="gotoEditDetailsPage(addressDetails, 'refundEditView')">
             Change
           </a>
         </dd>
@@ -419,7 +439,7 @@
 
 
     <div class="govuk-button-group">
-      <button (click)="gotoEditDetailsPage(addressDetails)" class="govuk-button govuk-button--secondary"> Previous</button>
+      <button (click)="gotoEditDetailsPage(addressDetails, 'refundEditView')" class="govuk-button govuk-button--secondary"> Previous</button>
       <button (click)="submitEditDetail()" class="govuk-button button"
         data-module="govuk-button">
           Send notification
