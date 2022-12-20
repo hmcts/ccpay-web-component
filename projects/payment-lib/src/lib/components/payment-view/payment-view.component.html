@@ -453,7 +453,7 @@
   <app-notification-preview *ngIf="notificationPreview" 
   [payment]="paymentGroup.payments[0]" 
   [contactDetails]="contactDetailsObj"
-  [refundReason]="'Over payment'"
+  [refundReason]="'RR037'"
   [refundAmount]="getOverPaymentValue()"></app-notification-preview>
 
   <button type="submit" class="button govuk-button--secondary over-payment-alignment govuk-font19px" (click)="gotoAddressPage(contactDetailsObj)">Previous</button>

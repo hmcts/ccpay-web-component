@@ -91,6 +91,7 @@ export class AddRemissionComponent implements OnInit {
   paymentExplanationHasError: boolean = false;
   refundReason:string;
   selectedRefundReason: string;
+  selectedRefundReasonCode: string;
   displayRefundReason: string;
   refundCode:string;
   remessionPayment:IPayment;
@@ -926,7 +927,7 @@ if(isFullyRefund) {
   // }
 
   selectRadioButton(key, value) {
-    localStorage.setItem("myradio", key);
+    localStorage.setItem("myradio", value);
     const remissionctrls=this.remissionForm.controls;
     remissionctrls['refundDDReason'].setValue('Select a different reason', {onlySelf: true});
     remissionctrls['reason'].reset();
@@ -936,11 +937,12 @@ if(isFullyRefund) {
     this.isReasonEmpty = false;
     this.showReasonText = false;
     this.refundHasError = false;
-    this.selectedRefundReason = key;
+    this.selectedRefundReason = value;
+    this.selectedRefundReasonCode = key;
     if(this.selectedRefundReason.includes('Other')) {
       this.showReasonText = true;
       this.refundHasError = false;
-      this.refundReason = key;
+      this.refundReason = value;
     }
   }
 
@@ -952,6 +954,7 @@ if(isFullyRefund) {
     this.showReasonText = false;
     this.refundHasError = false;
     this.selectedRefundReason = args.target.options[args.target.options.selectedIndex].id;
+    this.selectedRefundReasonCode = args.target.options[args.target.options.selectedIndex].value;
     this.reasonLength = (29-this.selectedRefundReason.split('- ')[1].length);
 
     if(this.selectedRefundReason.includes('Other')) {
@@ -998,7 +1001,7 @@ if(isFullyRefund) {
 
     if (this.isFromRefundStatusPage){
       var remissionctrls=this.remissionForm.controls;
-      this.totalRefundAmount = this.remissionForm.value.feesList.reduce((a, c) => a + c.refund_amount * c.selected, 0);
+      this.totalRefundAmount = 0;
       this.refundListAmount.emit(this.totalRefundAmount.toString());
       return;
     }

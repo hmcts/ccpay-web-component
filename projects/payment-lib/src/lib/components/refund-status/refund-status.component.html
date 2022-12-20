@@ -252,7 +252,7 @@
   [paymentReference]="refundlist?.payment_reference"
   [payment]="paymentObj" 
   [contactDetails]="refundlist?.contact_details"
-  [refundReason]="refundlist?.reason"
+  [refundReason]="refundlist?.reason_code"
   [refundAmount]="changedAmount ? changedAmount : refundlist?.amount"
   [refundReference]="refundlist?.refund_reference"></app-notification-preview>
 
@@ -286,7 +286,7 @@
     [isEditOperationInRefundList] = isEditDetailsClicked
     [addressObj] = notification
     (assignContactDetailsInFefundsList)="getContactDetailsForRefundList($event)"
-    (redirectToIssueRefund)="gotoCasetransationPageCancelBtnClicked($event)" ></ccpay-contact-details>
+    (redirectToIssueRefund)="gotoRefundReviewAndSubmitViewPageCancelBtnClicked($event)" ></ccpay-contact-details>
   <p>
       <a (click)="loadRefundListPage()" class="govuk-link" data-module="govuk-button">
           Cancel
@@ -366,7 +366,7 @@
     [isEditOperationInRefundList] = isEditDetailsClicked
     [addressObj] = notification
     (assignContactDetailsInFefundsList)="getContactDetails($event)"
-    (redirectToIssueRefund)="gotoCasetransationPageCancelBtnClicked($event)" ></ccpay-contact-details>
+    (redirectToIssueRefund)="gotoRefundViewPageCancelBtnClicked($event)" ></ccpay-contact-details>
   <p>
       <a (click)="loadRefundListPage()" class="govuk-link" data-module="govuk-button">
           Cancel
@@ -431,7 +431,7 @@
     <app-notification-preview *ngIf="notificationPreview" [paymentReference]="refundlist?.payment_reference"
     [payment]="paymentObj"
     [contactDetails]="addressDetails"
-    [refundReason]="refundlist?.reason"
+    [refundReason]="refundlist?.reason_code"
     [refundAmount]="refundlist?.amount"
     [refundReference]="refundlist?.refund_reference">
   </app-notification-preview>

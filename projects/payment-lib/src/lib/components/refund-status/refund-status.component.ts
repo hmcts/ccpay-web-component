@@ -397,9 +397,17 @@ export class RefundStatusComponent implements OnInit {
     );
 
   }
-  gotoCasetransationPageCancelBtnClicked(Event: Event) {
+
+  gotoRefundViewPageCancelBtnClicked(event: Event) {
     event.preventDefault();
-    this.viewName  = 'refundstatuslist';
+    this.isEditDetailsClicked = false;
+    this.viewName  = 'refundview';
+  }
+
+  gotoRefundReviewAndSubmitViewPageCancelBtnClicked(event: Event) {
+    event.preventDefault();
+    this.isEditDetailsClicked = false;
+    this.viewName  = 'reviewandsubmitview';
   }
 
   goToRefundProcessComponent(refundReference: string, refundList: IRefundList) {

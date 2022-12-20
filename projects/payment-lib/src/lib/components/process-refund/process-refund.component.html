@@ -83,7 +83,7 @@
       <app-notification-preview *ngIf="notificationPreview" [paymentReference]="refundlistsource?.payment_reference"
         [payment]="paymentObj"
         [contactDetails]="refundlistsource?.contact_details"
-        [refundReason]="refundlistsource?.reason" [refundAmount]="refundlistsource?.amount"
+        [refundReason]="refundlistsource?.reason_code" [refundAmount]="refundlistsource?.amount"
         [refundReference]="refundlistsource?.refund_reference"
         (notificationPreviewEvent) = "getNotificationPreviewObj($event)">
       </app-notification-preview>

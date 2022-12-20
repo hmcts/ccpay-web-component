@@ -342,7 +342,7 @@
     <app-notification-preview *ngIf="notificationPreview" 
     [payment]="remessionPayment" 
     [contactDetails]="contactDetailsObj"
-    [refundReason]="'Retrospective remission'"
+    [refundReason]="'RR036'"
     [refundAmount]="remissionForm.controls.amount.value"></app-notification-preview>
 
     <button type="submit" class="button govuk-button--secondary" (click)="gotoProcessRetroRemission(contactDetailsObj)">Previous</button>
@@ -559,7 +559,7 @@
                               <!-- <div *ngIf = "{{refund.name}} !== 'Retrospective remission'"> -->
                                 <input   class="govuk-radios__input" id="{{refund.name}}" name="refundReason" type="radio"
                                 formControlName="refundReason" value={{refund.code}}
-                                  (change)="selectRadioButton(refund.name, refund.name)">
+                                  (change)="selectRadioButton(refund.code, refund.name)">
                                 <label class="govuk-label--s govuk-radios__label govuk-font__custom" for="how-contacted-conditional">
                                   {{refund.name}}
                                 </label>
@@ -708,7 +708,7 @@
     <app-notification-preview *ngIf="notificationPreview" 
     [payment]="payment" 
     [contactDetails]="contactDetailsObj"
-    [refundReason]="displayRefundReason"
+    [refundReason]="selectedRefundReasonCode"
     [refundAmount]="isFullyRefund ? payment.amount : totalRefundAmount"></app-notification-preview>
 
 
@@ -812,7 +812,7 @@
     [contactDetails]="contactDetailsObj"
     [paymentReference]="paymentReference"
     [payment]="paymentObj"
-    [refundReason]="'Retrospective remission'"
+    [refundReason]="'RR036'"
     [refundAmount]="remission.hwf_amount"></app-notification-preview>
 
     <div class="govuk-button-group">
