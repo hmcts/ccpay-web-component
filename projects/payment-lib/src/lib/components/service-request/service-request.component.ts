@@ -9,6 +9,7 @@ import { IFee } from '../../interfaces/IFee';
 import { IPaymentGroup } from '../../interfaces/IPaymentGroup';
 import { Router } from '@angular/router';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
+import { NotificationService } from '../../services/notification/notification.service';
 import { OrderslistService } from '../../services/orderslist.service';
 import { IRefundContactDetails } from '../../interfaces/IRefundContactDetails';
 import { PostRefundRetroRemission } from '../../interfaces/PostRefundRetroRemission';
@@ -102,11 +103,14 @@ export class ServiceRequestComponent implements OnInit {
   remissionFeeAmt: number;
   isContinueBtnDisabled: boolean = true;
   isFullyRefund: boolean;
+  templateInstructionType: string;
+  notificationPreview: boolean;
 
   constructor(
     private paymentLibComponent: PaymentLibComponent,
     private paymentViewService: PaymentViewService,
     private OrderslistService: OrderslistService,
+    private notificationService: NotificationService,
     private cd: ChangeDetectorRef,
     private router: Router) { }
 
@@ -338,6 +342,8 @@ export class ServiceRequestComponent implements OnInit {
     this.contactDetailsObj = obj;
     this.viewStatus = '';
     this.viewCompStatus = 'overpaymentcheckandanswer';
+    this.getTemplateInstructionType(this.paymentGroupList.payments[0]);
+    this.notificationPreview = false;
   }
   gotoPaymentSelectPage(event: Event) {
     event.preventDefault();
@@ -389,5 +395,23 @@ export class ServiceRequestComponent implements OnInit {
     });
     return feesOverPayment > 0 ? feesOverPayment : this.paymentGroupList.payments[0].over_payment;
 
+  }
+
+  getTemplateInstructionType(payment: IPayment): void {
+
+    if (payment == undefined || payment == null) {
+      this.templateInstructionType = 'Template';
+    } else {
+      this.templateInstructionType = this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
+    }
+    
+  }
+
+  showNotificationPreview(): void {
+    this.notificationPreview = true;
+  }
+
+  hideNotificationPreview(): void {
+    this.notificationPreview = false;
   }
 }

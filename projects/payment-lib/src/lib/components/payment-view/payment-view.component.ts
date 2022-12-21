@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
+import { NotificationService } from '../../services/notification/notification.service';
 import { PaymentLibComponent } from '../../payment-lib.component';
 import { IPaymentGroup } from '../../interfaces/IPaymentGroup';
 import { IFee } from '../../interfaces/IFee';
@@ -69,7 +70,10 @@ export class PaymentViewComponent implements OnInit {
   isConfirmationBtnDisabled: boolean;
   refundReference: string;
   refundAmount: string;
+  templateInstructionType: string;
+  notificationPreview: boolean;
   constructor(private paymentViewService: PaymentViewService,
+    private notificationService: NotificationService,
     private paymentLibComponent: PaymentLibComponent,
     private cd: ChangeDetectorRef,
     private OrderslistService: OrderslistService) {
@@ -347,7 +351,10 @@ export class PaymentViewComponent implements OnInit {
   }
   getContactDetails(obj:IRefundContactDetails) {
     this.contactDetailsObj = obj;
+    this.notificationPreview = false;
+    this.getTemplateInstructionType(this.paymentGroup.payments[0]);
     this.viewCompStatus = 'overpaymentcheckandanswer';
+    
   }
 
   resetOrderData() {
@@ -368,5 +375,23 @@ export class PaymentViewComponent implements OnInit {
   goBackToPaymentView(event: any) {
     event.preventDefault();
     this.viewStatus = 'paymentview';
+  }
+
+  getTemplateInstructionType(payment: IPayment): void {
+
+    if (payment == undefined || payment == null) {
+      this.templateInstructionType = 'Template';
+    }else{
+      this.templateInstructionType = this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
+    }
+     
+  }
+
+  showNotificationPreview(): void {
+    this.notificationPreview = true;
+  }
+
+  hideNotificationPreview(): void {
+    this.notificationPreview = false;
   }
 }

@@ -43,6 +43,7 @@ import { MatInputModule } from '@angular/material/input';
 import { RefundStatusComponent } from './components/refund-status/refund-status.component';
 import { ServiceRequestComponent } from './components/service-request/service-request.component';
 import { PbaPaymentComponent } from './components/pba-payment/pba-payment.component';
+import { NotificationPreviewComponent } from './components/notification-preview/notification-preview.component';
 
 @NgModule({
   imports: [
@@ -86,7 +87,8 @@ import { PbaPaymentComponent } from './components/pba-payment/pba-payment.compon
     ErrorBannerComponent,
     TableComponent,
     RefundStatusComponent,
-    ServiceRequestComponent
+    ServiceRequestComponent,
+    NotificationPreviewComponent
   ],
   exports: [PaymentLibComponent],
   providers: [

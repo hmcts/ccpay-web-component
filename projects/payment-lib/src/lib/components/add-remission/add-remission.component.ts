@@ -8,6 +8,7 @@ import { PaymentLibComponent } from '../../payment-lib.component';
 
 import { IPayment } from '../../interfaces/IPayment';
 import { RefundsService } from '../../services/refunds/refunds.service';
+import { NotificationService } from '../../services/notification/notification.service';
 import { IRefundReasons } from '../../interfaces/IRefundReasons';
 import { AddRetroRemissionRequest } from '../../interfaces/AddRetroRemissionRequest';
 import { IRefundContactDetails } from '../../interfaces/IRefundContactDetails';
@@ -90,6 +91,7 @@ export class AddRemissionComponent implements OnInit {
   paymentExplanationHasError: boolean = false;
   refundReason:string;
   selectedRefundReason: string;
+  selectedRefundReasonCode: string;
   displayRefundReason: string;
   refundCode:string;
   remessionPayment:IPayment;
@@ -128,12 +130,16 @@ export class AddRemissionComponent implements OnInit {
   isStatusAllocated: boolean;
   isFromCheckAnsPage: boolean;
   refundAmtForFeeVolumes: number;
+  paymentObj: IPayment;
+  templateInstructionType: string;
+  notificationPreview: boolean;
   
   component: { account_number: string; amount: number; case_reference: string; ccd_case_number: string; channel: string; currency: string; customer_reference: string; date_created: string; date_updated: string; description: string; method: string; organisation_name: string; payment_allocation: any[]; reference: string; service_name: string; site_id: string; status: string; };
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
     private paymentViewService: PaymentViewService,
+    private notificationService : NotificationService,
     private paymentLibComponent: PaymentLibComponent,
     private refundService: RefundsService,
     private cd: ChangeDetectorRef,
@@ -640,6 +646,7 @@ export class AddRemissionComponent implements OnInit {
           this.isFromCheckAnsPage = false;
           this.viewStatus = 'checkissuerefundpage';
           this.viewCompStatus = '';
+          this.notificationPreview = false;
           return;
         }
         this.viewCompStatus = '';
@@ -653,6 +660,7 @@ export class AddRemissionComponent implements OnInit {
         this.isFromCheckAnsPage = false;
         this.viewStatus = 'checkissuerefundpage';
         this.viewCompStatus = '';
+        this.notificationPreview = false;
         return;
       }
       if ( this.isFromRefundListPage ) {
@@ -772,6 +780,7 @@ if(isFullyRefund) {
           this.fees = this.remissionForm.value.feesList.filter(value => value.selected===true);
           this.viewStatus = 'checkissuerefundpage'
           this.viewCompStatus = '';
+          this.notificationPreview = false;
           return;
         } else if (this.isFromRefundStatusPage){
           var remissionctrls=this.remissionForm.controls;
@@ -918,7 +927,7 @@ if(isFullyRefund) {
   // }
 
   selectRadioButton(key, value) {
-    localStorage.setItem("myradio", key);
+    localStorage.setItem("myradio", value);
     const remissionctrls=this.remissionForm.controls;
     remissionctrls['refundDDReason'].setValue('Select a different reason', {onlySelf: true});
     remissionctrls['reason'].reset();
@@ -928,11 +937,12 @@ if(isFullyRefund) {
     this.isReasonEmpty = false;
     this.showReasonText = false;
     this.refundHasError = false;
-    this.selectedRefundReason = key;
+    this.selectedRefundReason = value;
+    this.selectedRefundReasonCode = key;
     if(this.selectedRefundReason.includes('Other')) {
       this.showReasonText = true;
       this.refundHasError = false;
-      this.refundReason = key;
+      this.refundReason = value;
     }
   }
 
@@ -944,6 +954,7 @@ if(isFullyRefund) {
     this.showReasonText = false;
     this.refundHasError = false;
     this.selectedRefundReason = args.target.options[args.target.options.selectedIndex].id;
+    this.selectedRefundReasonCode = args.target.options[args.target.options.selectedIndex].value;
     this.reasonLength = (29-this.selectedRefundReason.split('- ')[1].length);
 
     if(this.selectedRefundReason.includes('Other')) {
@@ -957,6 +968,14 @@ if(isFullyRefund) {
   getContactDetails(obj:IRefundContactDetails, type) {
     this.contactDetailsObj = obj;
     this.viewCompStatus = '';
+    this.notificationPreview = false;
+    if(type == 'checkaddRefundpage'){
+      this.getTemplateInstructionType(this.remessionPayment.reference,this.remessionPayment);
+    }else if (type == 'checkissuerefundpage'){
+      this.getTemplateInstructionType(this.payment.reference, this.payment);
+    }else if(type == 'addrefundcheckandanswer'){
+      this.getTemplateInstructionType(this.paymentReference, this.paymentObj);
+    }
     this.viewStatus = type;
   }
 
@@ -982,7 +1001,7 @@ if(isFullyRefund) {
 
     if (this.isFromRefundStatusPage){
       var remissionctrls=this.remissionForm.controls;
-      this.totalRefundAmount = this.remissionForm.value.feesList.reduce((a, c) => a + c.refund_amount * c.selected, 0);
+      this.totalRefundAmount = 0;
       this.refundListAmount.emit(this.totalRefundAmount.toString());
       return;
     }
@@ -1143,6 +1162,31 @@ if(isFullyRefund) {
       return currency
     }
      return currency.toString().concat(".00");
+  }
+
+  showNotificationPreview(): void {
+    this.notificationPreview = true;
+  }
+
+  hideNotificationPreview(): void {
+    this.notificationPreview = false;
+  }
+
+  getTemplateInstructionType(paymentReference: string, payment?: IPayment): void {
+
+  if (payment == undefined || payment == null || payment.reference != paymentReference) {
+    this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
+      payment => {
+        this.paymentObj = payment;
+        this.paymentObj.reference = paymentReference;
+        this.templateInstructionType = this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
+      },
+      (error: any) => { 
+        this.templateInstructionType = 'Template';
+      })
+    } else {
+      this.templateInstructionType = this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
+    }
   }
 
 }

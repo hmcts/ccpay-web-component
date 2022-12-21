@@ -6,6 +6,7 @@ export interface IRefundList {
     date_updated: string,
     payment_reference: string,
     reason: string,
+    reason_code: string,
     refund_reference: string,
     refund_status: {
       description: string,
