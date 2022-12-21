@@ -272,9 +272,11 @@ export class RefundStatusComponent implements OnInit {
 
   getRefundListReason(refundListReason: any) {
     if (this.paymentLibComponent.isFromRefundStatusPage && !this.paymentLibComponent.iscancelClicked) {
-      this.refundlist.reason = refundListReason.reason;
-      this.refundlist.code = refundListReason.code;
-      this.refundCode = refundListReason.code;
+      if(refundListReason.reason != undefined && refundListReason.reason != null && refundListReason.reason != this.refundlist.reason){
+        this.refundlist.reason = refundListReason.reason;
+        this.refundlist.code = refundListReason.code;
+        this.refundCode = refundListReason.code;
+      }
     } else {
       this.isRefundBtnDisabled = true;
     }
