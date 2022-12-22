@@ -51,6 +51,7 @@ export class WebComponentHttpClient {
       } else {
         headers['CSRF-Token'] = document.cookie.split(';').find(row => row.startsWith(' XSRF-TOKEN')).split('=')[1];
       }
+      
     } else {
       headers['CSRF-Token'] = csrfToken.content;
     }

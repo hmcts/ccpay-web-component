@@ -466,8 +466,8 @@
                     <td class="govuk-table__header col-25" scope="col">Total payments</td>
                     <td class="govuk-table__header govuk-table__header--custom col-25" scope="col" *ngIf="isBulkScanEnable">Unallocated payments</td>
                     <td class="govuk-table__header col-25" scope="col">Total remissions</td>
-                    <td class="govuk-table__header col-25" scope="col">Amount due</td>
-
+                    <td class="govuk-table__header col-20" scope="col">Amount due</td>
+                    <td class="govuk-table__header col-20" scope="col">Over payment</td>
                   </tr>
                 </thead>
                 <tbody class="govuk-table__body">
@@ -477,6 +477,8 @@
 
                     <td class="govuk-table__cell summary-table-font">{{ totalRemissions | currency :'GBP':'symbol':'1.2-2' }}</td>
                     <td class="govuk-table__cell summary-table-font">{{ clAmountDue | currency :'GBP':'symbol':'1.2-2'}}</td>
+                    <td class="govuk-table__cell summary-table-font">{{ overPaymentAmount | currency :'GBP':'symbol':'1.2-2'}}</td>
+
                      </tr>
                 </tbody>
               </table>
@@ -573,13 +575,13 @@
               </ng-container>
 
           </div>
-          <div *ngIf="!check4AllowedRoles2AccessPBApayment()">
+          <div *ngIf="!check4AllowedRoles2AccessPBApayment() && serviceRequestValue !== 'true'">
               <span class="heading-medium"><br/>Refunds</span>
               <ccpay-refund-status
               [ccdCaseNumber]="ccdCaseNumber"
               [isTurnOff]="isTurnOff"
+              [orderParty]="orderParty"
               [LOGGEDINUSERROLES]="LOGGEDINUSERROLES" 
-              [isEliginbleToAccess] = check4AllowedRoles2AccessRefund()
               ></ccpay-refund-status>
           </div>
       </div>
@@ -678,11 +680,11 @@
 
           </div>
         </div>
-        <div class="govuk-grid-column-full" *ngIf="!check4AllowedRoles2AccessPBApayment()">
+        <div class="govuk-grid-column-full" *ngIf="!check4AllowedRoles2AccessPBApayment() && serviceRequestValue !== 'true'">
             <span class="heading-medium"><br/>Refunds</span>
             <ccpay-refund-status 
             [ccdCaseNumber]="ccdCaseNumber"
-            [isEliginbleToAccess] = check4AllowedRoles2AccessRefund()
+            [orderParty] ="orderParty"
              ></ccpay-refund-status>
         </div>
 
@@ -701,6 +703,7 @@
   [orderParty] = "orderParty"
   [orderCCDEvent] = "orderCCDEvent"
   [orderDetail] = "orderDetail"
+  [paymentGroupList] = "paymentGroups"
   [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES"
   [ccdCaseNumber] = "ccdCaseNumber"
   [orderFeesTotal] = "orderFeesTotal"
@@ -737,7 +740,6 @@
 [caseType]="caseType"
 [paymentGroupRef]="orderRef"
 [ccdCaseNumber]="ccdCaseNumber"></ccpay-add-remission>
-
 <ccpay-add-remission *ngIf="viewStatus === 'addrefundforremission' && payment"
 [isTurnOff]="isTurnOff"
 [isStrategicFixEnable]="isStrategicFixEnable"
@@ -774,6 +776,5 @@
     </form>
   </div>
 </ng-container>
-
 </main>
 </div>

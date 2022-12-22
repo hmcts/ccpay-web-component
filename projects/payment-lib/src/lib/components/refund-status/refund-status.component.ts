@@ -1,13 +1,19 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { RefundsService } from '../../services/refunds/refunds.service';
-import { FormBuilder, FormGroup, Validators, FormControl, RequiredValidator } from '@angular/forms';
+import { NotificationService } from '../../services/notification/notification.service';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { IRefundList } from '../../interfaces/IRefundList';
-import { PaymentViewService } from '../../services/payment-view/payment-view.service';
-import { Router } from '@angular/router';
+import { IRefundsNotifications } from '../../interfaces/IRefundsNotifications';
 import { OrderslistService } from '../../services/orderslist.service';
+import { IPutNotificationRequest } from '../../interfaces/IPutNotificationRequest';
+import { IRefundContactDetails } from '../../interfaces/IRefundContactDetails';
 import { IRefundStatus } from '../../interfaces/IRefundStatus';
 import { IResubmitRefundRequest } from '../../interfaces/IResubmitRefundRequest';
 import { PaymentLibComponent } from '../../payment-lib.component';
+import { PaymentViewService } from '../../services/payment-view/payment-view.service';
+import { IPayment } from '../../interfaces/IPayment';
+import { IFee } from '../../interfaces/IFee';
+import { IRefundFee } from '../../interfaces/IRefundFee';
 const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 
 @Component({
@@ -20,14 +26,14 @@ export class RefundStatusComponent implements OnInit {
   @Input('API_ROOT') API_ROOT: string;
   @Input() ccdCaseNumber: string;
   @Input() isTurnOff: boolean;
-  @Input() isEliginbleToAccess: boolean;
+  @Input() orderParty: string;
   refundStatusForm: FormGroup;
   selectedRefundReason: string;
   rejectedRefundList: IRefundList[] = [];
+  notificationList: any;
+  notification:any;
   approvalStatus = 'Sent for approval';
   rejectStatus = 'Update required';
-  // approvalStatus = 'sent for approval';
-  // rejectStatus = 'sent back';
   errorMessage = null;
   viewName: string;
   refundReason: string;
@@ -42,6 +48,11 @@ export class RefundStatusComponent implements OnInit {
   refundHasError: boolean = false;
   refundReasons: any[] = [];
   refundStatusHistories: IRefundStatus[];
+  refundNotifications: IRefundStatus[];
+  isResendOperationSuccess: boolean = false;
+  isEditDetailsClicked: boolean = false;
+  isEditAddressDeatilsClicked: boolean = false;
+  addressDetails: IRefundContactDetails;
   refundReference: string;
   refundAmount: string;
   refundCode: string;
@@ -52,41 +63,44 @@ export class RefundStatusComponent implements OnInit {
   isLastUpdatedByCurrentUser: boolean = true;
   isProcessRefund: boolean = false;
   changedAmount: number;
+  isRemissionsMatch: boolean;
+  payment: IPayment;
+  changeRefundReason: string;
+  fees: IFee [];
+  refundFees: IRefundFee[];
+  paymentObj: IPayment;
+  templateInstructionType: string;
+  notificationSentViewIndex: number = -1;
+  notificationPreview: boolean = false;
+  notificationSentView: boolean = false;
+  allowedRolesToAccessRefund = ['payments-refund-approver', 'payments-refund', 'payments'];
+
   constructor(private formBuilder: FormBuilder,
     private refundService: RefundsService,
+    private notificationService: NotificationService,
     private paymentLibComponent: PaymentLibComponent,
-    private paymentViewService: PaymentViewService,
-    private router: Router,
-    private OrderslistService: OrderslistService) { }
+    private OrderslistService: OrderslistService,
+    private paymentViewService: PaymentViewService) { }
 
   ngOnInit() {
 
-   // if (this.check4AllowedRoles2AccessRefund()) {
     this.resetRemissionForm([false, false, false, false], 'All');
     this.bsPaymentDcnNumber = this.paymentLibComponent.bspaymentdcn;
     this.isCallFromRefundList = this.paymentLibComponent.isCallFromRefundList;
-    // if(this.paymentLibComponent.isFromRefundStatusPage) {
-    //   this.viewName = 'reviewandsubmitview';
-    // }
     if (this.paymentLibComponent.isRefundStatusView) {
       this.viewName = 'refundview';
       this.OrderslistService.getRefundView().subscribe((data) => this.refundlist = data);
       this.OrderslistService.getCCDCaseNumberforRefund.subscribe((data) => this.ccdCaseNumber = data);
     } else {
       this.viewName = 'refundstatuslist';
-      if(this.isEliginbleToAccess) {
-        this.refundService.getRefundStatusList(this.ccdCaseNumber).subscribe(
-          refundList => {
-            this.rejectedRefundList = refundList['refund_list'];
-          }
-        ),
+      this.refundService.getRefundStatusList(this.ccdCaseNumber).subscribe(
+        refundList => {
+          this.rejectedRefundList = refundList['refund_list'];
+        }
+      ),
         (error: any) => {
-          this.errorMessage = error.replace(/"/g,"");
+          this.errorMessage = error.replace(/"/g, "");
         };
-      } else {
-        this.rejectedRefundList = [];
-      }
-
     }
 
 
@@ -100,6 +114,7 @@ export class RefundStatusComponent implements OnInit {
       });
 
       if(this.refundlist !== undefined) {
+        this.getRefundsNotification();
         this.getRefundsStatusHistoryList();
 
         if (this.LOGGEDINUSERROLES.some(i => i.includes('payments-refund-approver'))) {
@@ -113,7 +128,7 @@ export class RefundStatusComponent implements OnInit {
           this.refundButtonState = this.refundlist.refund_status.name;
         }
       }
-   //}
+
   }
 
   isFromPayBubble = (): boolean => { 
@@ -132,6 +147,17 @@ export class RefundStatusComponent implements OnInit {
         this.errorMessage = error.replace(/"/g,"");
       };
     }
+  }
+
+  getRefundsNotification() {
+    this.notificationService.getRefundNotification(this.refundlist.refund_reference).subscribe(
+      refundsNotification => {
+        this.notificationList = refundsNotification['notifications'];
+      }
+    ),
+    (error: any) => {
+      this.errorMessage = error.replace(/"/g,"");
+    }; 
   }
 
   goToRefundView(refundlist: IRefundList, navigationpage: string) {
@@ -169,6 +195,7 @@ export class RefundStatusComponent implements OnInit {
 
   gotoReviewAndReSubmitPage() {
     this.viewName = 'reviewandsubmitview';
+    this.getTemplateInstructionType(this.paymentObj, this.refundlist.payment_reference);
     this.oldRefundReason = this.refundlist.reason;
     this.changedAmount = this.refundlist.amount;
     this.refundreason = this.refundStatusHistories.filter(data => data.status.toLowerCase() === 'update required')[0].notes;
@@ -177,13 +204,14 @@ export class RefundStatusComponent implements OnInit {
         this.refundReasons = refundReasons;
       });
   }
-  gotoRefundReasonPage() {
+  gotoRefundReasonPage(refundReason:string) {
     this.isRefundBtnDisabled = false;
     this.paymentLibComponent.REFUNDLIST = "true";
     this.paymentLibComponent.isFromRefundStatusPage = true;
     this.ccdCaseNumber = this.paymentLibComponent.CCD_CASE_NUMBER;
     this.errorMessage = false;
-    this.viewName = 'issuerefund';
+    this.changeRefundReason = refundReason;
+    this.viewName = 'issuerefundpage1';
   }
 
   gotoAmountPage() {
@@ -192,7 +220,11 @@ export class RefundStatusComponent implements OnInit {
     this.isRefundBtnDisabled = false;
     this.ccdCaseNumber = this.paymentLibComponent.CCD_CASE_NUMBER;
     this.paymentLibComponent.isFromRefundStatusPage = true;
+    if(this.refundlist.reason == 'Retrospective remission') {
     this.viewName = 'processretroremissonpage';
+    } else {
+      this.viewName = 'issuerefund';
+    }
   }
 
   goToReviewAndSubmitView() {
@@ -240,11 +272,15 @@ export class RefundStatusComponent implements OnInit {
 
   getRefundListReason(refundListReason: any) {
     if (this.paymentLibComponent.isFromRefundStatusPage && !this.paymentLibComponent.iscancelClicked) {
-      this.refundlist.reason = refundListReason.reason;
-      this.refundCode = refundListReason.code;
+      if(refundListReason.reason != undefined && refundListReason.reason != null && refundListReason.reason != this.refundlist.reason){
+        this.refundlist.reason = refundListReason.reason;
+        this.refundlist.code = refundListReason.code;
+        this.refundCode = refundListReason.code;
+      }
     } else {
       this.isRefundBtnDisabled = true;
     }
+    this.notificationPreview = false;
     this.viewName = 'reviewandsubmitview';
     this.paymentLibComponent.CCD_CASE_NUMBER = this.ccdCaseNumber;
   }
@@ -258,15 +294,26 @@ export class RefundStatusComponent implements OnInit {
     } else {
       this.isRefundBtnDisabled = true;
     }
+    this.notificationPreview = false;
     this.viewName = 'reviewandsubmitview';
     this.paymentLibComponent.CCD_CASE_NUMBER = this.ccdCaseNumber;
   }
 
+  getRefundFees(fees: IFee[])
+  {
+    this.fees = fees;
+    this.refundFees  = this.fees.map(obj => ({ fee_id: obj.id, code: obj.code, version:obj.version, volume: obj.volume,refund_amount:obj.refund_amount }));
+  }
+
   gotoReviewRefundConfirmationPage() {
-    if (this.oldRefundReason === this.refundlist.reason) {
-      this.refundCode = '';
+    // if (this.oldRefundReason === this.refundlist.reason) {
+    //   this.refundCode = '';
+    // }
+    if (this.refundFees === undefined) {
+      this.refundFees = this.refundlist['refund_fees'];
     }
-    const resubmitRequest = new IResubmitRefundRequest(this.refundCode,  this.changedAmount);
+    this.refundCode = this.refundlist.code;
+    const resubmitRequest = new IResubmitRefundRequest(this.refundCode,  this.changedAmount, this.refundlist.contact_details, this.refundFees);
     this.refundService.patchResubmitRefund(resubmitRequest, this.refundlist.refund_reference).subscribe(
       response => {
         if (JSON.parse(response)) {
@@ -279,13 +326,133 @@ export class RefundStatusComponent implements OnInit {
         this.errorMessage = error.replace(/"/g,"");
       }
     );
+  }
 
+  gotoEditAddressDetails(note: IRefundsNotifications) {
+    this.notification = note;
+    this.isEditDetailsClicked = true;
+    this.viewName = 'refundEditView'
+  }
+  getContactDetails(obj:IRefundContactDetails) {
+    this.addressDetails = obj;
+    this.getTemplateInstructionType(this.paymentObj,this.refundlist.payment_reference);
+    this.notificationPreview = false;
+    this.viewName = 'revieweditdetailsconfirmationpage';
+  }
+  getContactDetailsForRefundList(obj:IRefundContactDetails) {
+    this.refundlist.contact_details = obj;
+    this.getTemplateInstructionType(this.paymentObj,this.refundlist.payment_reference);
+    this.notificationPreview = false;
+    this.isEditDetailsClicked = false;
+    this.isRefundBtnDisabled = false;
+    this.viewName = 'reviewandsubmitview';
+  }
+  gotoEditDetailsPage(note?: any, view?: string) {
+    if(note) {
+      this.notification = { contact_details: note, notification_type: note.notification_type };
+    }
+    this.isEditDetailsClicked = true;
+    this.viewName = view;
+  }
+  submitEditDetail() {
+    this.isResendOperationSuccess = false;
+    const contactDetails = this.addressDetails.notification_type === 'EMAIL' ? this.addressDetails.email :
+      {
+        address_line: this.addressDetails.address_line,
+        city: this.addressDetails.city,
+        county: this.addressDetails.county,
+        country: this.addressDetails.country,
+        postal_code: this.addressDetails.postal_code,
+      };
+    const resendRequest = new IPutNotificationRequest(contactDetails, this.addressDetails.notification_type);
+
+    this.refundService.putResendOrEdit(resendRequest, this.refundlist.refund_reference, this.addressDetails.notification_type).subscribe(
+      (response) => {
+        this.isResendOperationSuccess = response;
+      },
+      (error: any) => {
+        this.isResendOperationSuccess = false;
+        this.errorMessage = error.replace(/"/g,"");
+      }
+    );
+  }
+  putResend(notification: IRefundsNotifications) {
+    this.isResendOperationSuccess = false;
+    const contactDetails = notification.notification_type === 'EMAIL' ? notification.contact_details.email :
+      {
+        address_line :notification.contact_details.address_line,
+        city: notification.contact_details.city,
+        county: notification.contact_details.county,
+        country: notification.contact_details.country,
+        postal_code: notification.contact_details.postal_code,
+      };
+    const resendRequest = new IPutNotificationRequest(contactDetails, notification.notification_type);
+
+    this.refundService.putResendOrEdit(resendRequest, this.refundlist.refund_reference, notification.notification_type).subscribe(
+      (response) => {
+        this.isResendOperationSuccess = response;
+      },
+      (error: any) => {
+        this.isResendOperationSuccess = false;
+        this.errorMessage = error.replace(/"/g,"");
+      }
+    );
+
+  }
+
+  gotoRefundViewPageCancelBtnClicked(event: Event) {
+    event.preventDefault();
+    this.isEditDetailsClicked = false;
+    this.viewName  = 'refundview';
+  }
+
+  gotoRefundReviewAndSubmitViewPageCancelBtnClicked(event: Event) {
+    event.preventDefault();
+    this.isEditDetailsClicked = false;
+    this.viewName  = 'reviewandsubmitview';
   }
 
   goToRefundProcessComponent(refundReference: string, refundList: IRefundList) {
     this.paymentLibComponent.refundlistsource = refundList;
     this.paymentLibComponent.refundReference = refundReference;
+    this.paymentLibComponent.isFromPayBubble = true;
     this.paymentLibComponent.viewName = 'process-refund';
+  }
+
+  getTemplateInstructionType(payment: IPayment, paymentReference: string): void {
+
+    if (payment == undefined || payment == null || payment.reference != paymentReference) {
+
+      this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
+        payment => {
+          this.paymentObj = payment;
+          this.paymentObj.reference = paymentReference;
+          this.templateInstructionType = this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
+        },
+        (error: any) => {
+          this.templateInstructionType = 'Template';
+        })
+    } else {
+      this.templateInstructionType = this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
+    }
+  }
+
+  showNotificationPreview(): void {
+    this.notificationPreview = true;
+  }
+
+  hideNotificationPreview(): void {
+    this.notificationPreview = false;
+  }
+
+  showNotificationSentView(index: number): void {
+    this.notificationSentViewIndex = index;
+    this.notificationSentView = true;
+  }
+
+  hideNotificationSentView(): void {
+    this.notificationSentViewIndex = -1;
+    this.notificationSentView = false;
   }
 
 }

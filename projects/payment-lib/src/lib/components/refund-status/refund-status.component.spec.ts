@@ -79,7 +79,7 @@ describe('RefundStatusComponent', () => {
           "amount": 1,
           "reason": "Retrospective remission",
           "refund_status": {
-            "name": "sent for approval",
+            "name": "Sent for approval",
             "description": "Refund request submitted"
           },
           "refund_reference": "RF-1634-9738-7825-1198",
@@ -94,7 +94,7 @@ describe('RefundStatusComponent', () => {
           "amount": 218,
           "reason": "Fee not due",
           "refund_status": {
-            "name": "sent for approval",
+            "name": "Sent for approval",
             "description": "Refund request submitted"
           },
           "refund_reference": "RF-1635-1905-9155-5388",
@@ -109,7 +109,7 @@ describe('RefundStatusComponent', () => {
           "amount": 218,
           "reason": "Duplicate fee (customer error)",
           "refund_status": {
-            "name": "sent for approval",
+            "name": "Sent for approval",
             "description": "Refund request submitted"
           },
           "refund_reference": "RF-1635-1906-5785-7207",
@@ -155,11 +155,11 @@ describe('RefundStatusComponent', () => {
   });
 
   it('approvalStatus has default value', () => {
-    expect(component.approvalStatus).toEqual('sent for approval');
+    expect(component.approvalStatus).toEqual('Sent for approval');
   });
 
   it('rejectStatus has default value', () => {
-    expect(component.rejectStatus).toEqual('sent back');
+    expect(component.rejectStatus).toEqual('Update required');
   });
 
   it('isAmountEmpty has default value', () => {

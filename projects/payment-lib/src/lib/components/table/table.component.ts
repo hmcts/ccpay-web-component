@@ -23,6 +23,7 @@ export class TableComponent {
   
   dataSource: MatTableDataSource<any>;
   userLst;
+  serviceLst;
   actualcount: number;
   count: number;
   refundList: IRefundList[];
@@ -46,11 +47,16 @@ export class TableComponent {
     this.dataSource = new MatTableDataSource(this.refundList);
     this.actualcount = this.dataSource.data.length;
     if( this.refundList !== undefined) {
-    this.userLst = this.refundList.reduce((r,{user_full_name}) => (r[user_full_name]='', r) , {});
+     this.userLst = this.refundList.reduce((r,{user_full_name}) => (r[user_full_name]='', r) , {});
      this.userLst = Object.keys(this.userLst);
+     this.userLst.sort((a, b) => a.toString().localeCompare(b));
+     this.serviceLst = this.refundList.reduce((r,{service_type}) => (r[service_type]='', r) , {});
+     this.serviceLst = Object.keys(this.serviceLst);
+     this.serviceLst.sort((a, b) => a.toString().localeCompare(b));
     }
-    this.userLst.sort((a, b) => a.toString().localeCompare(b));
+    
   }
+   
   /**
    * Set the paginator and sort after the view init since this component will
    * be able to query its view for the initialized paginator and sort.

@@ -1,5 +1,5 @@
-
-<ng-container *ngIf="viewStatus === 'paymentview'">
+<div class="payment-view-section">
+<ng-container *ngIf="viewStatus === 'paymentview' && viewCompStatus !== 'overpayment' && viewCompStatus !== 'overPaymentAddressCapture' && viewCompStatus !== 'overpaymentcheckandanswer'">
 <div class="govuk-width-container">
 
   <div  class="govuk-breadcrumbs">
@@ -45,6 +45,10 @@
         <tr class="section">
           <td class="bold tb-col-w">Payment amount</td>
           <td class="tb-col-w">£{{ paymentGroup?.payments[0]?.amount | number:'.2' }}</td>
+        </tr>
+        <tr class="section" *ngIf="paymentGroup?.payments[0]?.over_payment > 0">
+          <td class="bold tb-col-w">Over payment</td>
+          <td class="tb-col-w">£{{ getOverPaymentValue() | number:'.2' }}</td>
         </tr>
         <tr class="section" *ngIf="paymentGroup?.payments[0] && paymentGroup?.payments[0]?.document_control_number && !paymentGroup?.payments[0]?.external_reference">
           <td class="bold tb-col-w">Payment asset number(DCN)</td>
@@ -108,7 +112,7 @@
       <ccpay-payment-statuses *ngIf="isStatusAllocated" [isTakePayment]="isTakePayment"></ccpay-payment-statuses>
       </div>
      <div class="remission">
-        <button  [disabled]="!chkIssueRefundBtnEnable(paymentGroup?.payments[0])"  (click)="issueRefund(paymentGroup)" class="govuk-button govuk-button--secondary">Issue refund</button>
+        <button  [disabled]="!chkIsIssueRefundBtnEnable(paymentGroup?.payments[0])"  (click)="issueRefund(paymentGroup)" class="govuk-button govuk-button--secondary">Issue refund</button>
      </div>
 <div *ngIf="ISPAYMENTSTATUSENABLED">
      <div class="column">
@@ -185,7 +189,7 @@
 
           </tbody>
         </table>
-        <button [disabled]="!chkForAddRemission(fee.code)" (click)="addRemission(fee)" class="govuk-button govuk-button--secondary"> Add remission</button>
+        <button [disabled]="!chkIsAddRemissionBtnEnable(fee)" (click)="addRemission(fee)" class="govuk-button govuk-button--secondary"> Add remission</button>
       </div>
 
                 <!-- remissions -->
@@ -208,7 +212,7 @@
             <td class="govuk-table__cell whitespace-inherit">{{ remission?.fee_code }}</td>
             <td class="govuk-table__cell whitespace-inherit">{{ remission?.hwf_amount | currency:'GBP':'symbol-narrow':'1.2-2'}}</td>
             <td class="govuk-table__cell refundBtn whitespace-inherit"  >
-               <button  [disabled]="!chkIsRefundRemissionBtnEnable()" (click)="addRefundForRemission(paymentGroup.payments[0],remission,paymentGroup.fees)" class="govuk-button govuk-button--secondary"> Add refund</button>
+               <button  [disabled]="!chkIsAddRefundBtnEnable(remission)" (click)="addRefundForRemission(paymentGroup.payments[0],remission,paymentGroup.fees)" class="govuk-button govuk-button--secondary"> Add refund</button>
             </td>
           </tr>
       </tbody>
@@ -227,8 +231,8 @@
 </div>
 
 </ng-container>
-<ng-container *ngIf="viewStatus === 'addremission' && feeId">
-<ccpay-add-remission
+<ng-container *ngIf="viewStatus === 'addremission' && feeId && viewCompStatus !== 'overpayment' && viewCompStatus !== 'overPaymentAddressCapture' && viewCompStatus !== 'overpaymentcheckandanswer'">
+<ccpay-add-remission 
 [isTurnOff]="isTurnOff"
 [isStrategicFixEnable]="isStrategicFixEnable"
 [viewCompStatus]= "viewStatus"
@@ -252,7 +256,7 @@
 [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES"></ccpay-add-remission>
 </ng-container>
 
-<ng-container *ngIf="viewStatus === 'addrefundforremission' && payment">
+<ng-container *ngIf="viewStatus === 'addrefundforremission' && payment && viewCompStatus !== 'overpayment' && viewCompStatus !== 'overPaymentAddressCapture' && viewCompStatus !== 'overpaymentcheckandanswer'">
 
 <ccpay-add-remission
 [isTurnOff]="isTurnOff"
@@ -279,8 +283,8 @@
 [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES"></ccpay-add-remission>
 </ng-container>
 
-<ng-container *ngIf="viewStatus === 'issuerefund'">
-    <ccpay-add-remission
+<ng-container *ngIf="viewStatus === 'issuerefund' && viewCompStatus !== 'overpayment' && viewCompStatus !== 'overPaymentAddressCapture' && viewCompStatus !== 'overpaymentcheckandanswer'">
+    <ccpay-add-remission 
     [isTurnOff]="isTurnOff"
     [isStrategicFixEnable]="isStrategicFixEnable"
     [payment] = 'paymentGroup.payments[0]'
@@ -301,10 +305,13 @@
     [orderParty] = "orderParty"
     [orderCCDEvent] = "orderCCDEvent"
     [orderDetail] = "orderDetail"
+    [fees] ="paymentFees"
+    [isFullyRefund] = "isFullyRefund"
     [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES">
+    
   ></ccpay-add-remission>
 </ng-container>
-<ng-container *ngIf="viewStatus === 'order-full-view'">
+<ng-container *ngIf="viewStatus === 'order-full-view' && viewCompStatus !== 'overpayment' && viewCompStatus !== 'overPaymentAddressCapture' && viewCompStatus !== 'overpaymentcheckandanswer'">
   <ccpay-service-request
   [viewStatus] = "viewStatus"
   [orderRef] = "orderRef"
@@ -325,6 +332,173 @@
 </ccpay-service-request>
 
 </ng-container>
+</div>
+<div class="over-payment">
+<ng-container *ngIf="viewCompStatus === 'overpayment'">
+  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='OVERPAYMENTPAGE'> 
+  <h1 class="heading-large">Issue refund</h1>
+  <h1 class="heading-medium">Case reference: {{ccdCaseNumber | ccdHyphens }}</h1>
+  <span id="how-contacted-conditional-hint govuk-font19px" class="form-hint">
+    Payment reference: {{paymentGroup?.payments[0]?.reference}}
+  </span>
+<div class="govuk-form-group">
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <b>
+        Select payment to refund
+      </b>
+    </legend>
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="over-payment" name="over-payment" type="radio" (click)="selectPymentOption('op')" value="op">
+        <label class="govuk-label govuk-radios__label govuk-font19px" for="where-do-you-live">
+          Over payment £{{getOverPaymentValue() | number:'.2'}}
+        </label>
+      </div>
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="full-payment" name="over-payment" type="radio" (click)="selectPymentOption('fp')" value="fp">
+        <label class="govuk-label govuk-radios__label govuk-font19px" for="where-do-you-live-2">
+          Full payment £{{paymentGroup?.payments[0]?.amount | number:'.2'}}
+        </label>
+      </div>
+    </div>
+      <button class="govuk-button govuk-button--secondary over-payment-alignment govuk-font19px"
+      (click)="goToPaymentViewComponent()"> Previous</button>
+      <button 
+      (click)="continuePayment(paymentGroup)"
+      [disabled]="isContinueBtnDisabled"
+      [ngClass]='isContinueBtnDisabled ? "button button--disabled govuk-!-margin-right-1 govuk-font19px" : "button govuk-!-margin-right-1 govuk-font19px"'
+      class="govuk-button"> Continue</button>
+  </fieldset>
+</div>
+</ng-container>
+
+<ng-container *ngIf="viewCompStatus === 'overPaymentAddressCapture'">
+  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='OVERPAYMENTADDRESSCAPTUREPAGE'>      
+  <h1 class="govuk-heading-l">Issue refund</h1>
+  <h2 class="govuk-heading-m govuk-font19px">Case reference: {{ccdCaseNumber | ccdHyphens }}</h2>
+  <span id="how-contacted-conditional-hint" class="govuk-hint govuk-font19px">
+    Payment reference: {{paymentGroup?.payments[0]?.reference}}
+  </span>
+<ccpay-contact-details 
+[addressObj] = notification
+(assignContactDetails)="getContactDetails($event)"
+(redirectToIssueRefund)="gotoPaymentSelectPage($event)" ></ccpay-contact-details>
+<p>
+    <a (click)="goToCaseTransationPage($event)" class="govuk-link" data-module="govuk-button">
+        Cancel
+    </a>
+</p>
+</ng-container>
+
+<ng-container *ngIf="viewCompStatus === 'overpaymentcheckandanswer'">
+  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='ADDREFUNDFORREMISSION'> 
+  <div class="govuk-warning-text">
+   
+      <h1 class="heading-large"> Check your answers</h1>
+  </div>
+  <table class="govuk-table">
+      <tr class="govuk-table__row">
+          <td class="govuk-table__cell govuk-!-font-weight-bold">Payment reference</td>
+          <td class="govuk-table__cell"> {{paymentGroup.payments[0].reference}} </td>
+      </tr>
+      <tr class="govuk-table__row">
+          <td class="govuk-table__cell govuk-!-font-weight-bold">Payment amount</td>
+          <td class="govuk-table__cell">{{paymentGroup.payments[0].amount | currency:'GBP':'symbol-narrow':'1.2-2'}}</td>
+      </tr>
+      <tr class="govuk-table__row">
+          <td class="govuk-table__cell govuk-!-font-weight-bold">Fee amount</td>
+          <td class="govuk-table__cell">{{paymentGroup?.fees[0]?.net_amount | currency:'GBP':'symbol-narrow':'1.2-2'}}</td>
+      </tr>
+      <tr class="govuk-table__row">
+          <td class="govuk-table__cell govuk-!-font-weight-bold">Refund amount</td>
+          <td class="govuk-table__cell">{{getOverPaymentValue() | currency:'GBP':'symbol-narrow':'1.2-2'}}</td>
+      </tr>
+      <tr class="govuk-table__row">
+          <td class="govuk-table__cell govuk-!-font-weight-bold">Refund reason</td>
+          <td class="govuk-table__cell">Over payment</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell govuk-!-font-weight-bold">Send to</td>
+        <td class="govuk-table__cell">{{orderParty}}</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell govuk-!-font-weight-bold">Send via</td>
+      <td class="govuk-table__cell">
+        <div *ngIf="contactDetailsObj?.notification_type === 'EMAIL'" class="contactDetails-width">
+          <strong>Email</strong>
+          <br/>
+          {{contactDetailsObj?.email}}
+        </div>
+        <div *ngIf="contactDetailsObj?.notification_type === 'LETTER'" class="contactDetails-width">
+          <strong>Post</strong>
+          <br/>
+          {{contactDetailsObj?.address_line}}&nbsp;{{contactDetailsObj?.city}}&nbsp;{{contactDetailsObj?.county}}&nbsp;{{contactDetailsObj?.country}}&nbsp;{{contactDetailsObj?.postal_code}}
+        </div>
+        <a (click)="gotoAddressPage(contactDetailsObj)" class="govuk-link right" >Change</a>
+      </td>
+    </tr>
+
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell govuk-!-font-weight-bold">Notification</td>
+      <td class="govuk-table__cell">{{templateInstructionType}}
+          <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
+            Preview
+          </a>
+          <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="hideNotificationPreview()">
+            Hide Preview
+          </a>
+      </td>
+    </tr>
+  </table>
+
+  <app-notification-preview *ngIf="notificationPreview" 
+  [payment]="paymentGroup.payments[0]" 
+  [contactDetails]="contactDetailsObj"
+  [refundReason]="'RR037'"
+  [refundAmount]="getOverPaymentValue()"></app-notification-preview>
+
+  <button type="submit" class="button govuk-button--secondary over-payment-alignment govuk-font19px" (click)="gotoAddressPage(contactDetailsObj)">Previous</button>
+  <button type="submit"
+  [ngClass]='isContinueBtnDisabled ? "button button--disabled govuk-!-margin-right-1 govuk-font19px" : "button govuk-!-margin-right-1 govuk-font19px"'
+  (click)="processRefund()">
+    Submit refund
+  </button>
+  <p>
+      <a href="javascript:void(0)"  (click)="goToCaseTransationPage($event)" class="govuk-link govuk-font19px" data-module="govuk-button">
+          Cancel
+      </a>
+  </p>
+
+</ng-container>
+<ng-container *ngIf="viewStatus === 'refundconfirmationpage' && viewCompStatus !== 'overpayment' && viewCompStatus !== 'overPaymentAddressCapture' && viewCompStatus !== 'overpaymentcheckandanswer'">
+  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='RETROREMISSIONREFUNDCONFIRMATIONPAGE'> 
+  <div class="govuk-grid-row">
+    <div >
+      <div class="govuk-panel govuk-panel--confirmation">
+        <h1 class="govuk-panel__title">
+          Refund submitted
+        </h1>
+        
+        <div class="govuk-panel__body">
+          <p class="govuk-body white"><strong>Refund reference: {{refundReference}}</strong></p>
+        </div>
+  
+      </div>
+      <h2 class="govuk-heading-l">What happens next</h2>
+      <p class="govuk-body">
+        A refund request for {{refundAmount  | currency:'GBP':'symbol-narrow':'1.2-2' }} has been created and will be passed to a team leader to approve.
+      </p>
+    <p class="govuk-body">
+    <a href="javascript:void(0)" (click)="goToCaseTransationPage($event)" class="govuk-link pointer" data-module="govuk-button">
+      Return to case
+  </a>
+    </p>
+    </div>
+  </div>
+
+</ng-container>
+</div>
 
 <ng-container *ngIf="viewStatus === 'payment-failure'">
   <div class="payment-failure-alignment">

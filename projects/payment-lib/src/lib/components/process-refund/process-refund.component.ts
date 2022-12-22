@@ -3,10 +3,14 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import {RefundsService} from '../../services/refunds/refunds.service';
 import { IRefundAction } from '../../interfaces/IRefundAction';
 import { IRefundList } from '../../interfaces/IRefundList';
+import { IPayment } from '../../interfaces/IPayment';
 import { IRefundRejectReason } from '../../interfaces/IRefundRejectReason';
 import { OrderslistService } from '../../services/orderslist.service';
+import { NotificationService } from '../../services/notification/notification.service';
+import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { PaymentLibComponent } from '../../payment-lib.component';
 import { ActivatedRoute,Router } from '@angular/router';
+import { INotificationPreview } from '../../interfaces/INotificationPreview';
 
 @Component({
   selector: 'ccpay-process-refund',
@@ -41,11 +45,18 @@ export class ProcessRefundComponent implements OnInit {
   navigationpage: string;
   ccdCaseNumber: string;
   isFromRefundListPage: boolean;
-
+  cpoDetails:any = null;
+  isCPODown: boolean;
   isConfirmButtondisabled: boolean = true;
+  paymentObj: IPayment;
+  templateInstructionType: string;
+  notificationPreview: boolean = false;
+  notificationPreviewObj: INotificationPreview;
   constructor(private RefundsService: RefundsService,
+              private paymentViewService: PaymentViewService,
               private formBuilder: FormBuilder,
               private OrderslistService: OrderslistService,
+              private notificationService: NotificationService,
               private paymentLibComponent: PaymentLibComponent,
               private router: Router,
               private activeRoute: ActivatedRoute) {
@@ -86,7 +97,19 @@ export class ProcessRefundComponent implements OnInit {
    if((typeof this.paymentLibComponent.TAKEPAYMENT === 'string' && this.paymentLibComponent.TAKEPAYMENT === 'false') || (typeof this.paymentLibComponent.TAKEPAYMENT === 'boolean' && !this.paymentLibComponent.TAKEPAYMENT) ) {
     this.isFromRefundListPage = true;
    }
+   this.paymentViewService.getPartyDetails(this.ccdCaseNumber).subscribe(
+    response => {
+      this.cpoDetails = JSON.parse(response).content[0];
+
+    },
+    (error: any) => {
+      this.errorMessage = <any>error.replace(/"/g,"");
+      this.isCPODown = true;
+    }
+  );
+  this.getTemplateInstructionType(this.paymentObj,this.refundlistsource.payment_reference);
   }
+  
   checkRefundActions(code: string) {
     this.refundActionsHasError = false;
     this.isReasonFieldEmpty = false;
@@ -123,6 +146,11 @@ export class ProcessRefundComponent implements OnInit {
       this.isOtherClicked = false;
     }
   }
+
+  getNotificationPreviewObj(notificationPreviewObj : INotificationPreview){
+    this.notificationPreviewObj = notificationPreviewObj;
+  }
+
   processRefundSubmit() {
     let processRefundRequest;
     let status;
@@ -137,24 +165,105 @@ export class ProcessRefundComponent implements OnInit {
       || (controls.refundActionField.value == 'Return to caseworker' && controls.sendMeBackField.valid))) {
       if (controls.refundActionField.value === 'Approve'){
         status = 'APPROVE';
-        processRefundRequest = {
-          code:'',
-          reason: ''
-        };
+        if (this.notificationPreviewObj) {
+          processRefundRequest = {
+            code: '',
+            reason: '',
+            template_preview: {
+              body: this.notificationPreviewObj.body,
+              from: {
+                from_email_address: this.notificationPreviewObj.from.from_email_address,
+                from_mail_address: {
+                  address_line: this.notificationPreviewObj.from.from_mail_address.address_line,
+                  city: this.notificationPreviewObj.from.from_mail_address.city,
+                  country: this.notificationPreviewObj.from.from_mail_address.country,
+                  county: this.notificationPreviewObj.from.from_mail_address.county,
+                  postal_code: this.notificationPreviewObj.from.from_mail_address.postal_code
+                }
+              },
+              html: this.notificationPreviewObj.html,
+              id: this.notificationPreviewObj.template_id,
+              subject: this.notificationPreviewObj.subject,
+              template_type: this.notificationPreviewObj.template_type,
+              version: 0
+            }
+          };
+
+        } else {
+          processRefundRequest = {
+            code: '',
+            reason: ''
+          };
+        }
       } else if (controls.refundActionField.value === 'Reject') {
         status = 'REJECT';
 
-        processRefundRequest = {
-          code: controls.refundRejectReasonField.value ? controls.refundRejectReasonField.value : '',
-          reason: controls.refundRejectReasonField.value == 'RE005' ? controls.enterReasonField.value : ''
-        };
+        if (this.notificationPreviewObj) {
+          processRefundRequest = {
+            code: controls.refundRejectReasonField.value ? controls.refundRejectReasonField.value : '',
+            reason: controls.refundRejectReasonField.value == 'RE005' ? controls.enterReasonField.value : '',
+            template_preview: {
+              body: this.notificationPreviewObj.body,
+              from: {
+                from_email_address: this.notificationPreviewObj.from.from_email_address,
+                from_mail_address: {
+                  address_line: this.notificationPreviewObj.from.from_mail_address.address_line,
+                  city: this.notificationPreviewObj.from.from_mail_address.city,
+                  country: this.notificationPreviewObj.from.from_mail_address.country,
+                  county: this.notificationPreviewObj.from.from_mail_address.county,
+                  postal_code: this.notificationPreviewObj.from.from_mail_address.postal_code
+                }
+              },
+              html: this.notificationPreviewObj.html,
+              id: this.notificationPreviewObj.template_id,
+              subject: this.notificationPreviewObj.subject,
+              template_type: this.notificationPreviewObj.template_type,
+              version: 0
+            }
+          };
+        } else {
+          processRefundRequest = {
+            code: controls.refundRejectReasonField.value ? controls.refundRejectReasonField.value : '',
+            reason: controls.refundRejectReasonField.value == 'RE005' ? controls.enterReasonField.value : ''
+          };
+        }
+
+       
       } else if (controls.refundActionField.value === 'Return to caseworker') {
         status = 'SENDBACK';
 
-        processRefundRequest = {
-          code: '',
-          reason: controls.sendMeBackField.value
-        };
+        if (this.notificationPreviewObj) {
+          processRefundRequest = {
+            code: '',
+            reason: controls.sendMeBackField.value,
+            template_preview: {
+              body: this.notificationPreviewObj.body,
+              from: {
+                from_email_address: this.notificationPreviewObj.from.from_email_address,
+                from_mail_address: {
+                  address_line: this.notificationPreviewObj.from.from_mail_address.address_line,
+                  city: this.notificationPreviewObj.from.from_mail_address.city,
+                  country: this.notificationPreviewObj.from.from_mail_address.country,
+                  county: this.notificationPreviewObj.from.from_mail_address.county,
+                  postal_code: this.notificationPreviewObj.from.from_mail_address.postal_code
+                }
+              },
+              html: this.notificationPreviewObj.html,
+              id: this.notificationPreviewObj.template_id,
+              subject: this.notificationPreviewObj.subject,
+              template_type: this.notificationPreviewObj.template_type,
+              version: 0
+            }
+          };
+        } else {
+          processRefundRequest = {
+            code: '',
+            reason: controls.sendMeBackField.value
+          };
+
+        }
+
+      
       }
       this.RefundsService.patchRefundActions(processRefundRequest, this.refundReference, status).subscribe(
         response => {
@@ -254,31 +363,13 @@ export class ProcessRefundComponent implements OnInit {
     this.loadRefundListPage();
    }
   }
-  // loadCaseTransactionPage() {
-  //   this.paymentLibComponent.isRefundStatusView = false;
-  //   this.paymentLibCo}mponent.TAKEPAYMENT = true;
-  //   this.paymentLibComponent.viewName = 'case-transactions';
-  //   this.paymentViewService.getBSfeature().subscribe(
-  //     features => {
-  //       let result = JSON.parse(features).filter(feature => feature.uid === BS_ENABLE_FLAG);
-  //       this.paymentLibComponent.ISBSENABLE = result[0] ? result[0].enable : false;
-  //     },
-  //     err => {
-  //       this.paymentLibComponent.ISBSENABLE = false;
-  //     }
-  //   );
-
-  //   let partUrl = `selectedOption=${this.paymentLibComponent.SELECTED_OPTION}`;
-  //   partUrl += this.bsPaymentDcnNumber ? `&dcn=${this.bsPaymentDcnNumber}` : '';
-  //   partUrl += this.paymentLibComponent.ISBSENABLE ? '&isBulkScanning=Enable' : '&isBulkScanning=Disable';
-  //   partUrl += this.paymentLibComponent.ISTURNOFF ? '&isTurnOff=Enable' : '&isTurnOff=Disable';
-  //   partUrl += this.paymentLibComponent.ISSFENABLE ? '&isStFixEnable=Enable' : '&isStFixEnable=Disable';
-  //   partUrl += `&caseType=${this.paymentLibComponent.CASETYPE}`;
-  //   partUrl += this.isNewPcipalOff ? '&isNewPcipalOff=Enable' : '&isNewPcipalOff=Disable';
-  //   partUrl += this.isOldPcipalOff ? '&isOldPcipalOff=Enable' : '&isOldPcipalOff=Disable';
-  //   let url = `/payment-history/${this.ccdCaseNumber}?view=case-transactions&takePayment=true&${partUrl}`;
-  //   this.router.navigateByUrl(url);
-  // }
+  loadCaseTransactionPage() {
+    this.OrderslistService.setnavigationPage('casetransactions');
+    this.OrderslistService.setisFromServiceRequestPage(false);
+    this.paymentLibComponent.viewName = 'case-transactions';
+    this.paymentLibComponent.ISBSENABLE = true;
+    this.paymentLibComponent.isRefundStatusView = false;
+  }
 
   resetForm(vals, field) {
     if(field==='action' || field==='all') {
@@ -300,6 +391,37 @@ export class ProcessRefundComponent implements OnInit {
   }
 
   goToCaseReview() {
-    this.router.navigate([`/cases/case-details/${this.ccdCaseNumber}`], {relativeTo: this.activeRoute});
+    const isPayBubble = this.paymentLibComponent.isFromPayBubble;
+    if(isPayBubble) {
+      this.loadCaseTransactionPage();
+    } else {
+      this.router.navigate([`/cases/case-details/${this.ccdCaseNumber}`], {relativeTo: this.activeRoute});
+    }
+  }
+
+  getTemplateInstructionType(payment: IPayment, paymentReference: string): void {
+
+    if (payment == undefined || payment == null || payment.reference != paymentReference) {
+
+      this.paymentViewService.getPaymentDetails(paymentReference).subscribe(
+        payment => {
+          this.paymentObj = payment;
+          this.paymentObj.reference = paymentReference;
+          this.templateInstructionType = this.notificationService.getNotificationInstructionType(this.paymentObj.channel, this.paymentObj.method);
+        },
+        (error: any) => {
+          this.templateInstructionType = 'Template';
+        })
+    } else {
+      this.templateInstructionType = this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
+    }
+  }
+
+  showNotificationPreview(): void {
+    this.notificationPreview = true;
+  }
+
+  hideNotificationPreview(): void {
+    this.notificationPreview = false;
   }
 }

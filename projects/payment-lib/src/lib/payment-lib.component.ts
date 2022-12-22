@@ -25,7 +25,7 @@ import { IPayment } from './interfaces/IPayment';
     <ccpay-pba-payment *ngIf="viewName === 'pba-payment'"
     [pbaPayOrderRef]="pbaPayOrderRef"
     ></ccpay-pba-payment>
-    <ccpay-case-transactions [isTakePayment]="isTakePayment" [LOGGEDINUSERROLES]="LOGGEDINUSERROLES" *ngIf="viewName === 'case-transactions'"></ccpay-case-transactions>
+    <ccpay-case-transactions [isTakePayment]="isTakePayment" [isFromServiceRequestPage]="isFromServiceRequestPage" [LOGGEDINUSERROLES]="LOGGEDINUSERROLES" *ngIf="viewName === 'case-transactions'"></ccpay-case-transactions>
     <app-mark-unidentified-payment *ngIf="viewName === 'unidentifiedPage'"
     [caseType]="CASETYPE"></app-mark-unidentified-payment>
     <app-mark-unsolicited-payment *ngIf="viewName === 'unsolicitedPage'"
@@ -50,6 +50,7 @@ export class PaymentLibComponent implements OnInit {
   @Input('API_ROOT') API_ROOT: string;
   @Input('BULKSCAN_API_ROOT') BULKSCAN_API_ROOT: string;
   @Input('REFUNDS_API_ROOT') REFUNDS_API_ROOT: string;
+  @Input('NOTIFICATION_API_ROOT') NOTIFICATION_API_ROOT: string;
   @Input('CARDPAYMENTRETURNURL') CARDPAYMENTRETURNURL: string;
   @Input('CCD_CASE_NUMBER') CCD_CASE_NUMBER: string;
   @Input('EXC_REFERENCE') EXC_REFERENCE: string;
@@ -79,6 +80,7 @@ export class PaymentLibComponent implements OnInit {
   paymentGroupReference: string;
   paymentReference: string;
   refundReference: string;
+  isFromPayBubble: boolean = false;
   refundlistsource: any;
   viewName: string;
   isTurnOff: boolean;
@@ -118,6 +120,7 @@ export class PaymentLibComponent implements OnInit {
     this.paymentLibService.setApiRootUrl(this.API_ROOT);
     this.paymentLibService.setBulkScanApiRootUrl(this.BULKSCAN_API_ROOT);
     this.paymentLibService.setRefundndsApiRootUrl(this.REFUNDS_API_ROOT);
+    this.paymentLibService.setNoticationApiRootUrl(this.NOTIFICATION_API_ROOT);
     this.paymentLibService.setCardPaymentReturnUrl(this.CARDPAYMENTRETURNURL);
 
     if(this.LOGGEDINUSERROLES.length > 0) {

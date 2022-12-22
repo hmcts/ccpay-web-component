@@ -12,7 +12,7 @@
     font-weight: 400;
   }
 
-  .btnmargin{
+  .btnmargin {
     margin-bottom: 2em;
   }
 
@@ -103,6 +103,9 @@
 .col-9 {
   width: 9% !important;
 }
+.col-40 {
+  width: 40% !important;;
+}
 
 .col-15 {
   width: 15% !important;
@@ -123,7 +126,9 @@
 .govuk-error-summary__body {
   font-size: 19px !important;
 }
-
+.font-size-19px {
+  font-size: 19px;
+}
 .white{
   color: white
 }
@@ -133,4 +138,7 @@
 }
 .govuk-link {
   cursor: pointer;
+}
+.contactDetails-width {
+  width: 70%;
 }

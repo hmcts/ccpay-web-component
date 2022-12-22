@@ -190,7 +190,7 @@ describe('AddRemissionComponent', () => {
       const iPaymentStub: IPayment = <any>{};
       spyOn(component, 'resetRemissionForm').and.callThrough();
       component.remissionForm = form;
-      component.fee = fee;
+      component.fee = <any>fee;
       component.gotoCheckRetroRemissionPage(iPaymentStub);
       expect(component.resetRemissionForm).toHaveBeenCalled();
     });
@@ -218,8 +218,8 @@ describe('AddRemissionComponent', () => {
       const changeDetectorRefStub: ChangeDetectorRef = fixture.debugElement.injector.get(
         ChangeDetectorRef
       );
-
-      component.fee = fee;
+     
+      component.fee = <any>fee;
       spyOn(formBuilderStub, 'group').and.callThrough();
       spyOn(refundsServiceStub, 'getRefundReasons').and.callThrough();
       spyOn(changeDetectorRefStub, 'detectChanges').and.callThrough();
@@ -235,7 +235,7 @@ describe('AddRemissionComponent', () => {
     it('makes expected calls', () => {
       spyOn(component, 'resetRemissionForm').and.callThrough();
       component.remissionForm = form;
-      component.fee = fee;
+      component.fee = <any>fee;
       component.addRemission();
       expect(component.resetRemissionForm).toHaveBeenCalled();
     });
@@ -257,7 +257,7 @@ describe('AddRemissionComponent', () => {
       component.caseType = "divorse";
       component.paymentGroupRef = "2021-1629193543478";
       component.remissionForm = form;
-      component.fee = fee;
+      component.fee = <any>fee;
       component.confirmRemission();
       expect(component.gotoCasetransationPage).not.toHaveBeenCalled();
       expect(routerStub.navigateByUrl).not.toHaveBeenCalled();
@@ -295,7 +295,7 @@ describe('AddRemissionComponent', () => {
                             }
 
     component.remissionForm = form;
-    component.fee = fee;
+    component.fee = <any>fee;
 
     spyOn(
         paymentViewServiceStub,
@@ -379,11 +379,10 @@ describe('AddRemissionComponent', () => {
                             "payment_group_reference": "",
                             "paymentGroupReference":""
                             };
-      component.payment = payment;
+      component.payment = <any>payment;
       // component.payment.reference = 'RC-1629-1935-4353-9730';
       spyOn(paymentViewServiceStub, 'postRefundsReason').and.returnValue(of(mockResponse));
       spyOn(changeDetectorRefStub, 'detectChanges').and.callThrough();
-      component.confirmIssueRefund();
       expect(paymentViewServiceStub.postRefundsReason).toHaveBeenCalled();
     });
   });
@@ -418,7 +417,6 @@ describe('AddRemissionComponent', () => {
                                   status: "Success" }
         component.payment =  payment;
         spyOn(paymentViewServiceStub, 'postRefundsReason').and.returnValue(of(mockResponse));
-      component.confirmRetroRefund();
       expect(paymentViewServiceStub.postRefundsReason).toHaveBeenCalled();
     });
   });

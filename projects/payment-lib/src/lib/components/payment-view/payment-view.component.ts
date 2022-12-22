@@ -1,20 +1,24 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
+import { NotificationService } from '../../services/notification/notification.service';
 import { PaymentLibComponent } from '../../payment-lib.component';
 import { IPaymentGroup } from '../../interfaces/IPaymentGroup';
 import { IFee } from '../../interfaces/IFee';
 import { IPayment } from '../../interfaces/IPayment';
 import { IRemission } from '../../interfaces/IRemission';
+import { PostRefundRetroRemission } from '../../interfaces/PostRefundRetroRemission';
 const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 import { ChangeDetectorRef } from '@angular/core';
 import { IPaymentFailure } from '../../interfaces/IPaymentFailure';
 import { OrderslistService } from '../../services/orderslist.service';
+import { IRefundContactDetails } from '../../interfaces/IRefundContactDetails';
 
 @Component({
   selector: 'ccpay-payment-view',
   templateUrl: './payment-view.component.html',
-  styleUrls: ['./payment-view.component.css']
+  styleUrls: ['./payment-view.component.scss']
 })
+
 export class PaymentViewComponent implements OnInit {
   @Input() isTurnOff: boolean;
   @Input() isTakePayment: boolean;
@@ -31,6 +35,8 @@ export class PaymentViewComponent implements OnInit {
   @Input() orderFeesTotal: number;
   @Input() orderRemissionTotal: number;
   @Input() orderDetail: any[];
+  fees: any;
+  isFullyRefund: boolean;
   @Input("isServiceRequest") isServiceRequest: string;
   errorMsg: string;
   paymentGroup: IPaymentGroup;
@@ -55,8 +61,19 @@ export class PaymentViewComponent implements OnInit {
   serviceReference: string;
   isFromServiceRequestPage: boolean;
   isFromPaymentDetailPage: boolean;
-
+  paymentFees: IFee[];
+  paymentType: string;
+  isContinueBtnDisabled: boolean = true;
+  viewCompStatus: string;
+  contactDetailsObj: IRefundContactDetails
+  notification: any;
+  isConfirmationBtnDisabled: boolean;
+  refundReference: string;
+  refundAmount: string;
+  templateInstructionType: string;
+  notificationPreview: boolean;
   constructor(private paymentViewService: PaymentViewService,
+    private notificationService: NotificationService,
     private paymentLibComponent: PaymentLibComponent,
     private cd: ChangeDetectorRef,
     private OrderslistService: OrderslistService) {
@@ -91,6 +108,7 @@ export class PaymentViewComponent implements OnInit {
           }
         });
         paymentGroup.fees = fees
+        this.paymentFees =fees;
         this.paymentGroup = paymentGroup;
 
         this.paymentGroup.payments = this.paymentGroup.payments.filter
@@ -130,6 +148,14 @@ export class PaymentViewComponent implements OnInit {
   public goToPaymentList(): void {
     this.paymentLibComponent.viewName = 'payment-list';
   }
+  getOverPaymentValue() {
+    let feesOverPayment = 0;
+    this.paymentGroup.fees.forEach(fee => {
+      feesOverPayment += fee.over_payment;
+    });
+    return feesOverPayment > 0 ? feesOverPayment : this.paymentGroup.payments[0].over_payment;
+
+  }
   goToServiceRequestPage() {
     this.paymentLibComponent.viewName = 'case-transactions';
     this.paymentLibComponent.TAKEPAYMENT = false;
@@ -160,7 +186,7 @@ export class PaymentViewComponent implements OnInit {
   }
 
   addRemission(fee: IFee) {
-    if(this.chkForAddRemission(fee.code)) {
+    if(this.chkIsAddRemissionBtnEnable(fee)) {
     this.feeId = fee;
     this.paymentViewService.getApportionPaymentDetails(this.paymentGroup.payments[0].reference).subscribe(
       paymentGroup => {
@@ -189,16 +215,50 @@ export class PaymentViewComponent implements OnInit {
     }
     return false;
   }
-
+  processRefund() {
+    this.isConfirmationBtnDisabled = true;
+    this.errorMessage = '';
+    const obj = this.paymentGroup.fees[0];
+    this.fees  = [{ id: obj.id, 
+      code: obj.code,
+      version:obj.version, 
+      apportion_amount: obj.apportion_amount,
+      calculated_amount: obj.calculated_amount,
+      updated_volume: obj.updated_volume ? obj.updated_volume : obj.volume,
+      volume: obj.volume,
+      refund_amount: this.getOverPaymentValue() }];
+    const requestBody = new PostRefundRetroRemission(this.contactDetailsObj,this.fees, this.paymentGroup.payments[0].reference, 'RR037', 
+    this.getOverPaymentValue(), 'op');
+    this.paymentViewService.postRefundsReason(requestBody).subscribe(
+      response => {
+          if (JSON.parse(response)) {
+            this.viewCompStatus  = '';
+            this.viewStatus = 'refundconfirmationpage';
+            this.refundReference = JSON.parse(response).refund_reference;
+            this.refundAmount = JSON.parse(response).refund_amount;
+          }
+      },
+      (error: any) => {
+        this.errorMessage = error;
+        this.isConfirmationBtnDisabled = false;
+        this.cd.detectChanges();
+      })
+  }
+  gotoAddressPage(note?: IRefundContactDetails) {
+    if (note) {
+      this.notification = { contact_details: note, notification_type: note.notification_type };
+    }
+    this.errorMessage = '';
+    this.viewCompStatus = 'overPaymentAddressCapture';
+  }
   addRefundForRemission(payment: IPayment, remission: IRemission[],fees:any) {
- if(this.chkIsRefundRemissionBtnEnable()) {
-    this.payment = payment;
-    this.paymentViewService.getApportionPaymentDetails(this.payment.reference).subscribe(
+ //if(!this.chkIsIssueRefundBtnEnable(payment)) {
+    this.paymentViewService.getApportionPaymentDetails(payment.reference).subscribe(
       paymentGroup => {
         this.paymentGroup = paymentGroup;
 
         this.paymentGroup.payments = this.paymentGroup.payments.filter
-          (paymentGroupObj => paymentGroupObj['reference'].includes(this.payment.reference));
+          (paymentGroupObj => paymentGroupObj['reference'].includes(payment.reference));
         this.payment = this.paymentGroup.payments[0];
         this.remissions = remission;
         this.remissionFeeAmt = fees.filter(data=>data.code === this.remissions['fee_code'])[0].net_amount;
@@ -208,37 +268,29 @@ export class PaymentViewComponent implements OnInit {
       },
       (error: any) => this.errorMessage = error
     );
- }
+   //}
   }
 
-  chkIsRefundRemissionBtnEnable(): boolean {
-    if (this.paymentGroup !== null &&  this.paymentGroup !== undefined) {
-    this.paymentGroup.payments.forEach(payment => {
-          if (payment.method.toLocaleLowerCase() === 'payment by account' && payment.status.toLocaleLowerCase() === 'success' && this.allowFurtherAccessAfter4Days(payment)) {
-            this.isRefundRemissionBtnEnable = true;
-          }
-        });
-    if (this.isRefundRemissionBtnEnable) {
-      return true;
-    } else {
-      return false;
-    };
+  goToPaymentViewComponent() {
+    this.viewCompStatus  = '';
+    this.viewStatus = 'paymentview';
   }
-  }
-
   issueRefund(paymentgrp: IPaymentGroup) {
     if (paymentgrp !== null &&  paymentgrp !== undefined) {
-    if(this.chkIssueRefundBtnEnable(paymentgrp.payments[0])) {
-    this.paymentGroup = paymentgrp;
-    this.viewStatus = 'issuerefund';
-    this.isRefundRemission = true;
-    this.paymentLibComponent.isFromPaymentDetailPage = true;
-    this.isFromPaymentDetailPage = true;
-    this.isFromServiceRequestPage = this.paymentLibComponent.isFromServiceRequestPage;
+      if(this.chkIsIssueRefundBtnEnable(paymentgrp.payments[0])) {
+        if(paymentgrp.payments[0].over_payment > 0) {
+          this.viewCompStatus  = 'overpayment';
+        } else {
+          this.paymentGroup = paymentgrp;
+          this.viewStatus = 'issuerefund';
+          this.isRefundRemission = true;
+          this.paymentLibComponent.isFromPaymentDetailPage = true;
+          this.isFromPaymentDetailPage = true;
+          this.isFromServiceRequestPage = false;
+        }
+      }
     }
   }
-  }
-
   getRemissionByFeeCode(feeCode: string, remissions: IRemission[]): IRemission {
     if (remissions && remissions.length > 0) {
       for (const remission of remissions) {
@@ -250,57 +302,59 @@ export class PaymentViewComponent implements OnInit {
     return null;
   }
 
-  chkIssueRefundBtnEnable(payment: IPayment): boolean {
-    if (this.check4AllowedRoles2AccessRefund() && this.allowFurtherAccessAfter4Days(payment) &&
-      payment.method === 'payment by account' && payment.status.toLocaleLowerCase() === 'success') {
-      this.isIssueRefunfBtnEnable = true;
-    }
-    if (this.isIssueRefunfBtnEnable) {
-      return true;
-    } else {
-      return false;
-    };
-  }
-
-  chkForPBAPayment(): boolean {
-    if (this.paymentGroup !== null &&  this.paymentGroup !== undefined) {
-    let payment = this.paymentGroup.payments[0];
-    if (payment.method.toLocaleLowerCase() === 'payment by account' && this.allowFurtherAccessAfter4Days(payment)) {
-      return true;
-    }
-    return false;
-  }
-  }
-
-  chkForAddRemission(feeCode: string): boolean {
-    if (this.chkForPBAPayment() && this.check4AllowedRoles2AccessRefund() && this.allowFurtherAccessAfter4Days(this.paymentGroup.payments[0])) {
-      if (this.paymentGroup.remissions && this.paymentGroup.remissions.length > 0) {
-        for (const remission of this.paymentGroup.remissions) {
-          if (remission.fee_code === feeCode) {
-            return false;
-          }
-        }
-        return true;
-      }
-      return true;
-
+  chkIsIssueRefundBtnEnable(payment: IPayment): boolean {
+    if (payment !== null && payment !== undefined) {
+      return payment.issue_refund && payment.refund_enable
     } else {
       return false;
     }
   }
 
-  check4AllowedRoles2AccessRefund = (): boolean => {
-    return this.allowedRolesToAccessRefund.some(role =>
-      this.LOGGEDINUSERROLES.indexOf(role) !== -1
-    );
+  chkIsAddRefundBtnEnable(remission: IRemission): boolean {
+    if (remission !== null && remission !== undefined) {
+      return remission.add_refund;
+    } else {
+      return false;
+    }
   }
 
-  allowFurtherAccessAfter4Days = (payment: IPayment): boolean => {
-    if(payment !== null && payment !== undefined) {
-    let tmp4DayAgo = new Date();
-    tmp4DayAgo.setDate(tmp4DayAgo.getDate() - 4);
-    return tmp4DayAgo >= new Date(payment.date_created);
+  chkIsAddRemissionBtnEnable(fee: IFee): boolean {
+    if (fee !== null && fee !== undefined) {
+      return fee.add_remission && fee.remission_enable;
+    } else {
+      return false
     }
+}
+  selectPymentOption(paymentType: string) {
+    this.paymentType = paymentType;
+    this.isContinueBtnDisabled = false;
+  }
+  continuePayment(paymentgrp: IPaymentGroup) {
+    
+    if (this.paymentType === 'op') {
+      this.isFullyRefund = false
+      this.viewCompStatus  = 'overPaymentAddressCapture';
+    } else if(this.paymentType === 'fp') {
+      this.isFullyRefund = true
+      this.paymentGroup = paymentgrp;
+      this.viewStatus = 'issuerefund';
+      this.viewCompStatus = "";
+      this.isRefundRemission = true;
+      this.paymentLibComponent.isFromPaymentDetailPage = true;
+      this.isFromPaymentDetailPage = true;
+      this.isFromServiceRequestPage = this.paymentLibComponent.isFromServiceRequestPage;
+    }
+  }
+  gotoPaymentSelectPage(event: Event) {
+    event.preventDefault();
+    this.viewCompStatus  = 'overpayment';
+  }
+  getContactDetails(obj:IRefundContactDetails) {
+    this.contactDetailsObj = obj;
+    this.notificationPreview = false;
+    this.getTemplateInstructionType(this.paymentGroup.payments[0]);
+    this.viewCompStatus = 'overpaymentcheckandanswer';
+    
   }
 
   resetOrderData() {
@@ -321,5 +375,23 @@ export class PaymentViewComponent implements OnInit {
   goBackToPaymentView(event: any) {
     event.preventDefault();
     this.viewStatus = 'paymentview';
+  }
+
+  getTemplateInstructionType(payment: IPayment): void {
+
+    if (payment == undefined || payment == null) {
+      this.templateInstructionType = 'Template';
+    }else{
+      this.templateInstructionType = this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
+    }
+     
+  }
+
+  showNotificationPreview(): void {
+    this.notificationPreview = true;
+  }
+
+  hideNotificationPreview(): void {
+    this.notificationPreview = false;
   }
 }

@@ -33,11 +33,11 @@ describe('RefundListComponent', () => {
   });
 
   it('approvalStatus has default value', () => {
-    expect(component.approvalStatus).toEqual('sent for approval');
+    expect(component.approvalStatus).toEqual('Sent for approval');
   });
 
   it('rejectStatus has default value', () => {
-    expect(component.rejectStatus).toEqual('sent back');
+    expect(component.rejectStatus).toEqual('Update required');
   });
 
   it('isAuthorized has default value', () => {

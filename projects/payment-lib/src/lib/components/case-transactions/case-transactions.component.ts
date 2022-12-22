@@ -22,6 +22,7 @@ const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 export class CaseTransactionsComponent implements OnInit {
   @Input('LOGGEDINUSERROLES') LOGGEDINUSERROLES: string[];
   @Input() isTakePayment: boolean;
+  @Input() isFromServiceRequestPage: boolean;
   takePayment: boolean;
   ccdCaseNumber: string;
   excReference: string;
@@ -54,6 +55,7 @@ export class CaseTransactionsComponent implements OnInit {
   isRemoveBtnDisabled: boolean = false;
   feeId: IFee;
   clAmountDue: number = 0;
+  overPaymentAmount: number = 0;
   unprocessedRecordCount: number;
   isFeeRecordsExist: boolean = false;
   isGrpOutstandingAmtPositive: boolean = false;
@@ -92,7 +94,7 @@ export class CaseTransactionsComponent implements OnInit {
   allowedRolesToAccessRefund = ['payments-refund-approver', 'payments-refund'];
   isEligible4PBAPayment = ['pui-finance-manager', 'pui-user-manager', 'pui-organisation-manager', 'pui-case-manager'];
   currentDate = new Date();
-  isFromServiceRequestPage: boolean;
+  //isFromServiceRequestPage: boolean;
   navigationpage: string;
   remissionFeeAmt: number;
   constructor(private router: Router,
@@ -132,6 +134,7 @@ export class CaseTransactionsComponent implements OnInit {
       this.serviceRequestValue = 'true';
     } else {
       this.serviceRequestValue = 'false';
+      this.paymentLibComponent.isFromServiceRequestPage = false;
     }
     this.isBulkScanEnable = this.paymentLibComponent.ISBSENABLE;
     this.dcnNumber = this.paymentLibComponent.DCN_NUMBER;
@@ -288,6 +291,7 @@ export class CaseTransactionsComponent implements OnInit {
       if (paymentGroup.fees) {
         paymentGroup.fees.forEach(fee => {
           this.orderFeesTotal = this.orderFeesTotal + fee.calculated_amount
+          this.overPaymentAmount = this.overPaymentAmount + fee.over_payment
         }
         )
       }
@@ -298,7 +302,11 @@ export class CaseTransactionsComponent implements OnInit {
       }
 
       if (paymentGroup.payments) {
+        const isFeeOverPaymentExist = this.overPaymentAmount === 0;
         paymentGroup.payments.forEach(payment => {
+          if(isFeeOverPaymentExist) {
+            this.overPaymentAmount = this.overPaymentAmount + payment.over_payment
+          }
           if (payment.status.toUpperCase() === 'SUCCESS') {
             this.orderTotalPayments = this.orderTotalPayments + payment.amount;
           }
@@ -637,18 +645,15 @@ export class CaseTransactionsComponent implements OnInit {
   }
 
   addRefundForRemission(payment: IPayment, remission: IRemission[],fees:any) {
-    this.viewStatus = 'addrefundforremission';
-
-    this.payment = payment;
-    this.paymentViewService.getApportionPaymentDetails(this.payment.reference).subscribe(
+     this.paymentViewService.getApportionPaymentDetails(payment.reference).subscribe(
       paymentGroup => {
         this.paymentGroup = paymentGroup;
-
-        this.paymentGroup.payments = this.paymentGroup.payments.filter
-          (paymentGroupObj => paymentGroupObj['reference'].includes(this.payment.reference));
+        this.paymentGroup.payments = paymentGroup.payments.filter
+          (paymentGroupObj => paymentGroupObj.reference === payment.reference);
         this.payment = this.paymentGroup.payments[0];
         this.remissions = remission;
         this.remissionFeeAmt = fees.filter(data=>data.code === this.remissions['fee_code'])[0].net_amount;
+        this.viewStatus = 'addrefundforremission';
         // const paymentAllocation = this.paymentGroup.payments[0].payment_allocation;
         // this.isStatusAllocated = paymentAllocation.length > 0 && paymentAllocation[0].allocation_status === 'Allocated' || paymentAllocation.length === 0;
       },
@@ -790,15 +795,20 @@ export class CaseTransactionsComponent implements OnInit {
   }
 
   chkIssueRefundBtnEnable(payment: IPayment): boolean {
-    if (this.check4AllowedRoles2AccessRefund() && this.allowFurtherAccessAfter4Days(payment) &&
-      payment.method === 'payment by account' && payment.status.toLocaleLowerCase() === 'success') {
-      this.isIssueRefunfBtnEnable = true;
-    }
-    if (this.isIssueRefunfBtnEnable) {
-      return true;
+    if (payment !== null && payment !== undefined) {
+      return payment.issue_refund && payment.refund_enable
     } else {
       return false;
-    };
+    }
+    // if (this.check4AllowedRoles2AccessRefund() && this.allowFurtherAccessAfter4Days(payment) &&
+    //   payment.method === 'payment by account' && payment.status.toLocaleLowerCase() === 'success') {
+    //   this.isIssueRefunfBtnEnable = true;
+    // }
+    // if (this.isIssueRefunfBtnEnable) {
+    //   return true;
+    // } else {
+    //   return false;
+    // };
   }
 
   chkIsRefundRemissionBtnEnable(): boolean {

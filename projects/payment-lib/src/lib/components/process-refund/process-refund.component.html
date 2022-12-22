@@ -25,28 +25,68 @@
 
         <tr class="section">
           <td class="bold tb-col-w">Payment to be refunded</td>
-          <td>	{{refundlistsource?.refund_reference}} ({{refundlistsource.amount  | currency :'GBP':'symbol':'1.2-2'  }})</td>
+          <td colspan="2">{{refundlistsource?.refund_reference}} ({{refundlistsource.amount  | currency :'GBP':'symbol':'1.2-2'  }})</td>
         </tr>
         <tr class="section">
           <td class="bold tb-col-w">Reason for refund</td>
-          <td>	{{refundlistsource?.reason}}</td>
+          <td colspan="2">{{refundlistsource?.reason}}</td>
         </tr>
         <tr class="section">
             <td class="bold tb-col-w">Amount to be refunded</td>
-            <td>{{refundlistsource?.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
+            <td colspan="2">{{refundlistsource?.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
+        </tr>
+        <tr class="section">
+          <td class="bold tb-col-w">Sent to</td>
+          <td colspan="2">{{cpoDetails?.responsibleParty}}</td>
+        </tr>
+        <tr class="section">
+          <td class="bold tb-col-w">Sent via</td>
+          <td colspan="2">
+          <div *ngIf="refundlistsource?.contact_details?.notification_type === 'EMAIL'" class="contactDetails-width font-size-19px">
+            <strong>Email</strong>
+            <br/>
+            {{refundlistsource?.contact_details?.email}}
+          </div>
+          <div *ngIf="refundlistsource?.contact_details?.notification_type === 'LETTER'" class="contactDetails-width font-size-19px">
+            <strong>Post</strong>
+            <br/>
+            {{refundlistsource?.contact_details?.address_line}} {{refundlistsource?.contact_details?.city}} {{refundlistsource?.contact_details?.county}} {{refundlistsource?.contact_details?.country}} {{refundlistsource?.contact_details?.postal_code}}
+          </div> 
+          </td>
         </tr>
         <tr class="section">
             <td class="bold tb-col-w">Submitted by</td>
-            <td>{{refundlistsource?.user_full_name}}</td>
+            <td colspan="2">{{refundlistsource?.user_full_name}}</td>
 
         </tr>
         <tr class="section">
             <td class="bold tb-col-w">Date submitted</td>
-            <td>	{{refundlistsource?.date_created | date:'d MMMM yyyy' }}</td>
+            <td colspan="2">{{refundlistsource?.date_created | date:'d MMMM yyyy' }}</td>
         </tr>
+        <tr class="section">
+          <td class="bold tb-col-w">Notification</td>
+          <td>{{templateInstructionType}}</td>
+          <td>
+            <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
+              Preview
+            </a>
+            <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="hideNotificationPreview()">
+              Hide Preview
+            </a>
+        </td>
+
+      </tr>
 
         </tbody>
       </table>
+
+      <app-notification-preview *ngIf="notificationPreview" [paymentReference]="refundlistsource?.payment_reference"
+        [payment]="paymentObj"
+        [contactDetails]="refundlistsource?.contact_details"
+        [refundReason]="refundlistsource?.reason_code" [refundAmount]="refundlistsource?.amount"
+        [refundReference]="refundlistsource?.refund_reference"
+        (notificationPreviewEvent) = "getNotificationPreviewObj($event)">
+      </app-notification-preview>
 
       <div>
       </div>
@@ -177,7 +217,7 @@
           </h1>
         </div>
         <p class="govuk-body process-refund-font">
-        <a (click) = "goToCaseReview()" class="govuk-link pointer">Return to case</a>
+        <a href="Javascript:void(0)" (click)="goToCaseReview()" class="govuk-link pointer">Return to case</a>
         </p>
       </div>
   </main>

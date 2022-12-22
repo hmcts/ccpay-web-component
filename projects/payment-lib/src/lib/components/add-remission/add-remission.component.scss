@@ -20,9 +20,6 @@
     margin-right:0.5em;
   }
 
-   .right {
-    cursor: pointer;
-  }
 
   .govuk-warning-text__text,
   .govuk-label--s,
@@ -84,13 +81,14 @@
 
 .right {
   float: right;
+  cursor: pointer;
 }
 
 .radio { 
   float: right; }
 }
 
-.govuk-input{
+.govuk-input, .govuk-font19px {
   font-size: 19px;
 }
 
@@ -124,9 +122,58 @@
   width: 97%;
 }
 
+.pointer {
+  cursor: pointer;
+}
+.form-hint {
+  font-size: 19px !important;
+}
+
+.col-18 {
+  min-width: 18em;
+}
+.col-6 {
+  min-width: 6em;
+}
+.col-8 {
+  min-width: 8em;
+}
+.col-1 {
+  min-width: 1em;
+}
+.col-25 {
+  width: 25% !important;
+}
+.col-24 {
+  width: 24% !important;
+}
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.col-60 {
+  width: 60%;
+  text-align: left;
+}
+
+.margin-top--size {
+  margin-top: -30px;
+}
+.contactDetails-width {
+  width: 70%;
+}
 .right {
   cursor: pointer;
 }
 .form-hint {
   font-size: 19px !important;
+}
+.govuk-panel-border--confirmation {
+  color: #0b0c0c;
+  border: 5px solid #00703C;
 }

@@ -19,10 +19,10 @@ export class RefundListComponent implements OnInit {
   tableRejectedHeader: string;
   submittedRefundList: IRefundList[] = [];
   rejectedRefundList: IRefundList[] = [];
+  // approvalStatus = 'Sent for approval';
+  // rejectStatus = 'Update required';
   approvalStatus = 'Sent for approval';
   rejectStatus = 'Update required';
-  // approvalStatus = 'sent for approval';
-  // rejectStatus = 'sent back';
   errorMessage = null;
   isApproveTableVisible:boolean;
   isRejectTableVisible:boolean;

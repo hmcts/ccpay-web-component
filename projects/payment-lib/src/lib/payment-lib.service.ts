@@ -8,6 +8,7 @@ export class PaymentLibService {
   API_ROOT: string;
   BULKSCAN_API_ROOT: string;
   REFUNDS_API_ROOT: string;
+  NOTIFICATION_API_ROOT: string;
   CARDPAYMENTRETURNURL: string;
 
   constructor() { }
@@ -34,6 +35,13 @@ export class PaymentLibService {
 
   getRefundsApiRootUrl(): string {
     return this.REFUNDS_API_ROOT;
+  }
+  setNoticationApiRootUrl(notificationapiRoot: string): void {
+    this.NOTIFICATION_API_ROOT = notificationapiRoot;
+  }
+
+  getNoticationApiRootUrl(): string {
+    return this.NOTIFICATION_API_ROOT;
   }
   setCardPaymentReturnUrl(cardPaymentReturnUrl: string):void {
     this.CARDPAYMENTRETURNURL = cardPaymentReturnUrl;

@@ -6,4 +6,7 @@ export interface IRemission {
   ccd_case_number: string;
   fee_code: string;
   date_created: string;
+  fee_id: number;
+  issue_refund_add_refund_add_remission: boolean;
+  add_refund: boolean;
 }

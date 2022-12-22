@@ -1,0 +1,25 @@
+.govuk-font19px {
+    font-size: 19px;
+}
+.inline-error-class {
+    outline: 3px solid #a71414;
+    outline-offset: 0;
+}
+.inline-error-message {
+    color: #a71414;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.contact-details--size {
+    width: 50%;
+}
+.postcode-align-css {
+    display: flex;
+    flex-direction: row;
+}
+.govuk-margin-right-10px {
+    margin-right: 10px;;
+}
+.govuk-margin-btm-20px {
+    margin-bottom: 20px !important;
+}

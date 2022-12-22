@@ -12,6 +12,8 @@ import { IRefundList } from '../../interfaces/IRefundList';
 import { IssueRefundRequest } from '../../interfaces/IssueRefundRequest';
 import { IResubmitRefundRequest } from '../../interfaces/IResubmitRefundRequest';
 import { IRefundStatusHistory } from '../../interfaces/IRefundStatusHistory';
+import { IPutNotificationRequest } from '../../interfaces/IPutNotificationRequest';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -99,6 +101,12 @@ getUserDetails(): Observable<any> {
  
 postIssueRefund(body: IssueRefundRequest): Observable<any> {
   return this.https.post(`${this.paymentLibService.REFUNDS_API_ROOT}/refund`, body).pipe(
+    catchError(this.errorHandlerService.handleError)
+  );
+}
+
+putResendOrEdit(body: IPutNotificationRequest, refundRef:string, notificationType:string): Observable<any> {
+  return this.https.put(`${this.paymentLibService.REFUNDS_API_ROOT}/resend/notification/${refundRef}?notificationType=${notificationType}`, body).pipe(
     catchError(this.errorHandlerService.handleError)
   );
 }
