@@ -8,6 +8,7 @@ import { OrderslistService } from '../../services/orderslist.service';
 import { IRefundStatus } from '../../interfaces/IRefundStatus';
 import { IResubmitRefundRequest } from '../../interfaces/IResubmitRefundRequest';
 import { PaymentLibComponent } from '../../payment-lib.component';
+import { threadId } from 'worker_threads';
 const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 
 @Component({
@@ -46,6 +47,7 @@ export class RefundStatusComponent implements OnInit {
   refundAmount: string;
   refundCode: string;
   isRefundBtnDisabled: boolean = true;
+  isFromPayBubble: boolean = false;
   oldRefundReason: string;
   refundreason: string;
   navigationpage: string;
@@ -68,6 +70,12 @@ export class RefundStatusComponent implements OnInit {
     // if(this.paymentLibComponent.isFromRefundStatusPage) {
     //   this.viewName = 'reviewandsubmitview';
     // }
+    console.log('API Root: ' + this.API_ROOT);
+    console.log('isFromPayBubble: ' + this.isFromPayBubble);
+    if(this.API_ROOT == 'api/payment-history') {
+      this.isFromPayBubble = true;
+    }
+    console.log('isFromPayBubble: ' + this.isFromPayBubble);
     if (this.paymentLibComponent.isRefundStatusView) {
       this.viewName = 'refundview';
       this.OrderslistService.getRefundView().subscribe((data) => this.refundlist = data);
@@ -114,10 +122,6 @@ export class RefundStatusComponent implements OnInit {
         }
       }
    //}
-  }
-
-  isFromPayBubble = (): boolean => { 
-    return this.API_ROOT === 'api/payment-history';
   }
 
   getRefundsStatusHistoryList() {
