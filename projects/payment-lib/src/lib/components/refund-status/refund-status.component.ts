@@ -68,12 +68,9 @@ export class RefundStatusComponent implements OnInit {
     // if(this.paymentLibComponent.isFromRefundStatusPage) {
     //   this.viewName = 'reviewandsubmitview';
     // }
-    console.log('API Root: ' + this.API_ROOT);
-    console.log('isFromPayBubble: ' + this.isFromPayBubble);
     if(this.API_ROOT == 'api/payment-history') {
       this.isFromPayBubble = true;
     }
-    console.log('isFromPayBubble: ' + this.isFromPayBubble);
     if (this.paymentLibComponent.isRefundStatusView) {
       this.viewName = 'refundview';
       this.OrderslistService.getRefundView().subscribe((data) => this.refundlist = data);
