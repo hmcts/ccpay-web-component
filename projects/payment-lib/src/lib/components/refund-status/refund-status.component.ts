@@ -14,7 +14,6 @@ import { PaymentViewService } from '../../services/payment-view/payment-view.ser
 import { IPayment } from '../../interfaces/IPayment';
 import { IFee } from '../../interfaces/IFee';
 import { IRefundFee } from '../../interfaces/IRefundFee';
-const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 
 @Component({
   selector: 'ccpay-refund-status',
@@ -57,6 +56,7 @@ export class RefundStatusComponent implements OnInit {
   refundAmount: string;
   refundCode: string;
   isRefundBtnDisabled: boolean = true;
+  isFromPayBubble: boolean = false;
   oldRefundReason: string;
   refundreason: string;
   navigationpage: string;
@@ -87,6 +87,9 @@ export class RefundStatusComponent implements OnInit {
     this.resetRemissionForm([false, false, false, false], 'All');
     this.bsPaymentDcnNumber = this.paymentLibComponent.bspaymentdcn;
     this.isCallFromRefundList = this.paymentLibComponent.isCallFromRefundList;
+    if(this.API_ROOT == 'api/payment-history') {
+      this.isFromPayBubble = true;
+    }
     if (this.paymentLibComponent.isRefundStatusView) {
       this.viewName = 'refundview';
       this.OrderslistService.getRefundView().subscribe((data) => this.refundlist = data);
@@ -129,10 +132,6 @@ export class RefundStatusComponent implements OnInit {
         }
       }
 
-  }
-
-  isFromPayBubble = (): boolean => { 
-    return this.API_ROOT === 'api/payment-history';
   }
 
   getRefundsStatusHistoryList() {
@@ -273,11 +272,8 @@ export class RefundStatusComponent implements OnInit {
   getRefundListReason(refundListReason: any) {
     if (this.paymentLibComponent.isFromRefundStatusPage && !this.paymentLibComponent.iscancelClicked) {
       if(refundListReason.reason != undefined && refundListReason.reason != null && refundListReason.reason != this.refundlist.reason){
-        console.log('refund reason: ' + refundListReason.reason);
-        console.log('refund code: ' + refundListReason.code);
         this.refundlist.reason = refundListReason.reason;
         this.refundlist.reason_code = refundListReason.code.split('-')[0].trim();
-        console.log('refund reason code: ' + this.refundlist.reason_code);
         this.refundlist.code = refundListReason.code;
         this.refundCode = refundListReason.code;
       }
