@@ -385,8 +385,8 @@
 <ng-container *ngIf="viewCompStatus === 'issuerefund' && isRefundRemission">
   <div class="govuk-form-group">
     <form [formGroup]="remissionForm" novalidate>
-    <h1 class="heading-large">Issue refund</h1>
-    <h2 class="heading-medium">Case reference:#{{ccdCaseNumber | ccdHyphens }}</h2>
+    <h1 class="heading-large">Process refund</h1>
+    <h2 class="heading-medium">Case reference:{{ccdCaseNumber | ccdHyphens }}</h2>
     <span id="how-contacted-conditional-hint" class="form-hint govuk-font19px">
       Payment reference: {{paymentReference}}
     </span>

@@ -153,7 +153,7 @@
 
   </div>
 
-  <ng-container *ngIf="viewName==='refundview' && !isResendOperationSuccess && !isEditDetailsClicked">
+  <ng-container *ngIf="viewName==='refundview' && !isFromPayBubble && !isResendOperationSuccess && !isEditDetailsClicked">
     <div  *ngIf="refundButtonState==='Update required'" >
       <!-- <div *ngIf="refundButtonState==='sent back'"> -->
       <br />
@@ -184,6 +184,10 @@
   </div>
   <table class="govuk-table">
     <tr class="govuk-table__row">
+      <td class="govuk-table__cell govuk-!-font-weight-bold">Payment reference</td>
+      <td class="govuk-table__cell">{{ refundlist?.payment_reference}} </td>
+    </tr>
+    <tr class="govuk-table__row">
       <td class="govuk-table__cell govuk-!-font-weight-bold">Reason for return</td>
       <td class="govuk-table__cell">{{refundreason}}</td>
     </tr>
@@ -202,12 +206,7 @@
       <a (click)="gotoRefundReasonPage()" class="govuk-link right">Change</a> -->
     </tr>
     <tr class="govuk-table__row">
-      <td class="govuk-table__cell govuk-!-font-weight-bold">Payment reference</td>
-      <td class="govuk-table__cell">{{ refundlist?.payment_reference}} </td>
-    </tr>
-    <tr class="govuk-table__row">
-      <td *ngIf="refundlist?.reason === 'Retrospective remission'" class="govuk-table__cell govuk-!-font-weight-bold">Refund amount</td>
-      <td *ngIf="refundlist?.reason !== 'Retrospective remission'" class="govuk-table__cell govuk-!-font-weight-bold">Payment amount</td>
+      <td class="govuk-table__cell govuk-!-font-weight-bold">Refund amount</td>
       <td class="govuk-table__cell"> £{{ changedAmount ? changedAmount : refundlist?.amount | number:'.2' }}
         <a (click)="gotoAmountPage()" *ngIf="refundlist?.reason !== 'Overpayment'"
           class="govuk-link right">Change</a>
