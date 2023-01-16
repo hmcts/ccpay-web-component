@@ -35,23 +35,6 @@
           </td>
         </tr>
         <tr class="govuk-table__row">
-          <td class="letter-row-border">
-            <div class="right">
-              From<br />
-              <ng-container *ngIf="notification?.from?.from_mail_address?.address_line">
-                {{notification?.from?.from_mail_address?.address_line}}<br /></ng-container>
-              <ng-container *ngIf="notification?.from?.from_mail_address?.city">
-                {{notification?.from?.from_mail_address?.city}}<br />
-              </ng-container>
-              <ng-container *ngIf="notification?.from?.from_mail_address?.county">
-                {{notification?.from?.from_mail_address?.county}}<br /></ng-container>
-              <ng-container *ngIf="notification.from.from_mail_address.country">
-                {{notification?.from?.from_mail_address?.country}}<br /></ng-container>
-              {{notification?.from?.from_mail_address?.postal_code}}
-            </div>
-          </td>
-        </tr>
-        <tr class="govuk-table__row">
           <td class="letter-row-border">{{ today | date:'d MMMM y' }}</td>
         </tr>
         <tr class="govuk-table__row">
