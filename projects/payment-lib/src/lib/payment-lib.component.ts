@@ -118,10 +118,6 @@ export class PaymentLibComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log("Component getting initialized");
-
-    console.log("NOTIFICATION_API_ROOT : " + this.NOTIFICATION_API_ROOT);
-
     this.paymentLibService.setApiRootUrl(this.API_ROOT);
     this.paymentLibService.setBulkScanApiRootUrl(this.BULKSCAN_API_ROOT);
     this.paymentLibService.setRefundndsApiRootUrl(this.REFUNDS_API_ROOT);
