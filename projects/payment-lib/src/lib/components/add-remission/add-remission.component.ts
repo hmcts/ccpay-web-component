@@ -484,7 +484,6 @@ export class AddRemissionComponent implements OnInit {
     this.isFromCheckAnsPage = false;
     this.errorMsg = [];
     if(this.isRefundRemission) {
-      this.paymentLibComponent.iscancelClicked = true;
       this.refundListAmount.emit();
       this.paymentLibComponent.isFromRefundStatusPage = true;
       return;
