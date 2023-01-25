@@ -51,7 +51,10 @@ export class NotificationPreviewComponent implements OnInit {
           this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');
 
           const JsonResponse = JSON.parse(res);
+          console.log("JSON Response :" + JSON.stringify(JSON.parse(res).data));
           this.notification = JsonResponse['data'];
+
+          console.log("Notification :" + JSON.stringify(this.notification));
 
           if (this.notification != undefined && this.notification != null && this.notification.template_type === 'letter') {
             this.notification.body = this.notification.body.replace(/\r\n/g, '<br/>');

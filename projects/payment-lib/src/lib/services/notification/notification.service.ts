@@ -20,7 +20,7 @@ export class NotificationService {
               ) { }
 
   getRefundNotification(reference: string): Observable<IRefundsNotifications> {
-    return this.http.get<IRefundsNotifications>(`${this.paymentLibService.NOTIFICATION_API_ROOT}/notifications/${reference}`, {
+    return this.http.get<IRefundsNotifications>(`${this.paymentLibService.NOTIFICATION_API_ROOT}/${reference}`, {
       withCredentials: true
     })
       .pipe(
@@ -38,7 +38,7 @@ export class NotificationService {
   }
 
   getNotificationPreview(body: NotificationPreviewRequest): Observable<any> {
-    return this.https.patch(`${this.paymentLibService.REFUNDS_API_ROOT}/doc-preview`, body).pipe(
+    return this.https.post(`${this.paymentLibService.NOTIFICATION_API_ROOT}/doc-preview`, body).pipe(
       catchError(this.errorHandlerService.handleError));
   }
 
