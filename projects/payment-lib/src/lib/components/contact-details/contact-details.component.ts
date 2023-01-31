@@ -222,8 +222,8 @@ export class ContactDetailsComponent implements OnInit {
       if(str === 'FA') {
         this.notificationService.getAddressByPostcode(postcodeField.value).subscribe(
           refundsNotification => {
-            this.addressPostcodeList = refundsNotification['data']['results'];
-            this.isShowPickAddress = refundsNotification['data']['header'].totalresults > 0;
+            this.addressPostcodeList = refundsNotification['results'];
+            this.isShowPickAddress = refundsNotification['header'].totalresults > 0;
             if(!this.isShowPickAddress) {
               this.resetForm([false,false,false,true,false,false,false,false,false,false,false,false,false], 'postcode');
             }

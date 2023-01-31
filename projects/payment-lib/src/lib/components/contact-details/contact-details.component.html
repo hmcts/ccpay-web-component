@@ -39,7 +39,7 @@
               Post
             </label>
           </div>
-          <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-postcode" *ngIf="isPostcodeClicked && !isManualAddressClicked">
+          <div class="govuk-radios__conditional" id="conditional-contact-postcode" *ngIf="isPostcodeClicked && !isManualAddressClicked">
             <form [formGroup]="postCodeForm" novalidate>
               <label class="govuk-label govuk-font19px" for="address-postcode">
                 <span class="govuk-hint govuk-font19px">Information about this refund will be sent to this address.</span>Postcode

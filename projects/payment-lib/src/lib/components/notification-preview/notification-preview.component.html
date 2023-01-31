@@ -3,15 +3,15 @@
     <tbody class="govuk-table__body">
       <ng-container *ngIf="notification?.template_type === 'email'">
         <tr class="govuk-table__row">
-          <td class="govuk-table__cell whitespace-inherit"><strong>From:</strong>
+          <td class="govuk-table__cell whitespace-inherit"><span class="govuk-!-font-weight-bold">From:</span>
             {{notification?.from?.from_email_address}}</td>
         </tr>
         <tr class="govuk-table__row">
-          <td class="govuk-table__cell whitespace-inherit"><strong>To:</strong>
+          <td class="govuk-table__cell whitespace-inherit"><span class="govuk-!-font-weight-bold">To:</span>
             {{notification?.recipient_contact?.recipient_email_address}}</td>
         </tr>
         <tr class="govuk-table__row">
-          <td class="govuk-table__cell whitespace-inherit"><strong>Subject:</strong>
+          <td class="govuk-table__cell whitespace-inherit"><span class="govuk-!-font-weight-bold">Subject:</span>
             {{notification?.subject}}</td>
         </tr>
         <tr class="govuk-table__row">
@@ -38,7 +38,7 @@
           <td class="letter-row-border">{{ today | date:'d MMMM y' }}</td>
         </tr>
         <tr class="govuk-table__row">
-          <td class="letter-row-border"><strong>{{notification?.subject}}</strong></td>
+          <td class="letter-row-border"><span class="govuk-!-font-weight-bold">{{notification?.subject}}</span></td>
         </tr>
         <tr class="govuk-table__row">
           <td class="govuk-table__cell whitespace-inherit">

@@ -97,11 +97,11 @@
               <td class="govuk-table__cell whitespace-inherit col-40">
                 <div *ngIf="notification?.notification_type === 'EMAIL'">
                   <strong>Email</strong><br>
-                  {{notification?.contact_details?.email}}
+                  {{notification?.contact_details?.email?.trim()}}
                 </div>
                 <div *ngIf="notification?.notification_type === 'LETTER'">
                   <strong>Post</strong><br>
-                  {{notification?.contact_details?.address_line}} {{notification?.contact_details?.city}} {{notification?.contact_details?.county}} {{notification?.contact_details?.country}} {{notification?.contact_details?.postal_code}}
+                  {{notification?.contact_details?.address_line?.trim()}} {{notification?.contact_details?.city?.trim()}} {{notification?.contact_details?.county?.trim()}} {{notification?.contact_details?.country?.trim()}} {{notification?.contact_details?.postal_code?.trim()}}
                 </div>
               </td>
               <td class="govuk-table__cell whitespace-inherit" *ngIf="i === 0"><a href="Javascript:void(0);" (click)="putResend(notification)">Resend</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="Javascript:void(0);" (click)="gotoEditAddressDetails(notification)">Edit details</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a *ngIf="!notificationSentView || i != notificationSentViewIndex" href="Javascript:void(0);" (click)="showNotificationSentView(i)">View</a><a *ngIf="i === notificationSentViewIndex && notificationSentView" href="Javascript:void(0);" (click)="hideNotificationSentView()">Hide</a></td>
@@ -197,7 +197,7 @@
     </tr>
     <tr class="govuk-table__row">
       <td class="govuk-table__cell govuk-!-font-weight-bold">Reason for refund</td>
-      <td class="govuk-table__cell"> {{ refundlist?.reason}}
+      <td class="govuk-table__cell">{{ refundlist?.reason?.trim()}}
         <a (click)="gotoRefundReasonPage(refundlist?.reason)" *ngIf="refundlist?.reason !== 'Retrospective remission' && refundlist?.reason !== 'Overpayment'"
           class="govuk-link right">Change</a>
       </td>
@@ -207,7 +207,7 @@
     </tr>
     <tr class="govuk-table__row">
       <td class="govuk-table__cell govuk-!-font-weight-bold">Refund amount</td>
-      <td class="govuk-table__cell"> £{{ changedAmount ? changedAmount : refundlist?.amount | number:'.2' }}
+      <td class="govuk-table__cell">£{{ changedAmount ? changedAmount : refundlist?.amount | number:'.2' }}
         <a (click)="gotoAmountPage()" *ngIf="refundlist?.reason !== 'Overpayment'"
           class="govuk-link right">Change</a>
       </td>
@@ -223,12 +223,12 @@
         <div *ngIf="refundlist?.contact_details?.notification_type === 'EMAIL'" class="contactDetails-width font-size-19px">
           <strong>Email</strong>
           <br/>
-          {{refundlist?.contact_details?.email}}
+          {{refundlist?.contact_details?.email?.trim()}}
         </div>
         <div *ngIf="refundlist?.contact_details?.notification_type === 'LETTER'" class="contactDetails-width font-size-19px">
           <strong>Post</strong>
           <br/>
-          {{refundlist?.contact_details?.address_line}} {{refundlist?.contact_details?.city}} {{refundlist?.contact_details?.county}} {{refundlist?.contact_details?.country}} {{refundlist?.contact_details?.postal_code}}
+          {{refundlist?.contact_details?.address_line?.trim()}} {{refundlist?.contact_details?.city?.trim()}} {{refundlist?.contact_details?.county?.trim()}} {{refundlist?.contact_details?.country?.trim()}} {{refundlist?.contact_details?.postal_code?.trim()}}
         </div> 
         <a class="govuk-link" href="Javascript:void(0)" *ngIf="refundlist?.contact_details !=null"  class="govuk-link right" (click)="gotoEditDetailsPage(refundlist?.contact_details, 'reviewandsubmitEditview')">
           Change
@@ -396,12 +396,12 @@
           <div *ngIf="addressDetails?.notification_type === 'EMAIL'" class="contactDetails-width font-size-19px">
             <strong>Email</strong>
             <br/>
-            {{addressDetails?.email}}
+            {{addressDetails?.email?.trim()}}
           </div>
           <div *ngIf="addressDetails?.notification_type === 'LETTER'" class="contactDetails-width font-size-19px">
             <strong>Post</strong>
             <br/>
-            {{addressDetails?.address_line}} {{addressDetails?.city}} {{addressDetails?.county}} {{addressDetails?.country}} {{addressDetails?.postal_code}}
+            {{addressDetails?.address_line?.trim()}} {{addressDetails?.city?.trim()}} {{addressDetails?.county?.trim()}} {{addressDetails?.country?.trim()}} {{addressDetails?.postal_code?.trim()}}
           </div>        
         </dd>
         <dd class="govuk-summary-list__actions">

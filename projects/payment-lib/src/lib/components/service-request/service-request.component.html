@@ -295,9 +295,7 @@
   <div class="govuk-form-group">
     <fieldset class="govuk-fieldset">
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-        <b>
-          Select payment to refund
-        </b>
+        <h1 class="heading-medium">Select payment to refund</h1>
       </legend>
       <div class="govuk-radios" data-module="govuk-radios">
         <div class="govuk-radios__item">
@@ -351,7 +349,7 @@
     <table class="govuk-table govuk-table-mb">
         <tr class="govuk-table__row">
             <td class="govuk-table__cell govuk-!-font-weight-bold">Payment reference</td>
-            <td class="govuk-table__cell"> {{paymentGroupList.payments[0].reference}} </td>
+            <td class="govuk-table__cell">{{paymentGroupList.payments[0].reference}}</td>
         </tr>
         <tr class="govuk-table__row">
             <td class="govuk-table__cell govuk-!-font-weight-bold">Payment amount</td>
@@ -379,12 +377,12 @@
           <div *ngIf="contactDetailsObj?.notification_type === 'EMAIL'" class="contactDetails-width">
             <strong>Email</strong>
             <br/>
-            {{contactDetailsObj?.email}}
+            {{contactDetailsObj?.email?.trim()}}
           </div>
           <div *ngIf="contactDetailsObj?.notification_type === 'LETTER'" class="contactDetails-width">
             <strong>Post</strong>
             <br/>
-            {{contactDetailsObj?.address_line}}&nbsp;{{contactDetailsObj?.city}}&nbsp;{{contactDetailsObj?.county}}&nbsp;{{contactDetailsObj?.country}}&nbsp;{{contactDetailsObj?.postal_code}}
+            {{contactDetailsObj?.address_line?.trim()}}&nbsp;{{contactDetailsObj?.city?.trim()}}&nbsp;{{contactDetailsObj?.county?.trim()}}&nbsp;{{contactDetailsObj?.country?.trim()}}&nbsp;{{contactDetailsObj?.postal_code?.trim()}}
           </div>
           <a (click)="gotoAddressPage(contactDetailsObj)" class="govuk-link right" >Change</a>
         </td>
