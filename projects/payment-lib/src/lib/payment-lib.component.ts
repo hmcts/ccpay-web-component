@@ -148,5 +148,8 @@ export class PaymentLibComponent implements OnInit {
     if (this.isTakePayment) {
       this.TAKEPAYMENT = true;
     }
+    if(this.API_ROOT == 'api/payment-history') {
+      this.isFromPayBubble = true;
+    }
   }
 }

@@ -1083,21 +1083,6 @@ if(isFullyRefund) {
       this.paymentLibComponent.viewName = 'case-transactions';
       this.paymentLibComponent.ISBSENABLE = true;
       this.paymentLibComponent.isRefundStatusView = false;
-    this.OrderslistService.setnavigationPage('casetransactions');
-    this.OrderslistService.setisFromServiceRequestPage(false);
-    this.paymentLibComponent.VIEW ='case-transactions';
-    this.paymentLibComponent.viewName = 'case-transactions';
-    this.paymentLibComponent.ISBSENABLE = true;
-    this.paymentLibComponent.isRefundStatusView = false;
-    this.resetOrderData(); let partUrl = this.bsPaymentDcnNumber ? `&dcn=${this.bsPaymentDcnNumber}` : '';
-    partUrl += this.paymentLibComponent.ISBSENABLE ? '&isBulkScanning=Enable' : '&isBulkScanning=Disable';
-    partUrl += this.paymentLibComponent.ISTURNOFF ? '&isTurnOff=Enable' : '&isTurnOff=Disable';
-    partUrl += this.isStrategicFixEnable ? '&isStFixEnable=Enable' : '&isStFixEnable=Disable';
-    partUrl += `&caseType=${this.caseType}`;
-   const url = `/payment-history/${this.ccdCaseNumber}?view=case-transactions&takePayment=${this.paymentLibComponent.TAKEPAYMENT}&selectedOption=${this.option}${partUrl}`;
-   this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-   this.router.onSameUrlNavigation = 'reload';
-    this.router.navigateByUrl(url);
     } else {  
 
     if (this.paymentLibComponent.REFUNDLIST) {
