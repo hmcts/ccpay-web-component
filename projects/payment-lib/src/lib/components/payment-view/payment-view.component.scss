@@ -48,6 +48,12 @@
 }
 
 .over-payment {
+
+  .pagesize {
+    margin: 2em;
+    width: 97%;
+  }
+
   .contactDetails-width {
     width: 70%;
   }
@@ -135,4 +141,8 @@
     .white {
       color: #FFFFFF;
     }
+}
+
+.whitespace-inherit {
+  white-space: inherit !important;
 }

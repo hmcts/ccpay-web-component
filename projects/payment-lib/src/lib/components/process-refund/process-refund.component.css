@@ -80,3 +80,8 @@
 .right {
     float: right;
 }
+
+.pagesize {
+    margin: 2em;
+    width: 97%;
+  }

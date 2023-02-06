@@ -422,7 +422,7 @@
     </tr>
     <tr class="govuk-table__row">
       <td class="govuk-table__cell govuk-!-font-weight-bold">Send via</td>
-      <td class="govuk-table__cell">
+      <td class="govuk-table__cell whitespace-inherit">
         <div *ngIf="contactDetailsObj?.notification_type === 'EMAIL'" class="contactDetails-width">
           <strong>Email</strong>
           <br/>
@@ -471,7 +471,7 @@
 </ng-container>
 <ng-container *ngIf="viewStatus === 'refundconfirmationpage' && viewCompStatus !== 'overpayment' && viewCompStatus !== 'overPaymentAddressCapture' && viewCompStatus !== 'overpaymentcheckandanswer'">
   <input #myInput type='hidden' id='iFrameDrivenImageValue' value='RETROREMISSIONREFUNDCONFIRMATIONPAGE'> 
-  <div class="govuk-grid-row">
+  <div class="govuk-grid-row pagesize">
     <div >
       <div class="govuk-panel govuk-panel--confirmation">
         <h1 class="govuk-panel__title">

@@ -142,3 +142,7 @@
 .contactDetails-width {
   width: 70%;
 }
+
+.whitespace-inherit {
+  white-space: inherit !important;
+}

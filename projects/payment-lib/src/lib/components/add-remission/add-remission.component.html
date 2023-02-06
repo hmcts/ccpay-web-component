@@ -312,7 +312,7 @@
       </tr>
       <tr class="govuk-table__row">
         <td class="govuk-table__cell govuk-!-font-weight-bold">Send via</td>
-        <td class="govuk-table__cell">
+        <td class="govuk-table__cell whitespace-inherit">
           <div *ngIf="contactDetailsObj?.notification_type === 'EMAIL'" class="contactDetails-width">
             <strong>Email</strong>
             <br/>
@@ -677,7 +677,7 @@
       </tr>
       <tr class="govuk-table__row">
         <td class="govuk-table__cell govuk-!-font-weight-bold">Send via</td>
-        <td class="govuk-table__cell">
+        <td class="govuk-table__cell whitespace-inherit">
           <div *ngIf="contactDetailsObj?.notification_type === 'EMAIL'" class="contactDetails-width">
             <strong>Email</strong>
             <br/>
@@ -780,7 +780,7 @@
       </tr>
       <tr class="govuk-table__row">
         <td class="govuk-table__cell govuk-!-font-weight-bold">Send via</td>
-        <td class="govuk-table__cell">
+        <td class="govuk-table__cell whitespace-inherit">
           <div *ngIf="contactDetailsObj?.notification_type === 'EMAIL'" class="contactDetails-width">
             <strong>Email</strong>
             <br/>
@@ -789,7 +789,7 @@
           <div *ngIf="contactDetailsObj?.notification_type === 'LETTER'" class="contactDetails-width">
             <strong>Post</strong>
             <br/>
-            {{contactDetailsObj?.address_line?.trim()}}&nbsp;{{contactDetailsObj?.city?.trim()}}&nbsp;{{contactDetailsObj?.county?.trim()}}&nbsp;{{contactDetailsObj?.country?.trim}}&nbsp;{{contactDetailsObj?.postal_code?.trim()}}
+            {{contactDetailsObj?.address_line?.trim()}}&nbsp;{{contactDetailsObj?.city?.trim()}}&nbsp;{{contactDetailsObj?.county?.trim()}}&nbsp;{{contactDetailsObj?.country?.trim()}}&nbsp;{{contactDetailsObj?.postal_code?.trim()}}
           </div>
           <a (click)="gotoAddressPage(contactDetailsObj)" class="govuk-link right" >Change</a>
         </td>
