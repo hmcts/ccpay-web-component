@@ -575,7 +575,7 @@
               </ng-container>
 
           </div>
-          <div *ngIf="!check4AllowedRoles2AccessPBApayment() && serviceRequestValue !== 'true'">
+          <div *ngIf="!check4AllowedRoles2AccessPBApayment()">
               <span class="heading-medium"><br/>Refunds</span>
               <ccpay-refund-status
               [ccdCaseNumber]="ccdCaseNumber"
@@ -680,7 +680,7 @@
 
           </div>
         </div>
-        <div class="govuk-grid-column-full" *ngIf="!check4AllowedRoles2AccessPBApayment() && serviceRequestValue !== 'true'">
+        <div class="govuk-grid-column-full" *ngIf="!check4AllowedRoles2AccessPBApayment()">
             <span class="heading-medium"><br/>Refunds</span>
             <ccpay-refund-status 
             [ccdCaseNumber]="ccdCaseNumber"
