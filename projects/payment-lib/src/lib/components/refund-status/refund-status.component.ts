@@ -312,6 +312,9 @@ export class RefundStatusComponent implements OnInit {
     if (this.refundFees === undefined) {
       this.refundFees = this.refundlist['refund_fees'];
     }
+    if(this.refundlist.reason == 'Retrospective remission') {
+      this.refundFees[0].refund_amount = this.changedAmount;
+    }
     this.refundCode = this.refundlist.code;
     const resubmitRequest = new IResubmitRefundRequest(this.refundCode,  this.changedAmount, this.refundlist.contact_details, this.refundFees);
     this.refundService.patchResubmitRefund(resubmitRequest, this.refundlist.refund_reference).subscribe(
