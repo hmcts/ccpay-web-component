@@ -53,7 +53,7 @@ export class ContactDetailsComponent implements OnInit {
     this.emailAddressForm = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
-        Validators.email
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ]))
     });
     this.postCodeForm = this.formBuilder.group({
