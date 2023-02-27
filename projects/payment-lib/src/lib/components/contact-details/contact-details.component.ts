@@ -59,7 +59,7 @@ export class ContactDetailsComponent implements OnInit {
     this.postCodeForm = this.formBuilder.group({
       postcode: new FormControl('', Validators.compose([
         Validators.required,
-        Validators.pattern('^([A-Za-z]{1,2}[0-9]{1,2}[A-Za-z]{0,1} ?[0-9][A-Za-z]{2})')
+        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
       ]))
     });
     this.manualAddressForm = this.formBuilder.group({
