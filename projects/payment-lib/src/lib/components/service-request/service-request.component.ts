@@ -35,7 +35,6 @@ export class ServiceRequestComponent implements OnInit {
   @Input('takePayment') takePayment: boolean;
   @Input('ccdCaseNumber') ccdCaseNumber: boolean;
   @Input("isServiceRequest") isServiceRequest: string;
-  @Output() goToServiceRquestComponent: EventEmitter<any> = new EventEmitter();
 
   viewCompStatus;
   servicerequest: string;
@@ -122,26 +121,26 @@ export class ServiceRequestComponent implements OnInit {
     }
     if(this.paymentLibComponent.isFromServiceRequestPage && this.paymentLibComponent.isFromPaymentDetailPage) {
       if(this.paymentLibComponent.isFromPaymentDetailPage && this.paymentLibComponent.isFromServiceRequestPage) {
-      this.OrderslistService.getorderRefs().subscribe((data) => this.orderRef = data);
-      this.OrderslistService.getorderCCDEvents().subscribe((data) => this.orderCCDEvent = data);
-      this.OrderslistService.getorderCreateds().subscribe((data) => this.orderCreated = data);
-      this.OrderslistService.getorderDetail().subscribe((data) => this.orderDetail = data);
-      this.OrderslistService.getorderPartys().subscribe((data) => this.orderParty = data);
-      this.OrderslistService.getorderRemissionTotals().subscribe((data) => this.orderRemissionTotal = data);
-      this.OrderslistService.getorderFeesTotals().subscribe((data) => this.orderFeesTotal = data);
-      this.OrderslistService.getoorderTotalPaymentss().subscribe((data) => this.orderTotalPayments = data);
-    }
-   
-    
+        this.OrderslistService.getorderRefs().subscribe((data) => this.orderRef = data);
+        this.OrderslistService.getorderCCDEvents().subscribe((data) => this.orderCCDEvent = data);
+        this.OrderslistService.getorderCreateds().subscribe((data) => this.orderCreated = data);
+        this.OrderslistService.getorderDetail().subscribe((data) => this.orderDetail = data);
+        this.OrderslistService.getorderPartys().subscribe((data) => this.orderParty = data);
+        this.OrderslistService.getorderRemissionTotals().subscribe((data) => this.orderRemissionTotal = data);
+        this.OrderslistService.getorderFeesTotals().subscribe((data) => this.orderFeesTotal = data);
+        this.OrderslistService.getoorderTotalPaymentss().subscribe((data) => this.orderTotalPayments = data);
+      }
     }
     if(this.paymentLibComponent.isFromServiceRequestPage && this.paymentLibComponent.TAKEPAYMENT) {
       this.isServiceRequest = 'false';
     }
-
-
   }
   goToServiceRequestPage() {
-    this.goToServiceRquestComponent.emit();
+    this.paymentLibComponent.viewName = 'case-transactions';
+    this.paymentLibComponent.TAKEPAYMENT = false;
+    this.paymentLibComponent.SERVICEREQUEST = 'true';
+    this.paymentLibComponent.isFromServiceRequestPage = true;
+    window.location.reload();
   }
 
   goToCaseTransationPage(event: any) {
@@ -188,10 +187,10 @@ export class ServiceRequestComponent implements OnInit {
         this.paymentGroup.payments = this.paymentGroup.payments.filter
           (paymentGroupObj => paymentGroupObj['reference'].includes(this.paymentLibComponent.paymentReference));
         this.payment = this.paymentGroup.payments[0];
-       
+
           //  const paymentAllocation = this.paymentGroup.payments[0].payment_allocation;
           //  this.isStatusAllocated = paymentAllocation.length > 0 && paymentAllocation[0].allocation_status === 'Allocated' || paymentAllocation.length === 0;
-        
+
       },
       (error: any) => this.errorMessage = error.replace(/"/g,"")
     );
@@ -322,7 +321,7 @@ export class ServiceRequestComponent implements OnInit {
     this.viewStatus = 'paymentview';
   }
   continuePayment(paymentgrp: IPaymentGroup) {
-    
+
     if (this.paymentType === 'op') {
       this.isFullyRefund = false
       this.viewStatus = '';
@@ -362,15 +361,15 @@ export class ServiceRequestComponent implements OnInit {
     this.isConfirmationBtnDisabled = true;
     this.errorMessage = '';
     const obj = this.paymentGroupList.fees[0];
-    this.fees  = [{ id: obj.id, 
+    this.fees  = [{ id: obj.id,
       code: obj.code,
-      version:obj.version, 
+      version:obj.version,
       apportion_amount: obj.apportion_amount,
       calculated_amount: obj.calculated_amount,
       updated_volume: obj.updated_volume ? obj.updated_volume : obj.volume,
       volume: obj.volume,
       refund_amount: this.getOverPaymentValue() }];
-    const requestBody = new PostRefundRetroRemission(this.contactDetailsObj,this.fees, this.paymentGroupList.payments[0].reference, 'RR037', 
+    const requestBody = new PostRefundRetroRemission(this.contactDetailsObj,this.fees, this.paymentGroupList.payments[0].reference, 'RR037',
     this.getOverPaymentValue(), 'op');
     this.paymentViewService.postRefundsReason(requestBody).subscribe(
       response => {
@@ -404,7 +403,7 @@ export class ServiceRequestComponent implements OnInit {
     } else {
       this.templateInstructionType = this.notificationService.getNotificationInstructionType(payment.channel, payment.method);
     }
-    
+
   }
 
   showNotificationPreview(): void {
