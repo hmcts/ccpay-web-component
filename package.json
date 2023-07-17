@@ -42,8 +42,8 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.1102.19",
-    "@angular/cli": "~11.2.19",
+    "@angular-devkit/build-angular": "^16.1.4",
+    "@angular/cli": "~16.1.4",
     "@angular/compiler-cli": "~11.2.14",
     "@angular/language-service": "~11.2.14",
     "@types/file-saver": "^2.0.5",
@@ -64,7 +64,7 @@
     "karma-phantomjs-launcher": "1.0.4",
     "karma-spec-reporter": "^0.0.32",
     "ng-packagr": "^11.2.4",
-    "node-sass": "^4.14.1",
+    "node-sass": "^9.0.0",
     "protractor": "~7.0.0",
     "server": "^1.0.37",
     "ts-mockito": "^2.3.1",
