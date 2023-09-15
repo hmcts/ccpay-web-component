@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from './logger.service';
 
-export let isDebugMode = false;
+export let isDebugMode = true;
 
 const noop = (): any => undefined;
 
