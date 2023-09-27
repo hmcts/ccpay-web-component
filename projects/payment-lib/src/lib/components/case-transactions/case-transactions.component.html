@@ -4,8 +4,8 @@
   <main>
     <ng-container  *ngIf="viewStatus === 'main1'">
       <div *ngIf="viewStatus === 'main1'&& !isTurnOff && takePayment">
-          <div   *ngIf="takePayment" class="govuk-grid-row">
 
+          <div *ngIf="takePayment" class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
               <h1 class="govuk-heading-xl">Case transactions</h1>
             </div>
@@ -23,17 +23,17 @@
             </div>
             <div class="govuk-grid-column-full govuk-!-padding-bottom-3">
               <hr class="govuk-section-break govuk-section-break--visible">
-              <table class="govuk-table">
+              <table class="table govuk-table" aria-describedby="case transactions">
                 <thead class="govuk-table__head">
                   <tr class="govuk-table__row">
-                    <td class="govuk-table__header" scope="col">Total payments</td>
-                    <td class="govuk-table__header" scope="col">Total remissions</td>
-                    <td class="govuk-table__header" scope="col">Amount due</td>
-                    <td class="govuk-table__header govuk-table__header--custom" scope="col" *ngIf="isBulkScanEnable">Unallocated payments</td>
+                    <th class="govuk-table__header" scope="col">Total payments</th>
+                    <th class="govuk-table__header" scope="col">Total remissions</th>
+                    <th class="govuk-table__header" scope="col">Amount due</th>
+                    <th class="govuk-table__header govuk-table__header--custom" scope="col" *ngIf="isBulkScanEnable">Unallocated payments</th>
                   </tr>
                 </thead>
                 <tbody class="govuk-table__body">
-                  <tr class="totalpayments govuk-table__row">
+                  <tr class="totalpayments govuk-table__row" scope="row">
                     <td class="govuk-table__cell summary-table-font">{{ totalPayments | currency :'GBP':'symbol':'1.2-2' }}</td>
                     <td class="govuk-table__cell summary-table-font">{{ totalRemissions | currency :'GBP':'symbol':'1.2-2' }}</td>
                     <td class="govuk-table__cell summary-table-font">{{ clAmountDue | currency :'GBP':'symbol':'1.2-2'}}</td>
@@ -49,7 +49,7 @@
                 [ngClass]='!isAddFeeBtnEnabled ? "govuk-button govuk-button--secondary govuk-button--disabled govuk-!-margin-right-1" : "govuk-button govuk-button--secondary govuk-!-margin-right-1"'>
                 Take telephony payment
               </button>
-          </div>
+            </div>
 
           </div>
           <div class="govuk-grid-row">
@@ -62,21 +62,21 @@
                   <h3 class="heading-medium">Fees</h3>
               </div>
               <div class="govuk-grid-column-full">
-                <table class="govuk-table">
+                <table class="table govuk-table" aria-describedby="service request">
                   <thead class="govuk-table__head">
                   <tr class="govuk-table__row">
-                    <td class="govuk-table__header" scope="col">Code</td>
-                    <td class="govuk-table__header" scope="col">Description</td>
-                    <td class="govuk-table__header" scope="col">Volume</td>
-                    <td class="govuk-table__header" scope="col">Fee amount</td>
-                    <td class="govuk-table__header" scope="col">Calculated amount</td>
-                    <td class="govuk-table__header" scope="col">Amount due</td>
-                    <td class="govuk-table__header" scope="col">Action</td>
+                    <th class="govuk-table__header" scope="col">Code</th>
+                    <th class="govuk-table__header" scope="col">Description</th>
+                    <th class="govuk-table__header" scope="col">Volume</th>
+                    <th class="govuk-table__header" scope="col">Fee amount</th>
+                    <th class="govuk-table__header" scope="col">Calculated amount</th>
+                    <th class="govuk-table__header" scope="col">Amount due</th>
+                    <th class="govuk-table__header" scope="col">Action</th>
 
                   </tr>
                   </thead>
-                  <tbody class="govuk-table__body" *ngFor="let paymentGroup of paymentGroups;">
-                    <tr class="govuk-table__row" *ngFor="let fee of paymentGroup.fees; let i = index;">
+                  <tbody class="govuk-table__body" *ngFor="let paymentGroup of paymentGroups;" role="status">
+                    <tr class="govuk-table__row" *ngFor="let fee of paymentGroup.fees; let i = index;" scope="row">
                       <td class="govuk-table__cell">	{{fee.code}} </td>
                       <td class="govuk-table__cell">{{fee.description}}</td>
                       <td class="govuk-table__cell">{{fee.volume? fee.volume : '-'}}</td>
@@ -85,15 +85,15 @@
                       <td class="govuk-table__cell govuk-!-font-weight-bold"  [attr.rowspan]="paymentGroup.fees.length" *ngIf="paymentGroup.old && i==0"> {{getGroupOutstandingAmount(paymentGroup)| currency:'GBP':'symbol-narrow':'1.2-2'}}* </td>
                       <td class="govuk-table__cell" *ngIf="!paymentGroup.old"> {{calculateAmountDue(fee) | currency:'GBP':'symbol-narrow':'1.2-2'}} </td>
                       <td class="govuk-table__cell" *ngIf="!paymentGroup.old">
-                        <a (click)="confirmRemoveFee(fee.id)" [ngClass]='!isCheckAmountdueExist(fee.amount_due) || fee.remissions ? "disable-link" : ""'>Remove</a>
+                        <a (click)="confirmRemoveFee(fee.id)" [ngClass]='!isCheckAmountdueExist(fee.amount_due) || fee.remissions ? "disable-link" : ""' href="javascript:void(0)">Remove</a>
                       </td>
                       <td class="govuk-table__cell" *ngIf="paymentGroup.old">
-                        <a (click)="confirmRemoveFee(fee.id)" [ngClass]='paymentGroup.payments?.length > 0 || paymentGroup.remissions?.length > 0 ? "disable-link" : ""'>Remove</a>
+                        <a (click)="confirmRemoveFee(fee.id)" [ngClass]='paymentGroup.payments?.length > 0 || paymentGroup.remissions?.length > 0 ? "disable-link" : ""' href="javascript:void(0)">Remove</a>
                     </td>
                     </tr>
                   </tbody>
-                  <tbody class="govuk-table__body" *ngIf="paymentGroups?.length === 0">
-                    <tr class="govuk-table__row" >
+                  <tbody class="govuk-table__body" *ngIf="paymentGroups?.length === 0" role="status">
+                    <tr class="govuk-table__row" scope="row">
                       <td class="govuk-table__cell" colspan="7">No fees recorded</td>
                     </tr>
                   </tbody>
@@ -116,16 +116,16 @@
                   <table class="govuk-table">
                     <thead class="govuk-table__head">
                       <tr class="govuk-table__row">
-                          <td class="govuk-table__header col-28" scope="col">Payment reference</td>
-                          <td class="govuk-table__header" scope="col">Date created</td>
-                          <td class="govuk-table__header" scope="col">Channel</td>
-                          <td class="govuk-table__header" scope="col">Method</td>
-                          <td class="govuk-table__header col-15" scope="col">Amount</td>
-                          <td class="govuk-table__header" scope="col">Allocation status</td>
-                          <td class="govuk-table__header" scope="col">Payment status</td>
+                          <th class="govuk-table__header col-28" scope="col">Payment reference</th>
+                          <th class="govuk-table__header" scope="col">Date created</th>
+                          <th class="govuk-table__header" scope="col">Channel</th>
+                          <th class="govuk-table__header" scope="col">Method</th>
+                          <th class="govuk-table__header col-15" scope="col">Amount</th>
+                          <th class="govuk-table__header" scope="col">Allocation status</th>
+                          <th class="govuk-table__header" scope="col">Payment status</th>
                         </tr>
                     </thead>
-                    <tbody class="govuk-table__body" *ngIf="allPayments?.length > 0">
+                    <tbody class="govuk-table__body" *ngIf="allPayments?.length > 0" role="status">
                       <tr class="govuk-table__row"  *ngFor="let payment of allPayments">
                           <td class="govuk-table__cell whitespace-inherit">
                             <a href="javascript:void(0)" (click)="goToPayementView(payment.paymentGroupReference, payment.reference, payment.method)">{{ payment.reference }}</a>
@@ -138,7 +138,7 @@
                           <td class="govuk-table__cell whitespace-inherit">{{ payment.status }}</td>
                         </tr>
                     </tbody>
-                    <tbody class="govuk-table__body" *ngIf="allPayments?.length === 0">
+                    <tbody class="govuk-table__body" *ngIf="allPayments?.length === 0" role="status">
                       <td class="govuk-table__cell" colspan="7">No payments recorded</td>
                     </tbody>
                   </table>
@@ -148,14 +148,14 @@
                   <table class="govuk-table">
                     <thead class="govuk-table__head">
                       <tr class="govuk-table__row">
-                          <td class="govuk-table__header" scope="col">Remission reference</td>
-                          <td class="govuk-table__header" scope="col">Date created</td>
-                          <td class="govuk-table__header" scope="col">Remission code</td>
-                          <td class="govuk-table__header" scope="col">Fee code</td>
-                          <td class="govuk-table__header" scope="col">Remission amount</td>
+                          <th class="govuk-table__header" scope="col">Remission reference</th>
+                          <th class="govuk-table__header" scope="col">Date created</th>
+                          <th class="govuk-table__header" scope="col">Remission code</th>
+                          <th class="govuk-table__header" scope="col">Fee code</th>
+                          <th class="govuk-table__header" scope="col">Remission amount</th>
                         </tr>
                     </thead>
-                    <tbody class="govuk-table__body" *ngIf="remissions?.length > 0">
+                    <tbody class="govuk-table__body" *ngIf="remissions?.length > 0" role="status">
                       <tr class="govuk-table__row" *ngFor="let remission of remissions">
                           <td class="govuk-table__cell whitespace-inherit">{{ remission.remission_reference }}</td>
                           <td class="govuk-table__cell whitespace-inherit">{{ remission.date_created | date:'dd MMM yyyy' }}</td>
@@ -164,7 +164,7 @@
                           <td class="govuk-table__cell whitespace-inherit">{{ remission.hwf_amount | currency:'GBP':'symbol-narrow':'1.2-2'}}</td>
                         </tr>
                     </tbody>
-                    <tbody class="govuk-table__body" *ngIf="remissions?.length === 0">
+                    <tbody class="govuk-table__body" *ngIf="remissions?.length === 0" role="status">
                       <td class="govuk-table__cell" colspan="5">No remissions recorded</td>
                     </tbody>
                   </table>
@@ -178,8 +178,8 @@
           <h1 class="govuk-heading-xl">Case transactions</h1>
         </div>
 
-        <div  class="govuk-grid-column-one-third" align="right" >
-          <a [ngClass]="{ 'disable': !isAddFeeBtnEnabled} " (click)="redirectToFeeSearchPage($event)" class="button">Add a new fee</a>
+        <div class="govuk-grid-column-one-third" align="right">
+          <a [ngClass]="{ 'disable': !isAddFeeBtnEnabled} " (click)="redirectToFeeSearchPage($event)" class="button" href="javascript:void(0)">Add a new fee</a>
         </div>
       </div>
 
@@ -194,9 +194,9 @@
           <table class="govuk-table">
             <thead class="govuk-table__head">
               <tr class="govuk-table__row">
-                <td class="govuk-table__header" scope="col">Total payments</td>
-                <td class="govuk-table__header" scope="col">Total remissions</td>
-                <td class="govuk-table__header" scope="col">Amount due</td>
+                <th class="govuk-table__header" scope="col">Total payments</th>
+                <th class="govuk-table__header" scope="col">Total remissions</th>
+                <th class="govuk-table__header" scope="col">Amount due</th>
               </tr>
             </thead>
             <tbody class="govuk-table__body">
@@ -222,17 +222,17 @@
             <table class="govuk-table">
               <thead class="govuk-table__head">
               <tr class="govuk-table__row">
-                <td class="govuk-table__header" scope="col">Code</td>
-                <td class="govuk-table__header" scope="col">Description</td>
-                <td class="govuk-table__header" scope="col">Volume</td>
-                <td class="govuk-table__header" scope="col">Fee amount</td>
-                <td class="govuk-table__header" scope="col">Calculated amount</td>
-                <td class="govuk-table__header" scope="col">Group amount outstanding</td>
+                <th class="govuk-table__header" scope="col">Code</th>
+                <th class="govuk-table__header" scope="col">Description</th>
+                <th class="govuk-table__header" scope="col">Volume</th>
+                <th class="govuk-table__header" scope="col">Fee amount</th>
+                <th class="govuk-table__header" scope="col">Calculated amount</th>
+                <th class="govuk-table__header" scope="col">Group amount outstanding</th>
               </tr>
               </thead>
               <tbody class="govuk-table__body">
               <tr class="govuk-table__row">
-                <td class="govuk-table__cell" colspan="6">No fees recorded</td>
+                <td class="govuk-table__cell" colspan="6" role="status">No fees recorded</td>
               </tr>
               </tbody>
             </table>
@@ -260,16 +260,16 @@
           <table class="govuk-table">
             <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" scope="col">Code</td>
-              <td class="govuk-table__header" scope="col">Description</td>
-              <td class="govuk-table__header" scope="col">Volume</td>
-              <td class="govuk-table__header" scope="col">Fee amount</td>
-              <td class="govuk-table__header" scope="col">Calculated amount</td>
-              <td class="groupamount govuk-table__header" scope="col">Group amount outstanding</td>
+              <th class="govuk-table__header" scope="col">Code</th>
+              <th class="govuk-table__header" scope="col">Description</th>
+              <th class="govuk-table__header" scope="col">Volume</th>
+              <th class="govuk-table__header" scope="col">Fee amount</th>
+              <th class="govuk-table__header" scope="col">Calculated amount</th>
+              <th class="groupamount govuk-table__header" scope="col">Group amount outstanding</th>
             </tr>
             </thead>
             <tbody class="govuk-table__body" >
-            <tr class="govuk-table__row"  *ngFor="let fee of paymentGroup.fees;  let i = index;">
+            <tr class="govuk-table__row"  *ngFor="let fee of paymentGroup.fees;  let i = index;" role="status">
               <td class="govuk-table__cell govuk-table__cell--col1">{{fee.code}}</td>
               <td class="govuk-table__cell govuk-table__cell--col2"> {{fee.description}} </td>
               <td class="govuk-table__cell govuk-table__cell--col3 align-center"> {{fee.volume? fee.volume : '-'}} </td>
@@ -279,7 +279,7 @@
                 {{getGroupOutstandingAmount(paymentGroup) | currency:'GBP':'symbol-narrow':'1.2-2' }} </td>
             </tr>
             </tbody>
-            <tbody class="govuk-table__body" *ngIf="paymentGroup.fees.length==0">
+            <tbody class="govuk-table__body" *ngIf="paymentGroup.fees.length==0" role="status">
             <td class="govuk-table__cell" colspan="6">No payments recorded</td>
             </tbody>
           </table>
@@ -297,16 +297,16 @@
                   <table class="govuk-table">
                     <thead class="govuk-table__head">
                       <tr class="govuk-table__row">
-                          <td class="govuk-table__header" scope="col">Payment reference</td>
-                          <td class="govuk-table__header" scope="col">Date created</td>
-                          <td class="govuk-table__header" scope="col">Channel</td>
-                          <td class="govuk-table__header" scope="col">Method</td>
-                          <td class="govuk-table__header" scope="col">Amount</td>
-                          <td class="govuk-table__header" scope="col">Allocation status</td>
-                          <td class="govuk-table__header" scope="col">Status</td>
+                          <th class="govuk-table__header" scope="col">Payment reference</th>
+                          <th class="govuk-table__header" scope="col">Date created</th>
+                          <th class="govuk-table__header" scope="col">Channel</th>
+                          <th class="govuk-table__header" scope="col">Method</th>
+                          <th class="govuk-table__header" scope="col">Amount</th>
+                          <th class="govuk-table__header" scope="col">Allocation status</th>
+                          <th class="govuk-table__header" scope="col">Status</th>
                         </tr>
                     </thead>
-                    <tbody class="govuk-table__body" *ngIf="paymentGroup.payments?.length > 0">
+                    <tbody class="govuk-table__body" *ngIf="paymentGroup.payments?.length > 0" role="status">
                       <tr class="govuk-table__row"  *ngFor="let payment of paymentGroup.payments">
                           <td class="govuk-table__cell whitespace-inherit">
                             <a href="javascript:void(0)" (click)="goToPayementView(paymentGroup.payment_group_reference, payment.reference, payment.method)">{{ payment.reference }}</a>
@@ -319,7 +319,7 @@
                           <td class="govuk-table__cell whitespace-inherit">{{ payment.status }}</td>
                         </tr>
                     </tbody>
-                    <tbody class="govuk-table__body" *ngIf="paymentGroup.payments?.length === 0">
+                    <tbody class="govuk-table__body" *ngIf="paymentGroup.payments?.length === 0" role="status">
                       <td class="govuk-table__cell" colspan="6">No payments recorded</td>
                     </tbody>
                   </table>
@@ -329,14 +329,14 @@
                   <table class="govuk-table">
                     <thead class="govuk-table__head">
                       <tr class="govuk-table__row">
-                          <td class="govuk-table__header" scope="col">Remission reference</td>
-                          <td class="govuk-table__header" scope="col">Date created</td>
-                          <td class="govuk-table__header" scope="col">Remission code</td>
-                          <td class="govuk-table__header" scope="col">Fee applied against</td>
-                          <td class="govuk-table__header" scope="col">Remission amount</td>
+                          <th class="govuk-table__header" scope="col">Remission reference</th>
+                          <th class="govuk-table__header" scope="col">Date created</th>
+                          <th class="govuk-table__header" scope="col">Remission code</th>
+                          <th class="govuk-table__header" scope="col">Fee applied against</th>
+                          <th class="govuk-table__header" scope="col">Remission amount</th>
                         </tr>
                     </thead>
-                    <tbody class="govuk-table__body" *ngIf="paymentGroup.remissions?.length > 0">
+                    <tbody class="govuk-table__body" *ngIf="paymentGroup.remissions?.length > 0" role="status">
                       <tr class="govuk-table__row" *ngFor="let remission of paymentGroup.remissions">
                           <td class="govuk-table__cell whitespace-inherit">{{ remission.remission_reference }}</td>
                           <td class="govuk-table__cell whitespace-inherit">{{ remission.date_created | date:'dd MMM' }}</td>
@@ -345,7 +345,7 @@
                           <td class="govuk-table__cell whitespace-inherit">{{ remission.hwf_amount }}</td>
                         </tr>
                     </tbody>
-                    <tbody class="govuk-table__body" *ngIf="paymentGroup.remissions?.length === 0">
+                    <tbody class="govuk-table__body" *ngIf="paymentGroup.remissions?.length === 0" role="status">
                       <td class="govuk-table__cell" colspan="5">No remissions recorded</td>
                     </tbody>
                   </table>
@@ -409,15 +409,15 @@
           <table class="govuk-table">
               <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
-                    <td class="govuk-table__header col-13" scope="col">Status</td>
-                    <td class="govuk-table__header col-10" scope="col">Amount</td>
-                    <td class="govuk-table__header col-14" scope="col">Date allocated</td>
-                    <td class="govuk-table__header col-20" scope="col">Request reference</td>
-                    <td class="govuk-table__header col-9" scope="col"></td>
-                    <td class="govuk-table__header" scope="col"></td>
+                    <th class="govuk-table__header col-13" scope="col">Status</th>
+                    <th class="govuk-table__header col-10" scope="col">Amount</th>
+                    <th class="govuk-table__header col-14" scope="col">Date allocated</th>
+                    <th class="govuk-table__header col-20" scope="col">Request reference</th>
+                    <th class="govuk-table__header col-9" scope="col"></th>
+                    <th class="govuk-table__header" scope="col"></th>
                   </tr>
               </thead>
-              <tbody class="govuk-table__body" *ngIf="allPayments?.length > 0">
+              <tbody class="govuk-table__body" *ngIf="allPayments?.length > 0" role="status">
                 <tr class="govuk-table__row"  *ngFor="let payment of allPayments">
                     <td class="govuk-table__cell col-13 whitespace-inherit">{{ payment.status }}</td>
                     <td class="govuk-table__cell col-10 whitespace-inherit">{{ payment.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
@@ -425,8 +425,8 @@
                     <td class="govuk-table__cell col-24 whitespace-inherit">{{ payment.paymentGroupReference }}</td>
                     <td class="govuk-table__cell col-13 whitespace-inherit"></td>
                     <td class="govuk-table__cell whitespace-inherit">
-                        <a href="javascript:void(0)" (click)="goToPayementView(payment.paymentGroupReference, payment.reference, payment.method)">Review</a>
-                      </td>
+                        <a class="govuk-link" href="javascript:void(0)" (click)="goToPayementView(payment.paymentGroupReference, payment.reference, payment.method)">Review</a>
+                    </td>
                   </tr>
               </tbody>
 
@@ -464,11 +464,11 @@
               <table class="govuk-table">
                 <thead class="govuk-table__head">
                   <tr class="govuk-table__row">
-                    <td class="govuk-table__header col-25" scope="col">Total payments</td>
-                    <td class="govuk-table__header govuk-table__header--custom col-25" scope="col" *ngIf="isBulkScanEnable">Unallocated payments</td>
-                    <td class="govuk-table__header col-25" scope="col">Total remissions</td>
-                    <td class="govuk-table__header col-20" scope="col">Amount due</td>
-                    <td class="govuk-table__header col-20" scope="col">Over payment</td>
+                    <th class="govuk-table__header col-25" scope="col">Total payments</th>
+                    <th class="govuk-table__header govuk-table__header--custom col-25" scope="col" *ngIf="isBulkScanEnable">Unallocated payments</th>
+                    <th class="govuk-table__header col-25" scope="col">Total remissions</th>
+                    <th class="govuk-table__header col-20" scope="col">Amount due</th>
+                    <th class="govuk-table__header col-20" scope="col">Over payment</th>
                   </tr>
                 </thead>
                 <tbody class="govuk-table__body">
@@ -494,15 +494,15 @@
               <table class="govuk-table">
                   <thead class="govuk-table__head">
                   <tr class="govuk-table__row">
-                    <td class="govuk-table__header  col-14" scope="col">Status</td>
-                    <td class="govuk-table__header  col-10" scope="col">Amount</td>
-                    <td class="govuk-table__header  col-18" scope="col">Party</td>
-                    <td class="govuk-table__header  col-21" scope="col">Request reference</td>
-                    <td class="govuk-table__header  col-9" scope="col"></td>
-                    <td class="govuk-table__header col" scope="col"></td>
+                    <th class="govuk-table__header  col-14" scope="col">Status</th>
+                    <th class="govuk-table__header  col-10" scope="col">Amount</th>
+                    <th class="govuk-table__header  col-18" scope="col">Party</th>
+                    <th class="govuk-table__header  col-21" scope="col">Request reference</th>
+                    <th class="govuk-table__header  col-9" scope="col"></th>
+                    <th class="govuk-table__header col" scope="col"></th>
                   </tr>
                   </thead>
-                  <tbody class="govuk-table__body"  *ngIf="orderLevelFees?.length > 0">
+                  <tbody class="govuk-table__body"  *ngIf="orderLevelFees?.length > 0" role="status">
                     <tr *ngFor="let orderRef of orderLevelFees;let i = index;">
                       <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderStatus}}</td>
                       <td class="govuk-table__cell whitespace-inherit">{{ orderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2' }}</td>
@@ -521,7 +521,7 @@
                       </button></td>
                     </tr>
                   </tbody>
-                  <tbody class="govuk-table__body alignleft" *ngIf="orderLevelFees?.length === 0">
+                  <tbody class="govuk-table__body alignleft" *ngIf="orderLevelFees?.length === 0" role="status">
                     <td colspan="6">No service requests on this case.</td>
                   </tbody>
               </table>
@@ -532,7 +532,7 @@
               <span>
                   <br/>
                   <a (click)="redirectToFeeSearchPage($event)"
-                    [class.disable-link]="!isAddFeeBtnEnabled">Create service request and pay</a><br/>
+                    [class.disable-link]="!isAddFeeBtnEnabled" href="javascript:void(0)">Create service request and pay</a><br/>
             </span>
           </div>
           <div>
@@ -552,12 +552,13 @@
                </ccpay-app-unprocessed-payments>
 
               <ng-container>
+                
               <table class="govuk-table">
                   <thead class="govuk-table__head">
                   </thead>
-                  <tbody class="govuk-table__body" *ngIf="allPayments?.length > 0">
+                  <tbody class="govuk-table__body" *ngIf="allPayments?.length > 0" role="status">
                     <tr class="govuk-table__row"  *ngFor="let payment of allPayments">
-                        <td class="govuk-table__cell col-14 whitespace-inherit">{{ payment.status }}</td>
+                        <td class="govuk-table__cell col-14 whitespace-inherit" role="status">{{ payment.status }}</td>
                         <td class="govuk-table__cell col-10 whitespace-inherit">{{ payment.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
                         <td class="govuk-table__cell col-17 whitespace-inherit">{{ payment.date_created | date:'dd MMM yyyy' }}</td>
                         <td class="govuk-table__cell col-24 whitespace-inherit">{{ payment.paymentGroupReference }}</td>
@@ -568,7 +569,7 @@
                       </tr>
                   </tbody>
 
-                  <tbody class="govuk-table__body" *ngIf="allPayments?.length === 0 && unprocessedRecordCount <= 0">
+                  <tbody class="govuk-table__body" *ngIf="allPayments?.length === 0 && unprocessedRecordCount <= 0" role="status">
                     <td colspan="6">No payments recorded</td>
                   </tbody>
                 </table>
@@ -595,15 +596,15 @@
           <table class="govuk-table">
               <thead class="govuk-table__head">
               <tr class="govuk-table__row">
-                <td class="govuk-table__header col-14" scope="col">Status</td>
-                <td class="govuk-table__header col-18" scope="col">Amount</td>
-                <td class="govuk-table__header col-18" scope="col">Party</td>
-                <td class="govuk-table__header col-24" scope="col">Request reference	</td>
-                <td class="govuk-table__header col-9" scope="col"></td>
-                <td class="govuk-table__header" scope="col"></td>
+                <th class="govuk-table__header col-14" scope="col">Status</th>
+                <th class="govuk-table__header col-18" scope="col">Amount</th>
+                <th class="govuk-table__header col-18" scope="col">Party</th>
+                <th class="govuk-table__header col-24" scope="col">Request reference	</th>
+                <th class="govuk-table__header col-9" scope="col"></th>
+                <th class="govuk-table__header" scope="col"></th>
               </tr>
               </thead>
-              <tbody class="govuk-table__body" *ngIf="orderLevelFees?.length > 0">
+              <tbody class="govuk-table__body" *ngIf="orderLevelFees?.length > 0" role="status">
                 <tr class="govuk-table__row"  *ngFor="let orderRef of orderLevelFees;let i = index;">
                   <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderStatus}}</td>
                   <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2'}}</td>
@@ -616,35 +617,36 @@
                 </td>
                 </tr>
               </tbody>
-              <tbody class="govuk-table__body" *ngIf="orderLevelFees?.length === 0 && serviceRequestValue === 'false'">
+              <tbody class="govuk-table__body" *ngIf="orderLevelFees?.length === 0 && serviceRequestValue === 'false'" role="status">
                 <tr class="govuk-table__row" >
                   <td class="alignleft" colspan="7">No service requests on this case.</td>
                 </tr>
               </tbody>
           </table>
         </ng-container>
-        <ng-container *ngIf="orderLevelFees?.length === 0 && serviceRequestValue !== 'false' && !isAnyFeeGroupAvilable">
+        <ng-container *ngIf="orderLevelFees?.length === 0 && serviceRequestValue !== 'false' && !isAnyFeeGroupAvilable" role="status">
           <h1 class="govuk-heading-l govuk-heading-lw">If you are expecting to pay and are not able to see a service request,</h1>
           <p>please refresh and try in some time.</p>
         </ng-container>
     <!-- </div> -->
         </div>
         <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-xl" *ngIf="!takePayment && serviceRequestValue === 'false'">Payment History</h1>
             <div  *ngIf="serviceRequestValue === 'false'">
             <span class="heading-medium"><br/>Payments</span>
             <ng-container >
               <table class="govuk-table">
               <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
-                    <td class="govuk-table__header col-14" scope="col">Status</td>
-                    <td class="govuk-table__header col-10" scope="col">Amount</td>
-                    <td class="govuk-table__header col-17" scope="col">Date</td>
-                    <td class="govuk-table__header col-24" scope="col">Payment reference</td>
-                    <td class="govuk-table__header col-13" scope="col"></td>
-                    <td class="govuk-table__header" scope="col"></td>
+                    <th class="govuk-table__header col-14" scope="col">Status</th>
+                    <th class="govuk-table__header col-10" scope="col">Amount</th>
+                    <th class="govuk-table__header col-17" scope="col">Date</th>
+                    <th class="govuk-table__header col-24" scope="col">Payment reference</th>
+                    <th class="govuk-table__header col-13" scope="col"></th>
+                    <th class="govuk-table__header" scope="col"></th>
                   </tr>
               </thead>
-              <tbody class="govuk-table__body" *ngIf="allPayments?.length > 0">
+              <tbody class="govuk-table__body" *ngIf="allPayments?.length > 0" role="status">
                 <tr class="govuk-table__row"  *ngFor="let payment of allPayments">
                     <td class="govuk-table__cell whitespace-inherit">{{ payment.status }}</td>
                     <td class="govuk-table__cell whitespace-inherit">{{ payment.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
@@ -657,7 +659,7 @@
                   </tr>
               </tbody>
 
-              <tbody class="govuk-table__body" *ngIf="allPayments?.length === 0">
+              <tbody class="govuk-table__body" *ngIf="allPayments?.length === 0" role="status">
                 <td colspan="6">No payments recorded</td>
               </tbody>
               </table>
@@ -754,6 +756,7 @@
 
 <ng-container *ngIf="viewStatus === 'feeRemovalConfirmation'">
   <div class="govuk-warning-text">
+    <h1 class="govuk-heading-l">Case reference:{{ccdCaseNumber | ccdHyphens}}</h1>
     <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
     <strong class="govuk-warning-text__text">
       <span class="govuk-warning-text__assistive">Warning</span>

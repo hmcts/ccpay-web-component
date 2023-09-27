@@ -6,13 +6,13 @@
           <table class="govuk-table">
             <thead class="govuk-table__head">
               <tr class="govuk-table__row">
-                  <td class="govuk-table__header" scope="col" *ngIf="IS_BUTTON_ENABLE && !isTurnOff">Select</td>
-                  <td class="govuk-table__header" scope="col" *ngIf="IS_BUTTON_ENABLE && isTurnOff"><a href="#" (click)="unprocessedPaymentUnSelectEvent($event)">Unselect</a></td>
+                  <th class="govuk-table__header" scope="col" *ngIf="IS_BUTTON_ENABLE && !isTurnOff">Select</th>
+                  <th class="govuk-table__header" scope="col" *ngIf="IS_BUTTON_ENABLE && isTurnOff"><a href="#" (click)="unprocessedPaymentUnSelectEvent($event)">Unselect</a></th>
       
-                  <td class="govuk-table__header" scope="col">Payment asset number (DCN)</td>
-                  <td class="govuk-table__header" scope="col">Banked date</td>
-                  <td class="govuk-table__header" scope="col">Amount</td>
-                  <td class="govuk-table__header" scope="col">Method</td>
+                  <th class="govuk-table__header" scope="col">Payment asset number (DCN)</th>
+                  <th class="govuk-table__header" scope="col">Banked date</th>
+                  <th class="govuk-table__header" scope="col">Amount</th>
+                  <th class="govuk-table__header" scope="col">Method</th>
                  </tr>
             </thead>
             <tbody class="govuk-table__body" >
@@ -95,12 +95,12 @@
        
         <thead class="govuk-table__head" *ngIf='PAYMENTSLENGTH === 0 '>
             <!-- <tr class="govuk-table__row">
-                <td class="govuk-table__header col-14" scope="col">Status</td>
-                <td class="govuk-table__header col-10" scope="col">Amount</td>
-                <td class="govuk-table__header col-14" scope="col">Date</td>
-                <td class="govuk-table__header col-20" scope="col">Request reference</td>
-                <td class="govuk-table__header col-9" scope="col"></td>
-                <td class="govuk-table__header" scope="col"></td>
+                <th class="govuk-table__header col-14" scope="col">Status</th>
+                <th class="govuk-table__header col-10" scope="col">Amount</th>
+                <th class="govuk-table__header col-14" scope="col">Date</th>
+                <th class="govuk-table__header col-20" scope="col">Request reference</th>
+                <th class="govuk-table__header col-9" scope="col"></th>
+                <th class="govuk-table__header" scope="col"></th>
               </tr> -->
           </thead>
           <tbody class="govuk-table__body">
@@ -129,12 +129,12 @@
              
               <thead class="govuk-table__head">
                   <tr class="govuk-table__row">
-                      <td class="govuk-table__header col-13" scope="col">Status</td>
-                      <td class="govuk-table__header col-9" scope="col">Amount</td>
-                      <td class="govuk-table__header col-16" scope="col">Date allocated</td>
-                      <td class="govuk-table__header col-24" colspan="3" scope="col">Request reference</td>
-                      <td class="govuk-table__header col-13" scope="col"></td>
-                      <td class="govuk-table__header" scope="col"></td>
+                      <th class="govuk-table__header col-13" scope="col">Status</th>
+                      <th class="govuk-table__header col-9" scope="col">Amount</th>
+                      <th class="govuk-table__header col-16" scope="col">Date allocated</th>
+                      <th class="govuk-table__header col-24" colspan="3" scope="col">Request reference</th>
+                      <th class="govuk-table__header col-13" scope="col"></th>
+                      <th class="govuk-table__header" scope="col"></th>
                     </tr>
                 </thead>
               <tbody>

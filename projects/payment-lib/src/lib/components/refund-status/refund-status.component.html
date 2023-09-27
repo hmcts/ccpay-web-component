@@ -16,15 +16,15 @@
   <table class="govuk-table">
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
-        <td class="govuk-table__header col-16" scope="col">Status</td>
-        <td class="govuk-table__header col-11" scope="col">Amount</td>
-        <td class="govuk-table__header col-18" scope="col">Date</td>
-        <td class="govuk-table__header col-25" scope="col">Refund reference</td>
-        <td class="govuk-table__header col-24 " scope="col">Reason</td>
-        <td class="govuk-table__header" scope="col"></td>
+        <th class="govuk-table__header col-16" scope="col">Status</th>
+        <th class="govuk-table__header col-11" scope="col">Amount</th>
+        <th class="govuk-table__header col-18" scope="col">Date</th>
+        <th class="govuk-table__header col-25" scope="col">Refund reference</th>
+        <th class="govuk-table__header col-24 " scope="col">Reason</th>
+        <th class="govuk-table__header" scope="col"></th>
       </tr>
     </thead>
-    <tbody class="govuk-table__body" *ngIf="rejectedRefundList?.length > 0">
+    <tbody class="govuk-table__body" *ngIf="rejectedRefundList?.length > 0" role="status">
       <tr class="govuk-table__row" *ngFor="let refundList of rejectedRefundList">
         <td class="govuk-table__cell whitespace-inherit">{{ refundList?.refund_status['name'] }}</td>
         <td class="channel govuk-table__cell whitespace-inherit">£{{ refundList?.amount | number:'.2' }}</td>
@@ -32,12 +32,12 @@
         </td>
         <td class="govuk-table__cell whitespace-inherit">{{ refundList?.refund_reference }}</td>
         <td class="govuk-table__cell whitespace-inherit"> {{refundList?.reason}}</td>
-        <td class="govuk-table__cell whitespace-inherit">
+        <td class="govuk-table__cell">
           <a href="javascript:void(0)" (click)="goToRefundView(refundList,'casetransactions')">Review</a>
         </td>
       </tr>
     </tbody>
-    <tbody class="govuk-table__body" *ngIf="rejectedRefundList?.length === 0">
+    <tbody class="govuk-table__body" *ngIf="rejectedRefundList?.length === 0" role="status">
       <td class="govuk-table__cell" colspan="6">No refunds recorded</td>
     </tbody>
   </table>
@@ -47,7 +47,7 @@
   <div class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
-        <a  href="javascript:void(0)" (click)="loadRefundListPage()" class="govuk-back-link govuk-label">Back</a>
+        <a  href="javascript:void(0)" (click)="loadRefundListPage()" class="govuk-back-link govuk-label govuk-body">Back</a>
       </li>
     </ol>
   </div>
@@ -132,10 +132,10 @@
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          <td class="govuk-table__header col-24 whitespace-inherit" scope="col">Status</td>
-          <td class="govuk-table__header col-27 whitespace-inherit" scope="col">Date and time</td>
-          <td class="govuk-table__header whitespace-inherit" scope="col">Users</td>
-          <td class="govuk-table__header whitespace-inherit" scope="col">Notes</td>
+          <th class="govuk-table__header col-24 whitespace-inherit" scope="col">Status</th>
+          <th class="govuk-table__header col-27 whitespace-inherit" scope="col">Date and time</th>
+          <th class="govuk-table__header whitespace-inherit" scope="col">Users</th>
+          <th class="govuk-table__header whitespace-inherit" scope="col">Notes</th>
         </tr>
       </thead>
       <tbody class="govuk-table__body" *ngFor="let refundStatusHistory of refundStatusHistories;">
@@ -197,9 +197,10 @@
     </tr>
     <tr class="govuk-table__row">
       <td class="govuk-table__cell govuk-!-font-weight-bold">Reason for refund</td>
+
       <td class="govuk-table__cell">{{ refundlist?.reason?.trim()}}
         <a (click)="gotoRefundReasonPage(refundlist?.reason)" *ngIf="refundlist?.reason !== 'Retrospective remission' && refundlist?.reason !== 'Overpayment'"
-          class="govuk-link right">Change</a>
+          class="govuk-link right" href="javascript:void(0)">Change</a>
       </td>
 
       <!-- <td class="govuk-table__cell">{{ refundlist?.reason }}</td>

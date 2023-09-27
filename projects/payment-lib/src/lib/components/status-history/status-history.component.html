@@ -3,7 +3,7 @@
 </div>
 
 
-<div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1" *ngIf="errorMessage">
+<div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1" *ngIf="errorMessage" role="status">
   <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
     Payment status history could not be retrieved
   </h2>
@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<div *ngIf="!errorMessage && statuses">
+<div *ngIf="!errorMessage && statuses" role="status">
   <table>
       <thead>
         <tr>

@@ -3,10 +3,10 @@
   <div class="govuk-breadcrumbs">
       <ol class="govuk-breadcrumbs__list">
         <li class="govuk-breadcrumbs__list-item" *ngIf="isServiceRequest === 'false'">
-          <a href="javascript:void(0)" (click)="goToCaseTransationPage($event)" class="govuk-back-link">Back</a>
+          <a href="javascript:void(0)" (click)="goToCaseTransationPage($event)" class="govuk-back-link govuk-body">Back</a>
         </li>
         <li class="govuk-breadcrumbs__list-item" *ngIf="isServiceRequest !== 'false'">
-          <a href="javascript:void(0)" (click)="goToServiceRequestPage()" id="bckLnksize" class="govuk-back-link">Back</a>
+          <a href="javascript:void(0)" (click)="goToServiceRequestPage()" id="bckLnksize" class="govuk-back-link govuk-body">Back</a>
         </li>
       </ol>
     </div>
@@ -22,7 +22,7 @@
             </tr>
             <tr class="section">
               <td class="bold tb-col-w">Status</td>
-              <td>{{orderStatus}}</td>
+              <td role="status">{{orderStatus}}</td>
             </tr>
             <tr class="section">
               <td class="bold tb-col-w">Date created</td>
@@ -45,11 +45,11 @@
         <table class="govuk-table ">
           <thead class="govuk-table__head">
           <tr class="govuk-table__row">
-            <td class="govuk-table__header col-51" scope="col" *ngIf="isServiceRequest === 'false'">Fee</td>
-            <td class="govuk-table__header col-51" scope="col" colspan="2" *ngIf="isServiceRequest !== 'false'">Fee</td>
-            <td class="govuk-table__header" scope="col">Amount</td>
-            <td class="govuk-table__header" scope="col">Total</td>
-            <td  class="govuk-table__header" scope="col" *ngIf="isServiceRequest === 'false'"></td>
+            <th class="govuk-table__header col-51" scope="col" *ngIf="isServiceRequest === 'false'">Fee</th>
+            <th class="govuk-table__header col-51" scope="col" colspan="2" *ngIf="isServiceRequest !== 'false'">Fee</th>
+            <th class="govuk-table__header" scope="col">Amount</th>
+            <th class="govuk-table__header" scope="col">Total</th>
+            <th  class="govuk-table__header" scope="col" *ngIf="isServiceRequest === 'false'"></th>
           </tr>
           </thead>
           <tbody class="govuk-table__body" *ngFor="let order of orderDetail;">
@@ -82,14 +82,14 @@
    <table class="govuk-table">
      <thead class="govuk-table__head">
        <tr class="govuk-table__row">
-          <td class="govuk-table__header col-24 whitespace-inherit" scope="col">Help with fees or remission code</td>
-           <td class="govuk-table__header col-27 whitespace-inherit" scope="col">Reference</td>
-           <td class="govuk-table__header whitespace-inherit" scope="col">Fee</td>
-           <td class="govuk-table__header whitespace-inherit" scope="col">Amount</td>
-           <td  class="govuk-table__header whitespace-inherit refundBtn" scope="col"></td>
+          <th class="govuk-table__header col-24 whitespace-inherit" scope="col">Help with fees or remission code</th>
+           <th class="govuk-table__header col-27 whitespace-inherit" scope="col">Reference</th>
+           <th class="govuk-table__header whitespace-inherit" scope="col">Fee</th>
+           <th class="govuk-table__header whitespace-inherit" scope="col">Amount</th>
+           <th class="govuk-table__header whitespace-inherit refundBtn" scope="col"></th>
          </tr>
      </thead>
-     <tbody  *ngIf="order.remissions?.length > 0"  class="govuk-table__body" >
+     <tbody  *ngIf="order.remissions?.length > 0"  class="govuk-table__body" role="status">
        <tr class="govuk-table__row" *ngFor="let remission of order.remissions">
           <td class="govuk-table__cell whitespace-inherit">{{ remission?.hwf_reference }}</td>
            <td class="govuk-table__cell whitespace-inherit">{{ remission?.remission_reference }}</td>
@@ -103,17 +103,16 @@
          </td> -->
          </tr>
      </tbody>
-
-
+     <tbody class="govuk-table__body" *ngIf="order.remissions?.length === 0" role="status">
+        <td colspan="6">No help with fees or remissions.</td>
+     </tbody>
    </table>
-   <div *ngIf="order.remissions?.length === 0">
-    <span >No help with fees or remissions.</span>
- </div>
+ 
    <div class="summarypagealign">
       <p>Total reductions: {{orderRemissionTotal | currency:'GBP':'symbol-narrow':'1.2-2'  }}</p>
   </div>
   <div class="summarypagealign">
-        <p class="summarypage">Total fees to pay: {{(orderFeesTotal - orderRemissionTotal) | currency:'GBP':'symbol-narrow':'1.2-2'  }}</p>
+        <p>Total fees to pay: {{(orderFeesTotal - orderRemissionTotal) | currency:'GBP':'symbol-narrow':'1.2-2'  }}</p>
     </div>
   </div>
 
@@ -126,13 +125,13 @@
    <table class="govuk-table ">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-            <td class="govuk-table__header col-25" scope="col"></td>
-            <td class="govuk-table__header" scope="col">Date created</td>
-            <td class="govuk-table__header" scope="col">Amount</td>
-            <td class="govuk-table__header" scope="col"></td>
+            <th class="govuk-table__header col-25" scope="col"></th>
+            <th class="govuk-table__header" scope="col">Date created</th>
+            <th class="govuk-table__header" scope="col">Amount</th>
+            <th class="govuk-table__header" scope="col"></th>
           </tr>
       </thead>
-      <tbody  *ngIf="order.payments?.length > 0" class="govuk-table__body">
+      <tbody  *ngIf="order.payments?.length > 0" class="govuk-table__body" role="status">
         <tr class="govuk-table__row"  *ngFor="let payment of order.payments">
             <td class="govuk-table__cell whitespace-inherit">
               <a href="javascript:void(0)" (click)="goToPayementView(payment.paymentGroupReference, payment.reference, payment.method)">Review</a>
@@ -146,12 +145,11 @@
             </td> -->
           </tr>
       </tbody>
-    </table>
+      <tbody class="govuk-table__body" *ngIf="order.payments === undefined || order.payments === null" role="status">
+        <td colspan="6">No Payments recorded.</td>
+     </tbody>
 
-  <div *ngIf="order.payments === undefined || order.payments === null">
-      <!-- <h3 class="heading-medium mar-17">Payments</h3> -->
-            <span class="mar-17" >No Payments recorded</span>
-  </div>
+    </table>
 </div>
 </ng-container>
 <div *ngIf="isServiceRequest === 'false'">
@@ -262,6 +260,7 @@
 
 <ng-container *ngIf="viewStatus === 'feeRemovalConfirmation'">
 <div class="govuk-warning-text">
+  <h1 class="govuk-heading-l">Case reference:{{ccdCaseNumber | ccdHyphens}}</h1>
   <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
   <strong class="govuk-warning-text__text">
     <span class="govuk-warning-text__assistive">Warning</span>

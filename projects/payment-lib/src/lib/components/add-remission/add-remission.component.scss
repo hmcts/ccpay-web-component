@@ -173,6 +173,11 @@
 .form-hint {
   font-size: 19px !important;
 }
+
+.govuk-input:focus, button:focus {
+  outline: 3.5px solid #ffdd00;
+}
+
 .govuk-panel-border--confirmation {
   color: #0b0c0c;
   border: 5px solid #00703C;

@@ -4,7 +4,7 @@
       <div class="govuk-breadcrumbs">
           <ol class="govuk-breadcrumbs__list">
             <li class="govuk-breadcrumbs__list-item">
-              <a (click)="gotoCasetransationPage()" class="govuk-back-link govuk-label">Back</a>
+              <a (click)="gotoCasetransationPage()" class="govuk-back-link govuk-label govuk-body" href="javascript:void(0)">Back</a>
             </li>
           </ol>
         </div>
@@ -38,7 +38,7 @@
     <div class="govuk-breadcrumbs" *ngIf="paymentRef">
       <ol class="govuk-breadcrumbs__list">
         <li class="govuk-breadcrumbs__list-item">
-          <a href="#" (click)="gotoSummaryPage($event)" class="govuk-back-link">Back</a>
+          <a href="javascript:void(0)" (click)="gotoSummaryPage($event)" class="govuk-back-link govuk-body">Back</a>
         </li>
       </ol>
     </div>
@@ -52,13 +52,13 @@
       <table class="govuk-table">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
-            <td class="govuk-table__header" scope="col"></td>
-            <td class="govuk-table__header" scope="col">Code</td>
-            <td class="govuk-table__header" scope="col">Description</td>
-            <td class="govuk-table__header" scope="col">Volume</td>
-            <td class="govuk-table__header" scope="col">Fee amount</td>
-            <td class="govuk-table__header" scope="col">Calculated amount</td>
-            <td class="govuk-table__header" scope="col">Group amount outstanding</td>
+            <th class="govuk-table__header" scope="col"></th>
+            <th class="govuk-table__header" scope="col">Code</th>
+            <th class="govuk-table__header" scope="col">Description</th>
+            <th class="govuk-table__header" scope="col">Volume</th>
+            <th class="govuk-table__header" scope="col">Fee amount</th>
+            <th class="govuk-table__header" scope="col">Calculated amount</th>
+            <th class="govuk-table__header" scope="col">Group amount outstanding</th>
           </tr>
         </thead>
         <tbody class="govuk-table__body">
@@ -114,12 +114,12 @@
       <table class="govuk-table">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
-            <td class="govuk-table__header" scope="col">Code</td>
-            <td class="govuk-table__header" scope="col">Description</td>
-            <td class="govuk-table__header" scope="col">Volume</td>
-            <td class="govuk-table__header" scope="col">Fee amount</td>
-            <td class="govuk-table__header" scope="col">Calculated amount</td>
-            <td class="govuk-table__header" scope="col">Amount Due</td>
+            <th class="govuk-table__header" scope="col">Code</th>
+            <th class="govuk-table__header" scope="col">Description</th>
+            <th class="govuk-table__header" scope="col">Volume</th>
+            <th class="govuk-table__header" scope="col">Fee amount</th>
+            <th class="govuk-table__header" scope="col">Calculated amount</th>
+            <th class="govuk-table__header" scope="col">Amount Due</th>
           </tr>
         </thead>
         <tbody class="govuk-table__body">

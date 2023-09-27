@@ -201,7 +201,7 @@
    
   <div *ngIf="!isFromRefundListPage" class="govuk-button-group margin">
 
-  <p><a (click)="loadRefundsHomePage()" class="govuk-link pointer" data-module="govuk-button">Cancel</a></p>
+  <p><a (click)="loadRefundsHomePage()" class="govuk-link pointer" data-module="govuk-button" href="javascript:void(0)">Cancel</a></p>
 </div>
 </form>
   </div>
@@ -217,6 +217,7 @@
           </h1>
         </div>
         <p class="govuk-body process-refund-font">
+
         <a href="Javascript:void(0)" (click)="goToCaseReview()" class="govuk-link pointer">Return to case</a>
         </p>
       </div>

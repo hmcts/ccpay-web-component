@@ -300,10 +300,6 @@ th, td {
     margin-top:2em;
 }
 
-.govuk-back-link {
-    font-size: 1.5rem !important;
-}
-
 .totalfees {
     float: right;
     margin-top:2em;
@@ -337,6 +333,49 @@ th, td {
     width: 100%;
 }
 
+a:focus {
+    background-color: #ffdd00;
+    outline: 2px solid #ffdd00;
+}
+
+button:focus {
+    outline: 3.5px solid #ffdd00;
+}
+
+.govuk-warning-text__icon {
+    margin-top: 8px;
+}
+
+@media screen and (max-width: 979px) {
+    table, th, tr, td {
+        font-size: 16px;
+        white-space: normal;
+        word-wrap: break-word;
+    }
+    .govuk-button {
+        font-size: 14px;
+        white-space: normal;
+        word-wrap: break-word;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    table, th, tr, td {
+        font-size: 14px;
+    }
+    .govuk-button {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 470px) {
+    table, th, tr, td {
+        font-size: 12px;
+    }
+    .govuk-button {
+        font-size: 10px;
+    }
+}
 .over-payment {
     .govuk-table-mb {
         margin-bottom: 20px;

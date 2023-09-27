@@ -139,6 +139,45 @@
 .govuk-link {
   cursor: pointer;
 }
+
+a:focus, .govuk-back-link:focus {
+  background-color: #ffdd00;
+  outline: 2px solid #ffdd00;
+}
+
+@media screen and (max-width: 979px) {
+  table, th, tr, td {
+      font-size: 16px;
+  }
+  .button {
+      font-size: 14px;
+      white-space: normal;
+      word-wrap: break-word;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  table, th, tr, td {
+      font-size: 14px;
+  }
+  .button {
+      font-size: 12px;
+      white-space: normal;
+      word-wrap: break-word;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  table, th, tr, td {
+      font-size: 12px;
+  }
+  .button {
+      font-size: 10px;
+      white-space: normal;
+      word-wrap: break-word;
+  }
+}
+
 .contactDetails-width {
   width: 70%;
 }

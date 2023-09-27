@@ -69,3 +69,8 @@
 .govuk-body-width {
   width:750px;
 }
+
+a:focus, .govuk-back-link:focus {
+  background-color: #ffdd00;
+  outline: 2px solid #ffdd00;
+}

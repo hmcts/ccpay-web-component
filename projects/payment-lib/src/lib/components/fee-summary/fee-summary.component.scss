@@ -1,5 +1,7 @@
 
 .fee-summary {
+  position: relative;
+
   .grey-text {
     color: #6b7376;
     font-weight: 500;
@@ -100,7 +102,8 @@ table th {
   font-size: 19px;
 }
 .feeAddButton {
-  padding-left: 65rem;
+  position: absolute;
+  right: 0;
 }
 
 .remissionActive {
@@ -109,9 +112,6 @@ table th {
 
 .paddigleft {
   padding-left: 2em;
-}
-.govuk-back-link {
-  font-size: 1.5rem !important;
 }
 
 .govuk-warning-text__text  {
@@ -122,7 +122,12 @@ table th {
   display:flex; 
   flex-direction:row; 
   justify-content: space-between; 
-  width:960px;
+  position: relative;
+}
+
+.heading-large {
+  position: absolute;
+  left: 0;
 }
 
 .class600 {
@@ -147,10 +152,39 @@ table th {
 }
 
 .caseref {
-  align-self: flex-end;
+  position: absolute;
+  right: 0;
 }
 
 .addfee {
-  display:flex;
-  flex-direction:row;
+  position: relative;
+  border: 5px solid transparent;
+}
+
+.total-to-pay {
+  position: absolute;
+  right: 0;
+}
+
+a:focus {
+  background-color: #ffdd00;
+  outline: 2px solid #ffdd00;
+}
+
+button:focus {
+  outline: 3.5px solid #ffdd00;
+}
+
+.govuk-warning-text__icon {
+  margin-top: 8px;
+}
+
+@media screen and (max-width: 640px) {
+  .add-fee-button {
+    margin-top: 80px;
+  }
+  .total-to-pay {
+    position: absolute;
+    top: 0;
+  }
 }

@@ -76,8 +76,9 @@
     margin-top: 2em;
 }
 
-.govuk-back-link {
-    font-size: 1.5rem !important;
+a:focus {
+    background-color: #ffdd00;
+    outline: 2px solid #ffdd00;
 }
 
 .multiple-choice {

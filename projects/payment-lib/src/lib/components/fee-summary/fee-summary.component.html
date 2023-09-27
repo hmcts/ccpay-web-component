@@ -2,10 +2,10 @@
 <div class="govuk-breadcrumbs" *ngIf="isBackButtonEnable">
   <ol class="govuk-breadcrumbs__list">
     <li class="govuk-breadcrumbs__list-item" *ngIf="!isTurnOff">
-      <a (click)="loadCaseTransactionPage()" class="govuk-back-link govuk-label">Back</a>
+      <a (click)="loadCaseTransactionPage()" class="govuk-back-link govuk-label govuk-body" href="javascript:void(0)">Back</a>
     </li>
     <li class="govuk-breadcrumbs__list-item" *ngIf="isTurnOff">
-        <a (click)="redirectToFeeSearchPage($event,'summary')" class="govuk-back-link govuk-label">Back</a>
+        <a (click)="redirectToFeeSearchPage($event,'summary')" class="govuk-back-link govuk-label govuk-body" href="javascript:void(0)">Back</a>
       </li>
   </ol>
 </div>
@@ -13,9 +13,9 @@
     <main class="govuk-main-wrapper">
       <input #myInput type='hidden' class='iFrameDrivenImageValue' value='FEESUMMARY'>
       <div class="summaryheader">
-          <h1 class="heading-large govuk-!-margin-top-3 govuk-!-margin-bottom-4">Summary </h1>
-          <p class="govuk-!-margin-top-5 caseref">Case reference:{{ccdCaseNumber | ccdHyphens}}</p>
-        </div>
+        <h1 class="heading-large govuk-!-margin-top-3 govuk-!-margin-bottom-4">Summary </h1>
+        <p class="govuk-!-margin-top-5 caseref">Case reference:{{ccdCaseNumber | ccdHyphens}}</p>
+      </div>
 
   <!-- <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -47,7 +47,7 @@
   </div>
 
   <div class="govuk-!-margin-top-3">
-      <table class="govuk-table  govuk-!-margin-bottom-2" *ngIf="!errorMessage && paymentGroup">
+      <table class="govuk-table  govuk-!-margin-top-9" *ngIf="!errorMessage && paymentGroup">
           <thead class="govuk-table__head">
               <tr class="govuk-table__row">
                   <th class="govuk-table__header" scope="col" class="class600">Description</th>
@@ -57,24 +57,24 @@
               </tr>
           </thead>
 
-          <tbody class="govuk-table__body" *ngIf="paymentGroup.fees">
+          <tbody class="govuk-table__body" *ngIf="paymentGroup.fees" role="status">
               <tr class="govuk-table__row" *ngFor="let fee of paymentGroup.fees; let i = index;">
                       <td class="govuk-table__cell">{{ fee.description }}
 
                           <span class="no-border" *ngIf="(isPaymentExist || (getRemissionByFeeCode(fee.code)?.hwf_amount === 0 || !getRemissionByFeeCode(fee.code)?.hwf_amount)) && !isTurnOff">
 
 
-                              <a (click)="confirmRemoveFee(fee.id)" *ngIf="(!isPaymentExist || !fee.remissions)" [ngClass]='isPaymentExist || fee.remissions? "disable-link" : ""'> <br>Remove</a>
+                              <a (click)="confirmRemoveFee(fee.id)" *ngIf="(!isPaymentExist || !fee.remissions)" [ngClass]='isPaymentExist || fee.remissions? "disable-link" : ""' href="javascript:void(0)"> <br>Remove</a>
                           </span>
 
                           <span class="no-border" *ngIf="(!isPaymentExist || (getRemissionByFeeCode(fee.code)?.hwf_amount === 0 || !getRemissionByFeeCode(fee.code)?.hwf_amount)) && isTurnOff ">
-                              <a (click)="confirmRemoveFee(fee.id)">Remove</a>
+                              <a (click)="confirmRemoveFee(fee.id)" href="javascript:void(0)">Remove</a>
                             </span>
 
-                            <a (click)="addRemission(fee)" class="remissionActive"  *ngIf="(getRemissionByFeeCode(fee.code)?.hwf_amount === 0 || !getRemissionByFeeCode(fee.code)?.hwf_amount) && !isPaymentExist && !isTurnOff">
+                            <a (click)="addRemission(fee)" class="remissionActive"  *ngIf="(getRemissionByFeeCode(fee.code)?.hwf_amount === 0 || !getRemissionByFeeCode(fee.code)?.hwf_amount) && !isPaymentExist && !isTurnOff" href="javascript:void(0)">
                                   Add help with fees or remission
                             </a>
-                            <a (click)="addRemission(fee)" class="remissionActive"   *ngIf="(getRemissionByFeeCode(fee.code)?.hwf_amount === 0 || !getRemissionByFeeCode(fee.code)?.hwf_amount) && isTurnOff">
+                            <a (click)="addRemission(fee)" class="remissionActive"   *ngIf="(getRemissionByFeeCode(fee.code)?.hwf_amount === 0 || !getRemissionByFeeCode(fee.code)?.hwf_amount) && isTurnOff" href="javascript:void(0)">
                                   Add help with fees or remission
                             </a>
                             <span *ngIf = "getRemissionByFeeCode(fee.code)?.hwf_amount > 0">
@@ -129,16 +129,18 @@
           </tbody>
       </table>
   </div>
-  <div class="addfee">
-      <button  *ngIf="!isTurnOff" (click)="redirectToFeeSearchPage($event,'summary')"
-              [disabled]="isPaymentExist"
-              [ngClass]='isPaymentExist ? "govuk-button govuk-button--secondary button--disabled" : "govuk-button govuk-button--secondary"'>
-                Add fee
-      </button>
-    <a *ngIf="isTurnOff" (click)="redirectToFeeSearchPage($event,'summary')" class="govuk-button govuk-button--secondary">Add a new fee</a>
-   <div  class="feeAddButton">
-          <p class="paddigleft govuk-!-margin-top-2">Total to pay: {{ outStandingAmount | currency:'GBP':'symbol-narrow':'1.2-2'}}</p>
+  <div class="addfee govuk-!-margin-top-5">
+    <div class="total-to-pay">
+      <p class="govuk-!-margin-top-2">Total to pay: {{ outStandingAmount | currency:'GBP':'symbol-narrow':'1.2-2'}}</p>
     </div>
+    <div class="add-fee-button">
+      <button  *ngIf="!isTurnOff" (click)="redirectToFeeSearchPage($event,'summary')"
+      [disabled]="isPaymentExist"
+      [ngClass]='isPaymentExist ? "govuk-button govuk-button--secondary button--disabled" : "govuk-button govuk-button--secondary"'>
+      Add fee
+      </button>
+    </div>
+    <a *ngIf="isTurnOff" (click)="redirectToFeeSearchPage($event,'summary')" class="govuk-button govuk-button--secondary add-fee-button" href="javascript:void(0)">Add a new fee</a>
   </div>
 <!--
   <div class="govuk-form-group govuk-form-group--mg" *ngIf="!bsPaymentDcnNumber">
@@ -175,6 +177,7 @@
   <ng-container *ngIf="viewStatus === 'feeRemovalConfirmation'">
     <input #myInput type='hidden' class='iFrameDrivenImageValue' value='FEEREMOVALCONFIRMATION_1'>
       <div class="govuk-warning-text">
+        <h1 class="govuk-heading-l">Case reference:{{ccdCaseNumber | ccdHyphens}}</h1>
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
           <span class="govuk-warning-text__assistive">Warning</span>
