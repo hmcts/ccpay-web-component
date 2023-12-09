@@ -74,8 +74,8 @@ export class PbaPaymentComponent implements OnInit {
       this.isPBAAccountNotExist = false;
       this.isPBAServerError = false;
       this.isPBAAccountPaymentSuccess = false;
-      this.isContinueButtondisabled = true;
-      if (this.pbaAccountList.indexOf(this.selectedPbaAccount) !== -1) {
+      this.isContinueButtondisabled = false;
+      if (this.pbaAccountList.indexOf(this.selectedPbaAccount) !== -1 ) {
         const requestBody = new IserviceRequestPbaPayment(
           this.selectedPbaAccount, this.pbaPayOrderRef.orderTotalFees, this.pbaAccountRef, this.orgName);
 
