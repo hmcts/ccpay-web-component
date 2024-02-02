@@ -12,6 +12,7 @@ import { FooterComponent } from './components/shared/footer/footer.component';
 import { CcdSearchComponent } from './components/ccd-search/ccd-search.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PaymentLibModule } from '../../projects/payment-lib/src/lib/payment-lib.module';
+import { RpxTranslationModule } from 'rpx-xui-translation';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,15 @@ import { PaymentLibModule } from '../../projects/payment-lib/src/lib/payment-lib
     AppRoutingModule,
     FormsModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RpxTranslationModule.forRoot({
+      baseUrl: '/api/translation',
+      debounceTimeMs: 300,
+      validity: {
+        days: 1
+      },
+      testMode: false
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

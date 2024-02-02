@@ -2,7 +2,7 @@
       <input #myInput type='hidden' class='iFrameDrivenImageValue' value='REPORTS'>
       <ccpay-error-banner *ngIf="errorMessage.showError" [errorMessage]="errorMessage"></ccpay-error-banner>
       <legend class="govuk-fieldset__legend--xl">
-         <h1 class="govuk-fieldset__heading"> Choose the report type and date range</h1>
+         <h1 class="govuk-fieldset__heading">{{ 'Choose the report type and date range' | rpxTranslate }}</h1>
       </legend>
 </div>
 <form [formGroup]="reportsForm">

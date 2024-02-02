@@ -492,17 +492,17 @@
               <table class="govuk-table">
                   <thead class="govuk-table__head">
                   <tr class="govuk-table__row">
-                    <td class="govuk-table__header  col-14" scope="col">Status</td>
-                    <td class="govuk-table__header  col-10" scope="col">Amount</td>
-                    <td class="govuk-table__header  col-18" scope="col">Party</td>
-                    <td class="govuk-table__header  col-21" scope="col">Request reference</td>
+                    <td class="govuk-table__header  col-14" scope="col">{{ 'Status' | rpxTranslate }}</td>
+                    <td class="govuk-table__header  col-10" scope="col">{{ 'Amount' | rpxTranslate }}</td>
+                    <td class="govuk-table__header  col-18" scope="col">{{ 'Party' | rpxTranslate }}</td>
+                    <td class="govuk-table__header  col-21" scope="col">{{ 'Request reference' | rpxTranslate }}</td>
                     <td class="govuk-table__header  col-9" scope="col"></td>
                     <td class="govuk-table__header col" scope="col"></td>
                   </tr>
                   </thead>
                   <tbody class="govuk-table__body"  *ngIf="orderLevelFees?.length > 0">
                     <tr *ngFor="let orderRef of orderLevelFees;let i = index;">
-                      <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderStatus}}</td>
+                      <td class="govuk-table__cell whitespace-inherit">{{ orderRef.orderStatus | rpxTranslate }}</td>
                       <td class="govuk-table__cell whitespace-inherit">{{ orderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2' }}</td>
                       <td *ngIf="cpoDetails !== null && cpoDetails.length !== 0" class="govuk-table__cell  whitespace-inherit">
                         <ng-container *ngFor="let cpo of cpoDetails">
@@ -514,7 +514,7 @@
                       <td *ngIf="cpoDetails === null || cpoDetails.length === 0" class="govuk-table__cell whitespace-inherit"></td>
                       <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderRefId}}</td>
                       <td class="govuk-table__cell">
-                              <a href="javascript:void(0)" (click)="goToOrderViewDetailSection(orderRef)">Review</a>
+                              <a href="javascript:void(0)" (click)="goToOrderViewDetailSection(orderRef)">{{ 'Review' | rpxTranslate }}</a>
                       </td>
                       <td  class="alignright">
 
@@ -526,7 +526,7 @@
                     </tr>
                   </tbody>
                   <tbody class="govuk-table__body alignleft" *ngIf="orderLevelFees?.length === 0">
-                    <td colspan="6">No service requests on this case.</td>
+                    <td colspan="6">{{ 'No service requests on this case.' | rpxTranslate }}</td>
                   </tbody>
               </table>
             </ng-container>
@@ -561,19 +561,19 @@
                   </thead>
                   <tbody class="govuk-table__body" *ngIf="allPayments?.length > 0">
                     <tr class="govuk-table__row"  *ngFor="let payment of allPayments">
-                        <td class="govuk-table__cell col-14 whitespace-inherit">{{ payment.status }}</td>
+                        <td class="govuk-table__cell col-14 whitespace-inherit">{{ payment.status | rpxTranslate }}</td>
                         <td class="govuk-table__cell col-10 whitespace-inherit">{{ payment.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
                         <td class="govuk-table__cell col-17 whitespace-inherit">{{ payment.date_created | date:'dd MMM yyyy' }}</td>
                         <td class="govuk-table__cell col-24 whitespace-inherit">{{ payment.paymentGroupReference }}</td>
                         <td class="govuk-table__cell col-13 whitespace-inherit"></td>
                         <td class="govuk-table__cell whitespace-inherit">
-                            <a href="javascript:void(0)" (click)="goToPayementView(payment.paymentGroupReference, payment.reference, payment.method)">Review</a>
+                            <a href="javascript:void(0)" (click)="goToPayementView(payment.paymentGroupReference, payment.reference, payment.method)">{{ 'Review' | rpxTranslate}}</a>
                           </td>
                       </tr>
                   </tbody>
 
                   <tbody class="govuk-table__body" *ngIf="allPayments?.length === 0 && unprocessedRecordCount <= 0">
-                    <td colspan="6">No payments recorded</td>
+                    <td colspan="6">{{ 'No payments recorded' | rpxTranslate }}</td>
                   </tbody>
                 </table>
 
@@ -599,17 +599,17 @@
           <table class="govuk-table">
               <thead class="govuk-table__head">
               <tr class="govuk-table__row">
-                <td class="govuk-table__header col-14" scope="col">Status</td>
-                <td class="govuk-table__header col-18" scope="col">Amount</td>
-                <td class="govuk-table__header col-18" scope="col">Party</td>
-                <td class="govuk-table__header col-24" scope="col">Request reference	</td>
+                <td class="govuk-table__header col-14" scope="col">{{ 'Status' | rpxTranslate }}</td>
+                <td class="govuk-table__header col-18" scope="col">{{ 'Amount' | rpxTranslate }}</td>
+                <td class="govuk-table__header col-18" scope="col">{{ 'Party' | rpxTranslate }}</td>
+                <td class="govuk-table__header col-24" scope="col">{{ 'Request reference' | rpxTranslate }}</td>
                 <td class="govuk-table__header col-9" scope="col"></td>
                 <td class="govuk-table__header" scope="col"></td>
               </tr>
               </thead>
               <tbody class="govuk-table__body" *ngIf="orderLevelFees?.length > 0">
                 <tr class="govuk-table__row"  *ngFor="let orderRef of orderLevelFees;let i = index;">
-                  <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderStatus}}</td>
+                  <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderStatus | rpxTranslate}}</td>
                   <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2'}}</td>
                   <td *ngIf="cpoDetails !== null && cpoDetails.length !== 0" class="govuk-table__cell  whitespace-inherit">
                     <ng-container *ngFor="let cpo of cpoDetails">
@@ -620,22 +620,22 @@
                   </td>
                   <td *ngIf="cpoDetails === null || cpoDetails.length === 0" class="govuk-table__cell whitespace-inherit"></td>
                   <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderRefId}}</td>
-                  <td class="govuk-table__cell of-visible"> <a href="javascript:void(0)" (click)="loadPBAAccountPage(orderRef)" *ngIf="serviceRequestValue !== 'false' && check4AllowedRoles2AccessPBApayment() && orderRef.orderStatus === 'Not paid'"> Pay now</a></td>
+                  <td class="govuk-table__cell of-visible"> <a href="javascript:void(0)" (click)="loadPBAAccountPage(orderRef)" *ngIf="serviceRequestValue !== 'false' && check4AllowedRoles2AccessPBApayment() && orderRef.orderStatus === 'Not paid'"> {{ 'Pay now' | rpxTranslate }}</a></td>
                   <td class="govuk-table__cell">
-                      <a href="javascript:void(0)" (click)="goToOrderViewDetailSection(orderRef)">Review</a>
+                      <a href="javascript:void(0)" (click)="goToOrderViewDetailSection(orderRef)">{{ 'Review' | rpxTranslate }}</a>
                 </td>
                 </tr>
               </tbody>
               <tbody class="govuk-table__body" *ngIf="orderLevelFees?.length === 0 && serviceRequestValue === 'false'">
                 <tr class="govuk-table__row" >
-                  <td class="alignleft" colspan="7">No service requests on this case.</td>
+                  <td class="alignleft" colspan="7">{{ 'No service requests on this case.' | rpxTranslate }}</td>
                 </tr>
               </tbody>
           </table>
         </ng-container>
         <ng-container *ngIf="orderLevelFees?.length === 0 && serviceRequestValue !== 'false' && !isAnyFeeGroupAvilable">
-          <h1 class="govuk-heading-l govuk-heading-lw">If you are expecting to pay and are not able to see a service request,</h1>
-          <p>please refresh and try in some time.</p>
+          <h1 class="govuk-heading-l govuk-heading-lw">{{ 'If you are expecting to pay and are not able to see a service request,' | rpxTranslate }}</h1>
+          <p>{{ 'please refresh and try in some time.' | rpxTranslate }}</p>
         </ng-container>
     <!-- </div> -->
         </div>
@@ -646,29 +646,29 @@
               <table class="govuk-table">
               <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
-                    <td class="govuk-table__header col-14" scope="col">Status</td>
-                    <td class="govuk-table__header col-10" scope="col">Amount</td>
-                    <td class="govuk-table__header col-17" scope="col">Date</td>
-                    <td class="govuk-table__header col-24" scope="col">Payment reference</td>
+                    <td class="govuk-table__header col-14" scope="col">{{ 'Status' | rpxTranslate }}</td>
+                    <td class="govuk-table__header col-10" scope="col">{{ 'Amount' | rpxTranslate }}</td>
+                    <td class="govuk-table__header col-17" scope="col">{{ 'Date' | rpxTranslate }}</td>
+                    <td class="govuk-table__header col-24" scope="col">{{ 'Payment reference' | rpxTranslate }}</td>
                     <td class="govuk-table__header col-13" scope="col"></td>
                     <td class="govuk-table__header" scope="col"></td>
                   </tr>
               </thead>
               <tbody class="govuk-table__body" *ngIf="allPayments?.length > 0">
                 <tr class="govuk-table__row"  *ngFor="let payment of allPayments">
-                    <td class="govuk-table__cell whitespace-inherit">{{ payment.status }}</td>
+                    <td class="govuk-table__cell whitespace-inherit">{{ payment.status | rpxTranslate }}</td>
                     <td class="govuk-table__cell whitespace-inherit">{{ payment.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
                     <td class="govuk-table__cell whitespace-inherit">{{ payment.date_created | date:'dd MMM yyyy' }}</td>
                     <td class="govuk-table__cell whitespace-inherit">{{ payment?.reference }}</td>
                     <td class="govuk-table__cell whitespace-inherit"></td>
                     <td class="govuk-table__cell whitespace-inherit">
-                        <a href="javascript:void(0)" (click)="goToPayementView(payment.paymentGroupReference, payment.reference, payment.method)">Review</a>
+                        <a href="javascript:void(0)" (click)="goToPayementView(payment.paymentGroupReference, payment.reference, payment.method)">{{ 'Review' | rpxTranslate }}</a>
                       </td>
                   </tr>
               </tbody>
 
               <tbody class="govuk-table__body" *ngIf="allPayments?.length === 0">
-                <td colspan="6">No payments recorded</td>
+                <td colspan="6">{{ 'No payments recorded' | rpxTranslate }}</td>
               </tbody>
               </table>
               <ccpay-app-unprocessed-payments class="govuk-table"
