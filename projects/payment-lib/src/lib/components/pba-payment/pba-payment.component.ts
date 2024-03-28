@@ -64,18 +64,24 @@ export class PbaPaymentComponent implements OnInit {
     return document.cookie.split(';').find((cookie) => cookie.trim().startsWith('exui-preferred-language' + '='))?.split('=')[1].trim() as RpxLanguage;
   }
 
+  buttonCheck() {
+    if (this.selectedPbaAccount !== '' && this.pbaAccountRef !== "") {
+      this.isContinueButtondisabled = false;
+    } 
+    else {
+      this.isContinueButtondisabled = true;
+    }
+  }
+
   selectpbaaccount(args) {
     if (args.currentTarget.id === 'pbaAccountNumber') {
       this.isPBADropdownSelected = true;
       this.selectedPbaAccount = args.target.value;
+      this.buttonCheck();
     }
     if (args.currentTarget.id === 'pbaAccountRef') {
       this.pbaAccountRef = args.target.value;
-    }
-    if (this.selectedPbaAccount !== '' && this.pbaAccountRef !== "") {
-      this.isContinueButtondisabled = false;
-    } else {
-      this.isContinueButtondisabled = true;
+      this.buttonCheck();
     }
   }
 

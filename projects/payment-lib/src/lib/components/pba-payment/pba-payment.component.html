@@ -61,7 +61,7 @@
               <div id="event-name-hint" class="govuk-hint pba-payments-19-font pba-payment-width">
                 {{ "This should be your own unique reference to identify the case. It will appear on your statements." | rpxTranslate }}
             </div>
-            <input class="govuk-input pba-payments-ref-box--size pba-payments-19-font" id="pbaAccountRef" (change)="selectpbaaccount($event)" name="pbaAccountRef" type="text" aria-describedby="pbaAccountRef-hint">
+            <input class="govuk-input pba-payments-ref-box--size pba-payments-19-font" id="pbaAccountRef" (change)="selectpbaaccount($event)" (keyup)="selectpbaaccount($event)" name="pbaAccountRef" type="text" aria-describedby="pbaAccountRef-hint">
             </div>
     
           </div>
