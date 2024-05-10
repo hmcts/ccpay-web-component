@@ -20,6 +20,7 @@ import { ContactDetailsComponent } from '../contact-details/contact-details.comp
 import { AddRemissionComponent } from '../add-remission/add-remission.component';
 import { CcdHyphensPipe } from '../../pipes/ccd-hyphens.pipe';
 import { CapitalizePipe } from '../../pipes/capitalize.pipe';
+type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
   selector: 'ccpay-refund-status',
@@ -93,7 +94,7 @@ export class RefundStatusComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private refundService: RefundsService,
     private notificationService: NotificationService,
-    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibComponent,
+    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibAlias,
     private OrderslistService: OrderslistService,
     private paymentViewService: PaymentViewService) { }
 

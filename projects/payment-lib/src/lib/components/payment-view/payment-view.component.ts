@@ -17,8 +17,9 @@ import {ContactDetailsComponent} from '../contact-details/contact-details.compon
 import {NotificationPreviewComponent} from '../notification-preview/notification-preview.component';
 import {CcdHyphensPipe} from '../../pipes/ccd-hyphens.pipe';
 import {CapitalizePipe} from '../../pipes/capitalize.pipe';
-import type { PaymentLibComponent } from '../../payment-lib.component';
-import { RpxTranslationModule } from 'rpx-xui-translation';
+import type {PaymentLibComponent } from '../../payment-lib.component';
+import {RpxTranslationModule } from 'rpx-xui-translation';
+type PaymentLibAlias = PaymentLibComponent;
 
 const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 
@@ -94,7 +95,7 @@ export class PaymentViewComponent implements OnInit {
   notificationPreview: boolean;
   constructor(private paymentViewService: PaymentViewService,
     private notificationService: NotificationService,
-    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibComponent,
+    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibAlias,
     private cd: ChangeDetectorRef,
     private OrderslistService: OrderslistService) {
   }

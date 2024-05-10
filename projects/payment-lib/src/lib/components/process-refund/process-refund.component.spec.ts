@@ -3,8 +3,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { RefundsService } from '../../services/refunds/refunds.service';
 import { OrderslistService } from '../../services/orderslist.service';
-import { PaymentLibComponent } from '../../payment-lib.component';
 import { ProcessRefundComponent } from './process-refund.component';
+import { PaymentViewService} from "../../services/payment-view/payment-view.service";
+import { NotificationService} from "../../services/notification/notification.service";
+import { ActivatedRoute} from "@angular/router";
 import { of } from 'rxjs';
 
 describe('ProcessRefundComponent', () => {
@@ -16,10 +18,10 @@ describe('ProcessRefundComponent', () => {
     refundRejectReasonField: new FormControl(),
     sendMeBackField: new FormControl(),
     enterReasonField: new FormControl()
-  });       
-  
+  });
+
   form.setValue({refundActionField:"Approve",refundRejectReasonField:"",sendMeBackField:"Test Refund  Reason",enterReasonField:"Default Reason"});
-  
+
 
   beforeEach(() => {
     const formBuilderStub = () => ({ group: object => ({}) });
@@ -34,14 +36,18 @@ describe('ProcessRefundComponent', () => {
       getnavigationPageValue: () => ({ subscribe: f => f({}) })
     });
     const paymentLibComponentStub = () => ({ viewName: {} });
+    const emptyServiceStub = () => ({  });
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [ProcessRefundComponent],
+      declarations: [],
       providers: [
-        { provide: FormBuilder, useFactory: formBuilderStub },
-        { provide: RefundsService, useFactory: refundsServiceStub },
-        { provide: OrderslistService, useFactory: orderslistServiceStub },
-        { provide: PaymentLibComponent, useFactory: paymentLibComponentStub }
+      { provide: FormBuilder, useFactory: formBuilderStub },
+      { provide: RefundsService, useFactory: refundsServiceStub },
+      { provide: OrderslistService, useFactory: orderslistServiceStub },
+      { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+      { provide: PaymentViewService, useFactory: emptyServiceStub },
+      { provide: NotificationService, useFactory: emptyServiceStub },
+      { provide: ActivatedRoute, useFactory: paymentLibComponentStub }
       ]
     });
     fixture = TestBed.createComponent(ProcessRefundComponent);

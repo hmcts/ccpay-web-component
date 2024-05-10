@@ -8,7 +8,7 @@
     </ol>
   </div>
   <div class="pba-payment" *ngIf="(pbaAccountList?.length > 0 || errorMsg) && !isInSufficiantFund && !isPBAAccountNotExist && !isPBAServerError && !isPBAAccountHold && !isPBAAccountPaymentSuccess && isCardPaymentSuccess">
-    
+
     <div *ngIf="errorMsg" class="govuk-error-summary pba-payments-error-box--size" aria-labelledby="error-summary-title" >
       <h2 class="govuk-error-summary__title govuk-error-summary__title-custom pba-payments-24-font" id="error-summary-title">
         {{ "There is a problem"  | rpxTranslate }}
@@ -63,7 +63,7 @@
             </div>
             <input class="govuk-input pba-payments-ref-box--size pba-payments-19-font" id="pbaAccountRef" (change)="selectpbaaccount($event)" (keyup)="selectpbaaccount($event)" name="pbaAccountRef" type="text" aria-describedby="pbaAccountRef-hint">
             </div>
-    
+
           </div>
           <div class="govuk-radios__item">
             <input class="govuk-radios__input" id="cardPayment" name="paymentSelection" type="radio" value="card" (click)="selectPaymentMethod('CARD')" data-aria-controls="card-payment">
@@ -114,17 +114,17 @@
               {{ "Pay by card" | rpxTranslate }}
             </button>
           </p>
-          
+
         </div>
         <div class="pba-payments-margin-top-10">
           <h2 class="heading-medium">{{ "Register an existing PBA with MyHMCTS" | rpxTranslate: {pba: "PBA", myhmcts: "MyHMCTS"} }}</h2>
           <p class="govuk-body pba-payments-19-font">
-            {{ "You may find it easier in future to pay by PBA, your organisation administrator will need to 
-            email" | rpxTranslate: {pba: "PBA"} }} <a href="mailto: MyHMCTSsupport@justice.gov.uk">MyHMCTSsupport@justice.gov.uk</a>{{ "to ask for your PBA to be registered with your 
+            {{ "You may find it easier in future to pay by PBA, your organisation administrator will need to
+            email" | rpxTranslate: {pba: "PBA"} }} <a href="mailto: MyHMCTSsupport@justice.gov.uk">MyHMCTSsupport&#64;justice.gov.uk</a>{{ "to ask for your PBA to be registered with your
             MyHMCTS account. You should include your organisation name and PBA number." | rpxTranslate: {pba: "PBA", myhmcts: "MyHMCTS"} }}
           </p>
           <p class="govuk-body pba-payments-19-font">
-            {{ "It can then take up to 3 days for your account to be updated. You’ll need to start your claim 
+            {{ "It can then take up to 3 days for your account to be updated. You’ll need to start your claim
             again to pay the fee." | rpxTranslate }}
           </p>
         </div>
@@ -168,7 +168,7 @@
         <div class="pba-payments-margin-top-10">
           <h2 class="heading-medium">{{ "Should you need any further advice" | rpxTranslate }}</h2>
           <p class="govuk-body pba-payments-19-font">
-            {{ "Email" | rpxTranslate }} <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices@liberata.com</a> {{ "or call" | rpxTranslate }} <a href="tel:01633-652-125">01633 652 125</a> ({{ "option" | rpxTranslate }} 3) {{ "to try to fix the issue." | rpxTranslate }}
+            {{ "Email" | rpxTranslate }} <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices&#64;liberata.com</a> {{ "or call" | rpxTranslate }} <a href="tel:01633-652-125">01633 652 125</a> ({{ "option" | rpxTranslate }} 3) {{ "to try to fix the issue." | rpxTranslate }}
           </p>
           <p class="govuk-body pba-payments-19-font">
             {{ "you can also pay by credit or debit card." | rpxTranslate }}
@@ -205,7 +205,7 @@
         <div class="pba-payments-margin-top-10">
           <h2 class="heading-medium">{{ "Should you need any further advice" | rpxTranslate }}</h2>
           <p class="govuk-body pba-payments-19-font govuk-body-width">
-            {{ "Email" | rpxTranslate }} <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices@liberata.com</a> {{ "or call" | rpxTranslate }} <a href="tel:01633-652-125">01633 652 125</a> ({{ "option" | rpxTranslate }} 3) {{ "to try to fix the issue." | rpxTranslate }}
+            {{ "Email" | rpxTranslate }} <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices&#64;liberata.com</a> {{ "or call" | rpxTranslate }} <a href="tel:01633-652-125">01633 652 125</a> ({{ "option" | rpxTranslate }} 3) {{ "to try to fix the issue." | rpxTranslate }}
           </p>
           <p class="govuk-body pba-payments-19-font">
             {{ "you can also pay by credit or debit card." | rpxTranslate }}
@@ -242,7 +242,7 @@
         <div class="pba-payments-margin-top-10">
           <h2 class="heading-medium">{{ "Should you need any further advice" | rpxTranslate }}</h2>
           <p class="govuk-body pba-payments-19-font govuk-body-width">
-            {{ "Email" | rpxTranslate }} <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices@liberata.com</a> {{ "or call" | rpxTranslate }} <a href="tel:01633-652-125">01633 652 125</a> ({{ "option" | rpxTranslate }} 3) {{ "to try to fix the issue." | rpxTranslate }}
+            {{ "Email" | rpxTranslate }} <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices&#64;liberata.com</a> {{ "or call" | rpxTranslate }} <a href="tel:01633-652-125">01633 652 125</a> ({{ "option" | rpxTranslate }} 3) {{ "to try to fix the issue." | rpxTranslate }}
           </p>
           <p class="govuk-body pba-payments-19-font">
             {{ "you can also pay by credit or debit card." | rpxTranslate }}

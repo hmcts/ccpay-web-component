@@ -1,9 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-
 import { PaymentListService } from '../../services/payment-list/payment-list.service';
 import { IPayments } from '../../interfaces/IPayments';
 import type { PaymentLibComponent } from '../../payment-lib.component';
-import { IStatusHistory } from '../../interfaces/IStatusHistory';
+type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
   selector: 'ccpay-payment-list',
@@ -16,7 +15,7 @@ export class PaymentListComponent implements OnInit {
   code: string;
 
   constructor(private paymentListService: PaymentListService,
-    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibComponent) {
+    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibAlias) {
   }
 
   ngOnInit() {

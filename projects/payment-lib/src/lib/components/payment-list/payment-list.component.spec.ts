@@ -24,10 +24,10 @@ describe('PaymentListComponent', () => {
     });
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [PaymentListComponent],
+      declarations: [],
       providers: [
         { provide: PaymentListService, useFactory: paymentListServiceStub },
-        { provide: PaymentLibComponent, useFactory: paymentLibComponentStub }
+        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub }
       ]
     });
     fixture = TestBed.createComponent(PaymentListComponent);

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormsModule, ReactiveF
 import type { PaymentLibComponent } from '../../payment-lib.component';
 import { NotificationService } from '../../services/notification/notification.service';
 import { CommonModule } from '@angular/common';
+type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
   selector: 'ccpay-contact-details',
@@ -52,7 +53,7 @@ export class ContactDetailsComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private notificationService: NotificationService,
-    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibComponent) { }
+    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibAlias) { }
 
   ngOnInit() {
     this.resetForm([false, false, false, false, false, false, false, false, false, false, false, false, false, false], 'all');

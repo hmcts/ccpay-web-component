@@ -33,6 +33,11 @@ describe('ReportsComponent', () => {
     const xlFileServiceStub = () => ({
       exportAsExcelFile: (arg, arg1) => ({})
     });
+
+    const paymentLibComponentStub = () => ({
+      viewName: {}
+    });
+
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ReportsComponent],
@@ -44,6 +49,7 @@ describe('ReportsComponent', () => {
         },
         { provide: ErrorHandlerService, useFactory: errorHandlerServiceStub },
         { provide: PaymentViewService, useFactory: paymentViewServiceStub },
+        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
         { provide: XlFileService, useFactory: xlFileServiceStub }
       ]
     });

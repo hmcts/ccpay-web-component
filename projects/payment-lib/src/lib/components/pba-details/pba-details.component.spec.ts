@@ -15,7 +15,7 @@ describe('PbaDetailsComponent', () => {
     component = fixture.componentInstance;
   });
 
-  // it('can load instance', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('can load instance', () => {
+    expect(component).toBeTruthy();
+  });
 });

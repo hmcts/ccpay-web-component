@@ -11,6 +11,7 @@ import { PaymentViewService } from '../../services/payment-view/payment-view.ser
 import type { PaymentLibComponent } from '../../payment-lib.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { INotificationPreview } from '../../interfaces/INotificationPreview';
+type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
   selector: 'ccpay-process-refund',
@@ -57,7 +58,7 @@ export class ProcessRefundComponent implements OnInit {
     private formBuilder: FormBuilder,
     private OrderslistService: OrderslistService,
     private notificationService: NotificationService,
-    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibComponent,
+    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibAlias,
     private router: Router,
     private activeRoute: ActivatedRoute) {
   }

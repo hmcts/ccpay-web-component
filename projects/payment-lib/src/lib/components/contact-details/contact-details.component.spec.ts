@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PaymentLibComponent } from '../../payment-lib.component';
 import { ContactDetailsComponent } from './contact-details.component';
+import { NotificationService} from "../../services/notification/notification.service";
 
 describe('ContactDetailsComponent', () => {
   let component: ContactDetailsComponent;
@@ -12,11 +13,13 @@ describe('ContactDetailsComponent', () => {
       paymentReference: {},
       paymentMethod: {}
     });
+    const emptyServiceStub = () => ({  });
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [ContactDetailsComponent],
+      declarations: [],
       providers: [
-        { provide: PaymentLibComponent, useFactory: paymentLibComponentStub }
+        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+        { provide: NotificationService, useFactory: emptyServiceStub }
       ]
     });
     fixture = TestBed.createComponent(ContactDetailsComponent);
