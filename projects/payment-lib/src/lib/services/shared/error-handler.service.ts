@@ -11,81 +11,48 @@ export class ErrorHandlerService {
 
   constructor() { }
 
+handleError(err: HttpErrorResponse): Observable<any> {
+  let errorMessage: string;
 
-  handleError(err: HttpErrorResponse): Observable<any> {
-    let errorMessage: string;
-    if (err.error instanceof Error) {
-      // A client-side or network error occurred.
-      errorMessage = `An error occurred: ${err.error.message}`;
+  // Check if the error is client-side or network error
+  if (err.error instanceof ErrorEvent) {
+    errorMessage = `An error occurred: ${err.error.message}`;
+  } else {
+    // Check if the error is from the server-side
+    if (err.status === 400 || err.status === 404) {
+      try {
+        // Attempt to parse error as JSON
+        const parsedError = typeof err.error === 'string' ? JSON.parse(err.error) : err.error;
+
+        if (parsedError.statusCode && parsedError.statusCode === 500) {
+          errorMessage = 'Internal server error';
+        } else if (parsedError.message) {
+            if(parsedError.error !=undefined && parsedError.statusCode === 400){
+                errorMessage = parsedError.error;
+            }else{
+              errorMessage = parsedError.message;
+            }
+        } else if (parsedError.error) {
+          errorMessage = parsedError.error;
+        } else {
+          errorMessage = err.error;
+        }
+      } catch (e) {
+        // Fallback if parsing fails
+        errorMessage = err.error;
+      }
+    } else if (err.status === 500) {
+      errorMessage = 'Internal server error';
     } else {
-      // The backend returned an unsuccessful response code.
-      if (err.status === 404) {
-
-        if (typeof err.error === 'string' && err.error !== undefined) {
-
-          if(err.error.length > 60) {
-            if (JSON.parse(err.error).statusCode !== undefined && JSON.parse(err.error).statusCode === 500)
-            {
-              errorMessage = 'Internal server error';
-            } else {
-              if(err.error.length > 60) {
-                const parsedError = JSON.parse(err.error);
-                errorMessage =  parsedError.err;
-              } else {
-                errorMessage =  err.error;
-              }
-
-            }
-          } else {
-            errorMessage =  err.error;
-          }
-        } else {
-          errorMessage =  JSON.parse(err.error).error;
-        }
-
-      }
-      else if (err.status === 500) {
-        errorMessage = 'Internal server error';
-      } else if (err.error.messsage === undefined) {
-        if( typeof err.error === 'object') {
-          errorMessage =  JSON.parse(JSON.stringify(err.error)).error;
-        } else {
-          if (typeof err.error === 'string' && err.error !== undefined) {
-
-            if(err.error.length > 60) {
-              if (JSON.parse(err.error).statusCode !== undefined && JSON.parse(err.error).statusCode === 500)
-              {
-                errorMessage = 'Internal server error';
-              } else {
-                if(err.error.length > 60) {
-                  const parsedError = JSON.parse(err.error);
-                  errorMessage =  parsedError.err;
-                } else {
-                  errorMessage =  err.error;
-                }
-
-              }
-            } else {
-              errorMessage =  err.error;
-            }
-          } else {
-            const parsedError = JSON.parse(err.error);
-            errorMessage =  parsedError.err;
-          }
-
-        }
-
-      } else {
-        if (err.error.message !== undefined) {
-          errorMessage = `${err.error.message}`;
-        } else {
-          errorMessage = `${err.error}`;
-        }
-
-      }
+      // General fallback for other status codes
+      errorMessage = err.error.message || err.error;
     }
-    return throwError(errorMessage);
   }
+  return throwError(errorMessage);
+}
+
+
+
 
 
   getServerErrorMessage(isErrorExist, isDataNotExist = false, error='') {
