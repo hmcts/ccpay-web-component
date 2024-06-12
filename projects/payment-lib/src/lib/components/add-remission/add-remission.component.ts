@@ -414,7 +414,7 @@ export class AddRemissionComponent implements OnInit {
         (this.ccdCaseNumber, this.fee, remissionAmount, this.remissionForm.controls.remissionCode.value, this.caseType);
     this.paymentViewService.postPaymentGroupWithRemissions(decodeURIComponent(this.paymentGroupRef).trim(), this.fee.id, requestBody).subscribe(
       response => {
-        if (JSON.parse(response).success) {
+        if (response.success) {
           let LDUrl = this.isTurnOff ? '&isTurnOff=Enable' : '&isTurnOff=Disable'
           LDUrl += `&caseType=${this.caseType}`
           if (this.paymentLibComponent.bspaymentdcn) {
@@ -595,11 +595,11 @@ export class AddRemissionComponent implements OnInit {
     const requestBody = new AddRetroRemissionRequest(this.remissionamt, this.remissionForm.controls.remissionCode.value)
     this.paymentViewService.postPaymentGroupWithRetroRemissions(decodeURIComponent(this.paymentGroupRef).trim(), this.fee.id, requestBody).subscribe(
       response => {
-        if (JSON.parse(response)) {
+        if (response) {
           this.isRemissionApplied = true;
           this.viewCompStatus = '';
           this.viewStatus = 'retroremissionconfirmationpage';
-          this.remissionReference = JSON.parse(response).remission_reference;
+          this.remissionReference = response.remission_reference;
         }
       },
       (error: any) => {
@@ -624,11 +624,11 @@ export class AddRemissionComponent implements OnInit {
     const requestBody = new PostIssueRefundRetroRemission(this.remissionReference, this.contactDetailsObj);
     this.paymentViewService.postRefundRetroRemission(requestBody).subscribe(
       response => {
-        if (JSON.parse(response)) {
+        if (response) {
           this.viewCompStatus = '';
           this.viewStatus = 'refundconfirmationpage';
-          this.refundReference = JSON.parse(response).refund_reference;
-          this.refundAmount = JSON.parse(response).refund_amount;
+          this.refundReference = response.refund_reference;
+          this.refundAmount = response.refund_amount;
         }
       },
       (error: any) => {
@@ -895,12 +895,12 @@ export class AddRemissionComponent implements OnInit {
       this.totalRefundAmount, 'op');
     this.paymentViewService.postRefundsReason(requestBody).subscribe(
       response => {
-        if (JSON.parse(response)) {
+        if (response) {
           this.viewCompStatus = '';
           this.viewStatus = 'refundconfirmationpage';
-          this.refundReference = JSON.parse(response).refund_reference;
-          if (JSON.parse(response).refund_amount) {
-            this.refundAmount = JSON.parse(response).refund_amount;
+          this.refundReference = response.refund_reference;
+          if (response.refund_amount) {
+            this.refundAmount = response.refund_amount;
           }
         }
       },

@@ -4,6 +4,13 @@ import { IBSPayments } from './interfaces/IBSPayments';
 import { OrderslistService } from './services/orderslist.service';
 import { IPayment } from './interfaces/IPayment';
 import { PaymentViewComponent } from './components/payment-view/payment-view.component';
+import { RefundListComponent} from "./components/refund-list/refund-list.component";
+import { PaymentListComponent} from "./components/payment-list/payment-list.component";
+import { TitleCasePipe} from "@angular/common";
+import {RefundStatusComponent} from "./components/refund-status/refund-status.component";
+import {PaymentLibModule} from "./payment-lib.module";
+import {CaseTransactionsComponent} from "./components/case-transactions/case-transactions.component";
+import {PbaPaymentComponent} from "./components/pba-payment/pba-payment.component";
 
 @Component({
   selector: 'ccpay-payment-lib',
@@ -45,7 +52,9 @@ import { PaymentViewComponent } from './components/payment-view/payment-view.com
     [ISPAYMENTSTATUSENABLED] = "ISPAYMENTSTATUSENABLED"
     ></ccpay-reports>
     `,
-  providers: [{ provide: 'PAYMENT_LIB', useExisting: forwardRef(() => PaymentLibComponent) }]
+  providers: [{ provide: 'PAYMENT_LIB', useExisting: forwardRef(() => PaymentLibComponent) }],
+  standalone: true,
+  imports: [RefundListComponent, PaymentListComponent, TitleCasePipe, RefundStatusComponent, PaymentViewComponent, PaymentLibModule, CaseTransactionsComponent, PbaPaymentComponent]
 })
 
 export class PaymentLibComponent implements OnInit {

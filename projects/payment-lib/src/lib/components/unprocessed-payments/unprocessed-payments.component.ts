@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { OrderslistService } from '../../services/orderslist.service';
 import { CommonModule } from '@angular/common';
+type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
   selector: 'ccpay-app-unprocessed-payments',
@@ -51,7 +52,7 @@ export class UnprocessedPaymentsComponent implements OnInit {
 
   constructor(private router: Router,
     private bulkScaningPaymentService: BulkScaningPaymentService,
-    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibComponent,
+    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibAlias,
     private paymentViewService: PaymentViewService,
     private OrderslistService: OrderslistService
   ) { }

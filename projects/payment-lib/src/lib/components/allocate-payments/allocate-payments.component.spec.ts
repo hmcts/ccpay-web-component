@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AllocatePaymentsComponent } from './allocate-payments.component';
 import { CaseTransactionsService} from "../../services/case-transactions/case-transactions.service";
 import { PaymentViewService} from "../../services/payment-view/payment-view.service";
+import { BulkScaningPaymentService} from "../../services/bulk-scaning-payment/bulk-scaning-payment.service";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 
 describe('MarkUnidentifiedPaymentComponent', () => {
@@ -18,7 +19,8 @@ describe('MarkUnidentifiedPaymentComponent', () => {
       providers: [
         { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
         { provide: CaseTransactionsService, useFactory: emptyServiceStub },
-        { provide: PaymentViewService, useFactory: emptyServiceStub }
+        { provide: PaymentViewService, useFactory: emptyServiceStub },
+        { provide: BulkScaningPaymentService, useFactory: emptyServiceStub}
       ]
     });
     fixture = TestBed.createComponent(AllocatePaymentsComponent);

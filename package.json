@@ -85,6 +85,7 @@
     "typescript": "^5.2"
   },
   "resolutions": {
+    "braces": ">=3.0.3",
     "axios": ">=0.21.1",
     "pug": ">=3.0.1",
     "nwmatcher": ">=1.4.4",

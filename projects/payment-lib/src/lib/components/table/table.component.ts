@@ -1,6 +1,11 @@
 import { Component, ViewChild, Input, ChangeDetectorRef, Inject } from '@angular/core';
 import type { PaymentLibComponent } from '../../payment-lib.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule} from "@angular/material/paginator";
+import { CcdHyphensPipe} from "../../pipes/ccd-hyphens.pipe";
+import { DatePipe} from "@angular/common";
+import { CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { IRefundList } from '../../interfaces/IRefundList';
@@ -10,7 +15,9 @@ type PaymentLibAlias = PaymentLibComponent;
 @Component({
   selector: 'ccpay-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css']
+  styleUrls: ['./table.component.css'],
+  standalone: true,
+  imports: [MatTableModule, MatPaginatorModule, CcdHyphensPipe, DatePipe],
 })
 export class TableComponent {
   @Input('DATASOURCE') DATASOURCE: any[];

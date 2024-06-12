@@ -5,10 +5,12 @@ import { PaymentLibComponent } from '../../payment-lib.component';
 import { IRefundList } from '../../interfaces/IRefundList';
 import { OrderslistService } from '../../services/orderslist.service';
 import { TableComponent } from './table.component';
+import {ActivatedRoute} from "@angular/router";
 
 describe('TableComponent', () => {
   let component: TableComponent;
   let fixture: ComponentFixture<TableComponent>;
+  const emptyServiceStub = () => ({  });
 
   beforeEach(() => {
     const changeDetectorRefStub = () => ({ detectChanges: () => ({}) });
@@ -27,7 +29,8 @@ describe('TableComponent', () => {
       providers: [
         { provide: ChangeDetectorRef, useFactory: changeDetectorRefStub },
         { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
-        { provide: OrderslistService, useFactory: orderslistServiceStub }
+        { provide: OrderslistService, useFactory: orderslistServiceStub },
+        { provide: ActivatedRoute, useFactory: emptyServiceStub}
       ]
     });
     fixture = TestBed.createComponent(TableComponent);

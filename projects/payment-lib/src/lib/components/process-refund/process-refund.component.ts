@@ -11,6 +11,8 @@ import { PaymentViewService } from '../../services/payment-view/payment-view.ser
 import type { PaymentLibComponent } from '../../payment-lib.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { INotificationPreview } from '../../interfaces/INotificationPreview';
+import { CommonModule} from "@angular/common";
+
 type PaymentLibAlias = PaymentLibComponent;
 
 @Component({

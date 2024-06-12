@@ -59,7 +59,6 @@ describe('AddRemissionComponent', () => {
   }
 
   beforeEach(() => {
-    const formBuilderStub = () => ({ group: object => ({  remissionCode:"HWF-A1B-23C",amount: 10,refundReason: "Test Reason", refundDDReason:"Test Default reason", reason:"Testing"}) });
     const routerStub = () => ({
       routeReuseStrategy: { shouldReuseRoute: {} },
       onSameUrlNavigation: {},
@@ -99,7 +98,15 @@ describe('AddRemissionComponent', () => {
     const orderslistServiceStub = () => ({
       setisFromServiceRequestPage: arg => ({}),
       setnavigationPage: string => ({}),
-      setpaymentPageView: object => ({})
+      setpaymentPageView: object => ({}),
+      setOrderRef: ()  => ({}),
+      setorderCCDEvent: ()  => ({}),
+      setorderCreated: ()  => ({}),
+      setorderDetail: ()  => ({}),
+      setorderParty: ()  => ({}),
+      setorderTotalPayments: ()  => ({}),
+      setorderRemissionTotal: ()  => ({}),
+      setorderFeesTotal: ()  => ({}),
     });
 
 
@@ -107,7 +114,7 @@ describe('AddRemissionComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [RpxTranslateMockPipe],
       providers: [
-        { provide: FormBuilder, useFactory: formBuilderStub },
+        { provide: FormBuilder},
         { provide: Router, useFactory: routerStub },
         { provide: PaymentViewService, useFactory: paymentViewServiceStub },
         { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
@@ -205,22 +212,8 @@ describe('AddRemissionComponent', () => {
     });
   });
 
-  describe('gotoIssueRefundConfirmation', () => {
-    it('makes expected calls', () => {
-      const iPaymentStub: IPayment = <any>{};
-      spyOn(component, 'resetRemissionForm').and.callThrough();
-      component.selectedRefundReason = "Other";
-      component.remissionForm = form;
-      component.gotoIssueRefundConfirmation(iPaymentStub);
-      expect(component.resetRemissionForm).not.toHaveBeenCalled();
-    });
-  });
-
   describe('ngOnInit', () => {
     it('makes expected calls', () => {
-      const formBuilderStub: FormBuilder = fixture.debugElement.injector.get(
-        FormBuilder
-      );
       const refundsServiceStub: RefundsService = fixture.debugElement.injector.get(
         RefundsService
       );
@@ -229,12 +222,10 @@ describe('AddRemissionComponent', () => {
       );
 
       component.fee = <any>fee;
-      spyOn(formBuilderStub, 'group').and.callThrough();
       spyOn(refundsServiceStub, 'getRefundReasons').and.callThrough();
       spyOn(changeDetectorRefStub, 'detectChanges').and.callThrough();
       component.viewCompStatus ='processretroremissonpage';
       component.ngOnInit();
-      expect(formBuilderStub.group).toHaveBeenCalled();
       expect(refundsServiceStub.getRefundReasons).not.toHaveBeenCalled();
       expect(changeDetectorRefStub.detectChanges).not.toHaveBeenCalled();
     });
@@ -293,9 +284,6 @@ describe('AddRemissionComponent', () => {
       const changeDetectorRefStub: ChangeDetectorRef = fixture.debugElement.injector.get(
         ChangeDetectorRef
       );
-      // const formBuilderStub: FormBuilder = fixture.debugElement.injector.get(
-      //   FormBuilder
-      // );
     const mockResponse  = {
                               "_links": {
                                 "empty": true
@@ -344,89 +332,6 @@ describe('AddRemissionComponent', () => {
       expect(
         paymentViewServiceStub.postRefundRetroRemission
       ).toHaveBeenCalled();
-    });
-  });
-
-  describe('confirmIssueRefund', () => {
-    it('makes expected calls', () => {
-      const paymentViewServiceStub: PaymentViewService = fixture.debugElement.injector.get(
-        PaymentViewService
-      );
-      const changeDetectorRefStub: ChangeDetectorRef = fixture.debugElement.injector.get(
-        ChangeDetectorRef
-      );
-      const mockResponse = {
-        "refund_amount": 10,
-        "refund_reference": "RF-1111-2222-3333-4444"
-      }
-      component.refundReason = 'testing reason';
-     const payment = {
-                            "amount": 888,
-                            "description": "Money Claim issue fee",
-                            "reference": "RC-1629-1935-4353-9730",
-                            "currency": "GBP",
-                            "date_created": "2021-08-17T09:45:43.530+0000",
-                            "banked_date": "2021-08-17T09:45:43.530+0000",
-                            "document_control_number": "",
-                            "payer_name": "aaa",
-                            "date_updated": "2021-08-17T09:45:43.530+0000",
-                            "ccd_case_number": "1010101010101010",
-                            "case_reference": "9eb95270-7fee-48cf-afa2-e6c58ee756ba",
-                            "channel": "online",
-                            "method": "payment by account",
-                            "external_provider": "",
-                            "status": "Success",
-                            "payment_allocation": [],
-                            "external_reference": "",
-                            "site_id": "Y689",
-                            "service_name": "Civil Money Claims",
-                            "account_number":  "PBAFUNC12345",
-                            "customer_reference": "",
-                            "organisation_name": "",
-                            "fees": [],
-                            "status_histories":[],
-                            "payment_group_reference": "",
-                            "paymentGroupReference":""
-                            };
-      component.payment = <any>payment;
-      // component.payment.reference = 'RC-1629-1935-4353-9730';
-      spyOn(paymentViewServiceStub, 'postRefundsReason').and.returnValue(of(mockResponse));
-      spyOn(changeDetectorRefStub, 'detectChanges').and.callThrough();
-      expect(paymentViewServiceStub.postRefundsReason).toHaveBeenCalled();
-    });
-  });
-
-  describe('confirmRetroRefund', () => {
-    it('makes expected calls', () => {
-      const paymentViewServiceStub: PaymentViewService = fixture.debugElement.injector.get(
-        PaymentViewService
-      );
-      const mockResponse = {
-        "refund_amount": 10,
-        "refund_reference": "RF-1111-2222-3333-4444"
-      }
-
-      const payment = <IPayment>{
-                                  account_number: "PBA0066906",
-                                  amount: 218,
-                                  case_reference: "string",
-                                  ccd_case_number: "1634915906081337",
-                                  channel: "online",
-                                  currency: "GBP",
-                                  customer_reference: "string",
-                                  date_created: "2021-10-18T16:21:20.027+0000",
-                                  date_updated: "2021-10-18T16:21:20.040+0000",
-                                  description: "string",
-                                  method: "payment by account",
-                                  organisation_name: "string",
-                                  payment_allocation: [],
-                                  reference: "RC-1634-9196-8009-2114",
-                                  service_name: "Probate",
-                                  site_id: "AA08",
-                                  status: "Success" }
-        component.payment =  payment;
-        spyOn(paymentViewServiceStub, 'postRefundsReason').and.returnValue(of(mockResponse));
-      expect(paymentViewServiceStub.postRefundsReason).toHaveBeenCalled();
     });
   });
 

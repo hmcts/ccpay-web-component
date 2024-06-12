@@ -103,7 +103,7 @@ import { RpxTranslationModule } from 'rpx-xui-translation';
     //ServiceRequestComponent,
     //NotificationPreviewComponent
   ],
-  exports: [PaymentLibComponent],
+  exports: [PaymentLibComponent, ProcessRefundComponent, MarkUnsolicitedPaymentComponent],
   providers: [
     { provide: LoggerService, useClass: ConsoleLoggerService },
     XlFileService,

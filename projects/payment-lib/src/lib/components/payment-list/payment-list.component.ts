@@ -2,12 +2,16 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { PaymentListService } from '../../services/payment-list/payment-list.service';
 import { IPayments } from '../../interfaces/IPayments';
 import type { PaymentLibComponent } from '../../payment-lib.component';
+import {DatePipe, TitleCasePipe, DecimalPipe} from "@angular/common";
+
 type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
   selector: 'ccpay-payment-list',
   templateUrl: './payment-list.component.html',
-  styleUrls: ['./payment-list.component.css']
+  styleUrls: ['./payment-list.component.css'],
+  standalone: true,
+  imports: [DatePipe, TitleCasePipe, DecimalPipe]
 })
 export class PaymentListComponent implements OnInit {
   payments: IPayments;
