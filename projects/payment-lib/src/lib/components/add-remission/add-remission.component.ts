@@ -297,7 +297,12 @@ export class AddRemissionComponent implements OnInit {
   refundFeesList() {
     const creds = this.remissionForm.controls.feesList as FormArray;
     // if(creds.controls.length > 0) {
+
     for (var i = 0; i < this.fees.length; i++) {
+      if (!this.fees[i].volume) {
+        console.log('Volume is empty so setting it to 1');
+        this.fees[i].volume = 1;
+      }
       creds.push(this.formBuilder.group({
         id: this.fees[i].id,
         code: this.fees[i].code,
