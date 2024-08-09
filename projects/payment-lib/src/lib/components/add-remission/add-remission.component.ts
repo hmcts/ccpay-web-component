@@ -1212,7 +1212,7 @@ export class AddRemissionComponent implements OnInit {
       if (remission.overall_balance > 0 && remission.acollection_of_fess == false) {
         return remission.overall_balance.toString();
       }else{
-        return remission.hwf_amount.toString()
+        return this.paymentLibComponent.overPaymentAmount.toString();
       }
     }
     return "undefined";

@@ -17,8 +17,9 @@ import {ContactDetailsComponent} from '../contact-details/contact-details.compon
 import {NotificationPreviewComponent} from '../notification-preview/notification-preview.component';
 import {CcdHyphensPipe} from '../../pipes/ccd-hyphens.pipe';
 import {CapitalizePipe} from '../../pipes/capitalize.pipe';
+import {RpxTranslationModule} from 'rpx-xui-translation';
 import type {PaymentLibComponent } from '../../payment-lib.component';
-import {RpxTranslationModule } from 'rpx-xui-translation';
+
 type PaymentLibAlias = PaymentLibComponent;
 
 const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
@@ -174,7 +175,7 @@ export class PaymentViewComponent implements OnInit {
     this.paymentGroup.fees.forEach(fee => {
       feesOverPayment += fee.over_payment;
     });
-    return feesOverPayment > 0 ? feesOverPayment : this.paymentGroup.payments[0].over_payment;
+    return feesOverPayment > 0 ? feesOverPayment : this.paymentLibComponent.overPaymentAmount
 
   }
   goToServiceRequestPage() {
@@ -297,22 +298,79 @@ export class PaymentViewComponent implements OnInit {
     this.viewCompStatus = '';
     this.viewStatus = 'paymentview';
   }
+
   issueRefund(paymentgrp: IPaymentGroup) {
+
     if (paymentgrp !== null && paymentgrp !== undefined) {
       if (this.chkIsIssueRefundBtnEnable(paymentgrp.payments[0])) {
-        if (paymentgrp.payments[0].over_payment > 0) {
-          this.viewCompStatus = 'overpayment';
-        } else {
-          this.paymentGroup = paymentgrp;
-          this.viewStatus = 'issuerefund';
-          this.isRefundRemission = true;
-          this.paymentLibComponent.isFromPaymentDetailPage = true;
-          this.isFromPaymentDetailPage = true;
-          this.isFromServiceRequestPage = false;
+
+        // No refund and no over payment --> showIssueRefundPage()
+        if (!this.isAnyRefundsForThisCase() && this.getBalanceToBePaid() == 0) {
+          this.showIssueRefundPage(paymentgrp);
+          return
+        }
+        // No refund and over payment --> showOverPayment()
+        if (!this.isAnyRefundsForThisCase() && this.getBalanceToBePaid() > 0) {
+          this.showOverPayment();
+          return
+        }
+        // Refunds > 0  and overPayment == 0 ---> refunds accepted. showIssueRefundPage(s)
+        if (this.isAnyRefundsForThisCase() && this.getBalanceToBePaid() == 0) {
+          this.showIssueRefundPage(paymentgrp);
+          return
+        }
+        // Refunds > 0 and overPayment > 0 --> refunds in process or Rejected.
+        if (this.isAnyRefundsForThisCase() && this.getBalanceToBePaid() > 0) {
+
+          // rejected by fee refunds === refunds by fee it means that refund for the current fee is rejected.
+          if (this.isTheCurrentRefundRejectedForTheFee(this.paymentFees.at(0).id.toString())) {
+            this.showOverPayment();
+            return
+          }
+          // refunds in process Sent for approval,Approved
+          this.showIssueRefundPage(paymentgrp);
+          return
         }
       }
     }
   }
+
+  isTheCurrentRefundRejectedForTheFee(feeCode: string): boolean {
+
+    let refundsByFee = this.paymentLibComponent.refunds.filter(refund => refund.fee_ids === feeCode);
+    let refundsByFeeAndRejected = this.paymentLibComponent.refunds.filter(refund => refund.refund_status.name === 'Rejected');
+
+    // Refunds > 0  and overPayment --> refunds in process or Rejected.
+    if (refundsByFee.length === refundsByFeeAndRejected.length) {
+      return true;
+    }
+    return false;
+  }
+
+
+  isAnyRefundsForThisCase(){
+    return (this.paymentLibComponent.refunds != null) && (this.paymentLibComponent.refunds.length > 0);
+  }
+  showOverPayment() {
+    this.viewCompStatus = 'overpayment';
+  }
+
+  showIssueRefundPage(paymentgrp: IPaymentGroup) {
+
+    this.paymentGroup = paymentgrp;
+    this.viewStatus = 'issuerefund';
+    this.isRefundRemission = true;
+    this.paymentLibComponent.isFromPaymentDetailPage = true;
+    this.isFromPaymentDetailPage = true;
+    this.isFromServiceRequestPage = false;
+  }
+
+  getBalanceToBePaid(){
+    return this.paymentLibComponent.overPaymentAmount
+  }
+
+
+
   getRemissionByFeeCode(feeCode: string, remissions: IRemission[]): IRemission {
     if (remissions && remissions.length > 0) {
       for (const remission of remissions) {

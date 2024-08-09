@@ -4,6 +4,8 @@ import { IBSPayments } from './interfaces/IBSPayments';
 import { OrderslistService } from './services/orderslist.service';
 import { IPayment } from './interfaces/IPayment';
 import { PaymentViewComponent } from './components/payment-view/payment-view.component';
+import {IPaymentGroup} from "./interfaces/IPaymentGroup";
+import {IRefundList} from "./interfaces/IRefundList";
 
 @Component({
   selector: 'ccpay-payment-lib',
@@ -109,6 +111,10 @@ export class PaymentLibComponent implements OnInit {
   orderRemissionTotal: number = 0.00;
   orderTotalPayments: number = 0.00;
   orderPendingPayments: number = 0.00;
+
+  paymentGroup:IPaymentGroup
+  overPaymentAmount: number = 0.00;
+  refunds: IRefundList[];
 
   constructor(private paymentLibService: PaymentLibService,
     private cd: ChangeDetectorRef,
