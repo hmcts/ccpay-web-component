@@ -76,9 +76,14 @@ export class XlFileService {
     for (let i = 0; i < headers.length; i++) {
       worksheet.columns[i].key = headers[i];
     }
-    let obj = <any>Object;
       for (let i = 0; i < json.length; i++) {
-        worksheet.addRow(json[i]);
+        let row = json[i];
+        for (let key in row) {
+              if (row[key] && typeof row[key] === 'string') {
+                row[key] = this.sanitizeString(row[key]);
+              }
+            }
+        worksheet.addRow(row);
       }
       return worksheet;
   }
@@ -162,6 +167,15 @@ export class XlFileService {
     worksheet.getCell('J1').value = "Explanation";
     worksheet.getCell('K1').value = "Updated Name";
     return worksheet;
+  }
+
+  private sanitizeString(value: string): string {
+    // Remove '=' sign if it is the first character
+    if (value.charAt(0) === '=') {
+      value = value.substring(1);
+    }
+    // Remove 0x09 (Tab) and 0x0D (Carriage Return)
+    return value.replace(/\t|\r/g, '');
   }
 
 }
