@@ -137,7 +137,7 @@ export class PaymentViewComponent implements OnInit {
           (paymentGroupObj => paymentGroupObj['reference'].includes(this.paymentLibComponent.paymentReference));
         const paymentAllocation = this.paymentGroup.payments[0].payment_allocation;
         this.isStatusAllocated = paymentAllocation.length > 0 && paymentAllocation[0].allocation_status === 'Allocated' || paymentAllocation.length === 0;
-
+        this.paymentLibComponent.addPaymentGroup(this.paymentGroup);
       },
       (error: any) => this.errorMessage = error
     );
@@ -400,6 +400,7 @@ export class PaymentViewComponent implements OnInit {
   }
 
   chkIsAddRemissionBtnEnable(fee: IFee): boolean {
+    this.paymentLibComponent.addPaymentGroup(this.paymentGroup);
     if (fee !== null && fee !== undefined) {
       if (this.paymentLibComponent.overPaymentAmount > 0) {
         return fee.add_remission && fee.remission_enable && this.paymentLibComponent.isTheCurrentRefundInProcessForThisFee(fee);

@@ -146,7 +146,7 @@
                     <fieldset class="govuk-fieldset">
                       <legend class="govuk-fieldset__legend govuk-fieldset__legend--m"> 
                           <h1 *ngIf="remessionPayment?.status === 'Success' ||   isFromRefundListPage" class="heading-medium">
-                              {{ "Enter the amount to be refunded" | rpxTranslate }}
+                              {{ "Enter the HWF or remission amount" | rpxTranslate }}
                           </h1> 
                           <h1 *ngIf="remessionPayment?.status !== 'Success' && !isFromRefundListPage" class="heading-medium">
                               {{ "Enter the remission amount" | rpxTranslate }}
@@ -217,8 +217,7 @@
             </td>
         </tr>
         <tr class="govuk-table__row">
-            <td *ngIf="remessionPayment.status === 'Success'" class="govuk-table__cell govuk-!-font-weight-bold">{{ "Refund amount" | rpxTranslate }}</td>
-            <td *ngIf="remessionPayment.status !== 'Success'" class="govuk-table__cell govuk-!-font-weight-bold">{{ "Remission amount" | rpxTranslate }}</td>
+            <td class="govuk-table__cell govuk-!-font-weight-bold">{{ "Remission amount" | rpxTranslate }}</td>
             <td class="govuk-table__cell">{{remissionForm.controls.amount.value  | currency:'GBP':'symbol-narrow':'1.2-2' }}
                 <a (click)="gotoAmountRetroRemission()" class="govuk-link right" >{{ "Change" | rpxTranslate }}</a>
             </td>
@@ -279,6 +278,12 @@
         <h1 class="heading-large"> {{ "Check your answers" | rpxTranslate }}</h1>
     </div>
     <table class="govuk-table">
+
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell govuk-!-font-weight-bold">{{ "Reason for refund" | rpxTranslate }}</td>
+        <td class="govuk-table__cell">{{ "Retrospective remission" | rpxTranslate }}</td>
+      </tr>
+
         <tr class="govuk-table__row">
             <td class="govuk-table__cell govuk-!-font-weight-bold">{{ "Payment reference" | rpxTranslate }}</td>
             <td class="govuk-table__cell">{{remessionPayment ? remessionPayment.reference: ' '}}</td>
@@ -300,10 +305,16 @@
             <td class="govuk-table__cell">{{ remissionForm.controls.remissionCode.value?.trim() }}
             </td>
         </tr>
+
+        <tr class="govuk-table__row">
+          <td *ngIf="remessionPayment.status === 'Success'" class="govuk-table__cell govuk-!-font-weight-bold">{{ "Remission amount" | rpxTranslate }}</td>
+          <td class="govuk-table__cell">{{remissionForm.controls.amount.value  | currency:'GBP':'symbol-narrow':'1.2-2' }}
+          </td>
+        </tr>
+
         <tr class="govuk-table__row">
             <td *ngIf="remessionPayment.status === 'Success'" class="govuk-table__cell govuk-!-font-weight-bold">{{ "Refund amount" | rpxTranslate }}</td>
-            <td *ngIf="remessionPayment.status !== 'Success'" class="govuk-table__cell govuk-!-font-weight-bold">{{ "Remission amount" | rpxTranslate }}</td>
-            <td class="govuk-table__cell">{{remissionForm.controls.amount.value  | currency:'GBP':'symbol-narrow':'1.2-2' }}
+            <td class="govuk-table__cell">{{ getRefundAmountToBeDisplayedForContinueJourney()| currency:'GBP':'symbol-narrow':'1.2-2' }}
             </td>
         </tr>
         <tr class="govuk-table__row">
@@ -765,6 +776,13 @@
             <td class="govuk-table__cell govuk-!-font-weight-bold">{{ "Refund amount" | rpxTranslate }}</td>
             <td class="govuk-table__cell">{{getRefundAmountToBeDisplayed(remission)| currency:'GBP':'symbol-narrow':'1.2-2'}}</td>
         </tr>
+
+        <tr class="govuk-table__row">
+          <td *ngIf="remessionPayment.status === 'Success'" class="govuk-table__cell govuk-!-font-weight-bold">{{ "Remission amount" | rpxTranslate }}</td>
+          <td class="govuk-table__cell">{{getRemissionAmountToBeDisplayed(remission)| currency:'GBP':'symbol-narrow':'1.2-2' }}
+          </td>
+        </tr>
+
         <tr class="govuk-table__row">
             <td class="govuk-table__cell govuk-!-font-weight-bold">{{ "Fee code" | rpxTranslate }}</td>
             <td class="govuk-table__cell">{{remission.fee_code}}</td>

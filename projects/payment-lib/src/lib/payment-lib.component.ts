@@ -1,12 +1,13 @@
-import { ChangeDetectorRef, Component, Input, OnInit, forwardRef } from '@angular/core';
-import { PaymentLibService } from './payment-lib.service';
-import { IBSPayments } from './interfaces/IBSPayments';
-import { OrderslistService } from './services/orderslist.service';
-import { IPayment } from './interfaces/IPayment';
-import { PaymentViewComponent } from './components/payment-view/payment-view.component';
+import {ChangeDetectorRef, Component, forwardRef, Input, OnInit} from '@angular/core';
+import {PaymentLibService} from './payment-lib.service';
+import {IBSPayments} from './interfaces/IBSPayments';
+import {OrderslistService} from './services/orderslist.service';
+import {IPayment} from './interfaces/IPayment';
 import {IPaymentGroup} from "./interfaces/IPaymentGroup";
 import {IRefundList} from "./interfaces/IRefundList";
 import {IFee} from "./interfaces/IFee";
+import {IRemission} from "./interfaces/IRemission";
+import {AddRetroRemissionRequest} from "./interfaces/AddRetroRemissionRequest";
 
 @Component({
   selector: 'ccpay-payment-lib',
@@ -162,8 +163,105 @@ export class PaymentLibComponent implements OnInit {
     }
   }
 
-  // Refunds libs section.
 
+  /**
+   * Adds a remission to the payment group using data from the provided form group.
+   *
+   * This method checks if the `paymentGroup` is not null before attempting to add the remission.
+   * If the `paymentGroup` exists, a new remission is created using the values from the provided
+   * form group (`currentRemissionFormGroup`), and it is pushed into the `remissions` array of the payment group.
+   *
+   * @param {AddRetroRemissionRequest} currentRemissionFormGroup - The form group containing remission data
+   *                                                               (e.g., `hwf_amount`, `hwf_reference`).
+   */
+  addRemission(currentRemissionFormGroup: AddRetroRemissionRequest) {
+
+    if (this.paymentGroup != null) {
+
+      const remission: IRemission = {
+
+        remission_reference: null,
+        hwf_reference: currentRemissionFormGroup.hwf_reference,
+        hwf_amount: currentRemissionFormGroup.hwf_amount,
+        beneficiary_name: null,
+        ccd_case_number: null,
+        fee_code: null,
+        date_created: null,
+        fee_id: null,
+        issue_refund_add_refund_add_remission: false,
+        add_refund: false,
+        overall_balance:currentRemissionFormGroup.hwf_amount,
+        acollection_of_fess: true
+      };
+      this.paymentGroup.remissions.push(remission);
+    }
+  }
+
+  /**
+   * This method is used to set the paymentGroup for the add remission journey.
+   * @param updatedPaymentGroup this is an updated paymentGroup version.
+   */
+  addPaymentGroup(updatedPaymentGroup:IPaymentGroup){
+    if (this.paymentGroup == null){
+        this.paymentGroup = updatedPaymentGroup;
+    }
+  }
+
+
+  /**
+   * Calculates the total remission amount for the current payment group.
+   *
+   * This method checks if the payment group contains any remissions and, if so,
+   * sums up the `hwf_amount` of all remissions using the `reduce()` method.
+   * If no remissions are found, it returns a default value of 0.
+   *
+   * @returns {number} The total remission amount, or 0 if no remissions are present.
+   */
+
+  getTotalRemission(): number {
+    let remissionTotal = 0;
+    if (this.paymentGroup.remissions) {
+      remissionTotal = this.paymentGroup.remissions.reduce((totalRemission, remission) => totalRemission + remission.hwf_amount, 0);
+    }
+    return remissionTotal;
+  }
+
+  /**
+   * Calculates the total fee amount for the current payment group.
+   *
+   * This method checks if the payment group contains any fees and, if so,
+   * sums up the `calculated_amount` of all fees using the `reduce()` method.
+   * If no fees are found, it returns a default value of 0.
+   *
+   * @returns {number} The total fee amount, or 0 if no fees are present.
+   */
+  getTotalFees(): number {
+    let feesTotal = 0;
+    if (this.paymentGroup.fees) {
+      feesTotal = this.paymentGroup.fees.reduce((totalFees, fee) => totalFees + fee.calculated_amount, 0);
+    }
+    return feesTotal;
+  }
+
+  /**
+   * Calculates the total payment amount for the current payment group.
+   *
+   * This method checks if the payment group contains any payments and, if so,
+   * sums up the `amount` of all payments using the `reduce()` method.
+   * If no payments are found, it returns a default value of 0.
+   *
+   * @returns {number} The total payment amount, or 0 if no payments are present.
+   */
+  getTotalPayments(): number {
+    let paymentsTotal = 0;
+    if (this.paymentGroup.payments) {
+      paymentsTotal = this.paymentGroup.payments.reduce((totalFees, payment) => totalFees + payment.amount, 0);
+    }
+    return paymentsTotal;
+  }
+
+
+  // Refunds libs section.
 
   /**
    * This function is used to find out if the current refunds list are in progress for the fee passed as parameter
@@ -194,5 +292,7 @@ export class PaymentLibComponent implements OnInit {
     return false;
   }
 
-
 }
+
+
+

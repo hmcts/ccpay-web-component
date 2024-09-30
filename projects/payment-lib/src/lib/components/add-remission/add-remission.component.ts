@@ -1,31 +1,39 @@
-import { Component, OnInit, Input, Output, EventEmitter, Inject, forwardRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, RequiredValidator, FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IFee } from '../../interfaces/IFee';
-import { Router } from '@angular/router';
-import { AddRemissionRequest } from '../../interfaces/AddRemissionRequest';
-import { PaymentViewService } from '../../services/payment-view/payment-view.service';
+import {ChangeDetectorRef, Component, EventEmitter, forwardRef, Inject, Input, OnInit, Output} from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import {IFee} from '../../interfaces/IFee';
+import {Router} from '@angular/router';
+import {AddRemissionRequest} from '../../interfaces/AddRemissionRequest';
+import {PaymentViewService} from '../../services/payment-view/payment-view.service';
+
+import {IPayment} from '../../interfaces/IPayment';
+import {RefundsService} from '../../services/refunds/refunds.service';
+import {NotificationService} from '../../services/notification/notification.service';
+import {IRefundReasons} from '../../interfaces/IRefundReasons';
+import {AddRetroRemissionRequest} from '../../interfaces/AddRetroRemissionRequest';
+import {IRefundContactDetails} from '../../interfaces/IRefundContactDetails';
+import {PostRefundRetroRemission} from '../../interfaces/PostRefundRetroRemission';
+import {PostIssueRefundRetroRemission} from '../../interfaces/PostIssueRefundRetroRemission';
+import {IRemission} from '../../interfaces/IRemission';
+import {OrderslistService} from '../../services/orderslist.service';
+import {IPaymentGroup} from '../../interfaces/IPaymentGroup';
+import {PaymentViewComponent} from '../payment-view/payment-view.component';
+import {CommonModule} from '@angular/common';
+import {ServiceRequestComponent} from '../service-request/service-request.component';
+import {NotificationPreviewComponent} from '../notification-preview/notification-preview.component';
+import {CcdHyphensPipe} from '../../pipes/ccd-hyphens.pipe';
+import {CapitalizePipe} from '../../pipes/capitalize.pipe';
+import {ContactDetailsComponent} from '../contact-details/contact-details.component';
+import {RpxTranslationModule} from 'rpx-xui-translation';
 import type { PaymentLibComponent } from '../../payment-lib.component';
 
-import { IPayment } from '../../interfaces/IPayment';
-import { RefundsService } from '../../services/refunds/refunds.service';
-import { NotificationService } from '../../services/notification/notification.service';
-import { IRefundReasons } from '../../interfaces/IRefundReasons';
-import { AddRetroRemissionRequest } from '../../interfaces/AddRetroRemissionRequest';
-import { IRefundContactDetails } from '../../interfaces/IRefundContactDetails';
-import { PostRefundRetroRemission } from '../../interfaces/PostRefundRetroRemission';
-import { PostIssueRefundRetroRemission } from '../../interfaces/PostIssueRefundRetroRemission';
-import { ChangeDetectorRef } from '@angular/core';
-import { IRemission } from '../../interfaces/IRemission';
-import { OrderslistService } from '../../services/orderslist.service';
-import { IPaymentGroup } from '../../interfaces/IPaymentGroup';
-import { PaymentViewComponent } from '../payment-view/payment-view.component';
-import { CommonModule } from '@angular/common';
-import { ServiceRequestComponent } from '../service-request/service-request.component';
-import { NotificationPreviewComponent } from '../notification-preview/notification-preview.component';
-import { CcdHyphensPipe } from '../../pipes/ccd-hyphens.pipe';
-import { CapitalizePipe } from '../../pipes/capitalize.pipe';
-import { ContactDetailsComponent } from '../contact-details/contact-details.component';
-import { RpxTranslationModule } from 'rpx-xui-translation';
 type PaymentLibAlias = PaymentLibComponent;
 
 const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
@@ -558,6 +566,7 @@ export class AddRemissionComponent implements OnInit {
       //}
 
     }
+    this.paymentLibComponent.addPaymentGroup(this.paymentGroup);
   }
   gotoAmountRetroRemission() {
     this.isFromCheckAnsPage = false;
@@ -585,10 +594,11 @@ export class AddRemissionComponent implements OnInit {
     this.isRefundRemission = true;
     this.errorMessage = '';
     this.isConfirmationBtnDisabled = false;
+    this.paymentLibComponent.addPaymentGroup(this.paymentGroup);
   }
 
   confirmRetroRemission() {
-
+    this.paymentLibComponent.addPaymentGroup(this.paymentGroup);
     this.isConfirmationBtnDisabled = true;
     this.retroRemission = true;
     this.remissionamt = this.remissionForm.controls.amount.value;
@@ -600,6 +610,7 @@ export class AddRemissionComponent implements OnInit {
           this.viewCompStatus = '';
           this.viewStatus = 'retroremissionconfirmationpage';
           this.remissionReference = JSON.parse(response).remission_reference;
+          this.paymentLibComponent.addRemission(requestBody);
         }
       },
       (error: any) => {
@@ -995,6 +1006,7 @@ export class AddRemissionComponent implements OnInit {
     } else if (type == 'addrefundcheckandanswer') {
       this.getTemplateInstructionType(this.paymentReference, this.paymentObj);
     }
+    this.paymentLibComponent.addPaymentGroup(this.paymentGroup);
     this.viewStatus = type;
   }
 
@@ -1214,6 +1226,19 @@ export class AddRemissionComponent implements OnInit {
       }else{
         return this.paymentLibComponent.overPaymentAmount.toString();
       }
+    }
+    return "undefined";
+  }
+
+  getRefundAmountToBeDisplayedForContinueJourney(): string {
+
+    return Math.abs(((this.paymentLibComponent.getTotalFees() - this.paymentLibComponent.getTotalRemission())
+      - this.paymentLibComponent.getTotalPayments())).toString();
+  }
+
+  getRemissionAmountToBeDisplayed(remission: IRemission): string {
+    if (remission !== null && remission !== undefined) {
+      return remission.hwf_amount.toString();
     }
     return "undefined";
   }
