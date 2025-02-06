@@ -11,6 +11,7 @@ export class NotificationPreviewRequest {
         refund_amount?: number;
         refund_reason?: string;
         refund_reference?: string;
+        customer_reference?: string;
     }
     recipient_email_address?: string;
     recipient_postal_address?: {
@@ -23,7 +24,7 @@ export class NotificationPreviewRequest {
     service_name?: string;
 
     constructor(payment: IPayment, contactDetails: IRefundContactDetails, refund_reason: string, refund_amount: number, refund_reference: string, payment_reference: string) {
-        
+
         if (contactDetails !== undefined && contactDetails !== null) {
             this.notification_type = contactDetails.notification_type.toUpperCase();
         }
@@ -38,10 +39,11 @@ export class NotificationPreviewRequest {
         }
 
         this.personalisation = {
-            ccd_case_number: (payment !== undefined && payment !== null) ? payment.ccd_case_number : '',
+            ccd_case_number: payment?.ccd_case_number || '',
             refund_reason: refund_reason,
             refund_amount: refund_amount,
-            refund_reference: refund_reference
+            refund_reference: refund_reference,
+            customer_reference: payment?.customer_reference || ''
         };
 
         if (this.notification_type === "EMAIL") {
