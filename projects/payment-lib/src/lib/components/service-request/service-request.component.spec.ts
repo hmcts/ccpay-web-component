@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Pipe, PipeTransform } from '@angular/core';
 import { ServiceRequestComponent } from './service-request.component';
 
@@ -14,7 +14,7 @@ describe('ServiceRequestComponent', () => {
   let fixture: ComponentFixture<ServiceRequestComponent>;
   const paymentLibComponentStub = () => ({ viewName: {} });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RpxTranslateMockPipe ],
       providers: [

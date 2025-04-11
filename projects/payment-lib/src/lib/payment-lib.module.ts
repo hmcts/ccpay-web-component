@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 import { PaymentListComponent } from './components/payment-list/payment-list.component';
@@ -46,69 +46,63 @@ import { PbaPaymentComponent } from './components/pba-payment/pba-payment.compon
 import { NotificationPreviewComponent } from './components/notification-preview/notification-preview.component';
 import { RpxTranslationModule } from 'rpx-xui-translation';
 
-@NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatFormFieldModule,
-    MatInputModule,
-    CcdHyphensPipe,
-    CapitalizePipe,
-    PaymentViewComponent,
-    ContactDetailsComponent,
-    AddRemissionComponent,
-    ServiceRequestComponent,
-    NotificationPreviewComponent,
-    CaseTransactionsComponent,
-    AddRemissionComponent,
-    UnprocessedPaymentsComponent,
-    RefundStatusComponent,
-    PbaPaymentComponent,
-    // BrowserAnimationsModule,
-    // NoopAnimationsModule
-    RpxTranslationModule.forChild(),
-  ],
-  declarations: [
-    PaymentLibComponent,
-    PaymentListComponent,
-    //PaymentViewComponent,
-    //ContactDetailsComponent,
-    ProcessRefundComponent,
-    RefundListComponent,
-    CardDetailsComponent,
-    PageNotFoundComponent,
-    //StatusHistoryComponent,
-    MarkUnidentifiedPaymentComponent,
-    MarkUnsolicitedPaymentComponent,
-    //UnprocessedPaymentsComponent,
-    ProcessedPaymentsComponent,
-    AllocatePaymentsComponent,
-    PbaDetailsComponent,
-    //CaseTransactionsComponent,
-    FeeSummaryComponent,
-    //AddRemissionComponent,
-    //CcdHyphensPipe,
-    //CapitalizePipe,
-    keyValuePipe,
-    SanitizeHtmlPipe,
-    ReportsComponent,
-    ErrorBannerComponent,
-    TableComponent,
-    //RefundStatusComponent,
-    //ServiceRequestComponent,
-    //NotificationPreviewComponent
-  ],
-  exports: [PaymentLibComponent],
-  providers: [
-    { provide: LoggerService, useClass: ConsoleLoggerService },
-    XlFileService,
-    WebComponentHttpClient
-  ]
-})
+@NgModule({ declarations: [
+        PaymentLibComponent,
+        PaymentListComponent,
+        //PaymentViewComponent,
+        //ContactDetailsComponent,
+        ProcessRefundComponent,
+        RefundListComponent,
+        CardDetailsComponent,
+        PageNotFoundComponent,
+        //StatusHistoryComponent,
+        MarkUnidentifiedPaymentComponent,
+        MarkUnsolicitedPaymentComponent,
+        //UnprocessedPaymentsComponent,
+        ProcessedPaymentsComponent,
+        AllocatePaymentsComponent,
+        PbaDetailsComponent,
+        //CaseTransactionsComponent,
+        FeeSummaryComponent,
+        //AddRemissionComponent,
+        //CcdHyphensPipe,
+        //CapitalizePipe,
+        keyValuePipe,
+        SanitizeHtmlPipe,
+        ReportsComponent,
+        ErrorBannerComponent,
+        TableComponent,
+        //RefundStatusComponent,
+        //ServiceRequestComponent,
+        //NotificationPreviewComponent
+    ],
+    exports: [PaymentLibComponent], imports: [CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatFormFieldModule,
+        MatInputModule,
+        CcdHyphensPipe,
+        CapitalizePipe,
+        PaymentViewComponent,
+        ContactDetailsComponent,
+        AddRemissionComponent,
+        ServiceRequestComponent,
+        NotificationPreviewComponent,
+        CaseTransactionsComponent,
+        AddRemissionComponent,
+        UnprocessedPaymentsComponent,
+        RefundStatusComponent,
+        PbaPaymentComponent,
+        // BrowserAnimationsModule,
+        // NoopAnimationsModule
+        RpxTranslationModule.forChild()], providers: [
+        { provide: LoggerService, useClass: ConsoleLoggerService },
+        XlFileService,
+        WebComponentHttpClient,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 
 export class PaymentLibModule { }

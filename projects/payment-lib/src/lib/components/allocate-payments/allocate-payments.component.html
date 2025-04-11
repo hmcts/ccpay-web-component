@@ -8,29 +8,29 @@
             </li>
           </ol>
         </div>
-  
+
     <div class="paymentrequest">
         <h1 class="govuk-heading-xl govuk-!-margin-top-3 govuk-!-margin-bottom-4">Select payment request</h1>
         <p class="govuk-!-margin-top-5 casererf">Case reference: {{ccdReference}}</p>
     </div>
- 
+
     <div  *ngFor="let orderRef of orderLevelFees; let i = index;" class="multiple-choice unprocessed-payments--radio-button">
       <input id="'orderfee'+i+''"
       aria-label="orderLevelRecord"
       name="orderLevelRecord"
-    
+
       (click)="OrderListSelectEvent(orderRef.orderRefId)"
       type="radio"
       value="{{orderRef.orderTotalFees}}" />
       <label for="radio-inline-1"> {{orderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2'}}({{orderRef.orderStatus}})</label>
     </div>
-  
+
     <div class="paymentrequest">
         <button [disabled]="isContinueButtondisabled" type="submit" (click)="redirectToOrderFeeSearchPage()" class="button allbtb button--disabled govuk-!-margin-right-1">
           Continue
         </button>
       </div>
-   
+
   </ng-container>
 
    <div *ngIf="viewStatus==='mainForm' && isTurnOff">
@@ -158,8 +158,8 @@
             [ngClass]="paymentReasonHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
             data-module="govuk-radios" *ngIf="isRemainingAmountGtZero">
             <div class="govuk-radios__item" *ngFor="let reason of reasonList.overPayment | keyValue">
-              <input class="govuk-radios__input" id="{{reason.key}}" name="paymentReason" type="radio"
-                [(ngModel)]="paymentReason" value={{reason.value}}>
+              <input class="govuk-radios__input" [id]="reason.key" name="paymentReason" type="radio"
+                     formControlName="paymentReason" [value]="reason.value" />
               <label class="govuk-label govuk-radios__label govuk-font__custom" for="how-contacted-conditional">
                 {{reason.value}}
               </label>
@@ -169,8 +169,8 @@
             [ngClass]="paymentReasonHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
             data-module="govuk-radios" *ngIf="isRemainingAmountLtZero">
             <div class="govuk-radios__item" *ngFor="let reason of reasonList.shortFall | keyValue">
-              <input class="govuk-radios__input" id="{{reason.key}}" name="paymentReason" type="radio"
-                [(ngModel)]="paymentReason" value={{reason.value}}>
+              <input class="govuk-radios__input" [id]="reason.key" name="paymentReason" type="radio"
+                formControlName="paymentReason" [value]="reason.value" />
               <label class="govuk-label govuk-radios__label govuk-font__custom" for="how-contacted-conditional">
                 {{reason.value}}
               </label>
@@ -188,9 +188,9 @@
             [ngClass]="paymentExplanationHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
             data-module="govuk-radios" *ngIf="isRemainingAmountGtZero">
             <div class="govuk-radios__item" *ngFor="let explanation of explanationList.overPayment | keyValue">
-              <input class="govuk-radios__input" id="{{explanation.key}}" name="paymentExplanation" type="radio"
-                [(ngModel)]="paymentExplanation" value={{explanation.value}}
-                (click)="selectRadioButton(explanation.key, 'explanation')">
+              <input class="govuk-radios__input" [id]="explanation.key" name="paymentExplanation" type="radio"
+                     formControlName="paymentExplanation" [value]="explanation.value"
+                     (click)="selectRadioButton(explanation.key, 'explanation')" />
               <label class="govuk-label govuk-radios__label govuk-font__custom" for="how-contacted-conditional">
                 {{explanation.value}}
               </label>
@@ -200,9 +200,9 @@
             [ngClass]="paymentExplanationHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
             data-module="govuk-radios" *ngIf="isRemainingAmountLtZero">
             <div class="govuk-radios__item" *ngFor="let explanation of explanationList.shortFall | keyValue">
-              <input class="govuk-radios__input" id="{{explanation.key}}" name="paymentExplanation" type="radio"
-                [(ngModel)]="paymentExplanation" value={{explanation.value}}
-                (click)="selectRadioButton(explanation.key, 'explanation')">
+              <input class="govuk-radios__input" [id]="explanation.key" name="paymentExplanation" type="radio"
+                     formControlName="paymentExplanation" [value]="explanation.value"
+                     (click)="selectRadioButton(explanation.key, 'explanation')" />
               <label class="govuk-label govuk-radios__label govuk-font__custom" for="how-contacted-conditional">
                 {{explanation.value}}
               </label>

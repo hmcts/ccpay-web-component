@@ -60,8 +60,6 @@ export class AllocatePaymentsComponent implements OnInit {
   isUserNameInvalid: boolean = false;
   ccdReference: string = null;
   exceptionReference: string = null;
-  paymentReason: string = null;
-  paymentExplanation: string = null;
   userName: string = null;
   paymentSectionLabel: any;
   paymentRef: string = null;
@@ -140,6 +138,8 @@ export class AllocatePaymentsComponent implements OnInit {
         Validators.required,
         Validators.pattern('^([a-zA-Z0-9\\s]*)$')
       ])),
+      paymentReason: new FormControl(null, Validators.required),
+      paymentExplanation: new FormControl(null, Validators.required)
     });
     this.OrderslistService.getOrdersList().subscribe((data) =>
       this.orderLevelFees = data.filter(data => data.orderStatus !== 'Paid'));
@@ -368,8 +368,7 @@ export class AllocatePaymentsComponent implements OnInit {
       this.overUnderPaymentForm.get('moreDetails').setValue('');
       this.overUnderPaymentForm.get('userName').reset();
       this.overUnderPaymentForm.get('userName').setValue('');
-      this.paymentReason = '';
-      this.paymentExplanation = '';
+      this.overUnderPaymentForm.get('paymentReason').setValue('');
       let GroupOutstandingAmount = this.getGroupOutstandingAmount(this.paymentGroup);
       const remainingToBeAssigned = this.unAllocatedPayment.amount - GroupOutstandingAmount;
       this.isRemainingAmountGtZero = remainingToBeAssigned > 0;
@@ -433,5 +432,13 @@ export class AllocatePaymentsComponent implements OnInit {
     this.paymentLibComponent.paymentGroupReference = this.recordId;
     this.paymentLibComponent.isTurnOff = this.isTurnOff;
     this.paymentLibComponent.viewName = 'fee-summary';
+  }
+
+  get paymentReason() {
+    return this.overUnderPaymentForm.get('paymentReason')?.value;
+  }
+
+  get paymentExplanation() {
+    return this.overUnderPaymentForm.get('paymentExplanation')?.value;
   }
 }

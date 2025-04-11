@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { of } from 'rxjs';
 
@@ -8,9 +8,9 @@ import { PaymentLibIntComponent } from './payment-lib-int.component';
 describe('PaymentLibIntComponent', () => {
   let component: PaymentLibIntComponent;
   let fixture: ComponentFixture<PaymentLibIntComponent>;
-  let activatedRoute: ActivatedRoute;  
+  let activatedRoute: ActivatedRoute;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const routerStub = () => ({
       routeReuseStrategy: { shouldReuseRoute: {} },
       onSameUrlNavigation: {},

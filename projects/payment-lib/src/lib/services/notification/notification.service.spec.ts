@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ErrorHandlerService } from '../shared/error-handler.service';
 import { WebComponentHttpClient } from '../shared/httpclient/webcomponent.http.client';
 import { PaymentLibService } from '../../payment-lib.service';
 import { NotificationService } from './notification.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('BulkScaningPaymentService', () => {
   let service: NotificationService;
@@ -20,17 +21,19 @@ describe('BulkScaningPaymentService', () => {
       API_ROOT: {}
     });
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [
+    imports: [],
+    providers: [
         NotificationService,
         { provide: ErrorHandlerService, useFactory: errorHandlerServiceStub },
         {
-          provide: WebComponentHttpClient,
-          useFactory: webComponentHttpClientStub
+            provide: WebComponentHttpClient,
+            useFactory: webComponentHttpClientStub
         },
-        { provide: PaymentLibService, useFactory: paymentLibServiceStub }
-      ]
-    });
+        { provide: PaymentLibService, useFactory: paymentLibServiceStub },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+});
     service = TestBed.get(NotificationService);
   });
 

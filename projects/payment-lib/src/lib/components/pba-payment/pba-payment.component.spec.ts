@@ -1,6 +1,6 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {CommonModule} from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {PbaPaymentComponent} from './pba-payment.component';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -20,19 +20,17 @@ describe('PBA payment component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [RpxTranslateMockPipe],
-      providers: [
-        {provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub}
-      ],
-      imports: [
-        CommonModule,
-        HttpClientModule,
+    declarations: [RpxTranslateMockPipe],
+    schemas: [NO_ERRORS_SCHEMA],
+    imports: [CommonModule,
         ReactiveFormsModule,
         FormsModule,
-        RouterTestingModule
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    });
+        RouterTestingModule],
+    providers: [
+        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+        provideHttpClient(withInterceptorsFromDi())
+    ]
+});
 
     fixture = TestBed.createComponent(PbaPaymentComponent);
     component = fixture.componentInstance;

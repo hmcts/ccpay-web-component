@@ -1,8 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Meta } from '@angular/platform-browser';
 import { ErrorHandlerService } from '../shared/error-handler.service';
 import { WebComponentHttpClient } from '../shared/httpclient/webcomponent.http.client';
@@ -11,6 +8,7 @@ import { IPatchRefundAction } from '../../interfaces/IPatchRefundAction';
 import { IssueRefundRequest } from '../../interfaces/IssueRefundRequest';
 import { IResubmitRefundRequest } from '../../interfaces/IResubmitRefundRequest';
 import { RefundsService } from './refunds.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('RefundsService', () => {
   let service: RefundsService;
@@ -24,18 +22,20 @@ describe('RefundsService', () => {
     });
     const paymentLibServiceStub = () => ({ REFUNDS_API_ROOT: {} });
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [
+    imports: [],
+    providers: [
         RefundsService,
         { provide: Meta, useFactory: metaStub },
         { provide: ErrorHandlerService, useFactory: errorHandlerServiceStub },
         {
-          provide: WebComponentHttpClient,
-          useFactory: webComponentHttpClientStub
+            provide: WebComponentHttpClient,
+            useFactory: webComponentHttpClientStub
         },
-        { provide: PaymentLibService, useFactory: paymentLibServiceStub }
-      ]
-    });
+        { provide: PaymentLibService, useFactory: paymentLibServiceStub },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+});
     service = TestBed.get(RefundsService);
   });
 

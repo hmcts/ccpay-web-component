@@ -1,7 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { ErrorBannerComponent } from './error-banner.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { PaymentLibComponent } from '../../payment-lib.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -14,16 +14,15 @@ describe('Error Banner component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ErrorBannerComponent],
-      providers: [PaymentViewService, PaymentLibComponent,
-        { provide: Router, useClass: class { navigate = jasmine.createSpy('navigate'); } }],
-      imports: [
-        CommonModule,
-        HttpClientModule,
-        RouterModule
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    });
+    declarations: [ErrorBannerComponent],
+    schemas: [NO_ERRORS_SCHEMA],
+    imports: [CommonModule,
+        RouterModule],
+    providers: [PaymentViewService, PaymentLibComponent,
+        { provide: Router, useClass: class {
+                navigate = jasmine.createSpy('navigate');
+            } }, provideHttpClient(withInterceptorsFromDi())]
+});
 
     fixture = TestBed.createComponent(ErrorBannerComponent);
     component = fixture.componentInstance;

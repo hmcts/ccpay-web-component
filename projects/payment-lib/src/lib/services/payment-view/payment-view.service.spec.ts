@@ -1,8 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { PaymentLibService } from '../../payment-lib.service';
 import { WebComponentHttpClient } from '../shared/httpclient/webcomponent.http.client';
 import { ErrorHandlerService } from '../shared/error-handler.service';
@@ -18,6 +15,7 @@ import { AddRetroRemissionRequest } from '../../interfaces/AddRetroRemissionRequ
 import { PostRefundRetroRemission } from '../../interfaces/PostRefundRetroRemission';
 import { PostIssueRefundRetroRemission } from '../../interfaces/PostIssueRefundRetroRemission';
 import { PaymentViewService } from './payment-view.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PaymentViewService', () => {
   let service: PaymentViewService;
@@ -34,18 +32,20 @@ describe('PaymentViewService', () => {
       info: (string, paymentReference) => ({})
     });
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [
+    imports: [],
+    providers: [
         PaymentViewService,
         { provide: PaymentLibService, useFactory: paymentLibServiceStub },
         {
-          provide: WebComponentHttpClient,
-          useFactory: webComponentHttpClientStub
+            provide: WebComponentHttpClient,
+            useFactory: webComponentHttpClientStub
         },
         { provide: ErrorHandlerService, useFactory: errorHandlerServiceStub },
-        { provide: LoggerService, useFactory: loggerServiceStub }
-      ]
-    });
+        { provide: LoggerService, useFactory: loggerServiceStub },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+});
     service = TestBed.get(PaymentViewService);
   });
 

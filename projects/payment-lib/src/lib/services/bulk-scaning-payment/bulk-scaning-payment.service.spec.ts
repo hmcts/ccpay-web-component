@@ -1,14 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ErrorHandlerService } from '../shared/error-handler.service';
 import { WebComponentHttpClient } from '../shared/httpclient/webcomponent.http.client';
 import { PaymentLibService } from '../../payment-lib.service';
 import { AllocatePaymentRequest } from '../../interfaces/AllocatePaymentRequest';
 import { IPaymentGroup } from '../../interfaces/IPaymentGroup';
 import { BulkScaningPaymentService } from './bulk-scaning-payment.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('BulkScaningPaymentService', () => {
   let service: BulkScaningPaymentService;
@@ -25,17 +23,19 @@ describe('BulkScaningPaymentService', () => {
       API_ROOT: {}
     });
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [
+    imports: [],
+    providers: [
         BulkScaningPaymentService,
         { provide: ErrorHandlerService, useFactory: errorHandlerServiceStub },
         {
-          provide: WebComponentHttpClient,
-          useFactory: webComponentHttpClientStub
+            provide: WebComponentHttpClient,
+            useFactory: webComponentHttpClientStub
         },
-        { provide: PaymentLibService, useFactory: paymentLibServiceStub }
-      ]
-    });
+        { provide: PaymentLibService, useFactory: paymentLibServiceStub },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+});
     service = TestBed.get(BulkScaningPaymentService);
   });
 
