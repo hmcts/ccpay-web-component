@@ -4832,10 +4832,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jasmine@npm:~3.6.0":
-  version: 3.6.11
-  resolution: "@types/jasmine@npm:3.6.11"
-  checksum: ccb4b749dc43b9ccb4365f36b14bdba8aac5ad7fdd00cc693695064acfbddb6b32fd2d59accd7e70b8f3a1eba69b49e8afa263e96f2b29aed565d0b911efe6c4
+"@types/jasmine@npm:~3.10.0":
+  version: 3.10.18
+  resolution: "@types/jasmine@npm:3.10.18"
+  checksum: 7ec8e4a28b5d537badd76df53c227aa6c7af25e71f3e4b59470b4c4398c956f4270b5341ae6dac9f30cfd75c3c2a5357e23410473dfdc1785b1af0d9563dc12d
   languageName: node
   linkType: hard
 
@@ -6289,7 +6289,7 @@ __metadata:
     "@angular/router": ~18.2.13
     "@hmcts/frontend": ^0.0.34-alpha
     "@types/file-saver": ^2.0.5
-    "@types/jasmine": ~3.6.0
+    "@types/jasmine": ~3.10.0
     "@types/jasminewd2": ~2.0.6
     "@types/node": ^18.3
     "@typescript-eslint/eslint-plugin": 5.62.0
