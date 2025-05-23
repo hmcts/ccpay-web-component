@@ -7,10 +7,12 @@ export class PaymentToPayhubRequest {
 
   ccd_case_number: string;
   amount: number;
+  paymentMethod: string;
 
-  constructor(ccd_case_number: string, amount: number, caseType: string) {
+  constructor(ccd_case_number: string, amount: number, caseType: string, paymentMethod: string) {
   this.ccd_case_number = ccd_case_number;
   this.amount = <any>amount.toFixed(2);
   this.case_type= caseType;
+  this.paymentMethod= paymentMethod;
   }
 }
