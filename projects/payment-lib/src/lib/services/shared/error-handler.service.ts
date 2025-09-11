@@ -23,7 +23,7 @@ handleError(err: HttpErrorResponse): Observable<any> {
     errorMessage = `An error occurred: ${err.error.message}`;
   } else {
     // Check if the error is from the server-side
-    if (err.status === 400 || err.status === 404 || err.status === 500) {
+    if (err.status === 400 || err.status === 404 || err.status === 500 || err.status === 412) {
       try {
         // Attempt to parse error as JSON
         const parsedError = typeof err.error === 'string' ? JSON.parse(err.error) : err.error;
