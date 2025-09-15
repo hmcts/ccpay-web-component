@@ -98,11 +98,12 @@ import { RpxTranslationModule } from 'rpx-xui-translation';
         PbaPaymentComponent,
         // BrowserAnimationsModule,
         // NoopAnimationsModule
-        RpxTranslationModule.forChild()], providers: [
+        RpxTranslationModule.forChild()],     providers: [
         { provide: LoggerService, useClass: ConsoleLoggerService },
         XlFileService,
         WebComponentHttpClient,
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withInterceptorsFromDi()),
+        { provide: 'PAYMENT_LIB', useExisting: PaymentLibComponent }
     ] })
 
 export class PaymentLibModule { }
