@@ -521,17 +521,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cdk@npm:^19.2.19":
-  version: 19.2.19
-  resolution: "@angular/cdk@npm:19.2.19"
+"@angular/cdk@npm:^20.2.3":
+  version: 20.2.3
+  resolution: "@angular/cdk@npm:20.2.3"
   dependencies:
-    parse5: ^7.1.2
+    parse5: ^8.0.0
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/common": ^19.0.0 || ^20.0.0
-    "@angular/core": ^19.0.0 || ^20.0.0
+    "@angular/common": ^20.0.0 || ^21.0.0
+    "@angular/core": ^20.0.0 || ^21.0.0
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 7728a7ebf34fa1a7d97135b96be91d07d69d7e76adc86427f6683e783b7b124266074f6fc78ee9b065e6e1891be793afef963493011a1c645fd27a6ace6f070a
+  checksum: 3410f95fa1b55167cafd29eaa5ca9413a15856ff3c5bd28f6011d7526eef454019c42ff8aff7c37aabd6184ea904deee329cd182ed666bdbef16e78a9eb52d75
   languageName: node
   linkType: hard
 
@@ -648,19 +648,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/material@npm:^19.2.19":
-  version: 19.2.19
-  resolution: "@angular/material@npm:19.2.19"
+"@angular/material@npm:^20.2.3":
+  version: 20.2.3
+  resolution: "@angular/material@npm:20.2.3"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/cdk": 19.2.19
-    "@angular/common": ^19.0.0 || ^20.0.0
-    "@angular/core": ^19.0.0 || ^20.0.0
-    "@angular/forms": ^19.0.0 || ^20.0.0
-    "@angular/platform-browser": ^19.0.0 || ^20.0.0
+    "@angular/cdk": 20.2.3
+    "@angular/common": ^20.0.0 || ^21.0.0
+    "@angular/core": ^20.0.0 || ^21.0.0
+    "@angular/forms": ^20.0.0 || ^21.0.0
+    "@angular/platform-browser": ^20.0.0 || ^21.0.0
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: c1591501736f3ee61e2452682c7dcafd8dfb89a680a478d518f0df565ee8fc096dabfaa51f5bd620c12b91173f42dc0be2dbc08aa2b1ee237349b58c1513b51c
+  checksum: 9998b64cbb9f244e3e6831b37326cea02446aa212b3a8a68165cd2f54d39246f19cce95149c862c1ff83299a93f63360dbd99ce9c7063386aa638cbf30e29731
   languageName: node
   linkType: hard
 
@@ -2365,10 +2365,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hmcts/frontend@npm:^0.0.34-alpha":
-  version: 0.0.34-alpha
-  resolution: "@hmcts/frontend@npm:0.0.34-alpha"
-  checksum: 8f628a9481ca80a9b60fca6f62390fda38edcbc8f5ebe2999777bafce7e2d857b263a688b3bdfdc9027d3a861894e9a530e0088d0417d4e3743549c9bea26a42
+"@hmcts/frontend@npm:latest":
+  version: 0.0.50-alpha
+  resolution: "@hmcts/frontend@npm:0.0.50-alpha"
+  checksum: 40121f8b72d9e4045f8f544458a5a48fd09dab61c75da7d719f5225a0a6019deb84cee08b03b3596fb409dc3518efaed264269257cc6b8e9f6abbdc48d25e4bf
   languageName: node
   linkType: hard
 
@@ -5620,7 +5620,7 @@ __metadata:
     "@angular-eslint/schematics": 18.0.1
     "@angular-eslint/template-parser": 18.0.1
     "@angular/animations": ^20.3.0
-    "@angular/cdk": ^19.2.19
+    "@angular/cdk": ^20.2.3
     "@angular/cli": ~20.3.1
     "@angular/common": ^20.3.0
     "@angular/compiler": ^20.3.0
@@ -5628,11 +5628,11 @@ __metadata:
     "@angular/core": ~20.3.0
     "@angular/forms": ~20.3.0
     "@angular/language-service": ~20.3.0
-    "@angular/material": ^19.2.19
+    "@angular/material": ^20.2.3
     "@angular/platform-browser": ~20.3.0
     "@angular/platform-browser-dynamic": ~20.3.0
     "@angular/router": ~20.3.0
-    "@hmcts/frontend": ^0.0.34-alpha
+    "@hmcts/frontend": latest
     "@types/file-saver": ^2.0.5
     "@types/jasmine": ~3.6.0
     "@types/jasminewd2": ~2.0.6
@@ -5645,7 +5645,7 @@ __metadata:
     exceljs: ^4.4.0
     file-saver: ^2.0.2
     govuk-elements-sass: ^3.1.3
-    govuk-frontend: ^2.7.0
+    govuk-frontend: 4.5.0
     govuk_frontend_toolkit: ^8.1.0
     govuk_template_jinja: ^0.24.1
     jasmine-core: ^5.1.2
@@ -6908,7 +6908,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"entities@npm:^4.2.0, entities@npm:^4.5.0":
+"entities@npm:^4.2.0":
   version: 4.5.0
   resolution: "entities@npm:4.5.0"
   checksum: 853f8ebd5b425d350bffa97dd6958143179a5938352ccae092c62d1267c4e392a039be1bae7d51b6e4ffad25f51f9617531fedf5237f15df302ccfb452cbf2d7
@@ -8137,10 +8137,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:^2.7.0":
-  version: 2.13.0
-  resolution: "govuk-frontend@npm:2.13.0"
-  checksum: 4f08192d8714e40b91082106e3ac214bcbc598e6b7a1b2ea00c44e13a145fd5573dfa13dbe8eb1339c29d311fa3f1f7adac6bfe8e39e53f4d02d17a0690cee69
+"govuk-frontend@npm:4.5.0":
+  version: 4.5.0
+  resolution: "govuk-frontend@npm:4.5.0"
+  checksum: 7a999ffb49c2f32f9dc3b0b743b698f8385d39cd0213d8aea1d7f2dfcc9f035f597030faac34659e8981d3c4a596379e99f5ea8c4d088cf486340eeaafdc800d
   languageName: node
   linkType: hard
 
@@ -11279,15 +11279,6 @@ __metadata:
   dependencies:
     parse5: ^8.0.0
   checksum: 050593edc8f0241f0971d824dd80fbfff3c2f8d4981420fa688ee47fca79e6b73d8c6bfb85fa059ac27718662e87dcaffa538189f4319422e7fdd2dff40bc9a4
-  languageName: node
-  linkType: hard
-
-"parse5@npm:^7.1.2":
-  version: 7.2.1
-  resolution: "parse5@npm:7.2.1"
-  dependencies:
-    entities: ^4.5.0
-  checksum: 11253cf8aa2e7fc41c004c64cba6f2c255f809663365db65bd7ad0e8cf7b89e436a563c20059346371cc543a6c1b567032088883ca6a2cbc88276c666b68236d
   languageName: node
   linkType: hard
 
