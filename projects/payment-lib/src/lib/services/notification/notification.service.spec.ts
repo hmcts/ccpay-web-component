@@ -34,7 +34,7 @@ describe('BulkScaningPaymentService', () => {
         provideHttpClientTesting()
     ]
 });
-    service = TestBed.get(NotificationService);
+    service = TestBed.inject(NotificationService);
   });
 
   it('can load instance', () => {

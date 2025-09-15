@@ -26,7 +26,7 @@ describe('StatusHistoryService', () => {
         provideHttpClientTesting()
     ]
 });
-    service = TestBed.get(StatusHistoryService);
+    service = TestBed.inject(StatusHistoryService);
   });
 
   it('can load instance', () => {

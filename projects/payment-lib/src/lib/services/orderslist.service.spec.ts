@@ -8,7 +8,7 @@ describe('OrderslistService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [OrderslistService] });
-    service = TestBed.get(OrderslistService);
+    service = TestBed.inject(OrderslistService);
   });
 
   it('can load instance', () => {

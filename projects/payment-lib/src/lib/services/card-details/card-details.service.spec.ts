@@ -26,7 +26,7 @@ describe('CardDetailsService', () => {
         provideHttpClientTesting()
     ]
 });
-    service = TestBed.get(CardDetailsService);
+    service = TestBed.inject(CardDetailsService);
   });
 
   it('can load instance', () => {

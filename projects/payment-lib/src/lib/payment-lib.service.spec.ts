@@ -6,7 +6,7 @@ describe('PaymentLibService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [PaymentLibService] });
-    service = TestBed.get(PaymentLibService);
+    service = TestBed.inject(PaymentLibService);
   });
 
   it('can load instance', () => {

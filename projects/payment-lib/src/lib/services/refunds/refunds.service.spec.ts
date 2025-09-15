@@ -36,7 +36,7 @@ describe('RefundsService', () => {
         provideHttpClientTesting()
     ]
 });
-    service = TestBed.get(RefundsService);
+    service = TestBed.inject(RefundsService);
   });
 
   it('can load instance', () => {
@@ -45,7 +45,7 @@ describe('RefundsService', () => {
 
   describe('postIssueRefund', () => {
     it('makes expected calls', () => {
-      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.get(
+      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.inject(
         WebComponentHttpClient
       );
       const issueRefundRequestStub: IssueRefundRequest = <any>{};

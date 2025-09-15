@@ -46,7 +46,7 @@ describe('PaymentViewService', () => {
         provideHttpClientTesting()
     ]
 });
-    service = TestBed.get(PaymentViewService);
+    service = TestBed.inject(PaymentViewService);
   });
 
   it('can load instance', () => {
@@ -55,7 +55,7 @@ describe('PaymentViewService', () => {
 
   describe('postBSPayments', () => {
     it('makes expected calls', () => {
-      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.get(
+      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.inject(
         WebComponentHttpClient
       );
       const allocatePaymentRequestStub: AllocatePaymentRequest = <any>{};
@@ -67,7 +67,7 @@ describe('PaymentViewService', () => {
 
   describe('postBSUnidentifiedPayments', () => {
     it('makes expected calls', () => {
-      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.get(
+      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.inject(
         WebComponentHttpClient
       );
       const unidentifiedPaymentsRequestStub: UnidentifiedPaymentsRequest = <
@@ -81,7 +81,7 @@ describe('PaymentViewService', () => {
 
   describe('postBSUnsolicitedPayments', () => {
     it('makes expected calls', () => {
-      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.get(
+      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.inject(
         WebComponentHttpClient
       );
       const unsolicitedPaymentsRequestStub: UnsolicitedPaymentsRequest = <
@@ -95,7 +95,7 @@ describe('PaymentViewService', () => {
 
   describe('postBSAllocationPayments', () => {
     it('makes expected calls', () => {
-      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.get(
+      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.inject(
         WebComponentHttpClient
       );
       const iAllocationPaymentsRequestStub: IAllocationPaymentsRequest = <
@@ -109,7 +109,7 @@ describe('PaymentViewService', () => {
 
   describe('postRefundsReason', () => {
     it('makes expected calls', () => {
-      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.get(
+      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.inject(
         WebComponentHttpClient
       );
       const postRefundRetroRemissionStub: PostRefundRetroRemission = <any>{};
@@ -121,7 +121,7 @@ describe('PaymentViewService', () => {
 
   describe('postRefundRetroRemission', () => {
     it('makes expected calls', () => {
-      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.get(
+      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.inject(
         WebComponentHttpClient
       );
       const postIssueRefundRetroRemissionStub: PostIssueRefundRetroRemission = <
@@ -135,7 +135,7 @@ describe('PaymentViewService', () => {
 
   describe('getBSfeature', () => {
     it('makes expected calls', () => {
-      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.get(
+      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.inject(
         WebComponentHttpClient
       );
       spyOn(webComponentHttpClientStub, 'get').and.callThrough();
@@ -146,7 +146,7 @@ describe('PaymentViewService', () => {
 
   describe('getSiteID', () => {
     it('makes expected calls', () => {
-      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.get(
+      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.inject(
         WebComponentHttpClient
       );
       spyOn(webComponentHttpClientStub, 'get').and.callThrough();
