@@ -26,21 +26,20 @@ type PaymentLibAlias = PaymentLibComponent;
 const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 
 @Component({
-  selector: 'ccpay-case-transactions',
-  templateUrl: './case-transactions.component.html',
-  styleUrls: ['./case-transactions.component.css'],
-  imports: [
-    CommonModule,
-    forwardRef(() => ServiceRequestComponent),
-    forwardRef(() => UnprocessedPaymentsComponent),
-    forwardRef(() => AddRemissionComponent),
-    RefundStatusComponent,
-    CcdHyphensPipe,
-    CapitalizePipe,
-    FormsModule,
-    RpxTranslationModule
-  ],
-  standalone: true
+    selector: 'ccpay-case-transactions',
+    templateUrl: './case-transactions.component.html',
+    styleUrls: ['./case-transactions.component.css'],
+    imports: [
+        CommonModule,
+        forwardRef(() => ServiceRequestComponent),
+        forwardRef(() => UnprocessedPaymentsComponent),
+        forwardRef(() => AddRemissionComponent),
+        RefundStatusComponent,
+        CcdHyphensPipe,
+        CapitalizePipe,
+        FormsModule,
+        RpxTranslationModule
+    ]
 })
 export class CaseTransactionsComponent implements OnInit {
   @Input('LOGGEDINUSERROLES') LOGGEDINUSERROLES: string[];

@@ -26,22 +26,21 @@ import type { PaymentLibComponent } from '../../payment-lib.component';
 type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
-  selector: 'ccpay-service-request',
-  templateUrl: './service-request.component.html',
-  styleUrls: ['./service-request.component.scss'],
-  providers: [{ provide: 'SERVICE_REQUEST', useExisting: forwardRef(() => ServiceRequestComponent) }],
-  imports: [
-    forwardRef(() => AddRemissionComponent),
-    CommonModule,
-    forwardRef(() => PaymentViewComponent),
-    forwardRef(() => ContactDetailsComponent),
-    forwardRef(() => NotificationPreviewComponent),
-    forwardRef(() => CaseTransactionsComponent),
-    CcdHyphensPipe,
-    CapitalizePipe,
-    RpxTranslationModule
-  ],
-  standalone: true
+    selector: 'ccpay-service-request',
+    templateUrl: './service-request.component.html',
+    styleUrls: ['./service-request.component.scss'],
+    providers: [{ provide: 'SERVICE_REQUEST', useExisting: forwardRef(() => ServiceRequestComponent) }],
+    imports: [
+        forwardRef(() => AddRemissionComponent),
+        CommonModule,
+        forwardRef(() => PaymentViewComponent),
+        forwardRef(() => ContactDetailsComponent),
+        forwardRef(() => NotificationPreviewComponent),
+        forwardRef(() => CaseTransactionsComponent),
+        CcdHyphensPipe,
+        CapitalizePipe,
+        RpxTranslationModule
+    ]
 })
 export class ServiceRequestComponent implements OnInit {
   @Input('LOGGEDINUSERROLES') LOGGEDINUSERROLES: string[];

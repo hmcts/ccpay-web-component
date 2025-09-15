@@ -6,11 +6,10 @@ import { CommonModule } from '@angular/common';
 type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
-  selector: 'ccpay-payment-statuses',
-  templateUrl: './status-history.component.html',
-  styleUrls: ['./status-history.component.css'],
-  imports: [CommonModule],
-  standalone: true
+    selector: 'ccpay-payment-statuses',
+    templateUrl: './status-history.component.html',
+    styleUrls: ['./status-history.component.css'],
+    imports: [CommonModule]
 })
 export class StatusHistoryComponent implements OnInit {
   @Input() isTakePayment: boolean;

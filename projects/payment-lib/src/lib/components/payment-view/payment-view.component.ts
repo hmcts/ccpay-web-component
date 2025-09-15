@@ -25,20 +25,19 @@ type PaymentLibAlias = PaymentLibComponent;
 const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 
 @Component({
-  selector: 'ccpay-payment-view',
-  templateUrl: './payment-view.component.html',
-  styleUrls: ['./payment-view.component.scss'],
-  providers: [{ provide: 'PAYMENT_VIEW', useExisting: forwardRef(() => PaymentViewComponent) }],
-  imports: [
-    CommonModule, forwardRef(() => AddRemissionComponent),
-    StatusHistoryComponent, forwardRef(() => ServiceRequestComponent),
-    ContactDetailsComponent,
-    NotificationPreviewComponent,
-    CcdHyphensPipe,
-    CapitalizePipe,
-    RpxTranslationModule
-  ],
-  standalone: true
+    selector: 'ccpay-payment-view',
+    templateUrl: './payment-view.component.html',
+    styleUrls: ['./payment-view.component.scss'],
+    providers: [{ provide: 'PAYMENT_VIEW', useExisting: forwardRef(() => PaymentViewComponent) }],
+    imports: [
+        CommonModule, forwardRef(() => AddRemissionComponent),
+        StatusHistoryComponent, forwardRef(() => ServiceRequestComponent),
+        ContactDetailsComponent,
+        NotificationPreviewComponent,
+        CcdHyphensPipe,
+        CapitalizePipe,
+        RpxTranslationModule
+    ]
 })
 
 export class PaymentViewComponent implements OnInit {

@@ -10,8 +10,8 @@ import {IRemission} from "./interfaces/IRemission";
 import {AddRetroRemissionRequest} from "./interfaces/AddRetroRemissionRequest";
 
 @Component({
-  selector: 'ccpay-payment-lib',
-  template: `
+    selector: 'ccpay-payment-lib',
+    template: `
   <ccpay-refund-list [USERID]="USERID" [LOGGEDINUSERROLES]="LOGGEDINUSERROLES" [LOGGEDINUSEREMAIL]="LOGGEDINUSEREMAIL" *ngIf="viewName === 'refund-list'"></ccpay-refund-list>
     <ccpay-payment-list *ngIf="viewName === 'payment-list'"></ccpay-payment-list>
     <ccpay-refund-status
@@ -49,7 +49,8 @@ import {AddRetroRemissionRequest} from "./interfaces/AddRetroRemissionRequest";
     [ISPAYMENTSTATUSENABLED] = "ISPAYMENTSTATUSENABLED"
     ></ccpay-reports>
     `,
-  providers: [{ provide: 'PAYMENT_LIB', useExisting: forwardRef(() => PaymentLibComponent) }]
+    providers: [{ provide: 'PAYMENT_LIB', useExisting: forwardRef(() => PaymentLibComponent) }],
+    standalone: false
 })
 
 export class PaymentLibComponent implements OnInit {

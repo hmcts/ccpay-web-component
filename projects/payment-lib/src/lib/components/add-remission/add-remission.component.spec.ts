@@ -14,7 +14,10 @@ import { of } from 'rxjs';
 import { Pipe, PipeTransform } from '@angular/core'
 import {NotificationService} from "../../services/notification/notification.service";
 
-@Pipe({ name: 'rpxTranslate' })
+@Pipe({
+    name: 'rpxTranslate',
+    standalone: false
+})
 class RpxTranslateMockPipe implements PipeTransform {
   public transform(value: string): string {
     return value;
