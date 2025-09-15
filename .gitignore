@@ -112,3 +112,10 @@ wire-mock/wiremock-standalone-2.18.0.jar
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
+# Coverage directories
+projects/*/coverage/
+projects/*/node_modules/.yarn-state.yml
+
+# Generated interfaces
+projects/*/src/lib/interfaces/index.ts
