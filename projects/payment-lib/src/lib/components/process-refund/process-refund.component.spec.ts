@@ -8,6 +8,7 @@ import { PaymentViewService} from "../../services/payment-view/payment-view.serv
 import { NotificationService} from "../../services/notification/notification.service";
 import { ActivatedRoute} from "@angular/router";
 import { of } from 'rxjs';
+import { PaymentLibComponent } from '../../payment-lib.component';
 
 describe('ProcessRefundComponent', () => {
   let component: ProcessRefundComponent;
@@ -35,7 +36,6 @@ describe('ProcessRefundComponent', () => {
     const orderslistServiceStub = () => ({
       getnavigationPageValue: () => ({ subscribe: f => f({}) })
     });
-    const paymentLibComponentStub = () => ({ viewName: {} });
     const emptyServiceStub = () => ({  });
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
@@ -44,10 +44,10 @@ describe('ProcessRefundComponent', () => {
       { provide: FormBuilder, useFactory: formBuilderStub },
       { provide: RefundsService, useFactory: refundsServiceStub },
       { provide: OrderslistService, useFactory: orderslistServiceStub },
-      { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+      { provide: 'PAYMENT_LIB', useClass: PaymentLibComponent },
       { provide: PaymentViewService, useFactory: emptyServiceStub },
       { provide: NotificationService, useFactory: emptyServiceStub },
-      { provide: ActivatedRoute, useFactory: paymentLibComponentStub }
+      { provide: ActivatedRoute, useFactory: emptyServiceStub }
       ]
     });
     fixture = TestBed.createComponent(ProcessRefundComponent);

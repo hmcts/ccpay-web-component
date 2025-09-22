@@ -6,6 +6,7 @@ import { OrderslistService } from '../../services/orderslist.service';
 import { PaymentViewComponent } from './payment-view.component';
 import { Pipe, PipeTransform } from '@angular/core';
 import { NotificationService} from "../../services/notification/notification.service";
+import { PaymentLibComponent } from '../../payment-lib.component';
 
 @Pipe({
     name: 'rpxTranslate',
@@ -49,7 +50,7 @@ describe('PaymentViewComponent', () => {
       declarations: [RpxTranslateMockPipe],
       providers: [
         { provide: PaymentViewService, useFactory: paymentViewServiceStub },
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+        { provide: 'PAYMENT_LIB', useClass: PaymentLibComponent },
         { provide: ChangeDetectorRef, useFactory: changeDetectorRefStub },
         { provide: NotificationService, useFactory: notificationServiceStub },
         { provide: OrderslistService, useFactory: orderslistServiceStub }

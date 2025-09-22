@@ -14,20 +14,12 @@ describe('PaymentListComponent', () => {
         subscribe: f => f({})
       })
     });
-    const paymentLibComponentStub = () => ({
-      CCD_CASE_NUMBER: {},
-      PAYMENT_METHOD: {},
-      paymentMethod: {},
-      paymentGroupReference: {},
-      paymentReference: {},
-      viewName: {}
-    });
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [],
       providers: [
         { provide: PaymentListService, useFactory: paymentListServiceStub },
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub }
+        { provide: 'PAYMENT_LIB', useClass: PaymentLibComponent }
       ]
     });
     fixture = TestBed.createComponent(PaymentListComponent);

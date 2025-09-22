@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PaymentLibComponent } from '../../payment-lib.component';
 import { IRefundList } from '../../interfaces/IRefundList';
 import { OrderslistService } from '../../services/orderslist.service';
@@ -12,22 +13,21 @@ describe('TableComponent', () => {
 
   beforeEach(() => {
     const changeDetectorRefStub = () => ({ detectChanges: () => ({}) });
-    const paymentLibComponentStub = () => ({
-      refundlistsource: {},
-      refundReference: {},
-      viewName: {},
-      CCD_CASE_NUMBER: {},
-      isRefundStatusView: {},
-      isCallFromRefundList: {}
-    });
     const orderslistServiceStub = () => ({ setRefundView: refundData => ({}) });
+    const activatedRouteStub = () => ({
+      snapshot: { params: {}, queryParams: {} },
+      params: { subscribe: f => f({}) },
+      queryParams: { subscribe: f => f({}) }
+    });
+    
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [TableComponent],
       providers: [
         { provide: ChangeDetectorRef, useFactory: changeDetectorRefStub },
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
-        { provide: OrderslistService, useFactory: orderslistServiceStub }
+        { provide: 'PAYMENT_LIB', useClass: PaymentLibComponent },
+        { provide: OrderslistService, useFactory: orderslistServiceStub },
+        { provide: ActivatedRoute, useFactory: activatedRouteStub }
       ]
     });
     fixture = TestBed.createComponent(TableComponent);

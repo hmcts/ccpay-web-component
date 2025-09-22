@@ -6,6 +6,7 @@ import { PaymentViewService } from '../../services/payment-view/payment-view.ser
 import { OrderslistService } from '../../services/orderslist.service';
 import { FormsModule } from '@angular/forms';
 import { UnprocessedPaymentsComponent } from './unprocessed-payments.component';
+import { PaymentLibComponent } from '../../payment-lib.component';
 
 describe('UnprocessedPaymentsComponent', () => {
   let component: UnprocessedPaymentsComponent;
@@ -18,21 +19,22 @@ describe('UnprocessedPaymentsComponent', () => {
       removeUnwantedString: (method, string) => ({})
     });
     const paymentLibComponentStub = () => ({
-      CCD_CASE_NUMBER: {},
-      SELECTED_OPTION: { toLocaleLowerCase: () => ({}) },
-      DCN_NUMBER: {},
-      ISBSENABLE: {},
-      ISTURNOFF: {},
-      ISSFENABLE: {},
-      CASETYPE: {},
-      bspaymentdcn: {},
-      viewName: {},
-      unProcessedPaymentServiceId: {},
-      isTurnOff: {},
-      paymentGroupReference: {}
+      CCD_CASE_NUMBER: 'test-case-number',
+      SELECTED_OPTION: { toLocaleLowerCase: () => 'test-option' },
+      DCN_NUMBER: 'test-dcn',
+      ISBSENABLE: true,
+      ISTURNOFF: false,
+      ISSFENABLE: true,
+      CASETYPE: 'test-case-type',
+      bspaymentdcn: 'test-bspaymentdcn',
+      viewName: 'test-view',
+      unProcessedPaymentServiceId: 'test-service-id',
+      isTurnOff: false,
+      paymentGroupReference: 'test-payment-group-ref'
     });
     const routerStub = () => ({ navigateByUrl: arg => ({}) });
-    const paymentViewServiceStub = () => ({});
+    const paymentViewServiceStub = () => ({
+    });
     const orderslistServiceStub = () => ({
       getFeeExists: () => ({ subscribe: f => f({}) })
     });

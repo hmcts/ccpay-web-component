@@ -5,6 +5,9 @@ import {PbaPaymentComponent} from './pba-payment.component';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 import {NO_ERRORS_SCHEMA, Pipe, PipeTransform} from '@angular/core'
+import { PaymentLibComponent } from '../../payment-lib.component';
+import { WebComponentHttpClient } from '../../services/shared/httpclient/webcomponent.http.client';
+import { Meta } from '@angular/platform-browser';
 
 @Pipe({
     name: 'rpxTranslate',
@@ -19,9 +22,20 @@ class RpxTranslateMockPipe implements PipeTransform {
 describe('PBA payment component', () => {
   let component: PbaPaymentComponent,
     fixture: ComponentFixture<PbaPaymentComponent>;
-  const paymentLibComponentStub = () => ({ viewName: {} });
 
   beforeEach(() => {
+    const webComponentHttpClientStub = () => ({
+      post: (url, body, options) => ({ subscribe: f => f({}) }),
+      put: (url, body, options) => ({ subscribe: f => f({}) }),
+      get: (url, options) => ({ subscribe: f => f({}) }),
+      delete: (url, options) => ({ subscribe: f => f({}) })
+    });
+    const metaStub = () => ({
+      getTag: (name) => ({ content: 'test' }),
+      addTag: (tag) => ({}),
+      updateTag: (tag) => ({})
+    });
+    
     TestBed.configureTestingModule({
     declarations: [RpxTranslateMockPipe],
     schemas: [NO_ERRORS_SCHEMA],
@@ -30,7 +44,9 @@ describe('PBA payment component', () => {
         FormsModule,
         RouterTestingModule],
     providers: [
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+        { provide: 'PAYMENT_LIB', useClass: PaymentLibComponent },
+        { provide: WebComponentHttpClient, useFactory: webComponentHttpClientStub },
+        { provide: Meta, useFactory: metaStub },
         provideHttpClient(withInterceptorsFromDi())
     ]
 });

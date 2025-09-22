@@ -9,16 +9,12 @@ describe('ContactDetailsComponent', () => {
   let fixture: ComponentFixture<ContactDetailsComponent>;
 
   beforeEach(() => {
-    const paymentLibComponentStub = () => ({
-      paymentReference: {},
-      paymentMethod: {}
-    });
     const emptyServiceStub = () => ({  });
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [],
       providers: [
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+        { provide: 'PAYMENT_LIB', useClass: PaymentLibComponent },
         { provide: NotificationService, useFactory: emptyServiceStub }
       ]
     });

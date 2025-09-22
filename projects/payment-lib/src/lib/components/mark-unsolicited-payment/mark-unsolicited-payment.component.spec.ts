@@ -4,6 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { BulkScaningPaymentService } from '../../services/bulk-scaning-payment/bulk-scaning-payment.service';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { MarkUnsolicitedPaymentComponent } from './mark-unsolicited-payment.component';
+import { PaymentLibComponent } from '../../payment-lib.component';
 
 describe('MarkUnsolicitedPaymentComponent', () => {
   let component: MarkUnsolicitedPaymentComponent;
@@ -11,14 +12,6 @@ describe('MarkUnsolicitedPaymentComponent', () => {
 
   beforeEach(() => {
     const formBuilderStub = () => ({ group: object => ({}) });
-    const paymentLibComponentStub = () => ({
-      CCD_CASE_NUMBER: {},
-      bspaymentdcn: {},
-      ISSFENABLE: {},
-      viewName: {},
-      TAKEPAYMENT: {},
-      ISBSENABLE: {}
-    });
     const bulkScaningPaymentServiceStub = () => ({
       removeUnwantedString: (method, string) => ({}),
       postBSWoPGStrategic: postStrategicBody => ({ subscribe: f => f({}) }),
@@ -37,7 +30,7 @@ describe('MarkUnsolicitedPaymentComponent', () => {
       declarations: [],
       providers: [
         { provide: FormBuilder, useFactory: formBuilderStub },
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+        { provide: 'PAYMENT_LIB', useClass: PaymentLibComponent },
         {
           provide: BulkScaningPaymentService,
           useFactory: bulkScaningPaymentServiceStub

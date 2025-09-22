@@ -937,31 +937,31 @@ export class AddRemissionComponent implements OnInit {
 
   // Retro Refund
 
-  // confirmRetroRefund() {
-  //   this.isConfirmationBtnDisabled = true;
-  //   this.errorMessage = '';
-  //   this.errorMsg = [];
-  //   if( this.isRefundRemission) {
-  //     this.retroRemission = true;
-  //   }
+  confirmRetroRefund() {
+    this.isConfirmationBtnDisabled = true;
+    this.errorMessage = '';
+    this.errorMsg = [];
+    if( this.isRefundRemission) {
+      this.retroRemission = true;
+    }
 
-  //   const requestBody = new PostRefundRetroRemission(this.payment.reference,'RR004-Retrospective remission', this.contactDetailsObj);
-  //   this.paymentViewService.postRefundsReason(requestBody).subscribe(
-  //     response => {
-  //         if (JSON.parse(response)) {
-  //           this.viewCompStatus  = '';
-  //           this.viewStatus = 'retrorefundconfirmationpage';
-  //           this.refundReference =JSON.parse(response).refund_reference;
-  //           if(JSON.parse(response).refund_amount) {
-  //             this.refundAmount = JSON.parse(response).refund_amount;
-  //             }
-  //         }
-  //     },
-  //     (error: any) => {
-  //       this.errorMessage = error;
-  //       this.isConfirmationBtnDisabled = false;
-  //     });
-  // }
+    const requestBody = new PostRefundRetroRemission(this.contactDetailsObj, this.fees, this.payment.reference, 'RR004-Retrospective remission', this.totalRefundAmount, 'op');
+    this.paymentViewService.postRefundsReason(requestBody).subscribe(
+      response => {
+          if (JSON.parse(response)) {
+            this.viewCompStatus  = '';
+            this.viewStatus = 'retrorefundconfirmationpage';
+            this.refundReference =JSON.parse(response).refund_reference;
+            if(JSON.parse(response).refund_amount) {
+              this.refundAmount = JSON.parse(response).refund_amount;
+              }
+          }
+      },
+      (error: any) => {
+        this.errorMessage = error;
+        this.isConfirmationBtnDisabled = false;
+      });
+  }
 
   selectRadioButton(key, value) {
     localStorage.setItem("myradio", value);

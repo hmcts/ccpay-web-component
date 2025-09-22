@@ -6,6 +6,7 @@ import { PaymentViewService } from '../../services/payment-view/payment-view.ser
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { BulkScaningPaymentService} from "../../services/bulk-scaning-payment/bulk-scaning-payment.service";
+import { PaymentLibComponent } from '../../payment-lib.component';
 
 describe('Fee Summary component', () => {
   let component: FeeSummaryComponent,
@@ -23,7 +24,7 @@ describe('Fee Summary component', () => {
         { provide: Router, useClass: class {
                 navigate = jasmine.createSpy('navigate');
             } },
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+        { provide: 'PAYMENT_LIB', useClass: PaymentLibComponent },
         { provide: BulkScaningPaymentService, useFactory: emptyServiceStub },
         { provide: PaymentViewService, useFactory: emptyServiceStub },
         provideHttpClient(withInterceptorsFromDi())

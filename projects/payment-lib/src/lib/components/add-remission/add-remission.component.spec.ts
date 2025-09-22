@@ -1,7 +1,7 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { IPayment } from '../../interfaces/IPayment';
@@ -13,6 +13,7 @@ import { AddRemissionComponent } from './add-remission.component';
 import { of } from 'rxjs';
 import { Pipe, PipeTransform } from '@angular/core'
 import {NotificationService} from "../../services/notification/notification.service";
+import { PaymentLibComponent } from '../../payment-lib.component';
 
 @Pipe({
     name: 'rpxTranslate',
@@ -33,10 +34,12 @@ describe('AddRemissionComponent', () => {
     amount: new FormControl(),
     refundReason: new FormControl(),
     refundDDReason: new FormControl(),
-    reason: new FormControl()
+    reason: new FormControl(),
+    feeAmount: new FormControl(),
+    feesList: new FormArray([])
   });
 
-  form.setValue({remissionCode:"HWF-A1B-23C",amount:"100",refundReason:"Test Refund  Reason",refundDDReason:"Default Reason",reason:"Test Reason"});
+  form.setValue({remissionCode:"HWF-A1B-23C",amount:"100",refundReason:"Test Refund  Reason",refundDDReason:"Default Reason",reason:"Test Reason",feeAmount:"100",feesList:[]});
 
   let fee = {
     "code": "FEE0209",
@@ -85,7 +88,10 @@ describe('AddRemissionComponent', () => {
   }
 
   beforeEach(() => {
-    const formBuilderStub = () => ({ group: object => ({  remissionCode:"HWF-A1B-23C",amount: 10,refundReason: "Test Reason", refundDDReason:"Test Default reason", reason:"Testing"}) });
+    const formBuilderStub = () => ({ 
+      group: object => ({  remissionCode:"HWF-A1B-23C",amount: 10,refundReason: "Test Reason", refundDDReason:"Test Default reason", reason:"Testing"}),
+      array: (controls) => new FormArray(controls || [])
+    });
     const routerStub = () => ({
       routeReuseStrategy: { shouldReuseRoute: {} },
       onSameUrlNavigation: {},
@@ -96,9 +102,9 @@ describe('AddRemissionComponent', () => {
         subscribe: f => f({})
       }),
       postPaymentGroupWithRetroRemissions: (arg, id, requestBody) => ({
-        subscribe: f => f({})
+        subscribe: f => f(JSON.stringify({ remission_reference: 'RM-TEST-1234' }))
       }),
-      postRefundRetroRemission: requestBody => ({ subscribe: f => f('{}') }),
+      postRefundRetroRemission: requestBody => ({ subscribe: f => f(JSON.stringify({ refund_reference: 'RF-TEST-1234', refund_amount: 10 })) }),
       postRefundsReason: requestBody => ({ subscribe: f => f({}) }),
       getBSfeature: () => ({ subscribe: f => f({}) })
     });
@@ -122,11 +128,19 @@ describe('AddRemissionComponent', () => {
     });
     const changeDetectorRefStub = () => ({ detectChanges: () => ({}) });
     const notificationServiceStub = () => ({  });
-    const orderslistServiceStub = () => ({
-      setisFromServiceRequestPage: arg => ({}),
-      setnavigationPage: string => ({}),
-      setpaymentPageView: object => ({})
-    });
+    const orderslistServiceStub = {
+      setisFromServiceRequestPage: jasmine.createSpy('setisFromServiceRequestPage'),
+      setnavigationPage: jasmine.createSpy('setnavigationPage'),
+      setpaymentPageView: jasmine.createSpy('setpaymentPageView'),
+      setOrderRef: jasmine.createSpy('setOrderRef'),
+      setorderCCDEvent: jasmine.createSpy('setorderCCDEvent'),
+      setorderCreated: jasmine.createSpy('setorderCreated'),
+      setorderDetail: jasmine.createSpy('setorderDetail'),
+      setorderParty: jasmine.createSpy('setorderParty'),
+      setorderTotalPayments: jasmine.createSpy('setorderTotalPayments'),
+      setorderRemissionTotal: jasmine.createSpy('setorderRemissionTotal'),
+      setorderFeesTotal: jasmine.createSpy('setorderFeesTotal')
+    };
 
 
     TestBed.configureTestingModule({
@@ -136,11 +150,11 @@ describe('AddRemissionComponent', () => {
         { provide: FormBuilder, useFactory: formBuilderStub },
         { provide: Router, useFactory: routerStub },
         { provide: PaymentViewService, useFactory: paymentViewServiceStub },
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+        { provide: 'PAYMENT_LIB', useClass: PaymentLibComponent },
         { provide: RefundsService, useFactory: refundsServiceStub },
         { provide: ChangeDetectorRef, useFactory: changeDetectorRefStub },
         { provide: NotificationService, useFactory: notificationServiceStub },
-        { provide: OrderslistService, useFactory: orderslistServiceStub }
+        { provide: OrderslistService, useValue: orderslistServiceStub }
       ]
     });
     fixture = TestBed.createComponent(AddRemissionComponent);
@@ -237,6 +251,16 @@ describe('AddRemissionComponent', () => {
       spyOn(component, 'resetRemissionForm').and.callThrough();
       component.selectedRefundReason = "Other";
       component.remissionForm = form;
+      // Add feesList data to the FormArray to prevent reduce error
+      const feesListArray = component.remissionForm.get('feesList') as FormArray;
+      feesListArray.push(new FormGroup({
+        refund_amount: new FormControl(10),
+        selected: new FormControl(true)
+      }));
+      feesListArray.push(new FormGroup({
+        refund_amount: new FormControl(20),
+        selected: new FormControl(false)
+      }));
       component.gotoIssueRefundConfirmation(iPaymentStub);
       expect(component.resetRemissionForm).not.toHaveBeenCalled();
     });
@@ -255,7 +279,7 @@ describe('AddRemissionComponent', () => {
       );
 
       component.fee = <any>fee;
-      spyOn(formBuilderStub, 'group').and.callThrough();
+      spyOn(formBuilderStub, 'group').and.returnValue(form);
       spyOn(refundsServiceStub, 'getRefundReasons').and.callThrough();
       spyOn(changeDetectorRefStub, 'detectChanges').and.callThrough();
       component.viewCompStatus ='processretroremissonpage';
@@ -289,6 +313,8 @@ describe('AddRemissionComponent', () => {
       component.paymentGroupRef = "2021-1629193543478";
       component.remissionForm = form;
       component.fee = <any>fee;
+      // Set bspaymentdcn to truthy value to prevent gotoCasetransationPage call
+      (component as any).paymentLibComponent.bspaymentdcn = "test-dcn";
       component.confirmRemission();
 
       expect(component.gotoCasetransationPage).not.toHaveBeenCalled();
@@ -357,7 +383,7 @@ describe('AddRemissionComponent', () => {
     spyOn(
         paymentViewServiceStub,
         'postPaymentGroupWithRetroRemissions'
-      ).and.returnValue(of(mockResponse));
+      ).and.returnValue(of(JSON.stringify(mockResponse)));
       // spyOn(changeDetectorRefStub, 'detectChanges').and.callThrough();
       component.confirmRetroRemission();
       expect(
@@ -378,7 +404,7 @@ describe('AddRemissionComponent', () => {
       spyOn(
         paymentViewServiceStub,
         'postRefundRetroRemission'
-      ).and.returnValue(of(mockResponse));
+      ).and.returnValue(of(JSON.stringify(mockResponse)));
       const remission = <IRemission>{
                                       remission_reference: "RM-1634-9738-6543-0599",
                                       hwf_reference: "HWF-A1B-23C",
@@ -408,6 +434,20 @@ describe('AddRemissionComponent', () => {
         "refund_reference": "RF-1111-2222-3333-4444"
       }
       component.refundReason = 'testing reason';
+      component.remissionForm = form;
+      // Add feesList data to the FormArray
+      const feesListArray = component.remissionForm.get('feesList') as FormArray;
+      feesListArray.push(new FormGroup({
+        id: new FormControl('1'),
+        code: new FormControl('FEE001'),
+        version: new FormControl('1'),
+        apportion_amount: new FormControl(10),
+        calculated_amount: new FormControl(10),
+        volume: new FormControl(1),
+        updated_volume: new FormControl(1),
+        refund_amount: new FormControl(10),
+        selected: new FormControl(true)
+      }));
      const payment = {
                             "amount": 888,
                             "description": "Money Claim issue fee",
@@ -438,8 +478,10 @@ describe('AddRemissionComponent', () => {
                             };
       component.payment = <any>payment;
       // component.payment.reference = 'RC-1629-1935-4353-9730';
-      spyOn(paymentViewServiceStub, 'postRefundsReason').and.returnValue(of(mockResponse));
+      spyOn(paymentViewServiceStub, 'postRefundsReason').and.returnValue(of(JSON.stringify(mockResponse)));
       spyOn(changeDetectorRefStub, 'detectChanges').and.callThrough();
+      // Call the method to trigger the spy
+      component.confirmIssueRefund(false);
       expect(paymentViewServiceStub.postRefundsReason).toHaveBeenCalled();
     });
   });
@@ -449,10 +491,10 @@ describe('AddRemissionComponent', () => {
       const paymentViewServiceStub: PaymentViewService = fixture.debugElement.injector.get(
         PaymentViewService
       );
-      const mockResponse = {
+      const mockResponse = JSON.stringify({
         "refund_amount": 10,
         "refund_reference": "RF-1111-2222-3333-4444"
-      }
+      });
 
       const payment = <IPayment>{
                                   account_number: "PBA0066906",
@@ -472,9 +514,15 @@ describe('AddRemissionComponent', () => {
                                   service_name: "Probate",
                                   site_id: "AA08",
                                   status: "Success" }
-        component.payment =  payment;
-        spyOn(paymentViewServiceStub, 'postRefundsReason').and.returnValue(of(mockResponse));
-      expect(paymentViewServiceStub.postRefundsReason).toHaveBeenCalled();
+        component.payment = payment;
+        component.contactDetailsObj = { email: 'test@test.com', address_line: 'Test Address', city: 'Test City' };
+        component.fees = [];
+        component.totalRefundAmount = 100;
+        spyOn(paymentViewServiceStub, 'postRefundsReason').and.returnValue(of(JSON.stringify(mockResponse)));
+        
+        component.confirmRetroRefund();
+        
+        expect(paymentViewServiceStub.postRefundsReason).toHaveBeenCalled();
     });
   });
 
@@ -489,7 +537,7 @@ describe('AddRemissionComponent', () => {
       );
       spyOn(routerStub, 'navigateByUrl').and.callThrough();
       spyOn(paymentViewServiceStub, 'getBSfeature').and.callThrough();
-      spyOn(orderslistServiceStub, 'setnavigationPage').and.callThrough();
+      ((orderslistServiceStub.setnavigationPage) as unknown as jasmine.Spy).calls.reset();
       component.remissionForm = form;
       component.gotoCasetransationPage();
       expect(routerStub.navigateByUrl).toHaveBeenCalled();
@@ -510,12 +558,9 @@ describe('AddRemissionComponent', () => {
       component.remissionForm = form;
       spyOn(routerStub, 'navigateByUrl').and.callThrough();
       spyOn(paymentViewServiceStub, 'getBSfeature').and.callThrough();
-      spyOn(
-        orderslistServiceStub,
-        'setisFromServiceRequestPage'
-      ).and.callThrough();
-      spyOn(orderslistServiceStub, 'setpaymentPageView').and.callThrough();
-      spyOn(orderslistServiceStub, 'setnavigationPage').and.callThrough();
+      ((orderslistServiceStub.setisFromServiceRequestPage) as unknown as jasmine.Spy).calls.reset();
+      ((orderslistServiceStub.setpaymentPageView) as unknown as jasmine.Spy).calls.reset();
+      ((orderslistServiceStub.setnavigationPage) as unknown as jasmine.Spy).calls.reset();
       spyOn(component, 'gotoCasetransationPageCancelBtnClicked').and.callThrough();
       expect(routerStub.navigateByUrl).not.toHaveBeenCalled();
       // expect(paymentViewServiceStub.getBSfeature).toHaveBeenCalled();

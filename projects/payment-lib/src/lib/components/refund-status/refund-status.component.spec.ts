@@ -64,70 +64,6 @@ describe('RefundStatusComponent', () => {
       getnavigationPageValue: () => ({ subscribe: f => f({}) })
     });
     const notificationServiceStub = () => ({ });
-    const paymentLibComponentStub = () => ({
-      bspaymentdcn: {},
-      isCallFromRefundList: true,
-      isRefundStatusView: {},
-      viewName: {},
-      ISBSENABLE: true,
-      SELECTED_OPTION: {},
-      ISTURNOFF: false,
-      ISSFENABLE: true,
-      CASETYPE: {},
-      TAKEPAYMENT: true,
-      REFUNDLIST: [
-        {
-          "ccd_case_number": "1634915906081337",
-          "amount": 1,
-          "reason": "Retrospective remission",
-          "refund_status": {
-            "name": "Sent for approval",
-            "description": "Refund request submitted"
-          },
-          "refund_reference": "RF-1634-9738-7825-1198",
-          "payment_reference": "RC-1634-9194-2653-8917",
-          "user_full_name": "TeamLeader2 Approver2",
-          "email_id": "probaterequesterapprover22@mailnesia.com",
-          "date_created": "2021-10-23 07:24:38.29",
-          "date_updated": "2021-10-23 07:24:38.29"
-        },
-        {
-          "ccd_case_number": "1634915906081337",
-          "amount": 218,
-          "reason": "Fee not due",
-          "refund_status": {
-            "name": "Sent for approval",
-            "description": "Refund request submitted"
-          },
-          "refund_reference": "RF-1635-1905-9155-5388",
-          "payment_reference": "RC-1634-9196-8009-2114",
-          "user_full_name": "TeamLeader2 Approver2",
-          "email_id": "probaterequesterapprover22@mailnesia.com",
-          "date_created": "2021-10-25 19:36:31.528",
-          "date_updated": "2021-10-25 19:36:31.528"
-        },
-        {
-          "ccd_case_number": "1634915906081337",
-          "amount": 218,
-          "reason": "Duplicate fee (customer error)",
-          "refund_status": {
-            "name": "Sent for approval",
-            "description": "Refund request submitted"
-          },
-          "refund_reference": "RF-1635-1906-5785-7207",
-          "payment_reference": "RC-1634-9195-5645-7086",
-          "user_full_name": "TeamLeader2 Approver2",
-          "email_id": "probaterequesterapprover22@mailnesia.com",
-          "date_created": "2021-10-25 19:37:37.854",
-          "date_updated": "2021-10-25 19:37:37.854"
-        }
-      ],
-      isFromRefundStatusPage: {},
-      CCD_CASE_NUMBER: {},
-      iscancelClicked: {},
-      refundlistsource: {},
-      refundReference: {}
-    });
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [],
@@ -138,7 +74,7 @@ describe('RefundStatusComponent', () => {
         { provide: Router, useFactory: routerStub },
         { provide: OrderslistService, useFactory: orderslistServiceStub },
         { provide: NotificationService, useFactory: notificationServiceStub },
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub }
+        { provide: 'PAYMENT_LIB', useClass: PaymentLibComponent }
       ]
     });
     fixture = TestBed.createComponent(RefundStatusComponent);
@@ -281,24 +217,6 @@ describe('RefundStatusComponent', () => {
   //     spyOn(component, 'resetRemissionForm').and.callThrough();
   //     component.goToReviewAndSubmitView();
   //     expect(component.resetRemissionForm).toHaveBeenCalled();
-  //   });
-  // });
-
-
-
-  // describe('gotoReviewRefundConfirmationPage', () => {
-  //   it('makes expected calls', () => {
-  //     const refundsServiceStub: RefundsService = fixture.debugElement.injector.get(
-  //       RefundsService
-  //     );
-  //     const resubmitRequest = <IResubmitRefundRequest>{
-  //       refund_reason : 'remission',
-  //       amount : 10
-  //   };
-  //     component.oldRefundReason = 'remission';
-  //     spyOn(refundsServiceStub, 'patchResubmitRefund').and.callThrough();
-  //     component.gotoReviewRefundConfirmationPage();
-  //     expect(refundsServiceStub.patchResubmitRefund).toHaveBeenCalled();
   //   });
   // });
 });

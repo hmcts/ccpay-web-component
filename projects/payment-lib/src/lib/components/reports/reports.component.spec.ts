@@ -6,6 +6,7 @@ import { ErrorHandlerService } from '../../services/shared/error-handler.service
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { XlFileService } from '../../services/xl-file/xl-file.service';
 import { ReportsComponent } from './reports.component';
+import { PaymentLibComponent } from '../../payment-lib.component';
 
 describe('ReportsComponent', () => {
   let component: ReportsComponent;
@@ -34,10 +35,6 @@ describe('ReportsComponent', () => {
       exportAsExcelFile: (arg, arg1) => ({})
     });
 
-    const paymentLibComponentStub = () => ({
-      viewName: {}
-    });
-
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ReportsComponent],
@@ -49,7 +46,7 @@ describe('ReportsComponent', () => {
         },
         { provide: ErrorHandlerService, useFactory: errorHandlerServiceStub },
         { provide: PaymentViewService, useFactory: paymentViewServiceStub },
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+        { provide: 'PAYMENT_LIB', useClass: PaymentLibComponent },
         { provide: XlFileService, useFactory: xlFileServiceStub }
       ]
     });

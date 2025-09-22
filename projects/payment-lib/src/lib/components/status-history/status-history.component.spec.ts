@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { StatusHistoryService } from '../../services/status-history/status-history.service';
 import { StatusHistoryComponent } from './status-history.component';
+import { PaymentLibComponent } from '../../payment-lib.component';
 
 describe('StatusHistoryComponent', () => {
   let component: StatusHistoryComponent;
@@ -13,16 +14,12 @@ describe('StatusHistoryComponent', () => {
         subscribe: f => f({})
       })
     });
-    const paymentLibComponentStub = () => ({
-      paymentReference: {},
-      paymentMethod: {}
-    });
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [],
       providers: [
         { provide: StatusHistoryService, useFactory: statusHistoryServiceStub },
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub }
+        { provide: 'PAYMENT_LIB', useClass: PaymentLibComponent }
       ]
     });
     fixture = TestBed.createComponent(StatusHistoryComponent);
