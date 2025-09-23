@@ -46,7 +46,7 @@ describe('UnprocessedPaymentsComponent', () => {
           provide: BulkScaningPaymentService,
           useFactory: bulkScaningPaymentServiceStub
         },
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+        { provide: PaymentLibComponent, useFactory: paymentLibComponentStub },
         { provide: Router, useFactory: routerStub },
         { provide: PaymentViewService, useFactory: paymentViewServiceStub },
         { provide: OrderslistService, useFactory: orderslistServiceStub }
