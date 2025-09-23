@@ -5,10 +5,9 @@ import type { PaymentLibComponent } from '../../payment-lib.component';
 type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
-    selector: 'ccpay-payment-list',
-    templateUrl: './payment-list.component.html',
-    styleUrls: ['./payment-list.component.css'],
-    standalone: false
+  selector: 'ccpay-payment-list',
+  templateUrl: './payment-list.component.html',
+  styleUrls: ['./payment-list.component.css']
 })
 export class PaymentListComponent implements OnInit {
   payments: IPayments;

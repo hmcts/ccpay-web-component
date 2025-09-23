@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { CardDetailsService } from '../../services/card-details/card-details.service';
 import {ICardDetails} from '../../interfaces/ICardDetails';
-import { PaymentLibComponent } from '../../payment-lib.component';
+import type { PaymentLibComponent } from '../../payment-lib.component';
 
 @Component({
-    selector: 'ccpay-card-details',
-    templateUrl: './card-details.component.html',
-    styleUrls: ['./card-details.component.css'],
-    standalone: false
+  selector: 'ccpay-card-details',
+  templateUrl: './card-details.component.html',
+  styleUrls: ['./card-details.component.css']
 })
 export class CardDetailsComponent implements OnInit {
   pageTitle: string = 'Card details';
@@ -16,7 +15,7 @@ export class CardDetailsComponent implements OnInit {
   errorMessage: string;
 
   constructor(private cardDetailsService: CardDetailsService,
-              private paymentLibComponent: PaymentLibComponent) { }
+              @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibComponent) { }
 
   ngOnInit() {
     this.cardDetailsService.getCardDetails(this.paymentLibComponent.paymentReference).subscribe(

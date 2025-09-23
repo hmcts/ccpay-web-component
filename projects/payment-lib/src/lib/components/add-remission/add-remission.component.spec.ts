@@ -15,10 +15,7 @@ import { Pipe, PipeTransform } from '@angular/core'
 import {NotificationService} from "../../services/notification/notification.service";
 import { PaymentLibComponent } from '../../payment-lib.component';
 
-@Pipe({
-    name: 'rpxTranslate',
-    standalone: false
-})
+@Pipe({ name: 'rpxTranslate' })
 class RpxTranslateMockPipe implements PipeTransform {
   public transform(value: string): string {
     return value;
@@ -88,7 +85,7 @@ describe('AddRemissionComponent', () => {
   }
 
   beforeEach(() => {
-    const formBuilderStub = () => ({ 
+    const formBuilderStub = () => ({
       group: object => ({  remissionCode:"HWF-A1B-23C",amount: 10,refundReason: "Test Reason", refundDDReason:"Test Default reason", reason:"Testing"}),
       array: (controls) => new FormArray(controls || [])
     });
@@ -519,9 +516,9 @@ describe('AddRemissionComponent', () => {
         component.fees = [];
         component.totalRefundAmount = 100;
         spyOn(paymentViewServiceStub, 'postRefundsReason').and.returnValue(of(JSON.stringify(mockResponse)));
-        
+
         component.confirmRetroRefund();
-        
+
         expect(paymentViewServiceStub.postRefundsReason).toHaveBeenCalled();
     });
   });

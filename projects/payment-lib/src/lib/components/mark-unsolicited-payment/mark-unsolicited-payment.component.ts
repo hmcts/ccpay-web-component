@@ -10,10 +10,9 @@ type PaymentLibAlias = PaymentLibComponent;
 
 
 @Component({
-    selector: 'app-mark-unsolicited-payment',
-    templateUrl: './mark-unsolicited-payment.component.html',
-    styleUrls: ['./mark-unsolicited-payment.component.scss'],
-    standalone: false
+  selector: 'app-mark-unsolicited-payment',
+  templateUrl: './mark-unsolicited-payment.component.html',
+  styleUrls: ['./mark-unsolicited-payment.component.scss']
 })
 export class MarkUnsolicitedPaymentComponent implements OnInit {
   @Input() caseType: string;

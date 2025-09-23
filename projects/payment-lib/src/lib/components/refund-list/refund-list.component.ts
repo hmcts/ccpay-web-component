@@ -3,10 +3,9 @@ import { RefundsService } from '../../services/refunds/refunds.service';
 import { IRefundList } from '../../interfaces/IRefundList';
 
 @Component({
-    selector: 'ccpay-refund-list',
-    templateUrl: './refund-list.component.html',
-    styleUrls: ['./refund-list.component.css'],
-    standalone: false
+  selector: 'ccpay-refund-list',
+  templateUrl: './refund-list.component.html',
+  styleUrls: ['./refund-list.component.css']
 })
 export class RefundListComponent implements OnInit {
   @Input('USERID') USERID: string;
@@ -31,10 +30,10 @@ export class RefundListComponent implements OnInit {
   isAuthorized: boolean = true;
   userLst
   ngOnInit() {
-    
+
     this.userLst = this.LOGGEDINUSERROLES;
 
-    
+
     if(this.LOGGEDINUSERROLES.some(i =>i.includes('payments-refund-approver'))){
       this.isAuthorized = true;
     } else {
@@ -42,7 +41,7 @@ export class RefundListComponent implements OnInit {
       this.isAuthorized = false;
     }
 
-  
+
     this.tableApprovalHeader = 'Refunds to be approved';
     this.tableRejectedHeader = 'Refunds returned to caseworker';
 
@@ -69,5 +68,5 @@ export class RefundListComponent implements OnInit {
     };
 
   }
-  
+
 }

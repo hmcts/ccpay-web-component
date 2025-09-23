@@ -118,7 +118,7 @@
      <div class="column">
       <h2 class="heading-medium">{{ "Disputed payment history" | rpxTranslate }}</h2>
     </div>
-    
+
     <div>
       <table>
           <thead>
@@ -130,7 +130,7 @@
               <th>{{ "Event" | rpxTranslate }}</th>
               <th></th>
             </tr>
-          </thead> 
+          </thead>
           <tbody *ngIf="!errorMsg && allPaymentsFailure.length > 0">
             <tr *ngFor="let payment of allPaymentsFailure">
               <td>{{ payment.status | capitalize | rpxTranslate }}</td>
@@ -139,7 +139,7 @@
               <td>{{ payment.payment_reference }}</td>
               <td >{{ payment.failure_type | rpxTranslate }}</td>
               <td>
-                
+
                 <a href="javascript:void(0)" (click)="goToPaymentFailuePage(payment)">{{ "Show detail" | rpxTranslate }}</a>
 
               </td>
@@ -155,7 +155,7 @@
     <br/>
     <br/>
   </div>
-      
+
      <div  *ngIf="checkForFees(paymentGroup)">
       <div  *ngIf="paymentGroup.fees.length > 0">
         <div class="column">
@@ -232,7 +232,7 @@
 
 </ng-container>
 <ng-container *ngIf="viewStatus === 'addremission' && feeId && viewCompStatus !== 'overpayment' && viewCompStatus !== 'overPaymentAddressCapture' && viewCompStatus !== 'overpaymentcheckandanswer'">
-<ccpay-add-remission 
+<ccpay-add-remission
 [isTurnOff]="isTurnOff"
 [isStrategicFixEnable]="isStrategicFixEnable"
 [viewCompStatus]= "viewStatus"
@@ -284,7 +284,7 @@
 </ng-container>
 
 <ng-container *ngIf="viewStatus === 'issuerefund' && viewCompStatus !== 'overpayment' && viewCompStatus !== 'overPaymentAddressCapture' && viewCompStatus !== 'overpaymentcheckandanswer'">
-    <ccpay-add-remission 
+    <ccpay-add-remission
     [isTurnOff]="isTurnOff"
     [isStrategicFixEnable]="isStrategicFixEnable"
     [payment] = 'paymentGroup.payments[0]'
@@ -308,7 +308,7 @@
     [fees] ="paymentFees"
     [isFullyRefund] = "isFullyRefund"
     [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES">
-    
+
   ></ccpay-add-remission>
 </ng-container>
 <ng-container *ngIf="viewStatus === 'order-full-view' && viewCompStatus !== 'overpayment' && viewCompStatus !== 'overPaymentAddressCapture' && viewCompStatus !== 'overpaymentcheckandanswer'">
@@ -335,7 +335,7 @@
 </div>
 <div class="over-payment">
 <ng-container *ngIf="viewCompStatus === 'overpayment'">
-  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='OVERPAYMENTPAGE'> 
+  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='OVERPAYMENTPAGE'>
   <h1 class="heading-large">{{ "Issue refund" | rpxTranslate }}</h1>
   <h1 class="heading-medium">{{ "Case reference" | rpxTranslate}}: {{ccdCaseNumber | ccdHyphens }}</h1>
   <span id="how-contacted-conditional-hint govuk-font19px" class="form-hint">
@@ -362,7 +362,7 @@
     </div>
       <button class="govuk-button govuk-button--secondary over-payment-alignment govuk-font19px"
       (click)="goToPaymentViewComponent()"> {{ "Previous" | rpxTranslate }}</button>
-      <button 
+      <button
       (click)="continuePayment(paymentGroup)"
       [disabled]="isContinueBtnDisabled"
       [ngClass]='isContinueBtnDisabled ? "button button--disabled govuk-!-margin-right-1 govuk-font19px" : "button govuk-!-margin-right-1 govuk-font19px"'
@@ -372,13 +372,13 @@
 </ng-container>
 
 <ng-container *ngIf="viewCompStatus === 'overPaymentAddressCapture'">
-  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='OVERPAYMENTADDRESSCAPTUREPAGE'>      
+  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='OVERPAYMENTADDRESSCAPTUREPAGE'>
   <h1 class="govuk-heading-l">{{ "Issue refund" | rpxTranslate }}</h1>
   <h2 class="govuk-heading-m govuk-font19px">{{ "Case reference" | rpxTranslate }}: {{ccdCaseNumber | ccdHyphens }}</h2>
   <span id="how-contacted-conditional-hint" class="govuk-hint govuk-font19px">
     {{ "Payment reference" | rpxTranslate }}: {{paymentGroup?.payments[0]?.reference}}
   </span>
-<ccpay-contact-details 
+<ccpay-contact-details
 [addressObj] = notification
 (assignContactDetails)="getContactDetails($event)"
 (redirectToIssueRefund)="gotoPaymentSelectPage($event)" ></ccpay-contact-details>
@@ -390,9 +390,9 @@
 </ng-container>
 
 <ng-container *ngIf="viewCompStatus === 'overpaymentcheckandanswer'">
-  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='ADDREFUNDFORREMISSION'> 
+  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='ADDREFUNDFORREMISSION'>
   <div class="govuk-warning-text">
-   
+
       <h1 class="heading-large"> {{ "Check your answers" | rpxTranslate }}</h1>
   </div>
   <table class="govuk-table">
@@ -450,8 +450,8 @@
     </tr>
   </table>
 
-  <app-notification-preview *ngIf="notificationPreview" 
-  [payment]="paymentGroup.payments[0]" 
+  <app-notification-preview *ngIf="notificationPreview"
+  [payment]="paymentGroup.payments[0]"
   [contactDetails]="contactDetailsObj"
   [refundReason]="'RR037'"
   [refundAmount]="getOverPaymentValue()"></app-notification-preview>
@@ -470,18 +470,18 @@
 
 </ng-container>
 <ng-container *ngIf="viewStatus === 'refundconfirmationpage' && viewCompStatus !== 'overpayment' && viewCompStatus !== 'overPaymentAddressCapture' && viewCompStatus !== 'overpaymentcheckandanswer'">
-  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='RETROREMISSIONREFUNDCONFIRMATIONPAGE'> 
+  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='RETROREMISSIONREFUNDCONFIRMATIONPAGE'>
   <div class="govuk-grid-row pagesize">
     <div >
       <div class="govuk-panel govuk-panel--confirmation">
         <h1 class="govuk-panel_view_title">
           {{ "Refund submitted" | rpxTranslate }}
         </h1>
-        
+
         <div class="govuk-panel__body">
           <p class="govuk-body white"><strong class="white">{{ "Refund reference" | rpxTranslate}}: {{refundReference}}</strong></p>
         </div>
-  
+
       </div>
       <h2 class="govuk-heading-l">{{"What happens next" | rpxTranslate }}</h2>
       <p class="govuk-body">

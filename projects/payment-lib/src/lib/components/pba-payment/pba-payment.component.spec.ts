@@ -9,10 +9,7 @@ import { PaymentLibComponent } from '../../payment-lib.component';
 import { WebComponentHttpClient } from '../../services/shared/httpclient/webcomponent.http.client';
 import { Meta } from '@angular/platform-browser';
 
-@Pipe({
-    name: 'rpxTranslate',
-    standalone: false
-})
+@Pipe({name: 'rpxTranslate'})
 class RpxTranslateMockPipe implements PipeTransform {
   public transform(value: string): string {
     return value;
@@ -35,7 +32,7 @@ describe('PBA payment component', () => {
       addTag: (tag) => ({}),
       updateTag: (tag) => ({})
     });
-    
+
     TestBed.configureTestingModule({
     declarations: [RpxTranslateMockPipe],
     schemas: [NO_ERRORS_SCHEMA],

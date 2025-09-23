@@ -8,10 +8,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { NotificationService} from "../../services/notification/notification.service";
 import { PaymentLibComponent } from '../../payment-lib.component';
 
-@Pipe({
-    name: 'rpxTranslate',
-    standalone: false
-})
+@Pipe({ name: 'rpxTranslate' })
 class RpxTranslateMockPipe implements PipeTransform {
   public transform(value: string): string {
     return value;

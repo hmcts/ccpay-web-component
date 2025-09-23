@@ -16,10 +16,9 @@ type PaymentLibAlias = PaymentLibComponent;
 
 
 @Component({
-    selector: 'app-allocate-payments',
-    templateUrl: './allocate-payments.component.html',
-    styleUrls: ['./allocate-payments.component.scss'],
-    standalone: false
+  selector: 'app-allocate-payments',
+  templateUrl: './allocate-payments.component.html',
+  styleUrls: ['./allocate-payments.component.scss']
 })
 export class AllocatePaymentsComponent implements OnInit {
   @Input() isTurnOff: boolean;

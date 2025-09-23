@@ -6,10 +6,7 @@ import { BulkScaningPaymentService} from "../../services/bulk-scaning-payment/bu
 import { CaseTransactionsService} from "../../services/case-transactions/case-transactions.service";
 import { PaymentLibComponent } from '../../payment-lib.component';
 
-@Pipe({
-    name: 'rpxTranslate',
-    standalone: false
-})
+@Pipe({ name: 'rpxTranslate' })
 class RpxTranslateMockPipe implements PipeTransform {
   public transform(value: string): string {
     return value;

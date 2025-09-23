@@ -5,10 +5,9 @@ import { CASES } from './mock-case-data';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-case-list',
-    templateUrl: './case-list.component.html',
-    styleUrls: ['./case-list.component.css'],
-    standalone: false
+  selector: 'app-case-list',
+  templateUrl: './case-list.component.html',
+  styleUrls: ['./case-list.component.css']
 })
 export class CaseListComponent implements OnInit {
   pageTitle: string = 'Case list';

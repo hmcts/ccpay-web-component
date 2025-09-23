@@ -40,22 +40,23 @@ const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 const resolvedPromise = Promise.resolve(null);
 
 @Component({
-    selector: 'ccpay-add-remission',
-    templateUrl: './add-remission.component.html',
-    styleUrls: ['./add-remission.component.scss'],
-    providers: [{ provide: 'ADD_REMISSION', useExisting: AddRemissionComponent }],
-    imports: [
-        forwardRef(() => PaymentViewComponent),
-        CommonModule,
-        forwardRef(() => ServiceRequestComponent),
-        forwardRef(() => NotificationPreviewComponent),
-        forwardRef(() => ContactDetailsComponent),
-        CcdHyphensPipe,
-        CapitalizePipe,
-        FormsModule,
-        ReactiveFormsModule,
-        RpxTranslationModule
-    ]
+  selector: 'ccpay-add-remission',
+  templateUrl: './add-remission.component.html',
+  styleUrls: ['./add-remission.component.scss'],
+  providers: [{ provide: 'ADD_REMISSION', useExisting: AddRemissionComponent }],
+  imports: [
+    forwardRef(() => PaymentViewComponent),
+    CommonModule,
+    forwardRef(() => ServiceRequestComponent),
+    forwardRef(() => NotificationPreviewComponent),
+    forwardRef(() => ContactDetailsComponent),
+    CcdHyphensPipe,
+    CapitalizePipe,
+    FormsModule,
+    ReactiveFormsModule,
+    RpxTranslationModule
+  ],
+  standalone: true
 })
 export class AddRemissionComponent implements OnInit {
   @Input() fee: IFee;

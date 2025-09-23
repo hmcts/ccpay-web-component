@@ -11,10 +11,9 @@ import { FindValueSubscriber } from 'rxjs/internal/operators/find';
 type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
-    selector: 'ccpay-reports',
-    templateUrl: './reports.component.html',
-    styleUrls: ['./reports.component.scss'],
-    standalone: false
+  selector: 'ccpay-reports',
+  templateUrl: './reports.component.html',
+  styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
   @Input('ISPAYMENTSTATUSENABLED') ISPAYMENTSTATUSENABLED: boolean = true;

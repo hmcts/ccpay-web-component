@@ -23,17 +23,18 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
-    selector: 'ccpay-refund-status',
-    templateUrl: './refund-status.component.html',
-    styleUrls: ['./refund-status.component.css'],
-    imports: [
-        CommonModule,
-        forwardRef(() => NotificationPreviewComponent),
-        forwardRef(() => ContactDetailsComponent),
-        forwardRef(() => AddRemissionComponent),
-        CcdHyphensPipe,
-        CapitalizePipe,
-    ]
+  selector: 'ccpay-refund-status',
+  templateUrl: './refund-status.component.html',
+  styleUrls: ['./refund-status.component.css'],
+  imports: [
+    CommonModule,
+    forwardRef(() => NotificationPreviewComponent),
+    forwardRef(() => ContactDetailsComponent),
+    forwardRef(() => AddRemissionComponent),
+    CcdHyphensPipe,
+    CapitalizePipe,
+  ],
+  standalone: true
 })
 export class RefundStatusComponent implements OnInit {
   @Input('LOGGEDINUSERROLES') LOGGEDINUSERROLES: string[] = [];

@@ -14,10 +14,9 @@ import { INotificationPreview } from '../../interfaces/INotificationPreview';
 type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
-    selector: 'ccpay-process-refund',
-    templateUrl: './process-refund.component.html',
-    styleUrls: ['./process-refund.component.css'],
-    standalone: false
+  selector: 'ccpay-process-refund',
+  templateUrl: './process-refund.component.html',
+  styleUrls: ['./process-refund.component.css']
 })
 export class ProcessRefundComponent implements OnInit {
   @Input() refundReference: string;
