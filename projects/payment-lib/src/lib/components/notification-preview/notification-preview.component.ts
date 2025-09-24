@@ -9,11 +9,10 @@ import { Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-notification-preview',
-  templateUrl: './notification-preview.component.html',
-  styleUrls: ['./notification-preview.component.scss'],
-  imports: [CommonModule],
-  standalone: true
+    selector: 'app-notification-preview',
+    templateUrl: './notification-preview.component.html',
+    styleUrls: ['./notification-preview.component.scss'],
+    imports: [CommonModule]
 })
 export class NotificationPreviewComponent implements OnInit {
   @Input() payment: IPayment;

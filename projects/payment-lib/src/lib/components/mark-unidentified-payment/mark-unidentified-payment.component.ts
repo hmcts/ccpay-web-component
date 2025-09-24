@@ -9,9 +9,10 @@ import { AllocatePaymentRequest } from '../../interfaces/AllocatePaymentRequest'
 type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
-  selector: 'app-mark-unidentified-payment',
-  templateUrl: './mark-unidentified-payment.component.html',
-  styleUrls: ['./mark-unidentified-payment.component.scss']
+    selector: 'app-mark-unidentified-payment',
+    templateUrl: './mark-unidentified-payment.component.html',
+    styleUrls: ['./mark-unidentified-payment.component.scss'],
+    standalone: false
 })
 export class MarkUnidentifiedPaymentComponent implements OnInit {
   @Input() caseType: string;

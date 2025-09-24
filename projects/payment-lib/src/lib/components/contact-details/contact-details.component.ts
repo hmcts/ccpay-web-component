@@ -6,15 +6,14 @@ import { CommonModule } from '@angular/common';
 type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
-  selector: 'ccpay-contact-details',
-  templateUrl: './contact-details.component.html',
-  styleUrls: ['./contact-details.component.css'],
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    CommonModule
-  ],
-  standalone: true
+    selector: 'ccpay-contact-details',
+    templateUrl: './contact-details.component.html',
+    styleUrls: ['./contact-details.component.css'],
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        CommonModule
+    ]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input('isEditOperation') isEditOperation: boolean;

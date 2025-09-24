@@ -8,9 +8,10 @@ import { OrderslistService } from '../../services/orderslist.service';
 import { ActivatedRoute, Router } from '@angular/router';
 type PaymentLibAlias = PaymentLibComponent;
 @Component({
-  selector: 'ccpay-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css']
+    selector: 'ccpay-table',
+    templateUrl: './table.component.html',
+    styleUrls: ['./table.component.css'],
+    standalone: false
 })
 export class TableComponent {
   @Input('DATASOURCE') DATASOURCE: any[];

@@ -6,7 +6,10 @@ import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 import {NO_ERRORS_SCHEMA, Pipe, PipeTransform} from '@angular/core'
 
-@Pipe({name: 'rpxTranslate'})
+@Pipe({
+    name: 'rpxTranslate',
+    standalone: false
+})
 class RpxTranslateMockPipe implements PipeTransform {
   public transform(value: string): string {
     return value;

@@ -3,9 +3,10 @@ import { RefundsService } from '../../services/refunds/refunds.service';
 import { IRefundList } from '../../interfaces/IRefundList';
 
 @Component({
-  selector: 'ccpay-refund-list',
-  templateUrl: './refund-list.component.html',
-  styleUrls: ['./refund-list.component.css']
+    selector: 'ccpay-refund-list',
+    templateUrl: './refund-list.component.html',
+    styleUrls: ['./refund-list.component.css'],
+    standalone: false
 })
 export class RefundListComponent implements OnInit {
   @Input('USERID') USERID: string;
