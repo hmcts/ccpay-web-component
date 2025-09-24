@@ -33,10 +33,24 @@ describe('AddRemissionComponent', () => {
     amount: new FormControl(),
     refundReason: new FormControl(),
     refundDDReason: new FormControl(),
-    reason: new FormControl()
+    reason: new FormControl(),
+    feesList: new FormControl([
+      { refund_amount: 100, selected: 1 },
+      { refund_amount: 50, selected: 0 }
+    ])
   });
 
-  form.setValue({remissionCode:"HWF-A1B-23C",amount:"100",refundReason:"Test Refund  Reason",refundDDReason:"Default Reason",reason:"Test Reason"});
+  form.setValue({
+    remissionCode:"HWF-A1B-23C",
+    amount:"100",
+    refundReason:"Test Refund  Reason",
+    refundDDReason:"Default Reason",
+    reason:"Test Reason",
+    feesList: [
+      { refund_amount: 100, selected: 1 },
+      { refund_amount: 50, selected: 0 }
+    ]
+  });
 
   let fee = {
     "code": "FEE0209",
@@ -92,7 +106,11 @@ describe('AddRemissionComponent', () => {
           amount: new FormControl(10),
           refundReason: new FormControl("Test Reason"),
           refundDDReason: new FormControl("Test Default reason"),
-          reason: new FormControl("Testing")
+          reason: new FormControl("Testing"),
+          feesList: new FormControl([
+            { refund_amount: 100, selected: 1 },
+            { refund_amount: 50, selected: 0 }
+          ])
         });
         // Add the controls property that the component expects
         (formGroup as any).controls = {
@@ -100,7 +118,20 @@ describe('AddRemissionComponent', () => {
           amount: formGroup.get('amount'),
           refundReason: formGroup.get('refundReason'),
           refundDDReason: formGroup.get('refundDDReason'),
-          reason: formGroup.get('reason')
+          reason: formGroup.get('reason'),
+          feesList: formGroup.get('feesList')
+        };
+        // Add value property with proper structure
+        (formGroup as any).value = {
+          remissionCode: "HWF-A1B-23C",
+          amount: 10,
+          refundReason: "Test Reason",
+          refundDDReason: "Test Default reason",
+          reason: "Testing",
+          feesList: [
+            { refund_amount: 100, selected: 1 },
+            { refund_amount: 50, selected: 0 }
+          ]
         };
         return formGroup;
       },
@@ -467,9 +498,11 @@ describe('AddRemissionComponent', () => {
                             "paymentGroupReference":""
                             };
       component.payment = <any>payment;
+      component.remissionForm = form;
       // component.payment.reference = 'RC-1629-1935-4353-9730';
       spyOn(paymentViewServiceStub, 'postRefundsReason').and.returnValue(of(mockResponse));
       spyOn(changeDetectorRefStub, 'detectChanges').and.callThrough();
+      component.confirmIssueRefund();
       expect(paymentViewServiceStub.postRefundsReason).toHaveBeenCalled();
     });
   });
@@ -503,7 +536,9 @@ describe('AddRemissionComponent', () => {
                                   site_id: "AA08",
                                   status: "Success" }
         component.payment =  payment;
+        component.remissionForm = form;
         spyOn(paymentViewServiceStub, 'postRefundsReason').and.returnValue(of(mockResponse));
+        component.confirmRetroRemission();
       expect(paymentViewServiceStub.postRefundsReason).toHaveBeenCalled();
     });
   });
