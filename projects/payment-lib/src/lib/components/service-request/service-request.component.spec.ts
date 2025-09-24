@@ -1,27 +1,37 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Pipe, PipeTransform } from '@angular/core';
 import { ServiceRequestComponent } from './service-request.component';
-
-@Pipe({
-    name: 'rpxTranslate',
-    standalone: false
-})
-class RpxTranslateMockPipe implements PipeTransform {
-  public transform(value: string): string {
-    return value;
-  }
-}
+import { 
+  RpxTranslateMockPipe, 
+  CcdHyphensMockPipe,
+  createPaymentLibComponentStub,
+  createPaymentViewServiceStub,
+  createNotificationServiceStub,
+  createOrderslistServiceStub,
+  createChangeDetectorRefStub,
+  createRouterStub,
+  COMMON_TEST_IMPORTS
+} from '../../testing/test-helpers';
+import { PaymentViewService } from '../../services/payment-view/payment-view.service';
+import { NotificationService } from '../../services/notification/notification.service';
+import { OrderslistService } from '../../services/orderslist.service';
+import { ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 describe('ServiceRequestComponent', () => {
   let component: ServiceRequestComponent;
   let fixture: ComponentFixture<ServiceRequestComponent>;
-  const paymentLibComponentStub = () => ({ viewName: {} });
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RpxTranslateMockPipe ],
+      imports: [...COMMON_TEST_IMPORTS],
+      declarations: [ RpxTranslateMockPipe, CcdHyphensMockPipe ],
       providers: [
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+        { provide: 'PAYMENT_LIB', useFactory: createPaymentLibComponentStub },
+        { provide: PaymentViewService, useFactory: createPaymentViewServiceStub },
+        { provide: NotificationService, useFactory: createNotificationServiceStub },
+        { provide: OrderslistService, useFactory: createOrderslistServiceStub },
+        { provide: ChangeDetectorRef, useFactory: createChangeDetectorRefStub },
+        { provide: Router, useFactory: createRouterStub }
       ]
     })
     .compileComponents();

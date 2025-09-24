@@ -27,12 +27,33 @@ module.exports = config => {
       karmaCustomLogger
     ],
     // leave Jasmine Spec Runner output visible in browser
-    client: { clearContext: false },
+    client: { 
+      clearContext: false,
+      jasmine: {
+        random: false
+      }
+    },
     customLaunchers: {
       ChromeDebug: {
         base: 'Chrome',
-        flags: [ '--remote-debugging-port=9333', '--headless'],
+        flags: [ 
+          '--remote-debugging-port=9333', 
+          '--headless',
+          '--no-sandbox',
+          '--disable-web-security',
+          '--disable-features=VizDisplayCompositor',
+          '--max_old_space_size=8192'
+        ],
         debug: true
+      },
+      ChromeHeadlessCI: {
+        base: 'ChromeHeadless',
+        flags: [
+          '--no-sandbox',
+          '--disable-web-security',
+          '--disable-features=VizDisplayCompositor',
+          '--max_old_space_size=8192'
+        ]
       }
     },
     coverageReporter: {
@@ -43,10 +64,14 @@ module.exports = config => {
     reporters: ['spec', 'kjhtml', 'coverage-istanbul'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_DEBUG,
+    logLevel: config.LOG_INFO,
     autoWatch: false,
-    browsers: [ 'ChromeDebug' ],
+    browsers: [ 'ChromeHeadless' ],
     singleRun: true,
-    watch: false
+    watch: false,
+    browserDisconnectTimeout: 20000,
+    browserDisconnectTolerance: 3,
+    browserNoActivityTimeout: 60000,
+    captureTimeout: 60000
   });
 };

@@ -1,7 +1,7 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { IPayment } from '../../interfaces/IPayment';
@@ -85,7 +85,10 @@ describe('AddRemissionComponent', () => {
   }
 
   beforeEach(() => {
-    const formBuilderStub = () => ({ group: object => ({  remissionCode:"HWF-A1B-23C",amount: 10,refundReason: "Test Reason", refundDDReason:"Test Default reason", reason:"Testing"}) });
+    const formBuilderStub = () => ({ 
+      group: object => ({  remissionCode:"HWF-A1B-23C",amount: 10,refundReason: "Test Reason", refundDDReason:"Test Default reason", reason:"Testing"}),
+      array: (controls) => new FormArray(controls || [])
+    });
     const routerStub = () => ({
       routeReuseStrategy: { shouldReuseRoute: {} },
       onSameUrlNavigation: {},
@@ -115,7 +118,10 @@ describe('AddRemissionComponent', () => {
       ISTURNOFF: {},
       isFromServiceRequestPage: {},
       ISBSENABLE: {},
-      isFromPaymentDetailPage: {}
+      isFromPaymentDetailPage: {},
+      addPaymentGroup: () => ({}),
+      paymentGroupResponse: {},
+      paymentGroups: []
     });
     const refundsServiceStub = () => ({
       getRefundReasons: () => ({ subscribe: f => f({}) })
@@ -125,7 +131,8 @@ describe('AddRemissionComponent', () => {
     const orderslistServiceStub = () => ({
       setisFromServiceRequestPage: arg => ({}),
       setnavigationPage: string => ({}),
-      setpaymentPageView: object => ({})
+      setpaymentPageView: object => ({}),
+      setOrderRef: (orderRef) => ({})
     });
 
 
