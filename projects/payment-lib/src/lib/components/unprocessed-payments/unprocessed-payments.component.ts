@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter, Inject } from '@angular/core';
 import { BulkScaningPaymentService } from '../../services/bulk-scaning-payment/bulk-scaning-payment.service';
-import { PaymentLibComponent } from '../../payment-lib.component';
+type PaymentLibAlias = any;
 import { IBSPayments } from '../../interfaces/IBSPayments';
 import { Router } from '@angular/router';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
@@ -50,7 +50,7 @@ export class UnprocessedPaymentsComponent implements OnInit {
 
   constructor(private router: Router,
     private bulkScaningPaymentService: BulkScaningPaymentService,
-    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibComponent,
+    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibAlias,
     private paymentViewService: PaymentViewService,
     private OrderslistService: OrderslistService
   ) { }
