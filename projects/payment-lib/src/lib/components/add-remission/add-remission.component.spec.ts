@@ -86,8 +86,25 @@ describe('AddRemissionComponent', () => {
 
   beforeEach(() => {
     const formBuilderStub = () => ({ 
-      group: object => ({  remissionCode:"HWF-A1B-23C",amount: 10,refundReason: "Test Reason", refundDDReason:"Test Default reason", reason:"Testing"}),
-      array: (controls) => new FormArray(controls || [])
+      group: (config: any) => {
+        const formGroup = new FormGroup({
+          remissionCode: new FormControl("HWF-A1B-23C"),
+          amount: new FormControl(10),
+          refundReason: new FormControl("Test Reason"),
+          refundDDReason: new FormControl("Test Default reason"),
+          reason: new FormControl("Testing")
+        });
+        // Add the controls property that the component expects
+        (formGroup as any).controls = {
+          remissionCode: formGroup.get('remissionCode'),
+          amount: formGroup.get('amount'),
+          refundReason: formGroup.get('refundReason'),
+          refundDDReason: formGroup.get('refundDDReason'),
+          reason: formGroup.get('reason')
+        };
+        return formGroup;
+      },
+      array: (controls: any[]) => new FormArray(controls || [])
     });
     const routerStub = () => ({
       routeReuseStrategy: { shouldReuseRoute: {} },
@@ -101,8 +118,8 @@ describe('AddRemissionComponent', () => {
       postPaymentGroupWithRetroRemissions: (arg, id, requestBody) => ({
         subscribe: f => f({})
       }),
-      postRefundRetroRemission: requestBody => ({ subscribe: f => f('{}') }),
-      postRefundsReason: requestBody => ({ subscribe: f => f({}) }),
+      postRefundRetroRemission: requestBody => ({ subscribe: f => f('{"status": "success"}') }),
+      postRefundsReason: requestBody => ({ subscribe: f => f({ status: 'success' }) }),
       getBSfeature: () => ({ subscribe: f => f({}) })
     });
     const paymentLibComponentStub = () => ({
@@ -112,7 +129,9 @@ describe('AddRemissionComponent', () => {
       iscancelClicked: {},
       isFromRefundStatusPage: {},
       viewName: {},
-      REFUNDLIST: {},
+      REFUNDLIST: {
+        reduce: (fn: any, initial: any) => initial
+      },
       TAKEPAYMENT: {},
       SERVICEREQUEST: {},
       ISTURNOFF: {},
@@ -132,7 +151,11 @@ describe('AddRemissionComponent', () => {
       setisFromServiceRequestPage: arg => ({}),
       setnavigationPage: string => ({}),
       setpaymentPageView: object => ({}),
-      setOrderRef: (orderRef) => ({})
+      setOrderRef: (orderRef) => ({}),
+      setorderCCDEvent: (event) => ({}),
+      setorderCreated: (created) => ({}),
+      setorderCCDEventValue: (value) => ({}),
+      getOrderRef: () => 'test-order-ref'
     });
 
 

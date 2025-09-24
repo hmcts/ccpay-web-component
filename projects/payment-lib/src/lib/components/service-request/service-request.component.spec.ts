@@ -1,7 +1,7 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ServiceRequestComponent } from './service-request.component';
-import { 
-  RpxTranslateMockPipe, 
+import {
+  RpxTranslateMockPipe,
   CcdHyphensMockPipe,
   createPaymentLibComponentStub,
   createPaymentViewServiceStub,

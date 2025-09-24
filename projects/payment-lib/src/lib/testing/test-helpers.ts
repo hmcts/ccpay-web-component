@@ -51,12 +51,14 @@ export const createRouterStub = () => ({
 export const createPaymentViewServiceStub = () => ({
   postPaymentGroupWithRemissions: (arg: any, id: any, requestBody: any) => of({}),
   postPaymentGroupWithRetroRemissions: (arg: any, id: any, requestBody: any) => of({}),
-  postRefundRetroRemission: (requestBody: any) => of('{}'),
-  postRefundsReason: (requestBody: any) => of({}),
+  postRefundRetroRemission: (requestBody: any) => of('{"status": "success"}'),
+  postRefundsReason: (requestBody: any) => of({ status: 'success' }),
   getBSfeature: () => of({}),
   getPaymentGroups: (ccdCaseNumber: string) => of([]),
   getPaymentGroupDetails: (paymentGroupRef: string) => of({}),
-  patchPaymentGroupWithRemissions: (arg: any, id: any, requestBody: any) => of({})
+  patchPaymentGroupWithRemissions: (arg: any, id: any, requestBody: any) => of({}),
+  postBSPayments: (requestBody: any) => of({}),
+  postBSUnidentifiedPayments: (reqBody: any) => of({})
 });
 
 export const createPaymentLibComponentStub = () => ({
@@ -93,7 +95,10 @@ export const createOrderslistServiceStub = () => ({
   setnavigationPage: (page: string) => ({}),
   setpaymentPageView: (view: any) => ({}),
   setOrderRef: (orderRef: string) => ({}),
-  getOrderRef: () => 'test-order-ref'
+  getOrderRef: () => 'test-order-ref',
+  setorderCCDEvent: (event: any) => ({}),
+  setorderCreated: (created: any) => ({}),
+  setorderCCDEventValue: (value: any) => ({})
 });
 
 export const createNotificationServiceStub = () => ({
@@ -109,7 +114,14 @@ export const createChangeDetectorRefStub = () => ({
 export const createBulkScaningPaymentServiceStub = () => ({
   getBSPayments: () => of([]),
   postBSPayment: (requestBody: any) => of({}),
-  putBSPayment: (dcn: string, requestBody: any) => of({})
+  putBSPayment: (dcn: string, requestBody: any) => of({}),
+  getBSPaymentsByDCN: (bspaymentdcn: string) => of({}),
+  removeUnwantedString: (method: string, string: string) => ({}),
+  postBSWoPGStrategic: (postStrategicBody: any) => of({}),
+  postBSWoPG: (postBody: any) => of({}),
+  postBSUnidentified: (postBody: any) => of({}),
+  putBSUnidentified: (dcn: string, putBody: any) => of({}),
+  patchBSChangeStatus: (dcn_reference: string, status: string) => of({})
 });
 
 // Common test imports

@@ -5,6 +5,13 @@ import { PaymentLibComponent } from '../../payment-lib.component';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { BulkScaningPaymentService } from '../../services/bulk-scaning-payment/bulk-scaning-payment.service';
 import { MarkUnidentifiedPaymentComponent } from './mark-unidentified-payment.component';
+import { 
+  COMMON_TEST_IMPORTS,
+  createFormBuilderStub,
+  createPaymentLibComponentStub,
+  createPaymentViewServiceStub,
+  createBulkScaningPaymentServiceStub
+} from '../../testing/test-helpers';
 
 describe('MarkUnidentifiedPaymentComponent', () => {
   let component: MarkUnidentifiedPaymentComponent;
@@ -33,16 +40,14 @@ describe('MarkUnidentifiedPaymentComponent', () => {
       })
     });
     TestBed.configureTestingModule({
+      imports: [...COMMON_TEST_IMPORTS],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [MarkUnidentifiedPaymentComponent],
       providers: [
-        { provide: FormBuilder, useFactory: formBuilderStub },
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
-        { provide: PaymentViewService, useFactory: paymentViewServiceStub },
-        {
-          provide: BulkScaningPaymentService,
-          useFactory: bulkScaningPaymentServiceStub
-        }
+        { provide: FormBuilder, useFactory: createFormBuilderStub },
+        { provide: 'PAYMENT_LIB', useFactory: createPaymentLibComponentStub },
+        { provide: PaymentViewService, useFactory: createPaymentViewServiceStub },
+        { provide: BulkScaningPaymentService, useFactory: createBulkScaningPaymentServiceStub }
       ]
     });
     fixture = TestBed.createComponent(MarkUnidentifiedPaymentComponent);
