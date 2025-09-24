@@ -19,7 +19,6 @@ import { NotificationPreviewComponent } from '../notification-preview/notificati
 import { ContactDetailsComponent } from '../contact-details/contact-details.component';
 import { AddRemissionComponent } from '../add-remission/add-remission.component';
 import { CcdHyphensPipe } from '../../pipes/ccd-hyphens.pipe';
-import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
@@ -32,7 +31,6 @@ type PaymentLibAlias = PaymentLibComponent;
         forwardRef(() => ContactDetailsComponent),
         forwardRef(() => AddRemissionComponent),
         CcdHyphensPipe,
-        CapitalizePipe,
     ]
 })
 export class RefundStatusComponent implements OnInit {

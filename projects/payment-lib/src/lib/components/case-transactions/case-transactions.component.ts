@@ -16,7 +16,6 @@ import {CommonModule} from '@angular/common';
 import {AddRemissionComponent} from '../add-remission/add-remission.component';
 import {RefundStatusComponent} from '../refund-status/refund-status.component';
 import {CcdHyphensPipe} from '../../pipes/ccd-hyphens.pipe';
-import {CapitalizePipe} from '../../pipes/capitalize.pipe';
 import {FormsModule} from '@angular/forms';
 import {RpxTranslationModule} from 'rpx-xui-translation';
 import type { PaymentLibComponent } from '../../payment-lib.component';
@@ -36,7 +35,6 @@ const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
         forwardRef(() => AddRemissionComponent),
         RefundStatusComponent,
         CcdHyphensPipe,
-        CapitalizePipe,
         FormsModule,
         RpxTranslationModule
     ]

@@ -19,7 +19,6 @@ import {ContactDetailsComponent} from '../contact-details/contact-details.compon
 import {NotificationPreviewComponent} from '../notification-preview/notification-preview.component';
 import {CaseTransactionsComponent} from '../case-transactions/case-transactions.component';
 import {CcdHyphensPipe} from '../../pipes/ccd-hyphens.pipe';
-import {CapitalizePipe} from '../../pipes/capitalize.pipe';
 import {RpxTranslationModule} from 'rpx-xui-translation';
 import type { PaymentLibComponent } from '../../payment-lib.component';
 
@@ -38,7 +37,6 @@ type PaymentLibAlias = PaymentLibComponent;
         forwardRef(() => NotificationPreviewComponent),
         forwardRef(() => CaseTransactionsComponent),
         CcdHyphensPipe,
-        CapitalizePipe,
         RpxTranslationModule
     ]
 })

@@ -29,7 +29,6 @@ import {CommonModule} from '@angular/common';
 import {ServiceRequestComponent} from '../service-request/service-request.component';
 import {NotificationPreviewComponent} from '../notification-preview/notification-preview.component';
 import {CcdHyphensPipe} from '../../pipes/ccd-hyphens.pipe';
-import {CapitalizePipe} from '../../pipes/capitalize.pipe';
 import {ContactDetailsComponent} from '../contact-details/contact-details.component';
 import {RpxTranslationModule} from 'rpx-xui-translation';
 import type { PaymentLibComponent } from '../../payment-lib.component';
@@ -51,7 +50,6 @@ const resolvedPromise = Promise.resolve(null);
         forwardRef(() => NotificationPreviewComponent),
         forwardRef(() => ContactDetailsComponent),
         CcdHyphensPipe,
-        CapitalizePipe,
         FormsModule,
         ReactiveFormsModule,
         RpxTranslationModule
