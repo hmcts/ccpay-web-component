@@ -5,7 +5,10 @@ import { PaymentViewService} from "../../services/payment-view/payment-view.serv
 import { BulkScaningPaymentService} from "../../services/bulk-scaning-payment/bulk-scaning-payment.service";
 import { CaseTransactionsService} from "../../services/case-transactions/case-transactions.service";
 
-@Pipe({ name: 'rpxTranslate' })
+@Pipe({
+    name: 'rpxTranslate',
+    standalone: false
+})
 class RpxTranslateMockPipe implements PipeTransform {
   public transform(value: string): string {
     return value;

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BulkScaningPaymentService } from '../../services/bulk-scaning-payment/bulk-scaning-payment.service';
 import { Router } from '@angular/router';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
@@ -37,24 +38,65 @@ describe('UnprocessedPaymentsComponent', () => {
       getFeeExists: () => ({ subscribe: f => f({}) })
     });
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [
+        FormsModule, 
+        HttpClientTestingModule,
+        UnprocessedPaymentsComponent
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
           provide: BulkScaningPaymentService,
-          useFactory: bulkScaningPaymentServiceStub
+          useValue: {
+            getBSPaymentsByDCN: (dcnNumber: any) => ({ subscribe: (f: any) => f({}) }),
+            getBSPaymentsByCCD: (ccdCaseNumber: any) => ({ subscribe: (f: any) => f({}) }),
+            removeUnwantedString: (method: any, string: any) => ({})
+          }
         },
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
-        { provide: Router, useFactory: routerStub },
-        { provide: PaymentViewService, useFactory: paymentViewServiceStub },
-        { provide: OrderslistService, useFactory: orderslistServiceStub }
+        { 
+          provide: 'PAYMENT_LIB', 
+          useValue: {
+            CCD_CASE_NUMBER: 'test-case-number',
+            SELECTED_OPTION: { toLocaleLowerCase: () => 'test' },
+            DCN_NUMBER: 'test-dcn',
+            ISBSENABLE: true,
+            ISTURNOFF: false,
+            ISSFENABLE: true,
+            CASETYPE: 'test-case-type',
+            bspaymentdcn: 'test-dcn',
+            viewName: 'test-view',
+            unProcessedPaymentServiceId: 'test-id',
+            isTurnOff: false,
+            paymentGroupReference: 'test-ref'
+          }
+        },
+        { 
+          provide: Router, 
+          useValue: { 
+            navigateByUrl: (arg: any) => Promise.resolve(true) 
+          }
+        },
+        { 
+          provide: PaymentViewService, 
+          useValue: {
+            getBSfeature: () => ({ subscribe: (f: any) => f({}) }),
+            getPaymentGroups: () => ({ subscribe: (f: any) => f([]) }),
+            getPaymentGroupDetails: () => ({ subscribe: (f: any) => f({}) })
+          }
+        },
+        { 
+          provide: OrderslistService, 
+          useValue: {
+            getFeeExists: () => ({ subscribe: (f: any) => f({}) })
+          }
+        }
       ]
     });
     fixture = TestBed.createComponent(UnprocessedPaymentsComponent);
     component = fixture.componentInstance;
   });
 
-  it('can load instance', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 

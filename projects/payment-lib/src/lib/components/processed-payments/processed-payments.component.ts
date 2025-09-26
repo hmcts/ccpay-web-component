@@ -4,9 +4,10 @@ import {IPayment} from '../../interfaces/IPayment';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'ccpay-app-processed-payments',
-  templateUrl: './processed-payments.component.html',
-  styleUrls: ['./processed-payments.component.scss']
+    selector: 'ccpay-app-processed-payments',
+    templateUrl: './processed-payments.component.html',
+    styleUrls: ['./processed-payments.component.scss'],
+    standalone: false
 })
 export class ProcessedPaymentsComponent implements OnInit {
 

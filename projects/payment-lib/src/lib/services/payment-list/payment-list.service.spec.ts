@@ -24,7 +24,7 @@ describe('PaymentListService', () => {
         provideHttpClientTesting()
     ]
 });
-    service = TestBed.get(PaymentListService);
+    service = TestBed.inject(PaymentListService);
   });
 
   it('can load instance', () => {
