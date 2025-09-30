@@ -24,7 +24,7 @@ describe('CaseTransactionsService', () => {
         provideHttpClientTesting()
     ]
 });
-    service = TestBed.get(CaseTransactionsService);
+    service = TestBed.inject(CaseTransactionsService);
   });
 
   it('can load instance', () => {

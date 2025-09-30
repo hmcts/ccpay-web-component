@@ -4,9 +4,10 @@ import {ICardDetails} from '../../interfaces/ICardDetails';
 import { PaymentLibComponent } from '../../payment-lib.component';
 
 @Component({
-  selector: 'ccpay-card-details',
-  templateUrl: './card-details.component.html',
-  styleUrls: ['./card-details.component.css']
+    selector: 'ccpay-card-details',
+    templateUrl: './card-details.component.html',
+    styleUrls: ['./card-details.component.css'],
+    standalone: false
 })
 export class CardDetailsComponent implements OnInit {
   pageTitle: string = 'Card details';

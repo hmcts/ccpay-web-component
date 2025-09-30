@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
-  name: 'keyValue'
+    name: 'keyValue',
+    standalone: false
 })
 export class keyValuePipe implements PipeTransform {
   constructor() {}
