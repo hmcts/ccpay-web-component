@@ -67,6 +67,7 @@ export class PaymentLibComponent implements OnInit {
   @Input('VIEW') VIEW: string;
   @Input('VIEWSERVICE') VIEWSERVICE: string;
   @Input('PAYMENT_GROUP_REF') PAYMENT_GROUP_REF?: string;
+  @Input('PAYMENT_REFERENCE') PAYMENT_REFERENCE?: string;
   @Input('TAKEPAYMENT') TAKEPAYMENT: boolean;
   @Input('SERVICEREQUEST') SERVICEREQUEST: string;
   @Input('DCN_NUMBER') DCN_NUMBER: string;
@@ -145,6 +146,9 @@ export class PaymentLibComponent implements OnInit {
     }
     if (this.PAYMENT_GROUP_REF) {
       this.paymentGroupReference = this.PAYMENT_GROUP_REF;
+    }
+    if (this.PAYMENT_REFERENCE) {
+      this.paymentReference = this.PAYMENT_REFERENCE;
     }
     if (this.DCN_NUMBER) {
       this.bspaymentdcn = this.DCN_NUMBER;
