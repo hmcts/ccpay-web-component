@@ -1,4 +1,5 @@
 import {ChangeDetectorRef, Component, forwardRef, Input, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {PaymentLibService} from './payment-lib.service';
 import {IBSPayments} from './interfaces/IBSPayments';
 import {OrderslistService} from './services/orderslist.service';
@@ -8,6 +9,18 @@ import {IRefundList} from "./interfaces/IRefundList";
 import {IFee} from "./interfaces/IFee";
 import {IRemission} from "./interfaces/IRemission";
 import {AddRetroRemissionRequest} from "./interfaces/AddRetroRemissionRequest";
+import {RefundListComponent} from './components/refund-list/refund-list.component';
+import {PaymentListComponent} from './components/payment-list/payment-list.component';
+import {RefundStatusComponent} from './components/refund-status/refund-status.component';
+import {PaymentViewComponent} from './components/payment-view/payment-view.component';
+import {ProcessRefundComponent} from './components/process-refund/process-refund.component';
+import {PbaPaymentComponent} from './components/pba-payment/pba-payment.component';
+import {CaseTransactionsComponent} from './components/case-transactions/case-transactions.component';
+import {MarkUnidentifiedPaymentComponent} from './components/mark-unidentified-payment/mark-unidentified-payment.component';
+import {MarkUnsolicitedPaymentComponent} from './components/mark-unsolicited-payment/mark-unsolicited-payment.component';
+import {AllocatePaymentsComponent} from './components/allocate-payments/allocate-payments.component';
+import {FeeSummaryComponent} from './components/fee-summary/fee-summary.component';
+import {ReportsComponent} from './components/reports/reports.component';
 
 
 @Component({
