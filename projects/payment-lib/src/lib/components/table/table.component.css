@@ -110,6 +110,11 @@
   .mat-paginator {
     position: relative;
     z-index: 10;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
   }
 
   .mat-paginator .mat-select-panel {
@@ -130,15 +135,47 @@
     z-index: 10 !important;
     display: inline-block !important;
     vertical-align: middle !important;
+    margin-right: 8px !important;
   }
 
-  .mat-paginator .mat-paginator-page-size,
-  .mat-paginator .mat-paginator-range-label,
-  .mat-paginator .mat-paginator-range-actions {
+  .mat-paginator .mat-paginator-page-size {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-right: 16px !important;
+  }
+
+  .mat-paginator .mat-paginator-range-label {
     display: inline-block !important;
     vertical-align: middle !important;
-    margin: 0 10px !important;
+    margin: 0 16px !important;
     white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  .mat-paginator .mat-paginator-range-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-left: auto !important;
+  }
+
+  /* Fix for the select value display */
+  .mat-paginator .mat-select-value {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+    min-width: 40px !important;
+  }
+
+  /* Ensure proper spacing between pagination elements */
+  .mat-paginator .mat-paginator-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    flex-wrap: wrap !important;
+    gap: 16px !important;
   }
 
   /* CDK Overlay fixes for dropdown positioning */
