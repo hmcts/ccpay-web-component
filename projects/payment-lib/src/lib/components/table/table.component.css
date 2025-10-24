@@ -235,29 +235,92 @@
     min-width: 40px !important;
   }
 
-  /* Force center alignment for the select value */
-  .mat-paginator .mat-select {
-    display: block !important;
-    width: 100% !important;
+  /* NUCLEAR OPTION - Force center alignment for the select value */
+  .mat-paginator .mat-select,
+  .mat-paginator .mat-select *,
+  .mat-paginator .mat-select-trigger,
+  .mat-paginator .mat-select-trigger *,
+  .mat-paginator .mat-select-value,
+  .mat-paginator .mat-select-value *,
+  .mat-paginator .mat-select-value-text,
+  .mat-paginator .mat-select-value-text * {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     text-align: center !important;
+    width: 100% !important;
+    min-width: 60px !important;
+    padding: 0 8px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
   }
 
-  .mat-paginator .mat-select .mat-select-trigger {
+  /* Force the select trigger to be a centered flex container */
+  .mat-paginator .mat-select-trigger {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     width: 100% !important;
     min-width: 60px !important;
+    height: 40px !important;
     padding: 0 8px !important;
+    position: relative !important;
   }
 
-  .mat-paginator .mat-select .mat-select-trigger .mat-select-value {
+  /* Force the select value to be perfectly centered */
+  .mat-paginator .mat-select-value,
+  .mat-paginator .mat-select-value-text {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 100% !important;
     text-align: center !important;
-    padding: 0 4px !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  /* Ensure the arrow doesn't interfere with centering */
+  .mat-paginator .mat-select-arrow {
+    position: absolute !important;
+    right: 8px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 1 !important;
+  }
+
+  /* Additional aggressive fixes for different Angular Material versions */
+  ::ng-deep .mat-paginator .mat-select-trigger,
+  ::ng-deep .mat-paginator .mat-select-trigger *,
+  ::ng-deep .mat-paginator .mat-select-value,
+  ::ng-deep .mat-paginator .mat-select-value *,
+  ::ng-deep .mat-paginator .mat-select-value-text,
+  ::ng-deep .mat-paginator .mat-select-value-text * {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: relative !important;
+  }
+
+  /* Force centering using absolute positioning as fallback */
+  ::ng-deep .mat-paginator .mat-select-value-text {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: auto !important;
+    height: auto !important;
+    display: block !important;
+    text-align: center !important;
   }
 
   /* CDK Overlay fixes for dropdown positioning */
