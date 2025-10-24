@@ -166,6 +166,36 @@
     vertical-align: middle !important;
     text-align: center !important;
     min-width: 40px !important;
+    padding: 0 8px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Fix for the select trigger container */
+  .mat-paginator .mat-select-trigger {
+    position: relative !important;
+    z-index: 10 !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin-right: 8px !important;
+    min-width: 60px !important;
+    text-align: center !important;
+  }
+
+  /* Fix for the select trigger text */
+  .mat-paginator .mat-select-trigger .mat-select-value-text {
+    display: block !important;
+    text-align: center !important;
+    width: 100% !important;
+    padding: 0 4px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Fix for the select arrow */
+  .mat-paginator .mat-select-trigger .mat-select-arrow {
+    position: absolute !important;
+    right: 8px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
   }
 
   /* Ensure proper spacing between pagination elements */
@@ -176,6 +206,58 @@
     width: 100% !important;
     flex-wrap: wrap !important;
     gap: 16px !important;
+  }
+
+  /* Additional fixes for select value alignment */
+  .mat-paginator .mat-form-field {
+    display: inline-block !important;
+    vertical-align: middle !important;
+  }
+
+  .mat-paginator .mat-form-field-wrapper {
+    display: inline-block !important;
+    vertical-align: middle !important;
+  }
+
+  .mat-paginator .mat-form-field-flex {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 60px !important;
+    padding: 0 8px !important;
+  }
+
+  .mat-paginator .mat-form-field-infix {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-width: 40px !important;
+  }
+
+  /* Force center alignment for the select value */
+  .mat-paginator .mat-select {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  .mat-paginator .mat-select .mat-select-trigger {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-width: 60px !important;
+    padding: 0 8px !important;
+  }
+
+  .mat-paginator .mat-select .mat-select-trigger .mat-select-value {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    text-align: center !important;
+    padding: 0 4px !important;
   }
 
   /* CDK Overlay fixes for dropdown positioning */
