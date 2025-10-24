@@ -105,3 +105,54 @@
   .float-left-padding {
     padding-left: 12em;
   }
+
+  /* Fix for Angular Material pagination dropdown alignment */
+  .mat-paginator {
+    position: relative;
+    z-index: 10;
+  }
+
+  .mat-paginator .mat-select-panel {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    z-index: 1000 !important;
+    background: white !important;
+    border: 1px solid #ccc !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+    min-width: 60px !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+  }
+
+  .mat-paginator .mat-select-trigger {
+    position: relative !important;
+    z-index: 10 !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+  }
+
+  .mat-paginator .mat-paginator-page-size,
+  .mat-paginator .mat-paginator-range-label,
+  .mat-paginator .mat-paginator-range-actions {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin: 0 10px !important;
+    white-space: nowrap !important;
+  }
+
+  /* CDK Overlay fixes for dropdown positioning */
+  ::ng-deep .cdk-overlay-container {
+    position: fixed !important;
+    z-index: 10000 !important;
+    pointer-events: none !important;
+  }
+
+  ::ng-deep .cdk-overlay-pane {
+    position: absolute !important;
+    pointer-events: auto !important;
+    z-index: 10000 !important;
+    background: white !important;
+    border: 1px solid #ccc !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+  }
