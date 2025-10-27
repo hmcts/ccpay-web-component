@@ -7,7 +7,7 @@ import {IFee} from '../../interfaces/IFee';
 import {PaymentToPayhubRequest} from '../../interfaces/PaymentToPayhubRequest';
 import {PayhubAntennaRequest} from '../../interfaces/PayhubAntennaRequest';
 import {SafeHtml} from '@angular/platform-browser';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {OrderslistService} from '../../services/orderslist.service';
 import type { PaymentLibComponent } from '../../payment-lib.component';
@@ -57,9 +57,11 @@ export class FeeSummaryComponent implements OnInit {
   isRemissionsExist: Boolean = false;
   isRemissionsMatch = false;
   isStrategicFixEnable: boolean;
+  forceTelephony: boolean;
 
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private bulkScaningPaymentService: BulkScaningPaymentService,
     private location: Location,
     private paymentViewService: PaymentViewService,
@@ -71,10 +73,12 @@ export class FeeSummaryComponent implements OnInit {
     this.viewStatus = 'main';
     this.caseType = this.paymentLibComponent.CASETYPE;
     this.bsPaymentDcnNumber = this.paymentLibComponent.bspaymentdcn;
+    this.forceTelephony = this.parseBoolean(this.activatedRoute.snapshot.queryParams['forceTelephony']);
     this.selectedOption = this.paymentLibComponent.SELECTED_OPTION.toLocaleLowerCase();
     this.isStrategicFixEnable = this.paymentLibComponent.ISSFENABLE;
     this.OrderslistService.setCaseType(this.paymentLibComponent.CASETYPE);
     this.isTelephonySelectionEnableNull();
+    this.isForceTelephonyEnable();
 
 
     this.platForm = 'Antenna';
@@ -246,7 +250,18 @@ export class FeeSummaryComponent implements OnInit {
   takePayment() {
     this.isConfirmationBtnDisabled = true;
     const requestBody = new PaymentToPayhubRequest(this.ccdCaseNumber, this.outStandingAmount, this.caseType, this.paymentMethod),
-      antennaReqBody = new PayhubAntennaRequest(this.ccdCaseNumber, this.outStandingAmount, this.caseType, this.paymentMethod);
+
+      antennaReqBody = new PayhubAntennaRequest(this.ccdCaseNumber, this.outStandingAmount, this.caseType, this.paymentMethod,
+        this.paymentLibComponent.SELECTED_OPTION,
+        this.paymentLibComponent.DCN_NUMBER,
+        this.paymentLibComponent.TAKEPAYMENT,
+        this.paymentLibComponent.ISBSENABLE.valueOf(),
+        this.isStrategicFixEnable,
+        this.isTurnOff,
+        this.paymentLibComponent.ISPAYMENTSTATUSENABLED.valueOf(),
+        this.paymentLibComponent.EXC_REFERENCE
+      );
+
 
     if (this.platForm === 'Antenna') {
 
@@ -308,5 +323,17 @@ export class FeeSummaryComponent implements OnInit {
     if (this.telephonySelectionEnable === null || this.telephonySelectionEnable === undefined) {
       this.telephonySelectionEnable = false;
     }
+  }
+
+  isForceTelephonyEnable() {
+
+    if (this.forceTelephony !== null && this.forceTelephony === true) {
+      this.bsPaymentDcnNumber = null;
+    }
+  }
+
+
+  parseBoolean(value: any): boolean {
+    return String(value).toLowerCase() === 'true';
   }
 }

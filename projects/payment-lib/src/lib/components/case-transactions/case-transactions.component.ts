@@ -749,6 +749,12 @@ export class CaseTransactionsComponent implements OnInit {
     url += this.isTurnOff ? '&isTurnOff=Enable' : '&isTurnOff=Disable';
     url += this.isStrategicFixEnable ? '&isStFixEnable=Enable' : '&isStFixEnable=Disable';
     url += `&caseType=${this.caseType}`;
+
+    url += this.paymentLibComponent.DCN_NUMBER ? `&dcn=${this.paymentLibComponent.DCN_NUMBER}` : '';
+    url += this.paymentLibComponent.TAKEPAYMENT ? `&takePayment=${this.paymentLibComponent.TAKEPAYMENT}` : '';
+    url += '&forceTelephony=true';
+    // Remove bspaymentdcn for telephony
+    this.paymentLibComponent.bspaymentdcn = null;
     this.router.navigateByUrl(`/fee-search?selectedOption=${this.selectedOption}&ccdCaseNumber=${this.ccdCaseNumber}${url}`);
   }
 
