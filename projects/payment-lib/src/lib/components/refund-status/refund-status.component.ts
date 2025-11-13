@@ -516,10 +516,7 @@ export class RefundStatusComponent implements OnInit {
   }
 
   getResetRefundVisibility(){
-    console.log('AHHHH' + this.check4AllowedRoles2DisplayEditRefundBtn);
-    console.log('AHHHH' + this.refundStatusHistories?.length);
-    console.log('AHHHH' + this.getCurrentRefundStatusHistoryStatus());
-    this.check4AllowedRoles2DisplayEditRefundBtn && this.refundStatusHistories?.length && this.getCurrentRefundStatusHistoryStatus() === 'Approved'
+    this.check4AllowedRoles2DisplayEditRefundBtn && this.refundStatusHistories?.length && this.getCurrentRefundStatusHistoryStatus() === 'Expired'
   }
 
   getCurrentRefundStatusHistoryStatus() {
