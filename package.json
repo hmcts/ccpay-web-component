@@ -1,6 +1,6 @@
 {
   "name": "ccpay-web-component",
-  "version": "6.5.14-rc1",
+  "version": "6.5.14",
   "scripts": {
     "ng": "ng",
     "build:library": "ng build payment-lib",
@@ -37,7 +37,7 @@
     "govuk_template_jinja": "^0.24.1",
     "jasmine-core": "^5.1.2",
     "local-storage": "^2.0.0",
-    "rpx-xui-translation": "1.1.2-CME-780-9",
+    "rpx-xui-translation": "1.2.0",
     "rxjs": "~6.6.7",
     "rxjs-compat": "^6.6.7",
     "tslib": "^2.0.0",
