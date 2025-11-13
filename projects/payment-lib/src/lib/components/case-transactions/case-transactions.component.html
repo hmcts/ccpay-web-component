@@ -371,7 +371,16 @@
         [FEE_RECORDS_EXISTS]="isFeeRecordsExist"
         (getUnprocessedFeeCount) = "getUnprocessedFeeCount($event)"
         [IS_OS_AMT_AVAILABLE]="isGrpOutstandingAmtPositive"
-        (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)">
+        [CCD_CASE_NUMBER]="ccdCaseNumber"
+        [SELECTED_OPTION]="selectedOption"
+        [DCN_NUMBER]="dcnNumber"
+        [ISBSENABLE]="isBulkScanEnable"
+        [CASETYPE]="caseType"
+        (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)"
+        (setBspaymentdcn) = "setBspaymentdcn($event)"
+        (setViewName) = "setViewName($event)"
+        (setUnProcessedPaymentServiceId) = "setUnProcessedPaymentServiceId($event)"
+        (setPaymentGroupReference) = "setPaymentGroupReference($event)">
       </ccpay-app-unprocessed-payments>
       <div class="govuk-grid-row govuk-grid__surplus-payments"  *ngIf="totalRefundAmount > 0 && takePayment">
         <div class="govuk-grid-column-full govuk-grid__surplus-payments-col1">
@@ -395,7 +404,16 @@
         (getUnprocessedFeeCount) = "getUnprocessedFeeCount($event)"
         [PAYMENTSLENGTH]="allPayments?.length"
         [PAYMENTREF]="paymentRef"
-        (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)">
+        [CCD_CASE_NUMBER]="ccdCaseNumber"
+        [SELECTED_OPTION]="selectedOption"
+        [DCN_NUMBER]="dcnNumber"
+        [ISBSENABLE]="isBulkScanEnable"
+        [CASETYPE]="caseType"
+        (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)"
+        (setBspaymentdcn) = "setBspaymentdcn($event)"
+        (setViewName) = "setViewName($event)"
+        (setUnProcessedPaymentServiceId) = "setUnProcessedPaymentServiceId($event)"
+        (setPaymentGroupReference) = "setPaymentGroupReference($event)">
         </ccpay-app-unprocessed-payments>
       </div>
 
@@ -439,8 +457,17 @@
             [IS_OS_AMT_AVAILABLE]="isGrpOutstandingAmtPositive"
             [PAYMENTSLENGTH]="allPayments?.length"
             [PAYMENTREF]="paymentRef"
+            [CCD_CASE_NUMBER]="ccdCaseNumber"
+            [SELECTED_OPTION]="selectedOption"
+            [DCN_NUMBER]="dcnNumber"
+            [ISBSENABLE]="isBulkScanEnable"
+            [CASETYPE]="caseType"
             (getUnprocessedFeeCount) = "getUnprocessedFeeCount($event)"
-            (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)">
+            (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)"
+            (setBspaymentdcn) = "setBspaymentdcn($event)"
+            (setViewName) = "setViewName($event)"
+            (setUnProcessedPaymentServiceId) = "setUnProcessedPaymentServiceId($event)"
+            (setPaymentGroupReference) = "setPaymentGroupReference($event)">
         </ccpay-app-unprocessed-payments>
         </div>
       </div>
@@ -552,7 +579,16 @@
               [FEE_RECORDS_EXISTS]="isFeeRecordsExist"
               (getUnprocessedFeeCount) = "getUnprocessedFeeCount($event)"
               [IS_OS_AMT_AVAILABLE]="isGrpOutstandingAmtPositive"
-              (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)">
+              [CCD_CASE_NUMBER]="ccdCaseNumber"
+              [SELECTED_OPTION]="selectedOption"
+              [DCN_NUMBER]="dcnNumber"
+              [ISBSENABLE]="isBulkScanEnable"
+              [CASETYPE]="caseType"
+              (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)"
+              (setBspaymentdcn) = "setBspaymentdcn($event)"
+              (setViewName) = "setViewName($event)"
+              (setUnProcessedPaymentServiceId) = "setUnProcessedPaymentServiceId($event)"
+              (setPaymentGroupReference) = "setPaymentGroupReference($event)">
                </ccpay-app-unprocessed-payments>
 
               <ng-container>
@@ -683,7 +719,16 @@
             (getUnprocessedFeeCount) = "getUnprocessedFeeCount($event)"
             [FEE_RECORDS_EXISTS]="isAnyFeeGroupAvilable"
             [IS_OS_AMT_AVAILABLE]="isGrpOutstandingAmtPositive"
-            (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)">
+            [CCD_CASE_NUMBER]="ccdCaseNumber"
+            [SELECTED_OPTION]="selectedOption"
+            [DCN_NUMBER]="dcnNumber"
+            [ISBSENABLE]="isBulkScanEnable"
+            [CASETYPE]="caseType"
+            (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)"
+            (setBspaymentdcn) = "setBspaymentdcn($event)"
+            (setViewName) = "setViewName($event)"
+            (setUnProcessedPaymentServiceId) = "setUnProcessedPaymentServiceId($event)"
+            (setPaymentGroupReference) = "setPaymentGroupReference($event)">
               </ccpay-app-unprocessed-payments>
             </ng-container>
 

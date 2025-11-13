@@ -112,3 +112,5 @@ wire-mock/wiremock-standalone-2.18.0.jar
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+/projects/payment-lib/coverage/
+/projects/payment-lib/node_modules/

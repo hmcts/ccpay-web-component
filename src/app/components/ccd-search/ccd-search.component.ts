@@ -3,9 +3,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-ccd-search',
-  templateUrl: './ccd-search.component.html',
-  styleUrls: ['./ccd-search.component.css']
+    selector: 'app-ccd-search',
+    templateUrl: './ccd-search.component.html',
+    styleUrls: ['./ccd-search.component.css'],
+    standalone: false
 })
 export class CcdSearchComponent implements OnInit {
   searchForm: FormGroup;

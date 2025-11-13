@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Inject, forwardRef } from '@angular/core';
 import { RefundsService } from '../../services/refunds/refunds.service';
 import { NotificationService } from '../../services/notification/notification.service';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { IRefundList } from '../../interfaces/IRefundList';
 import { IRefundsNotifications } from '../../interfaces/IRefundsNotifications';
 import { OrderslistService } from '../../services/orderslist.service';
@@ -28,6 +28,7 @@ type PaymentLibAlias = PaymentLibComponent;
   styleUrls: ['./refund-status.component.css'],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     forwardRef(() => NotificationPreviewComponent),
     forwardRef(() => ContactDetailsComponent),
     forwardRef(() => AddRemissionComponent),

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { PaymentLibComponent } from '../../payment-lib.component';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { BulkScaningPaymentService } from '../../services/bulk-scaning-payment/bulk-scaning-payment.service';
@@ -12,14 +13,6 @@ describe('MarkUnidentifiedPaymentComponent', () => {
 
   beforeEach(() => {
     const formBuilderStub = () => ({ group: object => ({}) });
-    const paymentLibComponentStub = () => ({
-      CCD_CASE_NUMBER: {},
-      bspaymentdcn: {},
-      ISSFENABLE: {},
-      viewName: {},
-      TAKEPAYMENT: {},
-      ISBSENABLE: {}
-    });
     const paymentViewServiceStub = () => ({
       postBSPayments: requestBody => ({ subscribe: f => f({}) }),
       postBSUnidentifiedPayments: reqBody => ({ subscribe: f => f({}) })
@@ -37,12 +30,13 @@ describe('MarkUnidentifiedPaymentComponent', () => {
       declarations: [MarkUnidentifiedPaymentComponent],
       providers: [
         { provide: FormBuilder, useFactory: formBuilderStub },
-        { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+        { provide: 'PAYMENT_LIB', useClass: PaymentLibComponent },
         { provide: PaymentViewService, useFactory: paymentViewServiceStub },
         {
           provide: BulkScaningPaymentService,
           useFactory: bulkScaningPaymentServiceStub
-        }
+        },
+        provideHttpClient(withInterceptorsFromDi())
       ]
     });
     fixture = TestBed.createComponent(MarkUnidentifiedPaymentComponent);

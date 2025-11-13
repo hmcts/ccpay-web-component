@@ -36,7 +36,7 @@ describe('BulkScaningPaymentService', () => {
         provideHttpClientTesting()
     ]
 });
-    service = TestBed.get(BulkScaningPaymentService);
+    service = TestBed.inject(BulkScaningPaymentService);
   });
 
   it('can load instance', () => {
@@ -45,7 +45,7 @@ describe('BulkScaningPaymentService', () => {
 
   describe('postBSWoPGStrategic', () => {
     it('makes expected calls', () => {
-      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.get(
+      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.inject(
         WebComponentHttpClient
       );
       const allocatePaymentRequestStub: AllocatePaymentRequest = <any>{};

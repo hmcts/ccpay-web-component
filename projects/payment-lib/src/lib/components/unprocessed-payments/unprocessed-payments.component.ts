@@ -1,6 +1,5 @@
-import { Component, OnInit, Output, Input, EventEmitter, Inject } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { BulkScaningPaymentService } from '../../services/bulk-scaning-payment/bulk-scaning-payment.service';
-import type { PaymentLibComponent } from '../../payment-lib.component';
 import { IBSPayments } from '../../interfaces/IBSPayments';
 import { Router } from '@angular/router';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
@@ -24,9 +23,18 @@ export class UnprocessedPaymentsComponent implements OnInit {
   @Input('ISSFENABLE') ISSFENABLE: boolean;
   @Input('PAYMENTSLENGTH') PAYMENTSLENGTH: Number;
   @Input('LEVEL') LEVEL: Number;
+  @Input('CCD_CASE_NUMBER') CCD_CASE_NUMBER: string;
+  @Input('SELECTED_OPTION') SELECTED_OPTION: string;
+  @Input('DCN_NUMBER') DCN_NUMBER: string;
+  @Input('ISBSENABLE') ISBSENABLE: boolean;
+  @Input('CASETYPE') CASETYPE: string;
 
   @Output() selectedUnprocessedFeeEvent: EventEmitter<string> = new EventEmitter();
   @Output() getUnprocessedFeeCount: EventEmitter<string> = new EventEmitter();
+  @Output() setBspaymentdcn: EventEmitter<string> = new EventEmitter();
+  @Output() setViewName: EventEmitter<string> = new EventEmitter();
+  @Output() setUnProcessedPaymentServiceId: EventEmitter<string> = new EventEmitter();
+  @Output() setPaymentGroupReference: EventEmitter<string> = new EventEmitter();
 
   viewStatus = 'main';
   unassignedRecordList: IBSPayments;
@@ -51,19 +59,18 @@ export class UnprocessedPaymentsComponent implements OnInit {
 
   constructor(private router: Router,
     private bulkScaningPaymentService: BulkScaningPaymentService,
-    @Inject('PAYMENT_LIB') private paymentLibComponent: PaymentLibComponent,
     private paymentViewService: PaymentViewService,
     private OrderslistService: OrderslistService
   ) { }
 
   ngOnInit() {
     // Todo ...
-    this.ccdCaseNumber = this.paymentLibComponent.CCD_CASE_NUMBER;
-    this.selectedOption = this.paymentLibComponent.SELECTED_OPTION.toLocaleLowerCase();
-    this.dcnNumber = this.paymentLibComponent.DCN_NUMBER;
-    this.isBulkScanEnable = this.paymentLibComponent.ISBSENABLE;
-    this.isTurnOff = this.paymentLibComponent.ISTURNOFF;
-    this.isStFixEnable = this.paymentLibComponent.ISSFENABLE;
+    this.ccdCaseNumber = this.CCD_CASE_NUMBER;
+    this.selectedOption = this.SELECTED_OPTION ? this.SELECTED_OPTION.toLocaleLowerCase() : '';
+    this.dcnNumber = this.DCN_NUMBER;
+    this.isBulkScanEnable = this.ISBSENABLE;
+    this.isTurnOff = this.ISTURNOFF;
+    this.isStFixEnable = this.ISSFENABLE;
     this.OrderslistService.getFeeExists().subscribe((data) => this.FEE_RECORDS_EXISTS = data);
     this.getUnassignedPaymentlist();
 
@@ -139,15 +146,15 @@ export class UnprocessedPaymentsComponent implements OnInit {
     let url = this.isBulkScanEnable ? '&isBulkScanning=Enable' : '&isBulkScanning=Disable';
     url += this.ISTURNOFF ? '&isTurnOff=Enable' : '&isTurnOff=Disable';
     url += this.isStFixEnable ? '&isStFixEnable=Enable' : '&isStFixEnable=Disable';
-    url += `&caseType=${this.paymentLibComponent.CASETYPE}`;
+    url += `&caseType=${this.CASETYPE}`;
 
     this.router.navigateByUrl(`/fee-search?selectedOption=${this.selectedOption}&ccdCaseNumber=${this.ccdCaseNumber}&dcn=${this.recordId}${url}`);
   }
 
   loadUnsolicitedPage(viewName: string, dcn_reference: any) {
     this.recordId = dcn_reference;
-    this.paymentLibComponent.bspaymentdcn = this.recordId;
-    this.paymentLibComponent.viewName = viewName;
+    this.setBspaymentdcn.emit(this.recordId);
+    this.setViewName.emit(viewName);
   }
 
   unprocessedPaymentSelectEvent(selectedRecordReference: any) {
@@ -164,17 +171,15 @@ export class UnprocessedPaymentsComponent implements OnInit {
   }
 
   goToAllocatePage(dcn_reference: any) {
-    this.paymentLibComponent.bspaymentdcn = dcn_reference;
-    this.paymentLibComponent.unProcessedPaymentServiceId = this.serviceId
-    this.paymentLibComponent.isTurnOff = this.ISTURNOFF;
-    this.paymentLibComponent.ISSFENABLE = this.isStFixEnable;
+    this.setBspaymentdcn.emit(dcn_reference);
+    this.setUnProcessedPaymentServiceId.emit(this.serviceId);
 
     if (this.ISTURNOFF) {
-      this.paymentLibComponent.paymentGroupReference = this.PAYMENTREF;
-      this.paymentLibComponent.viewName = 'fee-summary';
+      this.setPaymentGroupReference.emit(this.PAYMENTREF);
+      this.setViewName.emit('fee-summary');
     } else {
-      this.paymentLibComponent.paymentGroupReference = null;
-      this.paymentLibComponent.viewName = 'allocate-payments';
+      this.setPaymentGroupReference.emit(null);
+      this.setViewName.emit('allocate-payments');
     }
 
   }

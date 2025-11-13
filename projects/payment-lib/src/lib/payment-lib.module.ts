@@ -92,10 +92,10 @@ import { RpxTranslationModule } from 'rpx-xui-translation';
         ServiceRequestComponent,
         NotificationPreviewComponent,
         CaseTransactionsComponent,
-        AddRemissionComponent,
         UnprocessedPaymentsComponent,
         RefundStatusComponent,
         PbaPaymentComponent,
+        StatusHistoryComponent,
         // BrowserAnimationsModule,
         // NoopAnimationsModule
         RpxTranslationModule.forChild()], providers: [
