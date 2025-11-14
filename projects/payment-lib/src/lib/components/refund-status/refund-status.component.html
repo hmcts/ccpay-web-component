@@ -129,7 +129,7 @@
     <br />
     <div class="refund-status-history-header govuk-flex">
       <h2 class="govuk-heading-m">Refund status history</h2>
-      <div *ngIf="getResetRefundVisibility">
+        <div *ngIf="check4AllowedRoles2DisplayEditRefundBtn && isCurrentRefundVisibleForReset()">
         <button
           type="button"
           [disabled]="isRefundStatusResetBtnDisabled"
