@@ -516,13 +516,11 @@ export class RefundStatusComponent implements OnInit {
   }
 
   getResetRefundVisibility(){
-    this.check4AllowedRoles2DisplayEditRefundBtn && this.refundStatusHistories?.length && this.getCurrentRefundStatusHistoryStatus() === 'Expired'
+    this.check4AllowedRoles2DisplayEditRefundBtn && this.isCurrentRefundVisibleForReset();
   }
 
-  getCurrentRefundStatusHistoryStatus() {
-
-    //TODO find a dinamic way yo find current refund avoid indexes
-    return this.refundStatusHistories[0]?.status
+  isCurrentRefundVisibleForReset() {
+    return this.refundlist.refund_status.name  === 'Expired'
   }
 
 }
