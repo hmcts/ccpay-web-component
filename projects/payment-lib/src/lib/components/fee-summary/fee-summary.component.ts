@@ -21,9 +21,10 @@ const ANTENNA_VALUE = 'Antenna';
 const KERV_VALUE = 'Kerv';
 
 @Component({
-  selector: 'ccpay-fee-summary',
-  templateUrl: './fee-summary.component.html',
-  styleUrls: ['./fee-summary.component.scss']
+    selector: 'ccpay-fee-summary',
+    templateUrl: './fee-summary.component.html',
+    styleUrls: ['./fee-summary.component.scss'],
+    standalone: false
 })
 
 export class FeeSummaryComponent implements OnInit {

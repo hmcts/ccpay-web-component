@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
-import { PaymentLibComponent } from '../../payment-lib.component';
-import { IRefundList } from '../../interfaces/IRefundList';
+import { ActivatedRoute } from '@angular/router';
 import { OrderslistService } from '../../services/orderslist.service';
 import { TableComponent } from './table.component';
 
@@ -27,14 +26,22 @@ describe('TableComponent', () => {
       providers: [
         { provide: ChangeDetectorRef, useFactory: changeDetectorRefStub },
         { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
-        { provide: OrderslistService, useFactory: orderslistServiceStub }
+        { provide: OrderslistService, useFactory: orderslistServiceStub },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: { params: {}, queryParams: {} },
+            params: { subscribe: (f: any) => f({}) },
+            queryParams: { subscribe: (f: any) => f({}) }
+          }
+        }
       ]
     });
     fixture = TestBed.createComponent(TableComponent);
     component = fixture.componentInstance;
   });
 
-  it('can load instance', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 

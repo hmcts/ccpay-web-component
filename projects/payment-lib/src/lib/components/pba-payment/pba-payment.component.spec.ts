@@ -4,9 +4,14 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import {PbaPaymentComponent} from './pba-payment.component';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
-import {NO_ERRORS_SCHEMA, Pipe, PipeTransform} from '@angular/core'
+import {NO_ERRORS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
+import { PaymentViewService } from '../../services/payment-view/payment-view.service';
+import { WebComponentHttpClient } from '../../services/shared/httpclient/webcomponent.http.client';
 
-@Pipe({name: 'rpxTranslate'})
+@Pipe({
+    name: 'rpxTranslate',
+    standalone: false
+})
 class RpxTranslateMockPipe implements PipeTransform {
   public transform(value: string): string {
     return value;
@@ -28,6 +33,24 @@ describe('PBA payment component', () => {
         RouterTestingModule],
     providers: [
         { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
+        {
+          provide: PaymentViewService,
+          useValue: {
+            postBSPayments: () => ({ subscribe: (f: any) => f({}) }),
+            getBSfeature: () => ({ subscribe: (f: any) => f({}) }),
+            getPaymentGroups: () => ({ subscribe: (f: any) => f([]) }),
+            getPaymentGroupDetails: () => ({ subscribe: (f: any) => f({}) })
+          }
+        },
+        {
+          provide: WebComponentHttpClient,
+          useValue: {
+            get: () => ({ subscribe: (f: any) => f({}) }),
+            post: () => ({ subscribe: (f: any) => f({}) }),
+            put: () => ({ subscribe: (f: any) => f({}) }),
+            patch: () => ({ subscribe: (f: any) => f({}) })
+          }
+        },
         provideHttpClient(withInterceptorsFromDi())
     ]
 });

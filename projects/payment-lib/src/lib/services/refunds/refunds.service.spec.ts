@@ -1,12 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Meta } from '@angular/platform-browser';
 import { ErrorHandlerService } from '../shared/error-handler.service';
 import { WebComponentHttpClient } from '../shared/httpclient/webcomponent.http.client';
 import { PaymentLibService } from '../../payment-lib.service';
-import { IPatchRefundAction } from '../../interfaces/IPatchRefundAction';
 import { IssueRefundRequest } from '../../interfaces/IssueRefundRequest';
-import { IResubmitRefundRequest } from '../../interfaces/IResubmitRefundRequest';
 import { RefundsService } from './refunds.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -36,7 +34,7 @@ describe('RefundsService', () => {
         provideHttpClientTesting()
     ]
 });
-    service = TestBed.get(RefundsService);
+    service = TestBed.inject(RefundsService);
   });
 
   it('can load instance', () => {
@@ -45,7 +43,7 @@ describe('RefundsService', () => {
 
   describe('postIssueRefund', () => {
     it('makes expected calls', () => {
-      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.get(
+      const webComponentHttpClientStub: WebComponentHttpClient = TestBed.inject(
         WebComponentHttpClient
       );
       const issueRefundRequestStub: IssueRefundRequest = <any>{};

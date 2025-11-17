@@ -983,4 +983,20 @@ export class CaseTransactionsComponent implements OnInit {
     this.paymentLibComponent.pbaPayOrderRef = orderRef;
     this.paymentLibComponent.viewName = 'pba-payment';
   }
+
+  setBspaymentdcn(dcn: string) {
+    this.paymentLibComponent.bspaymentdcn = dcn;
+  }
+
+  setViewName(viewName: string) {
+    this.paymentLibComponent.viewName = viewName;
+  }
+
+  setUnProcessedPaymentServiceId(serviceId: string) {
+    this.paymentLibComponent.unProcessedPaymentServiceId = serviceId;
+  }
+
+  setPaymentGroupReference(paymentGroupRef: string) {
+    this.paymentLibComponent.paymentGroupReference = paymentGroupRef;
+  }
 }

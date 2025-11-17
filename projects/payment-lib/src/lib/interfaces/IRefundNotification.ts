@@ -1,4 +1,4 @@
-export interface IRefundList {
+export interface IRefundNotification {
     amount: number,
     ccd_case_number: string,
     date_created: string,
