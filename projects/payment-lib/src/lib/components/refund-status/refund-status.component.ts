@@ -91,6 +91,7 @@ export class RefundStatusComponent implements OnInit {
   notificationPreview: boolean = false;
   notificationSentView: boolean = false;
   allowedRolesToAccessRefund = ['payments-refund-approver', 'payments-refund', 'payments'];
+  isRefundStatusResetBtnDisabled: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
     private refundService: RefundsService,
@@ -478,6 +479,48 @@ export class RefundStatusComponent implements OnInit {
   hideNotificationSentView(): void {
     this.notificationSentViewIndex = -1;
     this.notificationSentView = false;
+  }
+
+  check4AllowedRoles2DisplayEditRefundBtn = (): boolean => {
+    return this.allowedRolesToAccessRefund.some(role =>
+      this.LOGGEDINUSERROLES.indexOf(role) !== -1
+    );
+  };
+
+
+  displayResetRefundConfirmation(){
+    this.isRefundStatusResetBtnDisabled = true;
+    this.viewName = 'confirmSubmitResetRefund';
+  }
+
+
+  redirectToRefundListPage() {
+    this.viewName = 'refundview';
+    this.isRefundStatusResetBtnDisabled = false;
+    this.paymentLibComponent.viewName = 'refundstatuslist';
+  }
+
+
+  postResetRefund() {
+
+    this.refundService.postResetRefund(this.refundlist.refund_reference).subscribe(
+      (response) => {
+        this.isResendOperationSuccess = response;
+        this.loadRefundListPage();
+      },
+      (error: any) => {
+        this.isResendOperationSuccess = false;
+        this.errorMessage = error.replace(/"/g, "");
+      }
+    );
+  }
+
+  getResetRefundVisibility(){
+    this.check4AllowedRoles2DisplayEditRefundBtn && this.isCurrentRefundVisibleForReset();
+  }
+
+  isCurrentRefundVisibleForReset() {
+    return this.refundlist.refund_status.name  === 'Expired'
   }
 
 }
