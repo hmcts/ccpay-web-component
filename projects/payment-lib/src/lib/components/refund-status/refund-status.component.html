@@ -467,16 +467,9 @@
 
 <ng-container *ngIf="viewName === 'confirmSubmitResetRefund'">
 
+  <div class="govuk-heading-custom">
   <h1 class="govuk-heading-l">Reset Refund</h1>
-
-
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Refund Actions</title>
-  </head>
-  <body>
+  </div>
   <div class="refund-list">
     <ul>
       <li>Close the current Refund {{ refundlist?.refund_reference }}</li>
@@ -484,12 +477,9 @@
       <li>Send a new Offer and Contact notification for the issued refund</li>
     </ul>
   </div>
-  </body>
-  </html>
 
-  <div class="govuk-button-group">
+  <div class="govuk-button-group-custom">
     <button (click)="redirectToRefundListPage()" class="govuk-button govuk-button--secondary">Cancel</button>
     <button (click)="postResetRefund()" class="govuk-button">Submit</button>
   </div>
-
 </ng-container>
