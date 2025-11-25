@@ -54,7 +54,7 @@ export class NotificationService {
     } else if (paymentChannel === 'online' && paymentMethod === 'payment by account') {
       return 'SendRefund';
     } else if (paymentChannel === 'bulk scan' && paymentMethod === 'cheque') {
-      return 'SendRefund';
+      return 'RefundWhenContacted';
     } else {
       return 'Template'
     }
