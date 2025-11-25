@@ -129,7 +129,7 @@
     <br />
     <div class="refund-status-history-header govuk-flex">
       <h2 class="govuk-heading-m">Refund status history</h2>
-        <div *ngIf="check4AllowedRoles2DisplayEditRefundBtn && isCurrentRefundVisibleForReset()">
+        <div *ngIf="isCurrentRefundVisibleForReset()">
         <button
           type="button"
           [disabled]="isRefundStatusResetBtnDisabled"
@@ -472,9 +472,9 @@
   </div>
   <div class="refund-list">
     <ul>
-      <li>Close the current Refund {{ refundlist?.refund_reference }}</li>
-      <li>Reissue the refund with a new refund reference</li>
-      <li>Send a new Offer and Contact notification for the issued refund</li>
+      <li>Close current refund reference number {{ refundlist?.refund_reference }}</li>
+      <li>Reissue refund with a new reference number</li>
+      <li>Issue a new Offer and Contact notification for the reissued refund</li>
     </ul>
   </div>
 

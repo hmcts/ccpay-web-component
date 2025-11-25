@@ -152,6 +152,7 @@ export class RefundStatusComponent implements OnInit {
 
   }
 
+
   getRefundsStatusHistoryList() {
     if (this.refundlist !== undefined) {
       this.refundService.getRefundStatusHistory(this.refundlist.refund_reference).subscribe(
@@ -481,12 +482,6 @@ export class RefundStatusComponent implements OnInit {
     this.notificationSentView = false;
   }
 
-  check4AllowedRoles2DisplayEditRefundBtn = (): boolean => {
-    return this.allowedRolesToAccessRefund.some(role =>
-      this.LOGGEDINUSERROLES.indexOf(role) !== -1
-    );
-  };
-
 
   displayResetRefundConfirmation(){
     this.isRefundStatusResetBtnDisabled = true;
@@ -515,12 +510,15 @@ export class RefundStatusComponent implements OnInit {
     );
   }
 
-  getResetRefundVisibility(){
-    this.check4AllowedRoles2DisplayEditRefundBtn && this.isCurrentRefundVisibleForReset();
+  isCurrentRefundVisibleForReset() {
+    return this.refundlist.refund_status.name  === 'Expired' && this.hasValidRefundRoles();
   }
 
-  isCurrentRefundVisibleForReset() {
-    return this.refundlist.refund_status.name  === 'Expired'
+
+  hasValidRefundRoles(): boolean {
+    const refundRolesForPayment = this.LOGGEDINUSERROLES.includes("payments-refund")
+    const refundRolesForApprover = this.LOGGEDINUSERROLES.includes("payments-refund-approver")
+    return refundRolesForPayment || refundRolesForApprover;
   }
 
 }
