@@ -120,23 +120,23 @@
     </div>
   </div>
 
-  <div class="summaryheader" *ngIf="isTelephonySelectionEnable()">
-    <h3 class="heading-medium govuk-!-margin-top-3 govuk-!-margin-bottom-4">Which system are you using to take a payment?</h3>
-  </div>
+  <!--<div class="summaryheader" *ngIf="isTelephonySelectionEnable()">-->
+    <!--<h3 class="heading-medium govuk-!-margin-top-3 govuk-!-margin-bottom-4">Which system are you using to take a payment?</h3>-->
+  <!--</div>-->
 
-  <div class="govuk-radios__item" *ngIf="isTelephonySelectionEnable()">
-    <input class="govuk-radios__input" id="paymentSystem" name="paymentSystem" type="radio"   [value]="getAntennaValue()"
-           (input)="setPaymentValue(getAntennaValue())"
-    />
-    <label class="govuk-label-fee-summary govuk-radios__label govuk-!-margin-top-2">Antenna</label>
-  </div>
+  <!--<div class="govuk-radios__item" *ngIf="isTelephonySelectionEnable()">-->
+    <!--<input class="govuk-radios__input" id="paymentSystem" name="paymentSystem" type="radio"   [value]="getAntennaValue()"-->
+           <!--(input)="setPaymentValue(getAntennaValue())"-->
+    <!--/>-->
+    <!--<label class="govuk-label-fee-summary govuk-radios__label govuk-!-margin-top-2">Antenna</label>-->
+  <!--</div>-->
 
-  <div class="govuk-radios__item" *ngIf="isTelephonySelectionEnable()">
-    <input class="govuk-radios__input" id="paymentSystem" name="paymentSystem" type="radio" [value]="getKervValue()"
-           (input)="setPaymentValue(getKervValue())"
-    />
-    <label class="govuk-label-fee-summary govuk-radios__label govuk-!-margin-top-2">Nexus</label>
-  </div>
+  <!--<div class="govuk-radios__item" *ngIf="isTelephonySelectionEnable()">-->
+    <!--<input class="govuk-radios__input" id="paymentSystem" name="paymentSystem" type="radio" [value]="getKervValue()"-->
+           <!--(input)="setPaymentValue(getKervValue())"-->
+    <!--/>-->
+    <!--<label class="govuk-label-fee-summary govuk-radios__label govuk-!-margin-top-2">Nexus</label>-->
+  <!--</div>-->
 <!--
   <div class="govuk-form-group govuk-form-group--mg" *ngIf="!bsPaymentDcnNumber">
       <label class="govuk-label custom-govuk-label govuk-fieldset__heading--fz" for="responsibleOffice">
@@ -152,8 +152,8 @@
 
   <div>
       <button *ngIf="!bsPaymentDcnNumber" type="submit" (click)="takePayment()"
-              [disabled]="totalFee <= 0 || isConfirmationBtnDisabled || isTakePaymentButtonDisabled()"
-              [ngClass]='totalFee <= 0 || !platForm || !service || isConfirmationBtnDisabled || isTakePaymentButtonDisabled()? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'>
+              [disabled]="totalFee <= 0 || isConfirmationBtnDisabled"
+              [ngClass]='totalFee <= 0 || !platForm || !service || isConfirmationBtnDisabled? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'>
         Take payment
     </button>
     <button *ngIf="bsPaymentDcnNumber" type="button" (click)="goToAllocatePage(outStandingAmount, isFeeAmountZero)" class="button govuk-!-margin-right-1">

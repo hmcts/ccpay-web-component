@@ -17,6 +17,7 @@ type PaymentLibAlias = PaymentLibComponent;
 
 
 const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
+//REMOVE
 const ANTENNA_VALUE = 'Antenna';
 const KERV_VALUE = 'Kerv';
 
@@ -246,8 +247,8 @@ export class FeeSummaryComponent implements OnInit {
   }
   takePayment() {
     this.isConfirmationBtnDisabled = true;
-    const requestBody = new PaymentToPayhubRequest(this.ccdCaseNumber, this.outStandingAmount, this.caseType, this.paymentMethod),
-      antennaReqBody = new PayhubAntennaRequest(this.ccdCaseNumber, this.outStandingAmount, this.caseType, this.paymentMethod);
+    const requestBody = new PaymentToPayhubRequest(this.ccdCaseNumber, this.outStandingAmount, this.caseType, this.getKervValue()),
+      antennaReqBody = new PayhubAntennaRequest(this.ccdCaseNumber, this.outStandingAmount, this.caseType, this.getKervValue());
 
     if (this.platForm === 'Antenna') {
 
@@ -277,6 +278,7 @@ export class FeeSummaryComponent implements OnInit {
     return typeof amountDue === 'undefined';
   }
 
+  //REMOVE
   getAntennaValue() : string{
     return ANTENNA_VALUE;
   }
@@ -289,6 +291,7 @@ export class FeeSummaryComponent implements OnInit {
     return this.paymentMethod;
   }
 
+  //REMOVE
   setPaymentValue(value: string) {
     this.paymentMethod = value;
   }
