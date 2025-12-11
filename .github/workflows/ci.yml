@@ -27,8 +27,40 @@ jobs:
         run: yarn install
       - name: Build library
         run: yarn run build-prod
-      - name: Publish library
-        env:
-          NODE_AUTH_TOKEN:  ${{ secrets.NPM_API_TOKEN }}
+      # Package the built library into a .tgz without publishing to npm
+      - name: Pack library tarball
+        run: |
+          cd dist/payment-lib
+          npm pkg fix || true
+          npm pack
+          ls -la
+      # Upload the tarball as a build artifact on all runs
+      - name: Upload tarball artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: payment-lib-tarball
+          path: dist/payment-lib/*.tgz
+      # Attach the tarball to the GitHub Release when triggered by a release event
+      - name: Upload tarball to GitHub Release
         if: startsWith(github.ref, 'refs/tags')
-        run: cd dist/payment-lib && npm publish
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/payment-lib/*.tgz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Deprecated npm publish steps retained below for reference; consider removing entirely if avoiding npm
+      # - name: Publish library
+      #   env:
+      #     NODE_AUTH_TOKEN:  ${{ secrets.NPM_API_TOKEN }}
+      #   if: startsWith(github.ref, 'refs/tags')
+      #   run: cd dist/payment-lib && npm publish
+      #
+      # - name: Publish library (public)
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_API_TOKEN }}
+      #   if: startsWith(github.ref, 'refs/tags')
+      #   run: |
+      #     cd dist/payment-lib
+      #     npm pkg fix
+      #     npm publish --access public
