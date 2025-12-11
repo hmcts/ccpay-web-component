@@ -36,7 +36,7 @@ jobs:
           ls -la
       # Upload the tarball as a build artifact on all runs
       - name: Upload tarball artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: payment-lib-tarball
           path: dist/payment-lib/*.tgz
