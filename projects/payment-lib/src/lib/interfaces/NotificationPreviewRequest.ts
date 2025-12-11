@@ -1,5 +1,5 @@
-import { IPayment } from './IPayment';
-import { IRefundContactDetails } from './IRefundContactDetails';
+import {IPayment} from './IPayment';
+import {IRefundContactDetails} from './IRefundContactDetails';
 
 export class NotificationPreviewRequest {
     notification_type?: string;
@@ -22,43 +22,46 @@ export class NotificationPreviewRequest {
         postal_code?: string;
     }
     service_name?: string;
+    template_id?: string;
 
-    constructor(payment: IPayment, contactDetails: IRefundContactDetails, refund_reason: string, refund_amount: number, refund_reference: string, payment_reference: string) {
 
-        if (contactDetails !== undefined && contactDetails !== null) {
-            this.notification_type = contactDetails.notification_type.toUpperCase();
-        }
+  constructor(payment: IPayment, contactDetails: IRefundContactDetails, refund_reason: string, refund_amount: number, refund_reference: string, payment_reference: string, template_id: string) {
 
-        if (payment !== undefined && payment !== null) {
-            this.payment_reference = payment.reference;
-            this.payment_method = payment.method;
-            this.payment_channel = payment.channel;
-            this.service_name = payment.service_name;
-        } else {
-            this.payment_reference = payment_reference;
-        }
-
-        this.personalisation = {
-            ccd_case_number: payment?.ccd_case_number || '',
-            refund_reason: refund_reason,
-            refund_amount: refund_amount,
-            refund_reference: refund_reference,
-            customer_reference: payment?.customer_reference || ''
-        };
-
-        if (this.notification_type === "EMAIL") {
-            this.recipient_email_address = contactDetails.email;
-            this.recipient_postal_address = null;
-        } else if (this.notification_type === "LETTER") {
-            this.recipient_postal_address = {
-                address_line: contactDetails.address_line,
-                city: contactDetails.city,
-                county: contactDetails.county,
-                country: contactDetails.country,
-                postal_code: contactDetails.postal_code
-            };
-            this.recipient_email_address = null;
-        }
-
+    if (contactDetails !== undefined && contactDetails !== null) {
+      this.notification_type = contactDetails.notification_type.toUpperCase();
     }
+
+    if (payment !== undefined && payment !== null) {
+      this.payment_reference = payment.reference;
+      this.payment_method = payment.method;
+      this.payment_channel = payment.channel;
+      this.service_name = payment.service_name;
+    } else {
+      this.payment_reference = payment_reference;
+    }
+
+    this.personalisation = {
+      ccd_case_number: payment?.ccd_case_number || '',
+      refund_reason: refund_reason,
+      refund_amount: refund_amount,
+      refund_reference: refund_reference,
+      customer_reference: payment?.customer_reference || ''
+    };
+    this.template_id = template_id;
+
+    if (this.notification_type === "EMAIL") {
+      this.recipient_email_address = contactDetails.email;
+      this.recipient_postal_address = null;
+    } else if (this.notification_type === "LETTER") {
+      this.recipient_postal_address = {
+        address_line: contactDetails.address_line,
+        city: contactDetails.city,
+        county: contactDetails.county,
+        country: contactDetails.country,
+        postal_code: contactDetails.postal_code
+      };
+      this.recipient_email_address = null;
+    }
+
+  }
 }

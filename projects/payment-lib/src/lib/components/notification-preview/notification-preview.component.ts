@@ -47,9 +47,10 @@ export class NotificationPreviewComponent implements OnInit {
       }
     } else {
 
-      const notficationPreviewRequestBody = new NotificationPreviewRequest(this.payment, this.contactDetails,
-        this.refundReason, this.refundAmount, this.refundReference, this.paymentReference);
+      let templateId = this.notificationSent.template_id
 
+      const notficationPreviewRequestBody = new NotificationPreviewRequest(this.payment, this.contactDetails,
+        this.refundReason, this.refundAmount, this.refundReference, this.paymentReference, templateId);
       this.notificationService.getNotificationPreview(notficationPreviewRequestBody).subscribe(
         res => {
           this.errorMessage = this.errorHandlerService.getServerErrorMessage(false, false, '');

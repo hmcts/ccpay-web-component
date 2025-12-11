@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ErrorHandlerService } from '../shared/error-handler.service';
-import { WebComponentHttpClient } from '../shared/httpclient/webcomponent.http.client';
-import { PaymentLibService } from '../../payment-lib.service';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { IRefundsNotifications } from '../../interfaces/IRefundsNotifications';
-import { NotificationPreviewRequest } from '../../interfaces/NotificationPreviewRequest';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {ErrorHandlerService} from '../shared/error-handler.service';
+import {WebComponentHttpClient} from '../shared/httpclient/webcomponent.http.client';
+import {PaymentLibService} from '../../payment-lib.service';
+import {Observable} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {IRefundsNotifications} from '../../interfaces/IRefundsNotifications';
+import {NotificationPreviewRequest} from '../../interfaces/NotificationPreviewRequest';
 
 @Injectable({
   providedIn: 'root'
