@@ -514,6 +514,10 @@ export class RefundStatusComponent implements OnInit {
     return this.refundlist.refund_status.name  === 'Expired' && this.hasValidRefundRoles();
   }
 
+  isCurrentRefundExpiredClosedOrRejected() {
+    const status = this.refundlist.refund_status.name;
+    return status === 'Expired' || status === 'Closed' || status === 'Rejected';
+  }
 
   hasValidRefundRoles(): boolean {
     const refundRolesForPayment = this.LOGGEDINUSERROLES.includes("payments-refund")
