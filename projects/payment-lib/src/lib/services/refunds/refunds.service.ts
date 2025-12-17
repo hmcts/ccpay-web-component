@@ -126,7 +126,7 @@ export class RefundsService {
   }
 
   downloadRefundsReport(startDate: string, endDate: string): Observable<any> {
-    return this.https.get(`${this.paymentLibService.REFUNDS_API_ROOT}/refund/refunds-report?date_from=${startDate}&date_to=${endDate}`, {
+    return this.https.get(`${this.paymentLibService.REFUNDS_API_ROOT}/refunds-report?date_from=${startDate}&date_to=${endDate}`, {
       withCredentials: true
     })
   .pipe(
