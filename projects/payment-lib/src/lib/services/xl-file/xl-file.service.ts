@@ -39,6 +39,11 @@ export class XlFileService {
       worksheet =  this.setTelphonyPaymentsReportHeaders(worksheet);
       worksheet = this.autoFitColumns(worksheet,json);
       worksheet =  this.addRowData(worksheet,json,headers);
+    }else if(excelFileName.match('Refunds')!== null){
+      headers = ['date_created','date_updated','amount','reason','refund_status','reference','payment_reference','ccd_case_number','service_type'];
+      worksheet =  this.setRefundsReportHeaders(worksheet);
+      worksheet = this.autoFitColumns(worksheet,json);
+      worksheet =  this.addRowData(worksheet,json,headers);
     } else {
       headers = ['resp_service_id','resp_service_name','surplus_shortfall','balance','payment_amount','ccd_case_reference', 'ccd_exception_reference', 'processed_date', 'reason', 'explanation', 'user_name'];
       worksheet =  this.setShortFallReportHeaders(worksheet);
@@ -184,6 +189,19 @@ export class XlFileService {
       worksheet.getCell('G1').value = "Payment Status";
       return worksheet;
     }
+
+   private setRefundsReportHeaders (worksheet: ExcelJS.Worksheet): ExcelJS.Worksheet {
+     worksheet.getCell('A1').value = "date_created";
+     worksheet.getCell('B1').value = "date_updated";
+     worksheet.getCell('C1').value = "amount";
+     worksheet.getCell('D1').value = "reason";
+     worksheet.getCell('E1').value = "refund_status";
+     worksheet.getCell('F1').value = "reference";
+     worksheet.getCell('G1').value = "payment reference";
+     worksheet.getCell('H1').value = "ccd_case_number";
+     worksheet.getCell('I1').value = "service_type";
+     return worksheet;
+   }
 
   private sanitizeString(value: string): string {
     if (value) {

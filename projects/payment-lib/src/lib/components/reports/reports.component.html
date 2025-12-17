@@ -91,6 +91,19 @@
             <label class="govuk-label govuk-radios__label govuk-label--m" for="TelephonyPayments">Telephony Payments</label>
             <span class="form-hint">All Telephony Payments</span>
           </div>
+          <div class="govuk-radios__item">
+            <input
+              id="RefundsEvent"
+              class="govuk-radios__input"
+              formControlName="selectedreport"
+              name="selectedreport"
+              (click)="validateDates('REFUNDS')"
+              type="radio"
+              value="REFUNDS"
+              data-aria-controls="RefundsEvent"/>
+            <label class="govuk-label govuk-radios__label govuk-label--m" for="TelephonyPayments">Refunds</label>
+            <span class="form-hint">Details of refunds</span>
+          </div>
        </div>
      </div>
      <div  class="govuk-form-group">
