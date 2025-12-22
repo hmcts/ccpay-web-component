@@ -40,7 +40,7 @@ export class XlFileService {
       worksheet = this.autoFitColumns(worksheet,json);
       worksheet =  this.addRowData(worksheet,json,headers);
     }else if(excelFileName.match('Refunds')!== null){
-      headers = ['date_created','date_updated','amount','reason','refund_status','reference','payment_reference','ccd_case_number','service_type'];
+      headers = ['date_created','date_updated','amount','RF_reference','payment_reference','ccd_case_number','service_type','refund_status','refund_status_reason'];
       worksheet =  this.setRefundsReportHeaders(worksheet);
       worksheet = this.autoFitColumns(worksheet,json);
       worksheet =  this.addRowData(worksheet,json,headers);
@@ -194,12 +194,12 @@ export class XlFileService {
      worksheet.getCell('A1').value = "date_created";
      worksheet.getCell('B1').value = "date_updated";
      worksheet.getCell('C1').value = "amount";
-     worksheet.getCell('D1').value = "reason";
-     worksheet.getCell('E1').value = "refund_status";
-     worksheet.getCell('F1').value = "reference";
-     worksheet.getCell('G1').value = "payment reference";
-     worksheet.getCell('H1').value = "ccd_case_number";
-     worksheet.getCell('I1').value = "service_type";
+     worksheet.getCell('D1').value = "RF_reference";
+     worksheet.getCell('E1').value = "payment reference";
+     worksheet.getCell('F1').value = "ccd_case_number";
+     worksheet.getCell('G1').value = "service_type";
+     worksheet.getCell('H1').value = "refund_status";
+     worksheet.getCell('I1').value = "refund_status_reason";
      return worksheet;
    }
 

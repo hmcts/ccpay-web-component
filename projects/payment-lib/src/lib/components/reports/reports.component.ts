@@ -97,7 +97,7 @@ downloadReport(){
     shortFallsRptDefault = [{resp_service_id:'',resp_service_name:'',surplus_shortfall:'',balance:'',payment_amount:'',ccd_case_reference:'',ccd_exception_reference:'',processed_date:'', reason:'', explanation:'', user_name:''}],
     telephonyPaymentsRptDefault = [{service_name:'',ccd_Reference:'',payment_reference:'',fee_code:'',payment_date:'',amount:'', payment_status:''}],
     paymentFailureRptDefault = [{payment_reference:'',ccd_reference:'',document_control_number:'',org_id:'',service_name:'',failure_reference:'',failure_reason:'',disputed_amount:'',event_name:'',event_date:'',representment_status:'',representment_date:'',refund_reference:'',refund_amount:'',refund_date:''}],
-    refundsRptDefault = [{date_created:'',date_updated:'',amount:'',reason:'',refund_status:'',reference:'',payment_reference:'',ccd_case_number:'',service_type:''}],
+    refundsRptDefault = [{date_created:'',date_updated:'',amount:'',RF_reference:'',payment_reference:'',ccd_case_number:'',service_type:'',refund_status:'',refund_status_reason:''}],
     selectedReportName = this.reportsForm.get('selectedreport').value,
     selectedStartDate = this.tranformDate(this.reportsForm.get('startDate').value),
     selectedEndDate = this.tranformDate(this.reportsForm.get('endDate').value);
@@ -239,8 +239,8 @@ downloadReport(){
 
                             if(result['data'].length > 0) {
                                for( var i=0; i< res['data'].length; i++) {
-                                 if(res['data'][i]["Amount"] !== undefined) {
-                                    res['data'][i]['Amount'] = this.convertToFloatValue(res['data'][i]['Amount']);
+                                 if(res['data'][i]["amount"] !== undefined) {
+                                    res['data'][i]['amount'] = this.convertToFloatValue(res['data'][i]['amount']);
                                  }
                               }
                             }else{
@@ -342,6 +342,10 @@ downloadReport(){
               result = 'Telephony Payments';
               break;
             }
+      case 'REFUNDS': {
+        result = 'Refunds';
+        break;
+      }
       default: {
         result = selectedOption;
         break;
@@ -374,7 +378,25 @@ downloadReport(){
 
       if (value['Payment Date']) {
               value['Payment Date'] = formatDate(value['Payment Date'], this.fmt, this.loc);
-            }
+      }
+
+      if (value['date_created'] && value['date_created'].indexOf(',') === -1) {
+        value['date_created'] = formatDate(value['date_created'], 'dd/MM/yyyy HH:mm:ss', this.loc);
+      } else if (value['date_created'] && value['date_created'].indexOf(',') !== -1) {
+        value['date_created'] = value['date_created']
+          .split(',')
+          .map(date => formatDate(date, 'dd/MM/yyyy HH:mm:ss', this.loc))
+          .join(',');
+      }
+
+      if (value['date_updated'] && value['date_updated'].indexOf(',') === -1) {
+        value['date_updated'] = formatDate(value['date_updated'], 'dd/MM/yyyy HH:mm:ss', this.loc);
+      } else if (value['date_updated'] && value['date_updated'].indexOf(',') !== -1) {
+        value['date_updated'] = value['date_updated']
+          .split(',')
+          .map(date => formatDate(date, 'dd/MM/yyyy HH:mm:ss', this.loc))
+          .join(',');
+      }
       return value;
     });
   }
