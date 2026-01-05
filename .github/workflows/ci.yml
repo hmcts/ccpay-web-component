@@ -16,13 +16,15 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: use node.js 20.19.0
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: 20.19.0
-          registry-url: https://registry.npmjs.org/
       - name: Ensure npm version (Trusted Publishing)
         run: |
           npm --version
