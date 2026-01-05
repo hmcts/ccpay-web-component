@@ -1,25 +1,26 @@
-import { Component, OnInit, Input, Inject, forwardRef } from '@angular/core';
-import { RefundsService } from '../../services/refunds/refunds.service';
-import { NotificationService } from '../../services/notification/notification.service';
-import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { IRefundList } from '../../interfaces/IRefundList';
-import { IRefundsNotifications } from '../../interfaces/IRefundsNotifications';
-import { OrderslistService } from '../../services/orderslist.service';
-import { IPutNotificationRequest } from '../../interfaces/IPutNotificationRequest';
-import { IRefundContactDetails } from '../../interfaces/IRefundContactDetails';
-import { IRefundStatus } from '../../interfaces/IRefundStatus';
-import { IResubmitRefundRequest } from '../../interfaces/IResubmitRefundRequest';
+import {Component, forwardRef, Inject, Input, OnInit} from '@angular/core';
+import {RefundsService} from '../../services/refunds/refunds.service';
+import {NotificationService} from '../../services/notification/notification.service';
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {IRefundList} from '../../interfaces/IRefundList';
+import {IRefundsNotifications} from '../../interfaces/IRefundsNotifications';
+import {OrderslistService} from '../../services/orderslist.service';
+import {IPutNotificationRequest} from '../../interfaces/IPutNotificationRequest';
+import {IRefundContactDetails} from '../../interfaces/IRefundContactDetails';
+import {IRefundStatus} from '../../interfaces/IRefundStatus';
+import {IResubmitRefundRequest} from '../../interfaces/IResubmitRefundRequest';
+import {PaymentViewService} from '../../services/payment-view/payment-view.service';
+import {IPayment} from '../../interfaces/IPayment';
+import {IFee} from '../../interfaces/IFee';
+import {IRefundFee} from '../../interfaces/IRefundFee';
+import {CommonModule} from '@angular/common';
+import {NotificationPreviewComponent} from '../notification-preview/notification-preview.component';
+import {ContactDetailsComponent} from '../contact-details/contact-details.component';
+import {AddRemissionComponent} from '../add-remission/add-remission.component';
+import {CcdHyphensPipe} from '../../pipes/ccd-hyphens.pipe';
+import {CapitalizePipe} from '../../pipes/capitalize.pipe';
 import type { PaymentLibComponent } from '../../payment-lib.component';
-import { PaymentViewService } from '../../services/payment-view/payment-view.service';
-import { IPayment } from '../../interfaces/IPayment';
-import { IFee } from '../../interfaces/IFee';
-import { IRefundFee } from '../../interfaces/IRefundFee';
-import { CommonModule } from '@angular/common';
-import { NotificationPreviewComponent } from '../notification-preview/notification-preview.component';
-import { ContactDetailsComponent } from '../contact-details/contact-details.component';
-import { AddRemissionComponent } from '../add-remission/add-remission.component';
-import { CcdHyphensPipe } from '../../pipes/ccd-hyphens.pipe';
-import { CapitalizePipe } from '../../pipes/capitalize.pipe';
+
 type PaymentLibAlias = PaymentLibComponent;
 
 @Component({
@@ -520,5 +521,13 @@ export class RefundStatusComponent implements OnInit {
     const refundRolesForApprover = this.LOGGEDINUSERROLES.includes("payments-refund-approver")
     return refundRolesForPayment || refundRolesForApprover;
   }
+
+
+
+  isCurrentRefundInProcess(): boolean {
+    const status = this.refundlist?.refund_status?.name;
+    return !!status && status !== 'Closed' && status !== 'Expired';
+  }
+
 
 }
