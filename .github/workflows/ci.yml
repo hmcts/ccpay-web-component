@@ -57,7 +57,6 @@ jobs:
           npm config delete //registry.npmjs.org/:_authToken || true
           npm config delete _authToken || true
           npm pkg fix || true
-          npm publish --access public
 
           # Choose dist-tag based on whether this is a pre-release or not
           echo "Publishing @hmcts/ccpay-web-component@${npm_package_version:-unknown} with tag '${NPM_TAG:-latest}'"
