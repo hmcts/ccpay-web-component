@@ -476,20 +476,30 @@
 
 <ng-container *ngIf="viewName === 'confirmSubmitResetRefund'">
 
-  <div class="govuk-heading-custom">
-  <h1 class="govuk-heading-l">Reset Refund</h1>
-  </div>
-  <div class="refund-list">
-    When you click Submit, the system will:
-    <ul>
-      <li>Close current refund reference number {{ refundlist?.refund_reference }}</li>
-      <li>Reissue refund with a new reference number</li>
-      <li>Issue a new Offer and Contact notification for the reissued refund</li>
-    </ul>
+
+  <div class="govuk-warning-text">
+    <h1 class="govuk-heading-l">Reset Refund</h1>
   </div>
 
-  <div class="govuk-button-group-custom">
-    <button (click)="redirectToRefundListPage()" class="govuk-button govuk-button--secondary">Cancel</button>
-    <button (click)="postResetRefund()" class="govuk-button">Submit</button>
-  </div>
+  <table class="govuk-table">
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell">When you click Submit, the system will:</td>
+    </tr>
+
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">
+            <div class="refund-list">
+              <ul class="govuk-list--bullet">
+                <li>Close current refund reference number {{ refundlist?.refund_reference }}</li>
+                <li>Reissue refund with a new reference number</li>
+                <li>Issue a new Offer and Contact notification for the reissued refund</li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+  </table>
+
+
+  <button (click)="redirectToRefundListPage()" class="govuk-button govuk-button--secondary">Cancel</button>
+  <button (click)="postResetRefund()" class="govuk-button">Submit</button>
 </ng-container>
