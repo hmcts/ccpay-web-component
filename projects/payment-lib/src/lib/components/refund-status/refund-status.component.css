@@ -172,3 +172,38 @@
   background-color: #dee0e2;
   border: 2px solid #0b0c0c;
 }
+
+.refund-status-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.govuk-button--secondary {
+  margin-bottom: 0; /* Remove extra margin */
+}
+
+.govuk-heading-custom{
+  padding-left: 19em;
+  padding-top: 2em;
+}
+
+.refund-list{
+  text-align: left;
+  margin-left: 20px;
+  padding-left: 7.5em;
+  font-size: 22px;
+}
+
+.refund-list ul {
+  list-style-type: disc;
+  padding-left: 2em;
+}
+
+.govuk-button-group-custom {
+  padding-top: 3em;
+  padding-left: 20em;
+  align-items: center;
+  align-content: center;
+}

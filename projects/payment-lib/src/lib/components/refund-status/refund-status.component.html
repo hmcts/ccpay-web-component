@@ -53,7 +53,7 @@
   </div>
   <h2 class="govuk-heading-l">Refund details</h2>
   <table>
-    
+
     <tbody>
       <tr class="section">
         <td class="bold tb-col-w">Refund reference</td>
@@ -104,7 +104,16 @@
                   {{notification?.contact_details?.address_line?.trim()}} {{notification?.contact_details?.city?.trim()}} {{notification?.contact_details?.county?.trim()}} {{notification?.contact_details?.country?.trim()}} {{notification?.contact_details?.postal_code?.trim()}}
                 </div>
               </td>
-              <td class="govuk-table__cell whitespace-inherit" *ngIf="i === 0"><a href="Javascript:void(0);" (click)="putResend(notification)">Resend</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="Javascript:void(0);" (click)="gotoEditAddressDetails(notification)">Edit details</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a *ngIf="!notificationSentView || i != notificationSentViewIndex" href="Javascript:void(0);" (click)="showNotificationSentView(i)">View</a><a *ngIf="i === notificationSentViewIndex && notificationSentView" href="Javascript:void(0);" (click)="hideNotificationSentView()">Hide</a></td>
+
+              <td class="govuk-table__cell whitespace-inherit" *ngIf="i === 0">
+
+                <a *ngIf="isCurrentRefundInProcess()" href="Javascript:void(0);" (click)="putResend(notification)">Resend</a><span *ngIf="isCurrentRefundInProcess()">&nbsp;|&nbsp;</span>
+                <a *ngIf="isCurrentRefundInProcess()"href="Javascript:void(0);" (click)="gotoEditAddressDetails(notification)">Edit details</a><span *ngIf="isCurrentRefundInProcess()">&nbsp;|&nbsp;</span>
+                <a *ngIf="!notificationSentView || i != notificationSentViewIndex" href="Javascript:void(0);" (click)="showNotificationSentView(i)">View</a>
+                <a *ngIf="i === notificationSentViewIndex && notificationSentView" href="Javascript:void(0);" (click)="hideNotificationSentView()">Hide</a>
+
+              </td>
+
               <td class="govuk-table__cell whitespace-inherit" *ngIf="i > 0"><a *ngIf="!notificationSentView || i != notificationSentViewIndex" href="Javascript:void(0);" (click)="showNotificationSentView(i)">View</a><a *ngIf="i === notificationSentViewIndex && notificationSentView" href="Javascript:void(0);" (click)="hideNotificationSentView()">Hide</a></td>
             </tr>
             <tr *ngIf="i === notificationSentViewIndex && notificationSentView">
@@ -122,12 +131,23 @@
             <td class="govuk-table__cell whitespace-inherit" colspan="4">No record found ... </td>
           </tr>
         </tbody>
-      </table>  
+      </table>
     </div>
   <!-- Status history -->
   <div>
     <br />
-    <h2 class="govuk-heading-m">Refund status history</h2>
+    <div class="refund-status-history-header govuk-flex">
+      <h2 class="govuk-heading-m">Refund status history</h2>
+        <div *ngIf="isCurrentRefundVisibleForReset()">
+        <button
+          type="button"
+          [disabled]="isRefundStatusResetBtnDisabled"
+          class="govuk-button govuk-button--secondary"
+          (click)="displayResetRefundConfirmation()">
+          Reset Refund
+        </button>
+      </div>
+    </div>
     <div *ngIf="refundStatusHistories">
     <table class="govuk-table">
       <thead class="govuk-table__head">
@@ -229,16 +249,16 @@
           <strong>Post</strong>
           <br/>
           {{refundlist?.contact_details?.address_line?.trim()}} {{refundlist?.contact_details?.city?.trim()}} {{refundlist?.contact_details?.county?.trim()}} {{refundlist?.contact_details?.country?.trim()}} {{refundlist?.contact_details?.postal_code?.trim()}}
-        </div> 
+        </div>
         <a class="govuk-link" href="Javascript:void(0)" *ngIf="refundlist?.contact_details !=null"  class="govuk-link right" (click)="gotoEditDetailsPage(refundlist?.contact_details, 'reviewandsubmitEditview')">
           Change
         </a>
       </td>
-    </tr> 
+    </tr>
 
     <tr class="govuk-table__row">
       <td class="govuk-table__cell govuk-!-font-weight-bold">Notification</td>
-      <td class="govuk-table__cell">{{templateInstructionType}} 
+      <td class="govuk-table__cell">{{templateInstructionType}}
           <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
             Preview
           </a>
@@ -248,9 +268,9 @@
       </td>
     </tr>
   </table>
-  <app-notification-preview *ngIf="notificationPreview" 
+  <app-notification-preview *ngIf="notificationPreview"
   [paymentReference]="refundlist?.payment_reference"
-  [payment]="paymentObj" 
+  [payment]="paymentObj"
   [contactDetails]="refundlist?.contact_details"
   [refundReason]="refundlist?.reason_code"
   [refundAmount]="changedAmount ? changedAmount : refundlist?.amount"
@@ -276,7 +296,7 @@
 </ng-container>
 
 <ng-container *ngIf="viewName === 'reviewandsubmitEditview' && isEditDetailsClicked">
-  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='EDITDETAILSPAGE'>      
+  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='EDITDETAILSPAGE'>
     <h1 class="govuk-heading-l">Edit contact details</h1>
     <h2 class="govuk-heading-m govuk-font19px">Case reference: {{ccdCaseNumber | ccdHyphens }}</h2>
     <span class="govuk-hint font-size-19px">
@@ -356,7 +376,7 @@
   </div>
 </ng-container>
 <ng-container *ngIf="viewName === 'refundEditView' && isEditDetailsClicked">
-  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='EDITDETAILSPAGE'>      
+  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='EDITDETAILSPAGE'>
     <h1 class="govuk-heading-l">Edit contact details</h1>
     <h2 class="govuk-heading-m govuk-font19px">Case reference: {{ccdCaseNumber | ccdHyphens }}</h2>
     <span class="govuk-hint font-size-19px">
@@ -375,7 +395,7 @@
 
 </ng-container>
 <ng-container *ngIf="viewName === 'revieweditdetailsconfirmationpage' && !isResendOperationSuccess && isEditDetailsClicked">
-  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='EDITDETAILSCHECKANDANSWERPAGE'>      
+  <input #myInput type='hidden' id='iFrameDrivenImageValue' value='EDITDETAILSCHECKANDANSWERPAGE'>
     <h1 class="govuk-heading-l">Check your answers</h1>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row font-size-19px">
@@ -385,7 +405,7 @@
         <dd class="govuk-summary-list__value">
           {{ refundlist?.refund_reference}}
         </dd>
-        <span class="govuk-summary-list__actions"></span> 
+        <span class="govuk-summary-list__actions"></span>
       </div>
       <div class="govuk-summary-list__row font-size-19px">
         <dt class="govuk-summary-list__key">
@@ -402,7 +422,7 @@
             <strong>Post</strong>
             <br/>
             {{addressDetails?.address_line?.trim()}} {{addressDetails?.city?.trim()}} {{addressDetails?.county?.trim()}} {{addressDetails?.country?.trim()}} {{addressDetails?.postal_code?.trim()}}
-          </div>        
+          </div>
         </dd>
         <dd class="govuk-summary-list__actions">
           <a class="govuk-link" href="Javascript:void(0)" (click)="gotoEditDetailsPage(addressDetails, 'refundEditView')">
@@ -415,7 +435,7 @@
           Notification
         </dt>
         <dd class="govuk-summary-list__value">
-          {{templateInstructionType}} 
+          {{templateInstructionType}}
         </dd>
         <span class="govuk-summary-list__actions">
           <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="showNotificationPreview()">
@@ -424,7 +444,7 @@
           <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link right" (click)="hideNotificationPreview()">
             Hide Preview
           </a>
-        </span> 
+        </span>
       </div>
     </dl>
 
@@ -451,4 +471,25 @@
       </a>
   </p>
 
+</ng-container>
+
+
+<ng-container *ngIf="viewName === 'confirmSubmitResetRefund'">
+
+  <div class="govuk-heading-custom">
+  <h1 class="govuk-heading-l">Reset Refund</h1>
+  </div>
+  <div class="refund-list">
+    When you click Submit, the system will:
+    <ul>
+      <li>Close current refund reference number {{ refundlist?.refund_reference }}</li>
+      <li>Reissue refund with a new reference number</li>
+      <li>Issue a new Offer and Contact notification for the reissued refund</li>
+    </ul>
+  </div>
+
+  <div class="govuk-button-group-custom">
+    <button (click)="redirectToRefundListPage()" class="govuk-button govuk-button--secondary">Cancel</button>
+    <button (click)="postResetRefund()" class="govuk-button">Submit</button>
+  </div>
 </ng-container>

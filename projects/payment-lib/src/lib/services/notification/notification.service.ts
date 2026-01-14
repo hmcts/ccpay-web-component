@@ -38,15 +38,15 @@ export class NotificationService {
   }
 
   getNotificationPreview(body: NotificationPreviewRequest): Observable<any> {
-    return this.https.post(`${this.paymentLibService.NOTIFICATION_API_ROOT}/doc-preview`, body).pipe(
+    return this.https.post(`${this.paymentLibService.REFUNDS_API_ROOT}/notifications/doc-preview`, body).pipe(
       catchError(this.errorHandlerService.handleError));
   }
 
   getNotificationInstructionType(paymentChannel: string, paymentMethod: string): any {
     if (paymentChannel === 'bulk scan' && paymentMethod === 'postal order') {
-      return 'SendRefund';
+      return 'RefundWhenContacted';
     } else if (paymentChannel === 'bulk scan' && paymentMethod === 'cash') {
-      return 'SendRefund';
+      return 'RefundWhenContacted';
     } else if (paymentChannel === 'online' && paymentMethod === 'card') {
       return 'SendRefund';
     } else if (paymentChannel === 'telephony' && paymentMethod === 'card') {
@@ -54,7 +54,7 @@ export class NotificationService {
     } else if (paymentChannel === 'online' && paymentMethod === 'payment by account') {
       return 'SendRefund';
     } else if (paymentChannel === 'bulk scan' && paymentMethod === 'cheque') {
-      return 'SendRefund';
+      return 'RefundWhenContacted';
     } else {
       return 'Template'
     }
