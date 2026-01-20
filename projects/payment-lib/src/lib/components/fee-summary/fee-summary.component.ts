@@ -143,7 +143,9 @@ export class FeeSummaryComponent implements OnInit {
     this.paymentViewService.getPaymentGroupDetails(this.paymentGroupRef).subscribe(
       paymentGroup => {
         this.paymentGroup = paymentGroup;
-        this.isPaymentExist = paymentGroup.payments ? paymentGroup.payments.length > 0 : false;
+        this.isPaymentExist = this.paymentGroup?.payments?.some(
+          payment => payment.status?.toLowerCase() !== 'initiated'
+        ) ?? false;
         this.isRemissionsExist = paymentGroup.remissions ? paymentGroup.remissions.length > 0 : false;
 
         if (paymentGroup.fees) {
