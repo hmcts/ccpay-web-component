@@ -144,7 +144,7 @@ export class FeeSummaryComponent implements OnInit {
       paymentGroup => {
         this.paymentGroup = paymentGroup;
         this.isPaymentExist = this.paymentGroup?.payments?.some(
-          payment => payment.status?.toLowerCase() !== 'initiated'
+          payment => payment.status?.toLowerCase() !== 'failed'
         ) ?? false;
         this.isRemissionsExist = paymentGroup.remissions ? paymentGroup.remissions.length > 0 : false;
 
