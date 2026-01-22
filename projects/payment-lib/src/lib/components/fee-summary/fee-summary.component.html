@@ -120,36 +120,39 @@
     </div>
   </div>
 
-      <!--// This is  section is used when there is more that one payment provider. It is commented as kerv is the default option.  -->
-    <!--<div class="summaryheader" *ngIf="isTelephonySelectionEnable()">-->
-      <!--<h3 class="heading-medium govuk-!-margin-top-3 govuk-!-margin-bottom-4">Which system are you using to take a payment?</h3>-->
-    <!--</div>-->
+<!--   This is  section is used when there is more that one payment provider. It is commented as kerv is the default option.
+  <div class="summaryheader" *ngIf="isTelephonySelectionEnable()">
+    <h3 class="heading-medium govuk-!-margin-top-3 govuk-!-margin-bottom-4">Which system are you using to take a payment?</h3>
+  </div>
 
-    <!--<div class="govuk-radios__item" *ngIf="isTelephonySelectionEnable()">-->
-      <!--<input class="govuk-radios__input" id="paymentSystem" name="paymentSystem" type="radio"   [value]="getAntennaValue()"-->
-             <!--(input)="setPaymentValue(getAntennaValue())"-->
-      <!--/>-->
-      <!--<label class="govuk-label-fee-summary govuk-radios__label govuk-!-margin-top-2">Antenna</label>-->
-    <!--</div>-->
+  <div class="govuk-radios__item" *ngIf="isTelephonySelectionEnable()">
+    <input class="govuk-radios__input" id="paymentSystem" name="paymentSystem" type="radio"   [value]="getAntennaValue()"
+           (input)="setPaymentValue(getAntennaValue())"
+    />
+    <label class="govuk-label-fee-summary govuk-radios__label govuk-!-margin-top-2">Antenna</label>
+  </div>
 
-    <!--<div class="govuk-radios__item" *ngIf="isTelephonySelectionEnable()">-->
-      <!--<input class="govuk-radios__input" id="paymentSystem" name="paymentSystem" type="radio" [value]="getKervValue()"-->
-             <!--(input)="setPaymentValue(getKervValue())"-->
-      <!--/>-->
-      <!--<label class="govuk-label-fee-summary govuk-radios__label govuk-!-margin-top-2">Nexus</label>-->
-    <!--</div>-->
-  <!--
-    <div class="govuk-form-group govuk-form-group--mg" *ngIf="!bsPaymentDcnNumber">
-        <label class="govuk-label custom-govuk-label govuk-fieldset__heading--fz" for="responsibleOffice">
-          <strong>What service is this fee for?</strong>
-        </label>
-        <select class="govuk-select govuk-select--custom" id="responsibleOffice" [(ngModel)]="service" name="responsibleOffice">
-          <option value="" selected='selected'>Please select</option>
-          <option value="AA07">Divorce</option>
-          <option value="AA09">Financial Remedy</option>
-          <option value="AA08">Probate</option>
-        </select>
-    </div> -->
+  <div class="govuk-radios__item" *ngIf="isTelephonySelectionEnable()">
+    <input class="govuk-radios__input" id="paymentSystem" name="paymentSystem" type="radio" [value]="getKervValue()"
+           (input)="setPaymentValue(getKervValue())"
+    />
+    <label class="govuk-label-fee-summary govuk-radios__label govuk-!-margin-top-2">Nexus</label>
+  </div>
+-->
+
+
+<!--
+  <div class="govuk-form-group govuk-form-group--mg" *ngIf="!bsPaymentDcnNumber">
+      <label class="govuk-label custom-govuk-label govuk-fieldset__heading--fz" for="responsibleOffice">
+        <strong>What service is this fee for?</strong>
+      </label>
+      <select class="govuk-select govuk-select--custom" id="responsibleOffice" [(ngModel)]="service" name="responsibleOffice">
+        <option value="" selected='selected'>Please select</option>
+        <option value="AA07">Divorce</option>
+        <option value="AA09">Financial Remedy</option>
+        <option value="AA08">Probate</option>
+      </select>
+  </div> -->
 
   <div>
       <button *ngIf="!bsPaymentDcnNumber" type="submit" (click)="takePayment()"
