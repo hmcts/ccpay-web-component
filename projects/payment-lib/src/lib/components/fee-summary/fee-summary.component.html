@@ -157,7 +157,7 @@
   <div>
       <button *ngIf="!bsPaymentDcnNumber" type="submit" (click)="takePayment()"
               [disabled]="totalFee <= 0 || isConfirmationBtnDisabled"
-              [ngClass]='totalFee <= 0 || !platForm || !service || isConfirmationBtnDisabled? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'>
+              [ngClass]='totalFee <= 0 || !service || isConfirmationBtnDisabled? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'>
         Take payment
     </button>
     <button *ngIf="bsPaymentDcnNumber" type="button" (click)="goToAllocatePage(outStandingAmount, isFeeAmountZero)" class="button govuk-!-margin-right-1">
