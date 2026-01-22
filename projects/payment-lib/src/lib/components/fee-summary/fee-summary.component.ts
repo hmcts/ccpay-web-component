@@ -19,7 +19,7 @@ type PaymentLibAlias = PaymentLibComponent;
 const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
 //REMOVE
 const ANTENNA_VALUE = 'Antenna';
-const KERV_VALUE = 'Kerv';
+const KERV_VALUE = 'kerv';
 
 @Component({
     selector: 'ccpay-fee-summary',
@@ -250,6 +250,7 @@ export class FeeSummaryComponent implements OnInit {
     const requestBody = new PaymentToPayhubRequest(this.ccdCaseNumber, this.outStandingAmount, this.caseType, this.getKervValue()),
       antennaReqBody = new PayhubAntennaRequest(this.ccdCaseNumber, this.outStandingAmount, this.caseType, this.getKervValue());
 
+    //remove it
     if (this.platForm === 'Antenna') {
 
       this.paymentViewService.postPaymentAntennaToPayHub(antennaReqBody, this.paymentGroupRef).subscribe(
@@ -278,10 +279,6 @@ export class FeeSummaryComponent implements OnInit {
     return typeof amountDue === 'undefined';
   }
 
-  //REMOVE
-  getAntennaValue() : string{
-    return ANTENNA_VALUE;
-  }
 
   getKervValue() : string{
     return KERV_VALUE;
@@ -291,10 +288,16 @@ export class FeeSummaryComponent implements OnInit {
     return this.paymentMethod;
   }
 
-  //REMOVE
-  setPaymentValue(value: string) {
-    this.paymentMethod = value;
-  }
+  // This is attribute is used when there is more that one payment provider. It is commented as kerv is the default option.
+  // setPaymentValue(value: string) {
+  //   this.paymentMethod = value;
+  // }
+
+  // This is attribute is used when there is more that one payment provider. It is commented as kerv is the default option.
+  // getAntennaValue() : string{
+  //   return ANTENNA_VALUE;
+  // }
+
 
 
   isTakePaymentButtonDisabled(): boolean {
