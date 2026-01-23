@@ -121,5 +121,5 @@
     "uuid": "7.0.3"
   },
   "license": "MIT",
-  "packageManager": "yarn@3.5.1"
+  "packageManager": "yarn@3.8.7"
 }
