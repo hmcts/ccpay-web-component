@@ -17,8 +17,10 @@ type PaymentLibAlias = PaymentLibComponent;
 
 
 const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
-const ANTENNA_VALUE = 'Antenna';
-const KERV_VALUE = 'Kerv';
+
+// This is attribute is used when there is more that one payment provider. It is commented as kerv is the default option.
+//const ANTENNA_VALUE = 'Antenna';
+const KERV_VALUE = 'kerv';
 
 @Component({
     selector: 'ccpay-fee-summary',
@@ -45,7 +47,6 @@ export class FeeSummaryComponent implements OnInit {
   totalFee: number;
   payhubHtml: SafeHtml;
   service: string = "";
-  platForm: string = "";
   upPaymentErrorMessage: string;
   selectedOption: string;
   isBackButtonEnable: boolean = true;
@@ -77,8 +78,6 @@ export class FeeSummaryComponent implements OnInit {
     this.OrderslistService.setCaseType(this.paymentLibComponent.CASETYPE);
     this.isTelephonySelectionEnableNull();
 
-
-    this.platForm = 'Antenna';
 
     this.paymentViewService.getBSfeature().subscribe(
       features => {
@@ -246,23 +245,21 @@ export class FeeSummaryComponent implements OnInit {
   }
   takePayment() {
     this.isConfirmationBtnDisabled = true;
-    const requestBody = new PaymentToPayhubRequest(this.ccdCaseNumber, this.outStandingAmount, this.caseType, this.paymentMethod),
-      antennaReqBody = new PayhubAntennaRequest(this.ccdCaseNumber, this.outStandingAmount, this.caseType, this.paymentMethod);
+    const requestBody = new PaymentToPayhubRequest(this.ccdCaseNumber, this.outStandingAmount, this.caseType, this.getKervValue()),
+      antennaReqBody = new PayhubAntennaRequest(this.ccdCaseNumber, this.outStandingAmount, this.caseType, this.getKervValue());
 
-    if (this.platForm === 'Antenna') {
+    this.paymentViewService.postPaymentAntennaToPayHub(antennaReqBody, this.paymentGroupRef).subscribe(
+      response => {
+        this.isBackButtonEnable = false;
+        window.location.href = '/makePaymentByTelephoneyProvider';
+      },
+      (error: any) => {
+        this.errorMessage = error;
+        this.isConfirmationBtnDisabled = false;
+        this.router.navigateByUrl('/pci-pal-failure');
+      }
+    );
 
-      this.paymentViewService.postPaymentAntennaToPayHub(antennaReqBody, this.paymentGroupRef).subscribe(
-        response => {
-          this.isBackButtonEnable = false;
-          window.location.href = '/makePaymentByTelephoneyProvider';
-        },
-        (error: any) => {
-          this.errorMessage = error;
-          this.isConfirmationBtnDisabled = false;
-          this.router.navigateByUrl('/pci-pal-failure');
-        }
-      );
-    }
   }
 
   goToAllocatePage(outStandingAmount: number, isFeeAmountZero: Boolean) {
@@ -277,9 +274,6 @@ export class FeeSummaryComponent implements OnInit {
     return typeof amountDue === 'undefined';
   }
 
-  getAntennaValue() : string{
-    return ANTENNA_VALUE;
-  }
 
   getKervValue() : string{
     return KERV_VALUE;
@@ -289,9 +283,16 @@ export class FeeSummaryComponent implements OnInit {
     return this.paymentMethod;
   }
 
-  setPaymentValue(value: string) {
-    this.paymentMethod = value;
-  }
+  // This is attribute is used when there is more that one payment provider. It is commented as kerv is the default option.
+  // setPaymentValue(value: string) {
+  //   this.paymentMethod = value;
+  // }
+
+  // This is attribute is used when there is more that one payment provider. It is commented as kerv is the default option.
+  // getAntennaValue() : string{
+  //   return ANTENNA_VALUE;
+  // }
+
 
 
   isTakePaymentButtonDisabled(): boolean {

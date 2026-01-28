@@ -120,6 +120,7 @@
     </div>
   </div>
 
+<!--   This is  section is used when there is more that one payment provider. It is commented as kerv is the default option.
   <div class="summaryheader" *ngIf="isTelephonySelectionEnable()">
     <h3 class="heading-medium govuk-!-margin-top-3 govuk-!-margin-bottom-4">Which system are you using to take a payment?</h3>
   </div>
@@ -137,6 +138,9 @@
     />
     <label class="govuk-label-fee-summary govuk-radios__label govuk-!-margin-top-2">Nexus</label>
   </div>
+-->
+
+
 <!--
   <div class="govuk-form-group govuk-form-group--mg" *ngIf="!bsPaymentDcnNumber">
       <label class="govuk-label custom-govuk-label govuk-fieldset__heading--fz" for="responsibleOffice">
@@ -152,8 +156,8 @@
 
   <div>
       <button *ngIf="!bsPaymentDcnNumber" type="submit" (click)="takePayment()"
-              [disabled]="totalFee <= 0 || isConfirmationBtnDisabled || isTakePaymentButtonDisabled()"
-              [ngClass]='totalFee <= 0 || !platForm || !service || isConfirmationBtnDisabled || isTakePaymentButtonDisabled()? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'>
+              [disabled]="totalFee <= 0 || isConfirmationBtnDisabled"
+              [ngClass]='totalFee <= 0 || !service || isConfirmationBtnDisabled? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'>
         Take payment
     </button>
     <button *ngIf="bsPaymentDcnNumber" type="button" (click)="goToAllocatePage(outStandingAmount, isFeeAmountZero)" class="button govuk-!-margin-right-1">
