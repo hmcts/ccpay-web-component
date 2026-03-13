@@ -289,8 +289,8 @@ export class ServiceRequestComponent implements OnInit {
             // Refunds > 0 and overPayment > 0 --> refunds in process or Rejected.
             if (this.isAnyRefundsForThisCase() && this.getBalanceToBePaid() > 0) {
 
-              // rejected by fee refunds === refunds by fee it means that refund for the current fee is rejected.
-              if (this.paymentLibComponent.isTheCurrentRefundRejectedForTheFee(paymentGroup.fees.at(0).id.toString())) {
+              // If no refunds in process for this fee, show overpayment page with message "Refund in process"
+              if (this.paymentLibComponent.shouldItDisplayOverPaymentPanel()) {
                 this.showOverPayment(paymentGroup, payment);
                 return
               }
