@@ -70,7 +70,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
     "karma-phantomjs-launcher": "1.0.4",
-    "karma-spec-reporter": "^0.0.32",
+    "karma-spec-reporter": "^0.0.36",
     "ng-packagr": "^20.3.0",
     "protractor": "~7.0.0",
     "sass": "^1.64.1",
