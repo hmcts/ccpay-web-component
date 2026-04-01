@@ -37,7 +37,7 @@
     "govuk_template_jinja": "^0.24.1",
     "jasmine-core": "^5.1.2",
     "local-storage": "^2.0.0",
-    "rpx-xui-translation": "1.2.0",
+    "rpx-xui-translation": "1.2.2",
     "rxjs": "~6.6.7",
     "rxjs-compat": "^6.6.7",
     "tslib": "^2.0.0",
