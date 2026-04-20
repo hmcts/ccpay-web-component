@@ -132,6 +132,14 @@ export class FeeSummaryComponent implements OnInit {
     return null;
   }
 
+  isThereAnyRemission(): boolean {
+    if (this.paymentGroup && this.paymentGroup.remissions && this.paymentGroup.remissions.length > 0) {
+      return true;
+    }
+    return false;
+  }
+
+
   addRemission(fee: IFee) {
     this.currentFee = fee;
     this.viewStatus = 'add_remission';
