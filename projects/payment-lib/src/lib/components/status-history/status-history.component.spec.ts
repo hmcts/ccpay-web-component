@@ -91,7 +91,7 @@ describe('StatusHistoryComponent', () => {
 
     it('sets errorMessage when either request errors', () => {
       const errorResponse = {
-        replace: () => 'Boom'
+        replace: () => 'TestError'
       };
       paymentViewServiceSpy.getApportionPaymentDetails.and.returnValue(
         throwError(errorResponse) as any
@@ -102,7 +102,7 @@ describe('StatusHistoryComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.errorMessage).toBe('Boom');
+      expect(component.errorMessage).toBe('TestError');
     });
   });
 });
