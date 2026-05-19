@@ -91,7 +91,7 @@ describe('StatusHistoryComponent', () => {
 
     it('sets errorMessage when either request errors', () => {
       paymentViewServiceSpy.getApportionPaymentDetails.and.returnValue(
-        throwError(() => '"Boom"') as any
+        throwError('"Boom"') as any
       );
       statusHistoryServiceSpy.getPaymentStatusesByReference.and.returnValue(of({
         status_histories: []
