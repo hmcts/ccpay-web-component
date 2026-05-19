@@ -17,13 +17,15 @@
       <thead>
         <tr>
           <th>Status</th>
+          <th *ngIf="isDisplayFailureReasonColumn">Failure reason</th>
           <th *ngIf="isTakePayment">Amount</th>
           <th>Date and time</th>
         </tr>
-      </thead> 
+      </thead>
       <tbody>
-        <tr *ngFor="let status of statuses.status_histories">
+        <tr *ngFor="let status of statuses.status_histories; let i = index">
           <td>{{ status.status }}</td>
+          <td *ngIf="isDisplayFailureReasonColumn">{{ isDisplayReasons[i] ? status.error_message : '' }}</td>
           <td *ngIf="isTakePayment">£{{ statuses.amount | number:'.2' }}</td>
           <td>{{ status.date_created | date:'dd MMMM yyyy HH:mm:ss'}}</td>
         </tr>
