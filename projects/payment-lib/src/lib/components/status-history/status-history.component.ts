@@ -35,8 +35,12 @@ export class StatusHistoryComponent implements OnInit {
     }).subscribe(
       ({ paymentGroup, statuses }) => {
         this.statuses = statuses;
-        if ((paymentGroup.payments[0].channel === 'telephony' || paymentGroup.payments[0].channel === 'online') &&
-            (paymentGroup.payments[0].method === 'card')) {
+        const firstPayment = paymentGroup &&
+                             paymentGroup.payments &&
+                             paymentGroup.payments.length > 0 ? paymentGroup.payments[0] : null;
+        if (firstPayment &&
+            (firstPayment.channel === 'telephony' || firstPayment.channel === 'online') &&
+            (firstPayment.method === 'card')) {
           this.isDisplayReasons = this.statuses.status_histories.map(statusHistory =>
             statusHistory.status === 'failed' ||
             statusHistory.status === 'declined' ||
