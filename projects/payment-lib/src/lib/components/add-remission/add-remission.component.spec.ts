@@ -389,7 +389,8 @@ describe('AddRemissionComponent', () => {
       component.paymentGroupRef = "2021-1629193543478";
       component.remissionForm = form;
       component.fee = <any>fee;
-      component.confirmRemission();
+
+      component.confirmRemission({});
 
       expect(component.gotoCasetransationPage).not.toHaveBeenCalled();
       expect(routerStub.navigateByUrl).toHaveBeenCalled();
