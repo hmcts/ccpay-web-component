@@ -92,6 +92,8 @@ export class AddRemissionComponent implements OnInit {
   @Input('orderTotalPayments') orderTotalPayments: number;
   @Input('orderRemissionTotal') orderRemissionTotal: number;
   @Output() cancelRemission: EventEmitter<void> = new EventEmitter();
+  @Output() confirmRemissionEvent: EventEmitter<void> = new EventEmitter();
+  @Output() remissionAdded: EventEmitter<void> = new EventEmitter();
   //@Output() refundListReason: EventEmitter<any> = new EventEmitter({reason:string, code:string});
   @Output() refundListReason = new EventEmitter<{ reason: string, code: string }>();
   @Output() refundListAmount: EventEmitter<string> = new EventEmitter();
@@ -422,7 +424,7 @@ export class AddRemissionComponent implements OnInit {
     }
   }
 
-  confirmRemission() {
+  confirmRemission(event: any) {
     this.isConfirmationBtnDisabled = true;
     const newNetAmount = this.remissionForm.controls.amount.value,
       remissionAmount = parseFloat((this.fee.net_amount - newNetAmount).toFixed(2)),
@@ -438,7 +440,7 @@ export class AddRemissionComponent implements OnInit {
             this.router.onSameUrlNavigation = 'reload';
             this.router.navigateByUrl(`/payment-history/${this.ccdCaseNumber}?view=fee-summary&selectedOption=${this.option}&paymentGroupRef=${this.paymentGroupRef}&dcn=${this.paymentLibComponent.bspaymentdcn}${LDUrl}`);
           } else {
-            this.gotoCasetransationPage();
+            this.redirectAfterAddigRemission(event);
           }
         }
       },
@@ -447,6 +449,32 @@ export class AddRemissionComponent implements OnInit {
         this.isConfirmationBtnDisabled = false;
       }
     );
+  }
+
+  redirectAfterAddigRemission(event: any) {
+    const value = this.remissionForm.controls.amount.value;
+    //if the from is empty or 0 it means full remission.
+    if (["0", "", null].includes(value)) {
+      this.gotoCasetransationPage();
+    } else {
+      this.redirectToSummaryPage(event, this.orderRef);
+    }
+  }
+
+  redirectToSummaryPage(event: any, orderef: any) {
+    if (true) {
+      event.preventDefault();
+      this.paymentLibComponent.bspaymentdcn = null;
+      this.paymentLibComponent.paymentGroupReference = this.paymentGroupRef;
+      this.paymentLibComponent.isTurnOff = this.isTurnOff;
+      this.paymentLibComponent.viewName = 'fee-summary';
+      this.confirmRemissionEvent.emit();
+      this.remissionAdded.emit();
+    }
+  }
+
+  returnToFeeScreen() {
+    this.viewStatus = 'main';
   }
 
   resetRemissionForm(val, field) {

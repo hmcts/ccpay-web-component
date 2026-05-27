@@ -154,7 +154,7 @@
       </select>
   </div> -->
 
-  <div class="govuk-panel govuk-panel-border--remission-added"  *ngIf="!(!isPaymentExist && !isTurnOff) || isThereAnyRemission()">
+  <div class="govuk-panel govuk-panel-border--remission-added"  *ngIf="isThereAnyRemission()">
     <h1 class="govuk-panel__title">
       {{ "Remission added" | rpxTranslate }}
     </h1>
@@ -216,5 +216,7 @@
  [caseType]="caseType"
  [ccdCaseNumber]="ccdCaseNumber"
  [paymentGroupRef]="paymentGroupRef"
+ (confirmRemissionEvent)="confirmRemission()"
+ (remissionAdded)="setAddedRemission()"
  (cancelRemission)="cancelRemission()"></ccpay-add-remission>
  <input *ngIf="viewStatus === 'payhub_view' && payhubHtml" #myInput type='hidden' class='iFrameDrivenImageValue' value='PCIPAL'>
