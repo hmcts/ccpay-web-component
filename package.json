@@ -1,6 +1,6 @@
 {
   "name": "ccpay-web-component",
-  "version": "6.5.24-beta01",
+  "version": "6.5.24-beta02",
   "scripts": {
     "ng": "ng",
     "build:library": "ng build payment-lib",

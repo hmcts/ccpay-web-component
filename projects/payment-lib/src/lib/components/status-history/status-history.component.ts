@@ -39,14 +39,14 @@ export class StatusHistoryComponent implements OnInit {
                              paymentGroup.payments &&
                              paymentGroup.payments.length > 0 ? paymentGroup.payments[0] : null;
         if (firstPayment &&
-            (firstPayment.channel === 'telephony' || firstPayment.channel === 'online') &&
-            (firstPayment.method === 'card')) {
+            (firstPayment.channel.toLowerCase() === 'telephony' || firstPayment.channel.toLowerCase() === 'online') &&
+            (firstPayment.method.toLowerCase() === 'card')) {
           this.isDisplayReasons = this.statuses.status_histories.map(statusHistory =>
-            statusHistory.status === 'failed' ||
-            statusHistory.status === 'declined' ||
-            statusHistory.status === 'cancelled' ||
-            statusHistory.status === 'timed out' ||
-            statusHistory.status === 'error'
+            statusHistory.status.toLowerCase() === 'failed' ||
+            statusHistory.status.toLowerCase() === 'declined' ||
+            statusHistory.status.toLowerCase() === 'cancelled' ||
+            statusHistory.status.toLowerCase() === 'timed out' ||
+            statusHistory.status.toLowerCase() === 'error'
           );
           this.isDisplayFailureReasonColumn = this.isDisplayReasons.some(isDisplayReason => isDisplayReason);
         } else {
