@@ -313,6 +313,7 @@ export class AddRemissionComponent implements OnInit {
         version: this.fees[i].version,
         refund_amount: [''],
         selected: [''],
+        amount_due: this.fees[i].amount_due,
         updated_volume: this.fees[i].volume
       }));
     }
