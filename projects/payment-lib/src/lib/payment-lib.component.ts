@@ -298,6 +298,24 @@ export class PaymentLibComponent implements OnInit {
     return false;
   }
 
+  IsFullyRefundedPerFee(){
+
+    if (!this.paymentGroup || !this.paymentGroup.fees || this.paymentGroup.fees.length === 0 || !this.paymentGroup.fees[0] ||
+        !this.paymentGroup.payments || this.paymentGroup.payments.length === 0 || !this.paymentGroup.payments[0]) {
+      return false;
+    }
+    let apportionAmount = this.paymentGroup.fees[0].apportion_amount;
+    let amountDue = this.paymentGroup.fees[0].amount_due;
+    let apportionAndAmountDue = Math.abs(amountDue) + apportionAmount;
+    let paymentAmount = this.paymentGroup.payments[0].amount;
+
+    //It means that there is an overpayment for the current fee
+    if (amountDue < 0 && paymentAmount == apportionAndAmountDue){
+      return true;
+    }
+    return false;
+
+  }
 
   /**
    * Rounds very small values to zero if they fall below a specified threshold.
