@@ -259,6 +259,7 @@ export class ServiceRequestComponent implements OnInit {
     );
   }
 
+
   issueRefund(payment: IPayment) {
 
     this.paymentLibComponent.addPaymentGroup(this.paymentGroup);
@@ -267,9 +268,11 @@ export class ServiceRequestComponent implements OnInit {
       if (this.chkIsIssueRefundBtnEnable(payment)) {
         this.paymentViewService.getApportionPaymentDetails(payment.reference).subscribe(
           paymentGroup => {
+            this.paymentGroup = paymentGroup;
+            this.paymentLibComponent.addPaymentGroup(paymentGroup);
+
             paymentGroup.payments = paymentGroup.payments.filter
               (paymentGroupObj => paymentGroupObj['reference'].includes(payment.reference));
-
 
             // No refund and no over payment --> showIssueRefundPage()
             if (!this.isAnyRefundsForThisCase() && this.getBalanceToBePaid() == 0) {
@@ -291,6 +294,11 @@ export class ServiceRequestComponent implements OnInit {
 
               // rejected by fee refunds === refunds by fee it means that refund for the current fee is rejected.
               if (this.paymentLibComponent.isTheCurrentRefundRejectedForTheFee(paymentGroup.fees.at(0).id.toString())) {
+                this.showOverPayment(paymentGroup, payment);
+                return
+              }
+              // OverPayment per Fee.
+              if (this.paymentLibComponent.IsFullyRefundedPerFee()) {
                 this.showOverPayment(paymentGroup, payment);
                 return
               }

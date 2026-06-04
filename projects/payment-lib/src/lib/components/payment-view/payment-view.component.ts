@@ -307,7 +307,7 @@ export class PaymentViewComponent implements OnInit {
       if (this.chkIsIssueRefundBtnEnable(paymentgrp.payments[0])) {
 
         // No refund and no over payment --> showIssueRefundPage()
-        if (!this.isAnyRefundsForThisCase() && this.getBalanceToBePaid() == 0) {
+          if (!this.isAnyRefundsForThisCase() && this.getBalanceToBePaid() == 0) {
           this.showIssueRefundPage(paymentgrp);
           return
         }
@@ -326,6 +326,11 @@ export class PaymentViewComponent implements OnInit {
 
           // rejected by fee refunds === refunds by fee it means that refund for the current fee is rejected.
           if (this.paymentLibComponent.isTheCurrentRefundRejectedForTheFee(this.paymentFees.at(0).id.toString())) {
+            this.showOverPayment();
+            return
+          }
+          // OverPayment per Fee.
+          if (this.paymentLibComponent.IsFullyRefundedPerFee()) {
             this.showOverPayment();
             return
           }
