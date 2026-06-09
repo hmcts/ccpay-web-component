@@ -433,15 +433,7 @@ export class AddRemissionComponent implements OnInit {
     this.paymentViewService.postPaymentGroupWithRemissions(decodeURIComponent(this.paymentGroupRef).trim(), this.fee.id, requestBody).subscribe(
       response => {
         if (JSON.parse(response).success) {
-          let LDUrl = this.isTurnOff ? '&isTurnOff=Enable' : '&isTurnOff=Disable'
-          LDUrl += `&caseType=${this.caseType}`
-          if (this.paymentLibComponent.bspaymentdcn) {
-            this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-            this.router.onSameUrlNavigation = 'reload';
-            this.router.navigateByUrl(`/payment-history/${this.ccdCaseNumber}?view=fee-summary&selectedOption=${this.option}&paymentGroupRef=${this.paymentGroupRef}&dcn=${this.paymentLibComponent.bspaymentdcn}${LDUrl}`);
-          } else {
-            this.redirectAfterAddigRemission(event);
-          }
+          this.redirectAfterAddingRemission(event);
         }
       },
       (error: any) => {
@@ -451,7 +443,7 @@ export class AddRemissionComponent implements OnInit {
     );
   }
 
-  redirectAfterAddigRemission(event: any) {
+  redirectAfterAddingRemission(event: any) {
     const value = this.remissionForm.controls.amount.value;
     //if the from is empty or 0 it means full remission.
     if (["0", "", null].includes(value)) {
@@ -462,15 +454,12 @@ export class AddRemissionComponent implements OnInit {
   }
 
   redirectToSummaryPage(event: any, orderef: any) {
-    if (true) {
-      event.preventDefault();
-      this.paymentLibComponent.bspaymentdcn = null;
-      this.paymentLibComponent.paymentGroupReference = this.paymentGroupRef;
-      this.paymentLibComponent.isTurnOff = this.isTurnOff;
-      this.paymentLibComponent.viewName = 'fee-summary';
-      this.confirmRemissionEvent.emit();
-      this.remissionAdded.emit();
-    }
+    event.preventDefault();
+    this.paymentLibComponent.paymentGroupReference = this.paymentGroupRef;
+    this.paymentLibComponent.isTurnOff = this.isTurnOff;
+    this.paymentLibComponent.viewName = 'fee-summary';
+    this.confirmRemissionEvent.emit();
+    this.remissionAdded.emit();
   }
 
   returnToFeeScreen() {
