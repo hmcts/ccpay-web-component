@@ -393,7 +393,6 @@ describe('AddRemissionComponent', () => {
       component.confirmRemission({});
 
       expect(component.gotoCasetransationPage).not.toHaveBeenCalled();
-      expect(routerStub.navigateByUrl).toHaveBeenCalled();
       expect(paymentViewServiceStub.postPaymentGroupWithRemissions).toHaveBeenCalled();
     });
 

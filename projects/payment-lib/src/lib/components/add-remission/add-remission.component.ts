@@ -449,12 +449,14 @@ export class AddRemissionComponent implements OnInit {
     if (["0", "", null].includes(value)) {
       this.gotoCasetransationPage();
     } else {
-      this.redirectToSummaryPage(event, this.orderRef);
+      this.redirectToSummaryPage(event);
     }
   }
 
-  redirectToSummaryPage(event: any, orderef: any) {
-    event.preventDefault();
+  redirectToSummaryPage(event?: any) {
+    if (event && typeof event.preventDefault === 'function') {
+      event.preventDefault();
+    }
     this.paymentLibComponent.paymentGroupReference = this.paymentGroupRef;
     this.paymentLibComponent.isTurnOff = this.isTurnOff;
     this.paymentLibComponent.viewName = 'fee-summary';
