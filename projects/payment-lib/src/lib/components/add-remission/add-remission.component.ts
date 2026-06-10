@@ -445,8 +445,8 @@ export class AddRemissionComponent implements OnInit {
 
   redirectAfterAddingRemission(event: any) {
     const value = this.remissionForm.controls.amount.value;
-    //if the from is empty or 0 it means full remission.
-    if (["0", "", null].includes(value)) {
+    //if the from is empty or 0 it means full remission.\
+    if (value === "" || value === null || Number(value) === 0) {
       this.gotoCasetransationPage();
     } else {
       this.redirectToSummaryPage(event);
