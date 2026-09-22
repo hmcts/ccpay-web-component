@@ -229,7 +229,7 @@ export class PaymentLibComponent implements OnInit {
     if (this.paymentGroup.remissions) {
       remissionTotal = this.paymentGroup.remissions.reduce((totalRemission, remission) => totalRemission + remission.hwf_amount, 0);
     }
-    return remissionTotal;
+    return Number(remissionTotal.toFixed(2));
   }
 
   /**
@@ -246,7 +246,7 @@ export class PaymentLibComponent implements OnInit {
     if (this.paymentGroup.fees) {
       feesTotal = this.paymentGroup.fees.reduce((totalFees, fee) => totalFees + fee.calculated_amount, 0);
     }
-    return feesTotal;
+    return Number(feesTotal.toFixed(2));
   }
 
   /**
@@ -261,9 +261,9 @@ export class PaymentLibComponent implements OnInit {
   getTotalPayments(): number {
     let paymentsTotal = 0;
     if (this.paymentGroup.payments) {
-      paymentsTotal = this.paymentGroup.payments.reduce((totalFees, payment) => totalFees + payment.amount, 0);
+      paymentsTotal = this.paymentGroup.payments.reduce((totalPayments, payment) => totalPayments + payment.amount, 0);
     }
-    return paymentsTotal;
+    return Number(paymentsTotal.toFixed(2));
   }
 
 
@@ -323,6 +323,5 @@ export class PaymentLibComponent implements OnInit {
     return this.roundTinyValue(this.overPaymentAmount);
   }
 }
-
 
 
