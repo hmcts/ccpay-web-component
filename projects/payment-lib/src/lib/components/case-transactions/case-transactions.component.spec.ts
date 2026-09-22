@@ -48,4 +48,54 @@ describe('CaseTransactionsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('calculates order fees without currency precision drift', () => {
+    component.paymentGroups = [paymentGroupWithTwoFees()];
+
+    component.calculateOrderFeesAmounts();
+
+    expect(component.orderFeesTotal).toBe(2176.64);
+  });
+
+  it('calculates order detail fees without currency precision drift', () => {
+    component.isFromServiceRequestPage = false;
+    component.paymentGroups = [paymentGroupWithTwoFees()];
+
+    component.goToOrderViewDetailSection({ orderRefId: 'group', orderCreated: new Date() });
+
+    expect(component.orderFeesTotal).toBe(2176.64);
+  });
+
+  it('calculates case totals without currency precision drift', () => {
+    component.isTurnOff = false;
+    component.paymentGroups = [paymentGroupWithTwoFees()];
+
+    component.calculateAmounts();
+
+    expect(component.totalFees).toBe(2176.64);
+  });
+
+  it('calculates refund amounts without currency precision drift', () => {
+    component.isTurnOff = true;
+    component.paymentGroups = [{
+      fees: [{ calculated_amount: 1789.64 }, { calculated_amount: 387.00 }],
+      payments: [{ amount: 3000, status: 'SUCCESS' }],
+      remissions: []
+    }];
+
+    expect(component.calculateRefundAmount()).toBe(823.36);
+  });
 });
+
+function paymentGroupWithTwoFees(): any {
+  return {
+    payment_group_reference: 'group',
+    fees: [
+      { calculated_amount: 1789.64, over_payment: 0 },
+      { calculated_amount: 387.00, over_payment: 0 }
+    ],
+    payments: [],
+    remissions: [],
+    service_request_status: 'Not paid'
+  };
+}

@@ -81,7 +81,10 @@ export class BulkScaningPaymentService {
         remissionsTotal = remissionsTotal + remission.hwf_amount;
       });
     }
-    return (feesTotal - remissionsTotal) - paymentsTotal;
+
+    // Summing GBP amounts as floats (e.g. 1789.64 + 387.00) can drift beyond 2dp
+    // (eg 2176.6400000000003), so ensure result is rounded to 2 dp
+    return Number((feesTotal - remissionsTotal - paymentsTotal).toFixed(2));
   }
 
   removeUnwantedString(input: string, replaceText: string) {

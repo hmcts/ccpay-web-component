@@ -28,6 +28,39 @@ describe('PaymentLibComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('floating point precision when totalling currency amounts', () => {
+    // Naively summing as raw floats yields 2176.6400000000003 instead of 2176.64.
+    it('getTotalRemission does not drift when summing hwf_amount', () => {
+      component.paymentGroup = <any>{
+        remissions: [{ hwf_amount: 1789.64 }, { hwf_amount: 387.00 }]
+      };
+
+      const total = component.getTotalRemission();
+
+      expect(total).toBe(2176.64);
+    });
+
+    it('getTotalFees does not drift when summing calculated_amount', () => {
+      component.paymentGroup = <any>{
+        fees: [{ calculated_amount: 1789.64 }, { calculated_amount: 387.00 }]
+      };
+
+      const total = component.getTotalFees();
+
+      expect(total).toBe(2176.64);
+    });
+
+    it('getTotalPayments does not drift when summing amount', () => {
+      component.paymentGroup = <any>{
+        payments: [{ amount: 1789.64 }, { amount: 387.00 }]
+      };
+
+      const total = component.getTotalPayments();
+
+      expect(total).toBe(2176.64);
+    });
+  });
+
   // describe('ngOnInit', () => {
   //   it('makes expected calls', () => {
   //     const paymentLibServiceStub: PaymentLibService = fixture.debugElement.injector.get(

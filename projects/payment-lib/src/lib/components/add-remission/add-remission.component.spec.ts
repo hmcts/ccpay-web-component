@@ -340,6 +340,28 @@ describe('AddRemissionComponent', () => {
       component.gotoIssueRefundConfirmation(iPaymentStub);
       expect(component.resetRemissionForm).not.toHaveBeenCalled();
     });
+
+    it('does not drift when summing refund amounts', () => {
+      // Naively summing as raw floats yields 2176.6400000000003 instead of 2176.64.
+      const iPaymentStub: IPayment = <any>{};
+      const driftForm = new FormGroup({
+        remissionCode: new FormControl(),
+        amount: new FormControl(),
+        refundReason: new FormControl("Test Refund Reason"),
+        refundDDReason: new FormControl(),
+        reason: new FormControl(),
+        feesList: new FormControl([
+          { refund_amount: 1789.64, selected: 1 },
+          { refund_amount: 387.00, selected: 1 }
+        ])
+      });
+      component.selectedRefundReason = "Test Refund Reason";
+      component.remissionForm = driftForm;
+
+      component.gotoIssueRefundConfirmation(iPaymentStub);
+
+      expect(component.totalRefundAmount).toBe(2176.64);
+    });
   });
 
   describe('ngOnInit', () => {
