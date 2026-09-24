@@ -96,7 +96,7 @@
     <button type="submit"
     [disabled]="isConfirmationBtnDisabled"
     [ngClass]='isConfirmationBtnDisabled ? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'
-    (click)="confirmRemission()">
+    (click)="confirmRemission($event)">
       {{ "Confirm" | rpxTranslate }}
     </button>
 

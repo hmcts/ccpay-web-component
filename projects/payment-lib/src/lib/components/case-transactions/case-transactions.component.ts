@@ -453,6 +453,7 @@ export class CaseTransactionsComponent implements OnInit {
       this.paymentLibComponent.paymentGroupReference = orderef.orderRefId;
       this.paymentLibComponent.isTurnOff = this.isTurnOff;
       this.paymentLibComponent.viewName = 'fee-summary';
+      this.viewStatus = 'fee-summary'
     }
   }
 

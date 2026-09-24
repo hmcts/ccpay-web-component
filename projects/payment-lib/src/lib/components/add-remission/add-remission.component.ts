@@ -92,6 +92,8 @@ export class AddRemissionComponent implements OnInit {
   @Input('orderTotalPayments') orderTotalPayments: number;
   @Input('orderRemissionTotal') orderRemissionTotal: number;
   @Output() cancelRemission: EventEmitter<void> = new EventEmitter();
+  @Output() confirmRemissionEvent: EventEmitter<void> = new EventEmitter();
+  @Output() remissionAdded: EventEmitter<void> = new EventEmitter();
   //@Output() refundListReason: EventEmitter<any> = new EventEmitter({reason:string, code:string});
   @Output() refundListReason = new EventEmitter<{ reason: string, code: string }>();
   @Output() refundListAmount: EventEmitter<string> = new EventEmitter();
@@ -422,7 +424,7 @@ export class AddRemissionComponent implements OnInit {
     }
   }
 
-  confirmRemission() {
+  confirmRemission(event: any) {
     this.isConfirmationBtnDisabled = true;
     const newNetAmount = this.remissionForm.controls.amount.value,
       remissionAmount = parseFloat((this.fee.net_amount - newNetAmount).toFixed(2)),
@@ -431,15 +433,7 @@ export class AddRemissionComponent implements OnInit {
     this.paymentViewService.postPaymentGroupWithRemissions(decodeURIComponent(this.paymentGroupRef).trim(), this.fee.id, requestBody).subscribe(
       response => {
         if (JSON.parse(response).success) {
-          let LDUrl = this.isTurnOff ? '&isTurnOff=Enable' : '&isTurnOff=Disable'
-          LDUrl += `&caseType=${this.caseType}`
-          if (this.paymentLibComponent.bspaymentdcn) {
-            this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-            this.router.onSameUrlNavigation = 'reload';
-            this.router.navigateByUrl(`/payment-history/${this.ccdCaseNumber}?view=fee-summary&selectedOption=${this.option}&paymentGroupRef=${this.paymentGroupRef}&dcn=${this.paymentLibComponent.bspaymentdcn}${LDUrl}`);
-          } else {
-            this.gotoCasetransationPage();
-          }
+          this.redirectAfterAddingRemission(event);
         }
       },
       (error: any) => {
@@ -447,6 +441,31 @@ export class AddRemissionComponent implements OnInit {
         this.isConfirmationBtnDisabled = false;
       }
     );
+  }
+
+  redirectAfterAddingRemission(event: any) {
+    const value = this.remissionForm.controls.amount.value;
+    //if the from is empty or 0 it means full remission.\
+    if (value === "" || value === null || Number(value) === 0) {
+      this.gotoCasetransationPage();
+    } else {
+      this.redirectToSummaryPage(event);
+    }
+  }
+
+  redirectToSummaryPage(event?: any) {
+    if (event && typeof event.preventDefault === 'function') {
+      event.preventDefault();
+    }
+    this.paymentLibComponent.paymentGroupReference = this.paymentGroupRef;
+    this.paymentLibComponent.isTurnOff = this.isTurnOff;
+    this.paymentLibComponent.viewName = 'fee-summary';
+    this.confirmRemissionEvent.emit();
+    this.remissionAdded.emit();
+  }
+
+  returnToFeeScreen() {
+    this.viewStatus = 'main';
   }
 
   resetRemissionForm(val, field) {

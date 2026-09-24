@@ -38,6 +38,13 @@
   }
 }
 
+.centerDiv {
+  font-size: 24px;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
 .govuk-label-fee-summary {
   font-size: 19px;
   line-height: 1.3157894737;
@@ -127,6 +134,12 @@ table th {
 .govuk-warning-text__text  {
   font-size: 19px;
 }
+
+.govuk-panel-border--remission-added{
+  color: #0b0c0c;
+  border: 5px solid #00703C;
+}
+
 
 .summaryheader {
   display:flex; 
