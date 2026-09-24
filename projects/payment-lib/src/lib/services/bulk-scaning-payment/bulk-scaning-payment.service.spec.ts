@@ -7,6 +7,7 @@ import { AllocatePaymentRequest } from '../../interfaces/AllocatePaymentRequest'
 import { IPaymentGroup } from '../../interfaces/IPaymentGroup';
 import { BulkScaningPaymentService } from './bulk-scaning-payment.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { TelephonyToPayhubRequest } from '../../interfaces/TelephonyToPayhubRequest';
 
 describe('BulkScaningPaymentService', () => {
   let service: BulkScaningPaymentService;
@@ -41,6 +42,26 @@ describe('BulkScaningPaymentService', () => {
 
   it('can load instance', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('rounds outstanding currency amounts to two decimal places', () => {
+    const paymentGroup: IPaymentGroup = <any>{
+      fees: [{ calculated_amount: 1789.64 }, { calculated_amount: 387.00 }],
+      payments: [],
+      remissions: []
+    };
+
+    expect(service.calculateOutStandingAmount(paymentGroup)).toBe(2176.64);
+  });
+
+  it('normalises the calculated amount before sending it to PayHub', () => {
+    const javascriptAmount = 1789.64 + 387.00;
+    expect(javascriptAmount).not.toBe(2176.64);
+    expect(javascriptAmount.toPrecision(17)).toBe('2176.6400000000003');
+
+    const request = new TelephonyToPayhubRequest('case', javascriptAmount, 'case-type', 'kerv');
+
+    expect(JSON.stringify(request)).toContain('"amount":2176.64');
   });
 
   describe('postBSWoPGStrategic', () => {
