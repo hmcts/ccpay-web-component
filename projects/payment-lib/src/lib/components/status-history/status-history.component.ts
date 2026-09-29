@@ -44,6 +44,7 @@ export class StatusHistoryComponent implements OnInit {
           this.isDisplayReasons = this.statuses.status_histories.map(statusHistory =>
             statusHistory.status.toLowerCase() === 'failed' ||
             statusHistory.status.toLowerCase() === 'declined' ||
+            statusHistory.status.toLowerCase() === 'decline' ||
             statusHistory.status.toLowerCase() === 'cancelled' ||
             statusHistory.status.toLowerCase() === 'timed out' ||
             statusHistory.status.toLowerCase() === 'error'
