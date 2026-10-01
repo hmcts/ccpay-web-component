@@ -43,6 +43,7 @@ export class FeeSummaryComponent implements OnInit {
   paymentGroup: IPaymentGroup;
   errorMessage: string;
   viewStatus = 'main';
+  addedRemission: boolean = false;
   currentFee: IFee;
   totalFee: number;
   payhubHtml: SafeHtml;
@@ -131,6 +132,11 @@ export class FeeSummaryComponent implements OnInit {
     }
     return null;
   }
+
+  isThereAnyRemission(): boolean {
+    return this.addedRemission;
+  }
+
 
   addRemission(fee: IFee) {
     this.currentFee = fee;
@@ -283,6 +289,15 @@ export class FeeSummaryComponent implements OnInit {
 
   getPaymentMethod(): string {
     return this.paymentMethod;
+  }
+
+  confirmRemission() {
+    this.getPaymentGroup();
+    this.viewStatus = 'main';
+  }
+
+  setAddedRemission() {
+    this.addedRemission = true;
   }
 
   // This is attribute is used when there is more that one payment provider. It is commented as kerv is the default option.
