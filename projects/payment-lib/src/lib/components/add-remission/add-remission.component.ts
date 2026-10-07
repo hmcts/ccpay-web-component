@@ -684,7 +684,7 @@ export class AddRemissionComponent implements OnInit {
       this.isFromRefundListPage = true;
     }
 
-    this.totalRefundAmount = this.remissionForm.value.feesList.reduce((a, c) => a + c.refund_amount * c.selected, 0);
+    this.totalRefundAmount = this.calculateTotalRefundAmount(this.remissionForm.value.feesList);
 
 
     this.errorMessage = '';
@@ -702,7 +702,7 @@ export class AddRemissionComponent implements OnInit {
         this.refundListReason.emit({ reason: this.displayRefundReason, code: this.refundReason });
       } else {
         if (this.isFromCheckAnsPage) {
-          this.totalRefundAmount = this.remissionForm.value.feesList.reduce((a, c) => a + c.refund_amount * c.selected, 0);
+          this.totalRefundAmount = this.calculateTotalRefundAmount(this.remissionForm.value.feesList);
           this.isFromCheckAnsPage = false;
           this.viewStatus = 'checkissuerefundpage';
           this.viewCompStatus = '';
@@ -716,7 +716,7 @@ export class AddRemissionComponent implements OnInit {
     } else {
       this.displayRefundReason = this.selectedRefundReason;
       if (this.isFromCheckAnsPage) {
-        this.totalRefundAmount = this.remissionForm.value.feesList.reduce((a, c) => a + c.refund_amount * c.selected, 0);
+        this.totalRefundAmount = this.calculateTotalRefundAmount(this.remissionForm.value.feesList);
         this.isFromCheckAnsPage = false;
         this.viewStatus = 'checkissuerefundpage';
         this.viewCompStatus = '';
@@ -831,7 +831,7 @@ export class AddRemissionComponent implements OnInit {
       if (this.errorMsg.length === 0) {
         if (this.isFromCheckAnsPage) {
           this.isFromCheckAnsPage = false;
-          this.totalRefundAmount = this.remissionForm.value.feesList.reduce((a, c) => a + c.refund_amount * c.selected, 0);
+          this.totalRefundAmount = this.calculateTotalRefundAmount(this.remissionForm.value.feesList);
           this.fees = this.remissionForm.value.feesList.filter(value => value.selected === true);
           this.viewStatus = 'checkissuerefundpage'
           this.viewCompStatus = '';
@@ -839,7 +839,7 @@ export class AddRemissionComponent implements OnInit {
           return;
         } else if (this.isFromRefundStatusPage) {
           var remissionctrls = this.remissionForm.controls;
-          this.totalRefundAmount = this.remissionForm.value.feesList.reduce((a, c) => a + c.refund_amount * c.selected, 0);
+          this.totalRefundAmount = this.calculateTotalRefundAmount(this.remissionForm.value.feesList);
           this.refundListAmount.emit(this.totalRefundAmount.toString());
           this.fees = this.remissionForm.value.feesList.filter(value => value.selected === true);
           this.refundFees.emit(this.fees);
@@ -1311,5 +1311,12 @@ export class AddRemissionComponent implements OnInit {
 
   getRemissionValueForFullyRefund(){
     return 0;
+  }
+
+  // Summing GBP amounts as floats (e.g. 1789.64 + 387.00) can drift beyond 2dp
+  // (2176.6400000000003), so round the final total before returning it.
+  private calculateTotalRefundAmount(feesList: { refund_amount: number, selected: number }[]): number {
+    const totalRefundAmount = feesList.reduce((total, fee) => total + fee.refund_amount * fee.selected, 0);
+    return Number(totalRefundAmount.toFixed(2));
   }
 }

@@ -323,15 +323,15 @@ export class CaseTransactionsComponent implements OnInit {
         if (paymentGroup.fees) {
           paymentGroup.fees.forEach(fee => {
 
-              this.orderFeesTotal = this.orderFeesTotal + fee.calculated_amount;
-              this.overPaymentAmount = this.overPaymentAmount + fee.over_payment;
+              this.orderFeesTotal = this.addCurrency(this.orderFeesTotal, fee.calculated_amount);
+              this.overPaymentAmount = this.addCurrency(this.overPaymentAmount, fee.over_payment);
               this.paymentLibComponent.overPaymentAmount = this.overPaymentAmount;
             }
           )
         }
       if (paymentGroup.remissions) {
         paymentGroup.remissions.forEach(remission => {
-          this.orderRemissionTotal = this.orderRemissionTotal + remission.hwf_amount;
+          this.orderRemissionTotal = this.addCurrency(this.orderRemissionTotal, remission.hwf_amount);
         });
       }
 
@@ -339,11 +339,11 @@ export class CaseTransactionsComponent implements OnInit {
         const isFeeOverPaymentExist = this.overPaymentAmount === 0;
         paymentGroup.payments.forEach(payment => {
           if (isFeeOverPaymentExist) {
-            this.overPaymentAmount = this.overPaymentAmount + payment.over_payment
+            this.overPaymentAmount = this.addCurrency(this.overPaymentAmount, payment.over_payment)
             this.paymentLibComponent.overPaymentAmount = this.overPaymentAmount;
           }
           if (payment.status.toUpperCase() === 'SUCCESS') {
-            this.orderTotalPayments = this.orderTotalPayments + payment.amount;
+            this.orderTotalPayments = this.addCurrency(this.orderTotalPayments, payment.amount);
           }
         });
       }
@@ -406,18 +406,18 @@ export class CaseTransactionsComponent implements OnInit {
     this.orderDetail.forEach(orderDetail => {
       if (orderDetail.fees) {
         orderDetail.fees.forEach(fee => {
-          this.orderFeesTotal = this.orderFeesTotal + fee.calculated_amount;
+          this.orderFeesTotal = this.addCurrency(this.orderFeesTotal, fee.calculated_amount);
         });
       }
       if (orderDetail.remissions) {
         orderDetail.remissions.forEach(remission => {
-          this.orderRemissionTotal = this.orderRemissionTotal + remission.hwf_amount;
+          this.orderRemissionTotal = this.addCurrency(this.orderRemissionTotal, remission.hwf_amount);
         });
         if (orderDetail.payments) {
           this.payment = orderDetail.payments[0];
           orderDetail.payments.forEach(payment => {
             if (payment.status.toUpperCase() === 'SUCCESS') {
-              this.orderTotalPayments = this.orderTotalPayments + payment.amount;
+              this.orderTotalPayments = this.addCurrency(this.orderTotalPayments, payment.amount);
             }
           });
         }
@@ -471,12 +471,12 @@ export class CaseTransactionsComponent implements OnInit {
             if (fee.date_created) {
               let a = fee.amount_due === undefined;
               let b = fee.amount_due <= 0;
-              this.clAmountDue = a ? this.clAmountDue + fee.net_amount : b ? this.clAmountDue + 0 : this.clAmountDue + fee.amount_due;
+              this.clAmountDue = a ? this.addCurrency(this.clAmountDue, fee.net_amount) : b ? this.clAmountDue : this.addCurrency(this.clAmountDue, fee.amount_due);
             }
             fee['payment_group_reference'] = paymentGroup['payment_group_reference'];
             this.fees.push(fee);
           } else {
-            feesTotal = feesTotal + fee.calculated_amount;
+            feesTotal = this.addCurrency(feesTotal, fee.calculated_amount);
             this.fees.push(fee);
           }
 
@@ -493,9 +493,9 @@ export class CaseTransactionsComponent implements OnInit {
             let allocationLen = payment.payment_allocation;
 
             if (payment.status.toUpperCase() === 'SUCCESS') {
-              paymentsTotal = paymentsTotal + payment.amount;
+              paymentsTotal = this.addCurrency(paymentsTotal, payment.amount);
               if (allocationLen.length === 0 || allocationLen.length > 0 && allocationLen[0].allocation_status === 'Allocated') {
-                nonOffLinePayment = nonOffLinePayment + payment.amount;
+                nonOffLinePayment = this.addCurrency(nonOffLinePayment, payment.amount);
               }
               if (allocationLen.length > 0) {
                 this.nonPayments.push(payment);
@@ -508,7 +508,7 @@ export class CaseTransactionsComponent implements OnInit {
             this.allPayments.push(payment);
           } else {
             if (payment.status.toUpperCase() === 'SUCCESS') {
-              paymentsTotal = paymentsTotal + payment.amount;
+              paymentsTotal = this.addCurrency(paymentsTotal, payment.amount);
               this.payments.push(payment);
             }
             payment.paymentGroupReference = paymentGroup.payment_group_reference;
@@ -525,7 +525,7 @@ export class CaseTransactionsComponent implements OnInit {
 
       if (paymentGroup.fees) {
         paymentGroup.fees.forEach(fee => {
-            feesTotal = feesTotal + fee.calculated_amount;
+            feesTotal = this.addCurrency(feesTotal, fee.calculated_amount);
             this.fees.push(fee);
           }
         )
@@ -533,7 +533,7 @@ export class CaseTransactionsComponent implements OnInit {
 
       if (paymentGroup.remissions) {
         paymentGroup.remissions.forEach(remisison => {
-          remissionsTotal = remissionsTotal + remisison.hwf_amount;
+          remissionsTotal = this.addCurrency(remissionsTotal, remisison.hwf_amount);
           this.remissions.push(remisison);
         });
       }
@@ -638,7 +638,7 @@ export class CaseTransactionsComponent implements OnInit {
         if (paymentGroup.fees) {
           // this.isFeeRecordsExist = true;
           paymentGroup.fees.forEach(fee => {
-            feesTotal = feesTotal + fee.calculated_amount;
+            feesTotal = this.addCurrency(feesTotal, fee.calculated_amount);
 
             this.isRemissionsMatch = false;
             if (paymentGroup.remissions) {
@@ -669,14 +669,14 @@ export class CaseTransactionsComponent implements OnInit {
         if (paymentGroup.payments) {
           paymentGroup.payments.forEach(payment => {
             if (payment.status.toUpperCase() === 'SUCCESS') {
-              paymentsTotal = paymentsTotal + payment.amount;
+              paymentsTotal = this.addCurrency(paymentsTotal, payment.amount);
             }
           });
         }
 
         if (paymentGroup.remissions) {
           paymentGroup.remissions.forEach(remission => {
-            remissionsTotal = remissionsTotal + remission.hwf_amount;
+            remissionsTotal = this.addCurrency(remissionsTotal, remission.hwf_amount);
           });
         }
         grpOutstandingAmount = (feesTotal - remissionsTotal) - paymentsTotal;
@@ -703,7 +703,7 @@ export class CaseTransactionsComponent implements OnInit {
         if (paymentGroup.fees) {
           this.isFeeRecordsExist = true;
           paymentGroup.fees.forEach(fee => {
-            feesTotal = feesTotal + fee.calculated_amount;
+            feesTotal = this.addCurrency(feesTotal, fee.calculated_amount);
             if (fee.calculated_amount === 0) {
               isFeeAmountZero = true
             }
@@ -714,14 +714,14 @@ export class CaseTransactionsComponent implements OnInit {
         if (paymentGroup.payments) {
           paymentGroup.payments.forEach(payment => {
             if (payment.status.toUpperCase() === 'SUCCESS') {
-              paymentsTotal = paymentsTotal + payment.amount;
+              paymentsTotal = this.addCurrency(paymentsTotal, payment.amount);
             }
           });
         }
 
         if (paymentGroup.remissions) {
           paymentGroup.remissions.forEach(remission => {
-            remissionsTotal = remissionsTotal + remission.hwf_amount;
+            remissionsTotal = this.addCurrency(remissionsTotal, remission.hwf_amount);
           });
         }
         grpOutstandingAmount = (feesTotal - remissionsTotal) - paymentsTotal;
@@ -729,14 +729,14 @@ export class CaseTransactionsComponent implements OnInit {
           if (totalRefundAmount === 0) {
             totalRefundAmount = grpOutstandingAmount;
           } else {
-            totalRefundAmount = (totalRefundAmount + grpOutstandingAmount);
+            totalRefundAmount = this.addCurrency(totalRefundAmount, grpOutstandingAmount);
           }
         }
         else if (grpOutstandingAmount > 0 || (grpOutstandingAmount === 0 && isFeeAmountZero)) {
           this.isGrpOutstandingAmtPositive = true;
         }
       });
-      return totalRefundAmount * -1;
+      return Number((totalRefundAmount * -1).toFixed(2));
     }
   }
 
@@ -999,5 +999,13 @@ export class CaseTransactionsComponent implements OnInit {
 
   setPaymentGroupReference(paymentGroupRef: string) {
     this.paymentLibComponent.paymentGroupReference = paymentGroupRef;
+  }
+
+  private addCurrency(total: number, amount: number): number {
+    return (this.toPence(total) + this.toPence(amount)) / 100;
+  }
+
+  private toPence(amount: number): number {
+    return Math.round(Number(amount) * 100);
   }
 }
