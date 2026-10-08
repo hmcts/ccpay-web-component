@@ -8,6 +8,7 @@ import {IRefundList} from "./interfaces/IRefundList";
 import {IFee} from "./interfaces/IFee";
 import {IRemission} from "./interfaces/IRemission";
 import {AddRetroRemissionRequest} from "./interfaces/AddRetroRemissionRequest";
+import {UserRoleService} from "./services/user-role.service";
 
 
 @Component({
@@ -126,7 +127,8 @@ export class PaymentLibComponent implements OnInit {
 
   constructor(private paymentLibService: PaymentLibService,
     private cd: ChangeDetectorRef,
-    private OrderslistService: OrderslistService) { }
+    private OrderslistService: OrderslistService,
+    private userRoleService: UserRoleService) { }
   ngAfterContentChecked(): void {
     this.cd.detectChanges();
   }
@@ -141,6 +143,7 @@ export class PaymentLibComponent implements OnInit {
     this.paymentLibService.setCardPaymentReturnUrl(this.CARDPAYMENTRETURNURL);
 
     if (this.LOGGEDINUSERROLES.length > 0) {
+      this.userRoleService.setRoles(this.LOGGEDINUSERROLES);
       this.OrderslistService.setUserRolesList(this.LOGGEDINUSERROLES);
     }
     if (this.PAYMENT_GROUP_REF) {
