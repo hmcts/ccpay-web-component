@@ -54,10 +54,6 @@
     .govuk-radios__conditional--hidden {
         display: none;
     }
-    .form-group-error {
-        border-left: 5px solid #b10e1e;
-        padding-left: 15px;
-    }
     .inline-error-class {
         outline: 3px solid #a71414;
         outline-offset: 0;
@@ -80,9 +76,6 @@
     font-size: 1.5rem !important;
 }
 
-.multiple-choice {
-    font-size: 19px;
-}
 .casererf {
     align-self: flex-end;
     font-size: 19px;

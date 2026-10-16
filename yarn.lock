@@ -6561,10 +6561,7 @@ __metadata:
     eslint: ^8.44.0
     exceljs: ^4.4.0
     file-saver: ^2.0.2
-    govuk-elements-sass: ^3.1.3
-    govuk-frontend: ^2.7.0
-    govuk_frontend_toolkit: ^8.1.0
-    govuk_template_jinja: ^0.24.1
+    govuk-frontend: 6.4.0
     jasmine-core: ^5.1.2
     karma: ~6.4.1
     karma-chrome-launcher: ~3.1.0
@@ -6581,7 +6578,7 @@ __metadata:
     rpx-xui-translation: 1.2.0
     rxjs: ~6.6.7
     rxjs-compat: ^6.6.7
-    sass: ^1.64.1
+    sass: ^1.79.0
     server: ^1.0.37
     ts-mockito: ^2.3.1
     ts-node: ~8.0.2
@@ -6685,6 +6682,15 @@ __metadata:
   dependencies:
     readdirp: ^4.0.1
   checksum: a8765e452bbafd04f3f2fad79f04222dd65f43161488bb6014a41099e6ca18d166af613d59a90771908c1c823efa3f46ba36b86ac50b701c20c1b9908c5fe36e
+  languageName: node
+  linkType: hard
+
+"chokidar@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "chokidar@npm:5.0.0"
+  dependencies:
+    readdirp: ^5.0.0
+  checksum: 48c0d510d84c228acae24dcf4418d55193ae0fd6cf2d114a3cf893ea68cca95f1876e1b02353a275b0b0b5f933f7c5b5bf126063211c0c8c30b213dd03328897
   languageName: node
   linkType: hard
 
@@ -8924,40 +8930,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-elements-sass@npm:^3.1.3":
-  version: 3.1.3
-  resolution: "govuk-elements-sass@npm:3.1.3"
-  dependencies:
-    govuk_frontend_toolkit: ^7.1.0
-  checksum: 16b5c4197c8292812a8937e156dca7f71199040fa08aaaf0a6b772e0b922434e42f750f536afcfe8fa46007e4e58abd377989bde44bd6acf435938c52bce3184
-  languageName: node
-  linkType: hard
-
-"govuk-frontend@npm:^2.7.0":
-  version: 2.13.0
-  resolution: "govuk-frontend@npm:2.13.0"
-  checksum: 4f08192d8714e40b91082106e3ac214bcbc598e6b7a1b2ea00c44e13a145fd5573dfa13dbe8eb1339c29d311fa3f1f7adac6bfe8e39e53f4d02d17a0690cee69
-  languageName: node
-  linkType: hard
-
-"govuk_frontend_toolkit@npm:^7.1.0":
-  version: 7.6.0
-  resolution: "govuk_frontend_toolkit@npm:7.6.0"
-  checksum: fcbff8ee78d61e4f68e19d274fd9fe3a7e4d3b4f686ed92419bd322b2bcb90e9ba8c5777c4253555c5d6e53adaf8a56cebd38f53507c5dbe004bed5b5be80af4
-  languageName: node
-  linkType: hard
-
-"govuk_frontend_toolkit@npm:^8.1.0":
-  version: 8.2.0
-  resolution: "govuk_frontend_toolkit@npm:8.2.0"
-  checksum: 1fbc7872c946802edd65012648b31b79ec8dd74979090a54918d541e1de021e9d68ad851765d9c243db124ae29fe59e464c5ed5b7d2aeb48664032ae819528f0
-  languageName: node
-  linkType: hard
-
-"govuk_template_jinja@npm:^0.24.1":
-  version: 0.24.1
-  resolution: "govuk_template_jinja@npm:0.24.1"
-  checksum: 47730ba0682d46dc3a24dda0938607380529ada0be0e14094b4679ae8839d1a0a878ecec2272b388b2dc4886cfd0fee1bc38f614b269cf7adfce3ceca077fb79
+"govuk-frontend@npm:6.4.0":
+  version: 6.4.0
+  resolution: "govuk-frontend@npm:6.4.0"
+  checksum: 49b577c26dd23ff2a63b2a4aa35244c2ef801b96f61bd5a2276b71b3cc18f59ab24446a3f0e84a60fe48732dc4c69aae118db002636935e68802803eb1692776
   languageName: node
   linkType: hard
 
@@ -12481,6 +12457,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"readdirp@npm:^5.0.0":
+  version: 5.1.1
+  resolution: "readdirp@npm:5.1.1"
+  checksum: 0444f42c718cb57833e91e69affe4ed376f1e2c53b20e469314e2b5b005eee022b409473de25603b7a6d5c2453bfa5db0f130ff3739213afdd17e4a312755188
+  languageName: node
+  linkType: hard
+
 "readdirp@npm:~3.6.0":
   version: 3.6.0
   resolution: "readdirp@npm:3.6.0"
@@ -13066,7 +13049,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.64.1, sass@npm:^1.81.0":
+"sass@npm:^1.79.0":
+  version: 1.105.1
+  resolution: "sass@npm:1.105.1"
+  dependencies:
+    "@parcel/watcher": ^2.4.1
+    chokidar: ^5.0.0
+    immutable: ^5.1.5
+    source-map-js: ">=0.6.2 <2.0.0"
+  dependenciesMeta:
+    "@parcel/watcher":
+      optional: true
+  bin:
+    sass: sass.js
+  checksum: af5788e457cde672246872a8dcc774e85d6917223ad9c9b63d3243f1ba4f0cc7fc31223a17872c434cf7c8a08fae440e478d5f792ae3f10b638e204812572d38
+  languageName: node
+  linkType: hard
+
+"sass@npm:^1.81.0":
   version: 1.98.0
   resolution: "sass@npm:1.98.0"
   dependencies:

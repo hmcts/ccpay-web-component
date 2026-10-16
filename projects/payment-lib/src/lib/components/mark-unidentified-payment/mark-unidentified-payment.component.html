@@ -1,17 +1,17 @@
 <div class="mkpay-unidentified" >
   <div *ngIf="viewStatus === 'mainForm'">
     <input #myInput  type='hidden' class='iFrameDrivenImageValue' value='MARKUNIDENTIFIED'>
-    <h1 class="heading-large">Mark payment as unidentified</h1>
+    <h1 class="govuk-heading-l">Mark payment as unidentified</h1>
 
     <div class="govuk-grid-column-full govuk-!-padding-bottom-3">
       <hr class="govuk-section-break govuk-section-break--visible">
       <table class="govuk-table">
         <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-            <td class="govuk-table__header" scope="col">Payment asset number (DCN)</td>
-            <td class="govuk-table__header" scope="col">Banked date</td>
-            <td class="govuk-table__header" scope="col">Amount</td>
-            <td class="govuk-table__header" scope="col">Method</td>
+            <th class="govuk-table__header" scope="col">Payment asset number (DCN)</th>
+            <th class="govuk-table__header" scope="col">Banked date</th>
+            <th class="govuk-table__header" scope="col">Amount</th>
+            <th class="govuk-table__header" scope="col">Method</th>
            
         </tr>
       </thead>
@@ -32,10 +32,10 @@
           <br/>
           Include any investigations you've made.
         </p>
-        <label class="heading-small" for="investicationDetail">
+        <label class="govuk-heading-s" for="investicationDetail">
 
         </label>
-        <textarea class="form-control form-control-3-4" [ngClass]="{'inline-error-class': isInvesticationDetailEmpty || investicationDetailHasError || investicationDetailMinHasError || investicationDetailMaxHasError}" name="investicationDetail" id="investicationDetail" rows="5" formControlName="investicationDetail">
+        <textarea class="govuk-textarea govuk-!-width-three-quarters" [ngClass]="{'inline-error-class': isInvesticationDetailEmpty || investicationDetailHasError || investicationDetailMinHasError || investicationDetailMaxHasError}" name="investicationDetail" id="investicationDetail" rows="5" formControlName="investicationDetail">
         </textarea>
         <p class="inline-error-message" *ngIf="isInvesticationDetailEmpty || investicationDetailHasError || investicationDetailMinHasError || investicationDetailMaxHasError">
           <span *ngIf="isInvesticationDetailEmpty">Enter a reason for marking this payment as unidentified.</span>
@@ -44,11 +44,11 @@
           <span *ngIf="investicationDetailMaxHasError">Reason should be 255 characters or under.</span>
         </p>
       </div>
-      <div class="govuk-button--group">
-        <button type="submit" class="button" (click)="saveAndContinue()">
+      <div class="govuk-button-group">
+        <button type="submit" class="govuk-button" (click)="saveAndContinue()">
           Continue
         </button>
-        <button type="button" class="button govuk-button--secondary" (click)="cancelMarkUnidentifiedPayments('cancel')">
+        <button type="button" class="govuk-button govuk-button--secondary" (click)="cancelMarkUnidentifiedPayments('cancel')">
           Cancel
         </button>
       </div>
@@ -60,8 +60,8 @@
       <div class="govuk-warning-text">
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
-        <span class="govuk-warning-text__assistive">Warning</span>
-        <h1 class="heading-small"> Are you sure you want to mark this payment as unidentified? </h1>
+        <span class="govuk-visually-hidden">Warning</span>
+        <h1 class="govuk-heading-s"> Are you sure you want to mark this payment as unidentified? </h1>
          
         </strong>
 
@@ -70,7 +70,7 @@
           <table class="govuk-table">
             <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" scope="col">Investigations</td>
+              <th class="govuk-table__header" scope="col">Investigations</th>
             </tr>
             </thead>
             <tbody class="govuk-table__body">
@@ -82,11 +82,11 @@
         </div>
 
       </div>
-      <div class="govuk-button--group">
-        <button type="submit" class="button" [disabled]="isConfirmButtondisabled" (click)="confirmPayments()">
+      <div class="govuk-button-group">
+        <button type="submit" class="govuk-button" [disabled]="isConfirmButtondisabled" (click)="confirmPayments()">
           Confirm
         </button>
-        <button type="button" class="button govuk-button--secondary" (click)="cancelMarkUnidentifiedPayments()">
+        <button type="button" class="govuk-button govuk-button--secondary" (click)="cancelMarkUnidentifiedPayments()">
           Cancel
         </button>
       </div>
@@ -96,15 +96,15 @@
       <div class="govuk-warning-text">
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
-        <span class="govuk-warning-text__assistive">Warning</span>
+        <span class="govuk-visually-hidden">Warning</span>
           Are you sure you want to cancel?
         </strong>
       </div>
-      <div class="govuk-button--group">
-        <button type="submit" class="button" (click)="gotoCasetransationPage()">
+      <div class="govuk-button-group">
+        <button type="submit" class="govuk-button" (click)="gotoCasetransationPage()">
           Yes
         </button>
-        <button type="button" class="button govuk-button--secondary" (click)="cancelMarkUnidentifiedPayments()">
+        <button type="button" class="govuk-button govuk-button--secondary" (click)="cancelMarkUnidentifiedPayments()">
           No
         </button>
       </div>

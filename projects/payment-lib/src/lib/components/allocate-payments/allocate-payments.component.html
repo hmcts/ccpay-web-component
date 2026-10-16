@@ -14,19 +14,19 @@
         <p class="govuk-!-margin-top-5 casererf">Case reference: {{ccdReference}}</p>
     </div>
 
-    <div  *ngFor="let orderRef of orderLevelFees; let i = index;" class="multiple-choice unprocessed-payments--radio-button">
-      <input id="'orderfee'+i+''"
+    <div  *ngFor="let orderRef of orderLevelFees; let i = index;" class="govuk-radios__item unprocessed-payments--radio-button">
+      <input class="govuk-radios__input" id="'orderfee'+i+''"
       aria-label="orderLevelRecord"
       name="orderLevelRecord"
 
       (click)="OrderListSelectEvent(orderRef.orderRefId)"
       type="radio"
       value="{{orderRef.orderTotalFees}}" />
-      <label for="radio-inline-1"> {{orderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2'}}({{orderRef.orderStatus}})</label>
+      <label class="govuk-label govuk-radios__label" for="radio-inline-1"> {{orderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2'}}({{orderRef.orderStatus}})</label>
     </div>
 
     <div class="paymentrequest">
-        <button [disabled]="isContinueButtondisabled" type="submit" (click)="redirectToOrderFeeSearchPage()" class="button allbtb button--disabled govuk-!-margin-right-1">
+        <button [disabled]="isContinueButtondisabled" type="submit" (click)="redirectToOrderFeeSearchPage()" class="govuk-button allbtb govuk-!-margin-right-1">
           Continue
         </button>
       </div>
@@ -52,23 +52,23 @@
       <table class="govuk-table">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
-            <td class="govuk-table__header" scope="col"></td>
-            <td class="govuk-table__header" scope="col">Code</td>
-            <td class="govuk-table__header" scope="col">Description</td>
-            <td class="govuk-table__header" scope="col">Volume</td>
-            <td class="govuk-table__header" scope="col">Fee amount</td>
-            <td class="govuk-table__header" scope="col">Calculated amount</td>
-            <td class="govuk-table__header" scope="col">Group amount outstanding</td>
+            <th class="govuk-table__header" scope="col"></th>
+            <th class="govuk-table__header" scope="col">Code</th>
+            <th class="govuk-table__header" scope="col">Description</th>
+            <th class="govuk-table__header" scope="col">Volume</th>
+            <th class="govuk-table__header" scope="col">Fee amount</th>
+            <th class="govuk-table__header" scope="col">Calculated amount</th>
+            <th class="govuk-table__header" scope="col">Group amount outstanding</th>
           </tr>
         </thead>
         <tbody class="govuk-table__body">
           <tr class="govuk-table__row" *ngFor="let fee of paymentGroup.fees;  let i = index;">
             <td class="govuk-table__cell govuk-table__cell--col1 govuk-table__custom--col1"
               [attr.rowspan]="paymentGroup.fees.length" *ngIf="i==0">
-              <div class="multiple-choice">
-                <input id="unpaiedFee-{{i}}" name="unassignedRecord" type="radio"
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="unpaiedFee-{{i}}" name="unassignedRecord" type="radio"
                   (click)="selectedPaymentGroup(paymentGroup)" />
-                <label for="unpaiedFee-{{i}}"></label>
+                <label class="govuk-label govuk-radios__label" for="unpaiedFee-{{i}}"></label>
               </div>
             </td>
             <td class="govuk-table__cell govuk-table__cell--col1">{{fee.code}}</td>
@@ -91,11 +91,11 @@
       </table>
     </div>
     <div class="govuk-button-group-allocate">
-      <button type="button" class="button govuk-!-margin-right-1" [disabled]="isContinueButtondisabled"
+      <button type="button" class="govuk-button govuk-!-margin-right-1" [disabled]="isContinueButtondisabled"
         (click)="saveAndContinue()">
         Continue
       </button>
-      <button type="button" class="button govuk-button--secondary" (click)="gotoCasetransationPage()">
+      <button type="button" class="govuk-button govuk-button--secondary" (click)="gotoCasetransationPage()">
         Cancel
       </button>
     </div>
@@ -114,12 +114,12 @@
       <table class="govuk-table">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
-            <td class="govuk-table__header" scope="col">Code</td>
-            <td class="govuk-table__header" scope="col">Description</td>
-            <td class="govuk-table__header" scope="col">Volume</td>
-            <td class="govuk-table__header" scope="col">Fee amount</td>
-            <td class="govuk-table__header" scope="col">Calculated amount</td>
-            <td class="govuk-table__header" scope="col">Amount Due</td>
+            <th class="govuk-table__header" scope="col">Code</th>
+            <th class="govuk-table__header" scope="col">Description</th>
+            <th class="govuk-table__header" scope="col">Volume</th>
+            <th class="govuk-table__header" scope="col">Fee amount</th>
+            <th class="govuk-table__header" scope="col">Calculated amount</th>
+            <th class="govuk-table__header" scope="col">Amount Due</th>
           </tr>
         </thead>
         <tbody class="govuk-table__body">
@@ -143,7 +143,7 @@
     <div class="govuk-warning-text" *ngIf="isRemainingAmountGtZero || isRemainingAmountLtZero || remainingAmount === 0">
       <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
       <strong class="govuk-warning-text__text govuk-warning-text__custom">
-        <span class="govuk-warning-text__assistive">Warning</span>
+        <span class="govuk-visually-hidden">Warning</span>
         {{paymentSectionLabel.title}} {{ remainingAmount | currency:'GBP':'symbol-narrow':'1.2-2' }}
       </strong>
     </div>
@@ -155,7 +155,7 @@
             {{paymentSectionLabel.reason}}
           </span>
           <div
-            [ngClass]="paymentReasonHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
+            [ngClass]="paymentReasonHasError ? 'govuk-radios govuk-radios--conditional govuk-form-group--error' : 'govuk-radios govuk-radios--conditional'"
             data-module="govuk-radios" *ngIf="isRemainingAmountGtZero">
             <div class="govuk-radios__item" *ngFor="let reason of reasonList.overPayment | keyValue">
               <input class="govuk-radios__input" id="{{reason.key}}" name="paymentReason" type="radio"
@@ -166,7 +166,7 @@
             </div>
           </div>
           <div
-            [ngClass]="paymentReasonHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
+            [ngClass]="paymentReasonHasError ? 'govuk-radios govuk-radios--conditional govuk-form-group--error' : 'govuk-radios govuk-radios--conditional'"
             data-module="govuk-radios" *ngIf="isRemainingAmountLtZero">
             <div class="govuk-radios__item" *ngFor="let reason of reasonList.shortFall | keyValue">
               <input class="govuk-radios__input" id="{{reason.key}}" name="paymentReason" type="radio"
@@ -185,7 +185,7 @@
             Provide an explanatory note
           </span>
           <div
-            [ngClass]="paymentExplanationHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
+            [ngClass]="paymentExplanationHasError ? 'govuk-radios govuk-radios--conditional govuk-form-group--error' : 'govuk-radios govuk-radios--conditional'"
             data-module="govuk-radios" *ngIf="isRemainingAmountGtZero">
             <div class="govuk-radios__item" *ngFor="let explanation of explanationList.overPayment | keyValue">
               <input class="govuk-radios__input" id="{{explanation.key}}" name="paymentExplanation" type="radio"
@@ -197,7 +197,7 @@
             </div>
           </div>
           <div
-            [ngClass]="paymentExplanationHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
+            [ngClass]="paymentExplanationHasError ? 'govuk-radios govuk-radios--conditional govuk-form-group--error' : 'govuk-radios govuk-radios--conditional'"
             data-module="govuk-radios" *ngIf="isRemainingAmountLtZero">
             <div class="govuk-radios__item" *ngFor="let explanation of explanationList.shortFall | keyValue">
               <input class="govuk-radios__input" id="{{explanation.key}}" name="paymentExplanation" type="radio"
@@ -233,13 +233,13 @@
           </p>
         </div>
       </div>
-      <div class="govuk-button--group">
+      <div class="govuk-button-group">
         <button type="submit" [disabled]="isConfirmButtondisabled"
-          [ngClass]="isConfirmButtondisabled ? 'button button--disabled' : 'button'"
+          [ngClass]="isConfirmButtondisabled ? 'govuk-button' : 'govuk-button'"
           (click)="confirmAllocatePayement()">
           Confirm
         </button>
-        <button type="button" class="button govuk-button--secondary" (click)="cancelAllocatePayment($event)">
+        <button type="button" class="govuk-button govuk-button--secondary" (click)="cancelAllocatePayment($event)">
           Cancel
         </button>
       </div>

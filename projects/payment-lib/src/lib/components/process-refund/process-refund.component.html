@@ -3,12 +3,14 @@
 
   <main class="govuk-main-wrapper govuk-!-padding-top-0" [ngClass]="{'govuk-radios__conditional--hidden': isSuccesspageEnable}" id="main-content" role="main">
     <div *ngIf="errorMessage.showError">
-      <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
-        <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
-          {{errorMessage.title}}
-        </h2>
-        <div class="govuk-error-summary__body process-refund-font">
-          {{errorMessage.body}}
+      <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+          <h2 class="govuk-error-summary__title">
+            {{errorMessage.title}}
+          </h2>
+          <div class="govuk-error-summary__body process-refund-font">
+            {{errorMessage.body}}
+          </div>
         </div>
       </div>
     </div>
@@ -17,30 +19,30 @@
 
       <div class="govuk-grid-row">
         <div class="column">
-          <h1 class="heading-large govuk-!-margin-top-0">Review refund details</h1>
+          <h1 class="govuk-heading-l govuk-!-margin-top-0">Review refund details</h1>
         </div>
       </div>
       <table>
         <tbody>
 
         <tr class="section">
-          <td class="bold tb-col-w">Payment to be refunded</td>
+          <td class="govuk-!-font-weight-bold tb-col-w">Payment to be refunded</td>
           <td colspan="2">{{refundlistsource?.refund_reference}} ({{refundlistsource.amount  | currency :'GBP':'symbol':'1.2-2'  }})</td>
         </tr>
         <tr class="section">
-          <td class="bold tb-col-w">Reason for refund</td>
+          <td class="govuk-!-font-weight-bold tb-col-w">Reason for refund</td>
           <td colspan="2">{{refundlistsource?.reason?.trim()}}</td>
         </tr>
         <tr class="section">
-            <td class="bold tb-col-w">Amount to be refunded</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">Amount to be refunded</td>
             <td colspan="2">{{refundlistsource?.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
         </tr>
         <tr class="section">
-          <td class="bold tb-col-w">Sent to</td>
+          <td class="govuk-!-font-weight-bold tb-col-w">Sent to</td>
           <td colspan="2">{{cpoDetails?.responsibleParty}}</td>
         </tr>
         <tr class="section">
-          <td class="bold tb-col-w">Sent via</td>
+          <td class="govuk-!-font-weight-bold tb-col-w">Sent via</td>
           <td colspan="2">
           <div *ngIf="refundlistsource?.contact_details?.notification_type === 'EMAIL'" class="contactDetails-width font-size-19px">
             <strong>Email</strong>
@@ -55,16 +57,16 @@
           </td>
         </tr>
         <tr class="section">
-            <td class="bold tb-col-w">Submitted by</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">Submitted by</td>
             <td colspan="2">{{refundlistsource?.user_full_name}}</td>
 
         </tr>
         <tr class="section">
-            <td class="bold tb-col-w">Date submitted</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">Date submitted</td>
             <td colspan="2">{{refundlistsource?.date_created | date:'d MMMM yyyy' }}</td>
         </tr>
         <tr class="section">
-          <td class="bold tb-col-w">Notification</td>
+          <td class="govuk-!-font-weight-bold tb-col-w">Notification</td>
           <td>{{templateInstructionType}}</td>
           <td>
             <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link pointer right" (click)="showNotificationPreview()">
@@ -96,11 +98,11 @@
         <div class="">
         <fieldset class="govuk-fieldset" aria-describedby="sign-in-hint">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="heading-large">
+            <h1 class="govuk-heading-l">
               What do you want to do with this refund?
             </h1>
           </legend>
-          <div class="govuk-radios"  [ngClass]="{'form-group-error': refundActionsHasError}">
+          <div class="govuk-radios"  [ngClass]="{'govuk-form-group--error': refundActionsHasError}">
             <p class="inline-error-message"
             *ngIf="refundActionsHasError">
             <span *ngIf="refundActionsHasError">Please select an action</span>
@@ -151,11 +153,11 @@
       <div [ngClass]="{'govuk-radios__conditional--hidden': !isRejectClicked}">
         <fieldset class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h2 class="heading-medium">
+            <h2 class="govuk-heading-m">
               Why are you rejecting this refund?
             </h2>
           </legend>
-          <div class="govuk-radios" [ngClass]="{'form-group-error': refundRejectReasonHasError}">
+          <div class="govuk-radios" [ngClass]="{'govuk-form-group--error': refundRejectReasonHasError}">
             <p class="inline-error-message"
             *ngIf="refundRejectReasonHasError">
             <span *ngIf="refundRejectReasonHasError">Please select a reject reason</span>
@@ -192,7 +194,7 @@
 
       <div class="govuk-button-group">
         <button (click)="redirecttoRefundListPage()" class="govuk-button govuk-button--secondary marginright"> Previous</button>
-        <button (click)="processRefundSubmit()" class="govuk-button button"
+        <button (click)="processRefundSubmit()" class="govuk-button"
           data-module="govuk-button">
           Submit 
         </button>

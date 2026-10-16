@@ -13,24 +13,24 @@
     <main class="govuk-main-wrapper">
       <input #myInput type='hidden' class='iFrameDrivenImageValue' value='FEESUMMARY'>
       <div class="summaryheader">
-          <h1 class="heading-large govuk-!-margin-top-3 govuk-!-margin-bottom-4">Summary</h1>
+          <h1 class="govuk-heading-l govuk-!-margin-top-3 govuk-!-margin-bottom-4">Summary</h1>
           <p class="govuk-!-margin-top-5 caseref">Case reference:{{ccdCaseNumber | ccdHyphens}}</p>
       </div>
 
   <!-- <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="heading-xlarge">Fee Summary</h1>
+      <h1 class="govuk-heading-xl">Fee Summary</h1>
     </div>
 
 
      <div class="govuk-grid-column-one-third" align="right">
             <button  *ngIf="!isTurnOff" (click)="redirectToFeeSearchPage($event,'summary')"
             [disabled]="isPaymentExist"
-            [ngClass]='isPaymentExist ? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'>
+            [ngClass]='isPaymentExist ? "govuk-button govuk-!-margin-right-1" : "govuk-button govuk-!-margin-right-1"'>
               Add a new fee
             </button>
 
-            <a *ngIf="isTurnOff" (click)="redirectToFeeSearchPage($event,'summary')" class="button">Add a new fee</a>
+            <a *ngIf="isTurnOff" (click)="redirectToFeeSearchPage($event,'summary')" class="govuk-button">Add a new fee</a>
     </div>
   </div> -->
 
@@ -39,18 +39,20 @@
 
 
   <div *ngIf="errorMessage">
-    <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
-      <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
-        An error has occurred on the Fee summary page.
-      </h2>
-      <div class="govuk-error-summary__body">
-        {{ errorMessage }}
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+      <div role="alert">
+        <h2 class="govuk-error-summary__title">
+          An error has occurred on the Fee summary page.
+        </h2>
+        <div class="govuk-error-summary__body">
+          {{ errorMessage }}
+        </div>
       </div>
     </div>
   </div>
 
   <div class="govuk-!-margin-top-3">
-      <table class="govuk-table  govuk-!-margin-bottom-2" *ngIf="paymentGroup">
+      <table class="govuk-table govuk-!-margin-bottom-2" *ngIf="paymentGroup">
           <thead class="govuk-table__head">
               <tr class="govuk-table__row">
                   <th class="govuk-table__header" scope="col" class="class600">Description</th>
@@ -111,7 +113,7 @@
   <div class="addfee">
       <button  *ngIf="!isTurnOff" (click)="redirectToFeeSearchPage($event,'summary')"
               [disabled]="isPaymentExist"
-              [ngClass]='isPaymentExist ? "govuk-button govuk-button--secondary button--disabled" : "govuk-button govuk-button--secondary"'>
+              [ngClass]='isPaymentExist ? "govuk-button govuk-button--secondary" : "govuk-button govuk-button--secondary"'>
                 Add fee
       </button>
     <a *ngIf="isTurnOff" (click)="redirectToFeeSearchPage($event,'summary')" class="govuk-button govuk-button--secondary">Add a new fee</a>
@@ -122,7 +124,7 @@
 
 <!--   This is  section is used when there is more that one payment provider. It is commented as kerv is the default option.
   <div class="summaryheader" *ngIf="isTelephonySelectionEnable()">
-    <h3 class="heading-medium govuk-!-margin-top-3 govuk-!-margin-bottom-4">Which system are you using to take a payment?</h3>
+    <h3 class="govuk-heading-m govuk-!-margin-top-3 govuk-!-margin-bottom-4">Which system are you using to take a payment?</h3>
   </div>
 
   <div class="govuk-radios__item" *ngIf="isTelephonySelectionEnable()">
@@ -164,10 +166,10 @@
   <div class="centerDiv">
     <button *ngIf="!bsPaymentDcnNumber" type="submit" (click)="takePayment()"
               [disabled]="totalFee <= 0 || isConfirmationBtnDisabled"
-              [ngClass]='totalFee <= 0 || !service || isConfirmationBtnDisabled? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'>
+              [ngClass]='totalFee <= 0 || !service || isConfirmationBtnDisabled? "govuk-button govuk-!-margin-right-1" : "govuk-button govuk-!-margin-right-1"'>
         Take payment
     </button>
-    <button *ngIf="bsPaymentDcnNumber" type="button" (click)="goToAllocatePage(outStandingAmount, isFeeAmountZero)" class="button govuk-!-margin-right-1">
+    <button *ngIf="bsPaymentDcnNumber" type="button" (click)="goToAllocatePage(outStandingAmount, isFeeAmountZero)" class="govuk-button govuk-!-margin-right-1">
       <span class="white" *ngIf="outStandingAmount > 0 || (isFeeAmountZero && outStandingAmount === 0)">
         Allocate payment
       </span>
@@ -177,7 +179,7 @@
     </button>
 
     <button (click)="loadCaseTransactionPage()"
-            class="button govuk-!-margin-right-1">
+            class="govuk-button govuk-!-margin-right-1">
       Return to the case
     </button>
 
@@ -191,18 +193,18 @@
       <div class="govuk-warning-text">
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
-          <span class="govuk-warning-text__assistive">Warning</span>
+          <span class="govuk-visually-hidden">Warning</span>
           Are you sure you want to delete this fee?
         </strong>
       </div>
       <div class="govuk-button-grb">
         <form novalidate>
-          <button type="submit" class="button govuk-button--secondary" (click)="cancelRemission()">
+          <button type="submit" class="govuk-button govuk-button--secondary" (click)="cancelRemission()">
             Cancel
           </button>
-          <button type="submit" class="button"
+          <button type="submit" class="govuk-button"
           *ngIf ="!isRemoveBtnDisabled"
-          [ngClass]='isRemoveBtnDisabled ? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'
+          [ngClass]='isRemoveBtnDisabled ? "govuk-button govuk-!-margin-right-1" : "govuk-button govuk-!-margin-right-1"'
           (click)="removeFee(currentFee)">
             Remove
           </button>
