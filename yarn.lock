@@ -6574,7 +6574,7 @@ __metadata:
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ^2.1.0
     karma-phantomjs-launcher: 1.0.4
-    karma-spec-reporter: ^0.0.32
+    karma-spec-reporter: ^0.0.37
     local-storage: ^2.0.0
     ng-packagr: ^20.3.0
     protractor: ~7.0.0
@@ -6834,7 +6834,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"colors@npm:^1.1.2":
+"colors@npm:1.4.0":
   version: 1.4.0
   resolution: "colors@npm:1.4.0"
   checksum: 98aa2c2418ad87dedf25d781be69dc5fc5908e279d9d30c34d8b702e586a0474605b3a189511482b9d5ed0d20c867515d22749537f7bc546256c6014f3ebdcec
@@ -10233,14 +10233,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma-spec-reporter@npm:^0.0.32":
-  version: 0.0.32
-  resolution: "karma-spec-reporter@npm:0.0.32"
+"karma-spec-reporter@npm:^0.0.37":
+  version: 0.0.37
+  resolution: "karma-spec-reporter@npm:0.0.37"
   dependencies:
-    colors: ^1.1.2
+    colors: 1.4.0
   peerDependencies:
     karma: ">=0.9"
-  checksum: 1857e8c9c862ee03a26e6a784838a751689d27f640ebc304e38220e3de60d521d96bddcaa0f3460b138f233cec03533618c21d80197afe6e42d4c5334057e9cc
+  checksum: c6406c85c45b28200ee937d8641b2abf1ee21ed9f762370fb3a7dfb0d0b3cdd6bca30525242a2c624813fbad36dabcbcd3f17090c6141f95ab3d980e13b771f2
   languageName: node
   linkType: hard
 
