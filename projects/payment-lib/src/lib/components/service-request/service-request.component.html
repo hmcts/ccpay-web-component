@@ -20,9 +20,17 @@
               <td class="bold tb-col-w">{{ "Service request reference" | rpxTranslate }}</td>
               <td>{{orderRef}}</td>
             </tr>
-            <tr class="section">
+            <tr class="section" >
               <td class="bold tb-col-w">{{ "Status" | rpxTranslate }}</td>
               <td>{{ orderStatus | rpxTranslate }}</td>
+            </tr>
+            <tr class="section" *ngIf="cancelReason">
+              <td class="bold tb-col-w">{{ "Cancellation Reason" | rpxTranslate }}</td>
+              <td>{{ cancelReason | rpxTranslate }}</td>
+            </tr>
+            <tr class="section" *ngIf="cancelDate">
+              <td class="bold tb-col-w">{{ "Cancellation Date" | rpxTranslate }}</td>
+              <td>{{cancelDate | date:'dd MMMM yyyy'}}</td>
             </tr>
             <tr class="section">
               <td class="bold tb-col-w">{{ "Date created" | rpxTranslate }}</td>
@@ -59,7 +67,7 @@
               <td class="govuk-table__cell">{{fee.volume? fee.volume : '-'}} X {{ fee.calculated_amount/fee.volume| currency:'GBP':'symbol-narrow':'1.2-2' }}</td>
               <td class="govuk-table__cell">{{ fee?.net_amount | currency:'GBP':'symbol-narrow':'1.2-2' }}</td>
               <td class="govuk-table__cell alignright" *ngIf="isServiceRequest === 'false'">
-                  <button [disabled]="!chkIsAddRemissionBtnEnable(fee)"   (click)="addRemission(fee)" class="govuk-button govuk-button--secondary">{{ "Add remission" | rpxTranslate }}</button>
+                  <button [disabled]="!chkIsAddRemissionBtnEnable(fee) && chkServiceRequestStatus()"   (click)="addRemission(fee)" class="govuk-button govuk-button--secondary">{{ "Add remission" | rpxTranslate }}</button>
               </td>
 
             </tr>
@@ -155,7 +163,7 @@
 </div>
 </ng-container>
   <div>
-      <p class="totalPay">{{ "Total fees left to pay" | rpxTranslate }}: <b>{{((orderFeesTotal - orderRemissionTotal)- orderTotalPayments )| currency:'GBP':'symbol-narrow':'1.2-2' }}</b> </p>
+      <p class="totalPay">{{ "Total fees left to pay" | rpxTranslate }}: <b>{{ (orderStatus === 'Cancelled' ? 0 : (orderFeesTotal - orderRemissionTotal - orderTotalPayments)) | currency:'GBP':'symbol-narrow':'1.2-2' }}</b> </p>
   </div>
 </ng-container>
 

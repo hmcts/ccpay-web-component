@@ -6,4 +6,6 @@ export interface IOrderReferenceFee {
     orderCCDEvent: string;
     orderCreated: Date;
     orderAddBtnEnable: boolean;
+    orderCancelReason: string;
+    orderCancelDate: Date;
   }

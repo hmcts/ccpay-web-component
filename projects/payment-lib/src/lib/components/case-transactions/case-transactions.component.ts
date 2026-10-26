@@ -99,6 +99,8 @@ export class CaseTransactionsComponent implements OnInit {
   cpoDetails: any[] = null;
   orderRef: string;
   orderStatus: string;
+  orderCancelDate: Date;
+  orderCancelReason: string;
   orderParty: string;
   orderCreated: Date;
   orderCCDEvent: string;
@@ -172,7 +174,9 @@ export class CaseTransactionsComponent implements OnInit {
       this.caseTransactionsService.getPaymentGroups(this.ccdCaseNumber).subscribe(
         paymentGroups => {
           this.isAnyFeeGroupAvilable = true;
-          this.paymentGroups = paymentGroups['payment_groups'];
+          this.paymentGroups = Array.isArray(paymentGroups)
+            ? paymentGroups
+            : (paymentGroups?.['payment_groups'] ?? []);
           this.calculateAmounts();
           this.calculateOrderFeesAmounts();
           this.calculateRefundAmount();
@@ -209,7 +213,9 @@ export class CaseTransactionsComponent implements OnInit {
       this.caseTransactionsService.getPaymentGroups(this.ccdCaseNumber).subscribe(
         paymentGroups => {
           this.isAnyFeeGroupAvilable = true;
-          this.paymentGroups = paymentGroups['payment_groups'];
+          this.paymentGroups = Array.isArray(paymentGroups)
+            ? paymentGroups
+            : (paymentGroups?.['payment_groups'] ?? []);
           this.calculateAmounts();
           this.calculateOrderFeesAmounts();
           this.calculateAmountDueTo();
@@ -358,6 +364,9 @@ export class CaseTransactionsComponent implements OnInit {
       } else if (paymentGroup.service_request_status === 'Disputed') {
         this.orderStatus = paymentGroup.service_request_status;
         this.orderAddBtnEnable = true;
+      }else if (paymentGroup.service_request_status === 'Cancelled') {
+        this.orderStatus = paymentGroup.service_request_status;
+        this.orderAddBtnEnable = false;
       }
 
       if (this.cpoDetails !== null && this.cpoDetails.length !== 0 ) {
@@ -367,10 +376,28 @@ export class CaseTransactionsComponent implements OnInit {
                     index = i;
                     }
               });
-        this.orderLevelFees.push({ orderRefId: paymentGroup['payment_group_reference'], orderTotalFees: this.orderFeesTotal, orderStatus: this.orderStatus, orderParty: this.cpoDetails[index].responsibleParty, orderCCDEvent: this.cpoDetails[index].action, orderCreated: paymentGroup['date_created'], orderAddBtnEnable: this.orderAddBtnEnable });
+        this.orderLevelFees.push({
+          orderRefId: paymentGroup['payment_group_reference'],
+          orderTotalFees: this.orderFeesTotal,
+          orderStatus: this.orderStatus,
+          orderParty: this.cpoDetails[index].responsibleParty,
+          orderCCDEvent: this.cpoDetails[index].action,
+          orderCreated: paymentGroup['date_created'],
+          orderAddBtnEnable: this.orderAddBtnEnable,
+          orderCancelReason: paymentGroup['service_request_cancel_reason'],
+          orderCancelDate: paymentGroup['service_request_cancel_date'] });
 
       } else {
-        this.orderLevelFees.push({ orderRefId: paymentGroup['payment_group_reference'], orderTotalFees: this.orderFeesTotal, orderStatus: this.orderStatus, orderParty: '', orderCCDEvent: '', orderCreated: paymentGroup['date_created'], orderAddBtnEnable: this.orderAddBtnEnable });
+        this.orderLevelFees.push({
+          orderRefId: paymentGroup['payment_group_reference'],
+          orderTotalFees: this.orderFeesTotal,
+          orderStatus: this.orderStatus,
+          orderParty: '',
+          orderCCDEvent: '',
+          orderCreated: paymentGroup['date_created'],
+          orderAddBtnEnable: this.orderAddBtnEnable,
+          orderCancelReason: paymentGroup['service_request_cancel_reason'],
+          orderCancelDate: paymentGroup['service_request_cancel_date'] });
       }
 
       if (this.orderStatus !== 'Paid') {
@@ -423,6 +450,12 @@ export class CaseTransactionsComponent implements OnInit {
         }
       }
       this.orderStatus = orderDetail.service_request_status;
+      this.orderCancelReason = orderDetail.service_request_cancel_reason || '';
+      this.orderCancelDate = orderDetail.service_request_cancel_date
+        ? new Date(orderDetail.service_request_cancel_date)
+        : null;
+      this.OrderslistService.setorderCancelReason(this.orderCancelReason);
+      this.OrderslistService.setorderCancelDate(this.orderCancelDate);
     });
 
     let position = -1;
@@ -472,6 +505,8 @@ export class CaseTransactionsComponent implements OnInit {
               let a = fee.amount_due === undefined;
               let b = fee.amount_due <= 0;
               this.clAmountDue = a ? this.addCurrency(this.clAmountDue, fee.net_amount) : b ? this.clAmountDue : this.addCurrency(this.clAmountDue, fee.amount_due);
+              if(paymentGroup.service_request_status =='Cancelled'){
+                this.clAmountDue = 0;}
             }
             fee['payment_group_reference'] = paymentGroup['payment_group_reference'];
             this.fees.push(fee);

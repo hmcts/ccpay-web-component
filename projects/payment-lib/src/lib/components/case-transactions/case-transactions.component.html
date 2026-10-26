@@ -657,7 +657,7 @@
                   </td>
                   <td *ngIf="cpoDetails === null || cpoDetails.length === 0" class="govuk-table__cell whitespace-inherit"></td>
                   <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderRefId}}</td>
-                  <td class="govuk-table__cell of-visible"> <a href="javascript:void(0)" (click)="loadPBAAccountPage(orderRef)" *ngIf="serviceRequestValue !== 'false' && check4AllowedRoles2AccessPBApayment() && orderRef.orderStatus === 'Not paid'"> {{ "Pay now" | rpxTranslate }}</a></td>
+                  <td class="govuk-table__cell of-visible"> <a href="javascript:void(0)" (click)="loadPBAAccountPage(orderRef)" *ngIf="serviceRequestValue !== 'false' && check4AllowedRoles2AccessPBApayment() && (orderRef.orderStatus === 'Not paid' || orderRef.orderStatus === 'Cancelled')"> {{ "Ollie Pay now" | rpxTranslate }}</a></td>
                   <td class="govuk-table__cell">
                       <a href="javascript:void(0)" (click)="goToOrderViewDetailSection(orderRef)">{{ "Review" | rpxTranslate }}</a>
                 </td>
@@ -757,6 +757,8 @@
   [orderCreated] = "orderCreated"
   [orderParty] = "orderParty"
   [orderCCDEvent] = "orderCCDEvent"
+  [orderCancelReason] = "orderCancelReason"
+  [orderCancelDate] = "orderCancelDate"
   [orderDetail] = "orderDetail"
   [paymentGroupList] = "paymentGroups"
   [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES"
