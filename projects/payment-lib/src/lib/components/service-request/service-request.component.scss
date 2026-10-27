@@ -3,20 +3,6 @@
     margin-bottom: 10px;
 }
 
-.hmcts-currency-input__symbol {
-  font-family: nta,Arial,sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 16px;
-  line-height: initial;
-  position: absolute;
-  font-weight: 200;
-  padding: 8px 10px;
-  height: 40px;
-  box-sizing: border-box;
-  background-color: #dee0e2;
-  border: 2px solid #0b0c0c;
-}
 
 .disable {
     text-decoration: none;
@@ -374,9 +360,6 @@ th, td {
     margin-top: 20px;
   }
     
-    .govuk-font19px {
-      font-size: 19px !important;
-    }
     .margin-top--size {
       margin-top: -30px;
     }
@@ -420,12 +403,6 @@ th, td {
         padding-top: 2em;
       }
   
-      .heading-medium {
-        margin-top: 0.875em;
-      }
-      .heading-large {
-        margin-top: 0.25em;
-      }
       .govuk-panel--confirmation {
         color: #FFFFFF;
         background: #00703C;

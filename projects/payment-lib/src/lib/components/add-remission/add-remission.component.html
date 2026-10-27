@@ -1,36 +1,41 @@
 <div class="add-remission pagesize">
   <div *ngIf="errorMessage">
-    <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
-      <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
-       {{ "Error in processing the request" | rpxTranslate }}
-      </h2>
-      <div  class="govuk-error-summary__body">
-        {{ errorMessage | rpxTranslate }}
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+      <div role="alert">
+        <h2 class="govuk-error-summary__title">
+          {{ "Error in processing the request" | rpxTranslate }}
+        </h2>
+        <div class="govuk-error-summary__body">
+          {{ errorMessage | rpxTranslate }}
+        </div>
       </div>
     </div>
   </div>
   <div *ngIf="errorMsg.length > 0">
-    <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
-      <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
-        {{ "Error in processing the request" | rpxTranslate }}
-      </h2>
-      <div *ngFor="let err of errorMsg; let i = index" class="govuk-error-summary__body">
-
-        <li>{{ err | rpxTranslate }}</li>
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+      <div role="alert">
+        <h2 class="govuk-error-summary__title">
+          {{ "Error in processing the request" | rpxTranslate }}
+        </h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list">
+            <li *ngFor="let err of errorMsg">{{ err | rpxTranslate }}</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 
 <ng-container *ngIf="viewStatus === 'main' && !isRefundRemission ">
     <input #myInput type='hidden' id='iFrameDrivenImageValue' value='ADDREMISSION'>
-    <h1 class="heading-large">{{ "Add remission" | rpxTranslate }} </h1>
+    <h1 class="govuk-heading-l">{{ "Add remission" | rpxTranslate }} </h1>
     <form novalidate>
       <div class="govuk-form-group">
         <form [formGroup]="remissionForm" novalidate>
           <div class="govuk-form-group">
             <label class="govuk-label govuk-label--s" for="remission-code">
                 {{ "Add remission to" | rpxTranslate }} {{ fee?.code }}: {{ fee?.description | rpxTranslate }}
-              <span class="form-hint">{{ "Enter remission for reference" | rpxTranslate }}. {{ "For example" | rpxTranslate }}: HWF-A1B-23C OR PA21-123456</span>
+              <span class="govuk-hint">{{ "Enter remission for reference" | rpxTranslate }}. {{ "For example" | rpxTranslate }}: HWF-A1B-23C OR PA21-123456</span>
             </label>
             <input [ngClass]="{'inline-error-class': isRemissionCodeEmpty || remissionCodeHasError}" class="govuk-input govuk-input--width-20 govuk-!-margin-right-1" id="remissionCode" aria-label="remissionCode"  name="remissionCode" type="text" formControlName="remissionCode">
             <p class="inline-error-message" *ngIf="isRemissionCodeEmpty || remissionCodeHasError">
@@ -44,9 +49,11 @@
             </label>
 
             <div id="amount-currency" class="govuk-visually-hidden">{{ "in pounds" | rpxTranslate }}</div>
-              <div class="hmcts-currency-input">
-              <div class="hmcts-currency-input__symbol" aria-hidden="true">£</div>
-              <input class="govuk-input govuk-input-width-10-left" [ngClass]="{'inline-error-class': isAmountEmpty || amountHasError || isRemissionLessThanFeeError}" id="amount" aria-label="amount"  name="amount" type="text" aria-describedby="amount-currency" formControlName="amount">
+            <div>
+              <div class="govuk-input__wrapper">
+                <div class="govuk-input__prefix" aria-hidden="true">£</div>
+                <input class="govuk-input govuk-input--width-10" [ngClass]="{'inline-error-class': isAmountEmpty || amountHasError || isRemissionLessThanFeeError}" id="amount" aria-label="amount"  name="amount" type="text" aria-describedby="amount-currency" formControlName="amount">
+              </div>
               <p class="inline-error-message" *ngIf="isAmountEmpty || amountHasError || isRemissionLessThanFeeError">
                 <span *ngIf="isAmountEmpty">{{ "Enter a amount" | rpxTranslate }}</span>
                 <span *ngIf="amountHasError">{{ "Enter a vaild amount" | rpxTranslate }}</span>
@@ -55,7 +62,7 @@
             </div>
           </div>
         </form>
-        <button class="button" type="submit" (click)="addRemission()">
+        <button class="govuk-button" type="submit" (click)="addRemission()">
             {{ "Submit" | rpxTranslate }}
           </button>
       </div>
@@ -67,7 +74,7 @@
     <div class="govuk-warning-text">
       <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
       <strong class="govuk-warning-text__text">
-        <span class="govuk-warning-text__assistive">{{ "Warning" | rpxTranslate }}</span>
+        <span class="govuk-visually-hidden">{{ "Warning" | rpxTranslate }}</span>
         {{ "Are you sure you want to add remission to this fee" | rpxTranslate }}?
       </strong>
     </div>
@@ -90,12 +97,12 @@
       </tr>
     </table>
 
-    <button type="submit" class="button govuk-button--secondary" (click)="cancelRemission.emit()">
+    <button type="submit" class="govuk-button govuk-button--secondary" (click)="cancelRemission.emit()">
       {{ "Cancel" | rpxTranslate }}
     </button>
     <button type="submit"
     [disabled]="isConfirmationBtnDisabled"
-    [ngClass]='isConfirmationBtnDisabled ? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'
+    [ngClass]='isConfirmationBtnDisabled ? "govuk-button govuk-!-margin-right-1" : "govuk-button govuk-!-margin-right-1"'
     (click)="confirmRemission($event)">
       {{ "Confirm" | rpxTranslate }}
     </button>
@@ -106,15 +113,15 @@
 
 <ng-container *ngIf="viewCompStatus === 'addremission'">
     <input #myInput type='hidden' id='iFrameDrivenImageValue' value='PROCESSADDRETROREMISSIONPAGE'>
-    <h1 class="heading-large">{{ "Process remission" | rpxTranslate }}</h1>
-    <h1 class="heading-medium">#{{ccdCaseNumber | ccdHyphens}}</h1>
-    <h1 class="heading-large">{{ "Enter help with fees or remission reference" | rpxTranslate }}</h1>
+    <h1 class="govuk-heading-l">{{ "Process remission" | rpxTranslate }}</h1>
+    <h1 class="govuk-heading-m">#{{ccdCaseNumber | ccdHyphens}}</h1>
+    <h1 class="govuk-heading-l">{{ "Enter help with fees or remission reference" | rpxTranslate }}</h1>
     <form novalidate>
         <div class="govuk-form-group">
           <form [formGroup]="remissionForm" novalidate>
             <div class="govuk-form-group">
               <label class="govuk-label govuk-label--s" for="remission-code">
-                <span class="form-hint">{{ "For example" | rpxTranslate }}: HWF-A1B-23C OR PA21-123456</span>
+                <span class="govuk-hint">{{ "For example" | rpxTranslate }}: HWF-A1B-23C OR PA21-123456</span>
               </label>
               <p class="inline-error-message" *ngIf="isRemissionCodeEmpty || remissionCodeHasError">
                 <span *ngIf="isRemissionCodeEmpty">{{ "Enter a remission code" | rpxTranslate }}</span>
@@ -137,21 +144,21 @@
 
 <ng-container *ngIf="viewStatus === 'processretroremissonpage'" >
     <input #myInput type='hidden' id='iFrameDrivenImageValue' value='PROCESSRETROREMISSIONPAGE'>
-    <h1 class="heading-large">{{ "Process remission" | rpxTranslate }}</h1>
-    <h1 class="heading-medium">#{{ccdCaseNumber | ccdHyphens }}</h1>
+    <h1 class="govuk-heading-l">{{ "Process remission" | rpxTranslate }}</h1>
+    <h1 class="govuk-heading-m">#{{ccdCaseNumber | ccdHyphens }}</h1>
     <div class="govuk-form-group">
         <form novalidate>
             <div class="govuk-form-group">
                 <form [formGroup]="remissionForm" novalidate>
                     <fieldset class="govuk-fieldset">
                       <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                          <h1 *ngIf="remessionPayment?.status === 'Success' ||   isFromRefundListPage" class="heading-medium">
+                          <h1 *ngIf="remessionPayment?.status === 'Success' ||   isFromRefundListPage" class="govuk-heading-m">
                               {{ "Enter the HWF or remission amount" | rpxTranslate }}
                           </h1>
-                          <h1 *ngIf="remessionPayment?.status !== 'Success' && !isFromRefundListPage" class="heading-medium">
+                          <h1 *ngIf="remessionPayment?.status !== 'Success' && !isFromRefundListPage" class="govuk-heading-m">
                               {{ "Enter the remission amount" | rpxTranslate }}
                           </h1>
-                          <h1 *ngIf="remessionPayment?.status === 'undefined'" class="heading-medium">
+                          <h1 *ngIf="remessionPayment?.status === 'undefined'" class="govuk-heading-m">
                               {{ "Enter the  amount" | rpxTranslate }}
                           </h1>
                         </legend>
@@ -161,10 +168,10 @@
                       <span *ngIf="amountHasError">{{ "Enter a vaild amount" | rpxTranslate }}</span>
                       <span *ngIf="isRemissionLessThanFeeError">{{ "You cannot add a remission that's more than the fee amount" | rpxTranslate }}.</span>
                     </p>
-                        <div class="hmcts-currency-input">
+                        <div class="govuk-input__wrapper">
 
-                            <div class="hmcts-currency-input__symbol" aria-hidden="true">£</div>
-                            <input class="govuk-input govuk-input-width-10-left" [ngClass]="{'inline-error-class': isAmountEmpty || amountHasError || isRemissionLessThanFeeError}" id="amount" aria-label="amount"  name="amount"  type="number" aria-describedby="amount-currency" formControlName="amount">
+                            <div class="govuk-input__prefix" aria-hidden="true">£</div>
+                            <input class="govuk-input govuk-input--width-10" [ngClass]="{'inline-error-class': isAmountEmpty || amountHasError || isRemissionLessThanFeeError}" id="amount" aria-label="amount"  name="amount"  type="number" aria-describedby="amount-currency" formControlName="amount">
 
 
                       </div>
@@ -187,7 +194,7 @@
 <ng-container *ngIf="viewStatus === 'checkretroremissionpage'">
     <input #myInput type='hidden' id='iFrameDrivenImageValue' value='CHECKRETROREMISSIONCONFIRMATION'>
     <div class="govuk-warning-text">
-        <h1 class="heading-large"> {{ "Check your answers" | rpxTranslate }}</h1>
+        <h1 class="govuk-heading-l"> {{ "Check your answers" | rpxTranslate }}</h1>
     </div>
     <table class="govuk-table">
         <tr class="govuk-table__row">
@@ -224,8 +231,8 @@
         </tr>
     </table>
 
-    <button type="submit" class="button govuk-button--secondary" (click)="gotoAmountRetroRemission()">{{ "Previous" | rpxTranslate }}</button>
-    <button type="submit" [disabled]="isConfirmationBtnDisabled" [ngClass]='isConfirmationBtnDisabled ? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"' (click)="confirmRetroRemission()"> {{ "Add remission" | rpxTranslate }} </button>
+    <button type="submit" class="govuk-button govuk-button--secondary" (click)="gotoAmountRetroRemission()">{{ "Previous" | rpxTranslate }}</button>
+    <button type="submit" [disabled]="isConfirmationBtnDisabled" [ngClass]='isConfirmationBtnDisabled ? "govuk-button govuk-!-margin-right-1" : "govuk-button govuk-!-margin-right-1"' (click)="confirmRetroRemission()"> {{ "Add remission" | rpxTranslate }} </button>
     <p> <a href="javascript:void(0)" (click)="gotoCasetransationPageCancelBtnClicked($event)" class="govuk-link" data-module="govuk-button"> {{ "Cancel" | rpxTranslate }}</a> </p>
 
 </ng-container>
@@ -244,7 +251,7 @@
           </div>
         </div>
         <div *ngIf="remessionPayment.status === 'Success'" >
-            <button type="submit" [disabled]="!canRefundBeApplied()" [ngClass]='isConfirmationBtnDisabled ? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"' (click)="gotoProcessRetroRemission()">{{ "Continue" | rpxTranslate }} </button>
+            <button type="submit" [disabled]="!canRefundBeApplied()" [ngClass]='isConfirmationBtnDisabled ? "govuk-button govuk-!-margin-right-1" : "govuk-button govuk-!-margin-right-1"' (click)="gotoProcessRetroRemission()">{{ "Continue" | rpxTranslate }} </button>
           </div>
           <p class="govuk-body">
           <a href="javascript:void(0)" (click)="gotoCasetransationPageCancelBtnClicked($event)" class="govuk-link pointer" data-module="govuk-button">
@@ -259,7 +266,7 @@
 <ng-container *ngIf="viewStatus === 'remissionAddressPage'">
   <input #myInput type='hidden' id='iFrameDrivenImageValue' value='ADDRESSDETAILSRETROREMISSIONPAGE'>
     <h1 class="govuk-heading-l">{{ "Process refund" | rpxTranslate }}</h1>
-    <h2 class="govuk-heading-m govuk-font19px">{{ "Case reference" | rpxTranslate }}: {{ccdCaseNumber | ccdHyphens }}</h2>
+    <h2 class="govuk-heading-m govuk-!-font-size-19">{{ "Case reference" | rpxTranslate }}: {{ccdCaseNumber | ccdHyphens }}</h2>
   <ccpay-contact-details
   [addressObj] = notification
   (assignContactDetails)="getContactDetails($event, 'checkaddRefundpage')"
@@ -275,7 +282,7 @@
 <ng-container *ngIf="viewStatus === 'checkaddRefundpage'">
     <input #myInput type='hidden' id='iFrameDrivenImageValue' value='CHECKRETROREMISSIONCONFIRMATION'>
     <div class="govuk-warning-text">
-        <h1 class="heading-large"> {{ "Check your answers" | rpxTranslate }}</h1>
+        <h1 class="govuk-heading-l"> {{ "Check your answers" | rpxTranslate }}</h1>
     </div>
     <table class="govuk-table">
 
@@ -356,8 +363,8 @@
     [refundReason]="'RR036'"
     [refundAmount]="remissionForm.controls.amount.value"></app-notification-preview>
 
-    <button type="submit" class="button govuk-button--secondary" (click)="gotoProcessRetroRemission(contactDetailsObj)">{{ "Previous" | rpxTranslate }}</button>
-    <button type="submit" [disabled]="isConfirmationBtnDisabled" [ngClass]='isConfirmationBtnDisabled ? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"' (click)="processRefund()"> {{ "Submit refund" | rpxTranslate }} </button>
+    <button type="submit" class="govuk-button govuk-button--secondary" (click)="gotoProcessRetroRemission(contactDetailsObj)">{{ "Previous" | rpxTranslate }}</button>
+    <button type="submit" [disabled]="isConfirmationBtnDisabled" [ngClass]='isConfirmationBtnDisabled ? "govuk-button govuk-!-margin-right-1" : "govuk-button govuk-!-margin-right-1"' (click)="processRefund()"> {{ "Submit refund" | rpxTranslate }} </button>
     <p> <a href="javascript:void(0)" (click)="gotoCasetransationPageCancelBtnClicked($event)" class="govuk-link" data-module="govuk-button"> {{ "Cancel" | rpxTranslate }}</a> </p>
 
 </ng-container>
@@ -396,25 +403,25 @@
 <ng-container *ngIf="viewCompStatus === 'issuerefund' && isRefundRemission">
   <div class="govuk-form-group">
     <form [formGroup]="remissionForm" novalidate>
-    <h1 class="heading-large">{{ "Process refund" | rpxTranslate }}</h1>
-    <h2 class="heading-medium">{{ "Case reference" | rpxTranslate }}:{{ccdCaseNumber | ccdHyphens }}</h2>
-    <span id="how-contacted-conditional-hint" class="form-hint govuk-font19px">
+    <h1 class="govuk-heading-l">{{ "Process refund" | rpxTranslate }}</h1>
+    <h2 class="govuk-heading-m">{{ "Case reference" | rpxTranslate }}:{{ccdCaseNumber | ccdHyphens }}</h2>
+    <span id="how-contacted-conditional-hint" class="govuk-hint govuk-!-font-size-19">
       {{ "Payment reference" | rpxTranslate }}: {{paymentReference}}
     </span>
-    <h3 class="heading-small">{{ "Select fees to be refunded" | rpxTranslate }}</h3>
+    <h3 class="govuk-heading-s">{{ "Select fees to be refunded" | rpxTranslate }}</h3>
     <!--TABLE-->
     <div>
       <table class="govuk-table">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
-            <td class="govuk-table__header  col-1" scope="col">{{ "Select" | rpxTranslate }}</td>
-            <td class="govuk-table__header col-18" scope="col">{{ "Fee description" | rpxTranslate }}</td>
-            <td class="govuk-table__header col-6" scope="col">{{ "Fee amount" | rpxTranslate }}</td>
-            <td class="govuk-table__header col-6" scope="col">{{ "Total paid" | rpxTranslate }}</td>
-            <td class="govuk-table__header col-6" scope="col">{{ "Remission amount" | rpxTranslate }}</td>
-            <td class="govuk-table__header col-6" scope="col">{{ "Quantity" | rpxTranslate }}</td>
-            <td class="govuk-table__header col-8" scope="col">{{ "Amount to refund" | rpxTranslate }}</td>
-            <td class="govuk-table__header" scope="col"></td>
+            <th class="govuk-table__header  col-1" scope="col">{{ "Select" | rpxTranslate }}</th>
+            <th class="govuk-table__header col-18" scope="col">{{ "Fee description" | rpxTranslate }}</th>
+            <th class="govuk-table__header col-6" scope="col">{{ "Fee amount" | rpxTranslate }}</th>
+            <th class="govuk-table__header col-6" scope="col">{{ "Total paid" | rpxTranslate }}</th>
+            <th class="govuk-table__header col-6" scope="col">{{ "Remission amount" | rpxTranslate }}</th>
+            <th class="govuk-table__header col-6" scope="col">{{ "Quantity" | rpxTranslate }}</th>
+            <th class="govuk-table__header col-8" scope="col">{{ "Amount to refund" | rpxTranslate }}</th>
+            <th class="govuk-table__header" scope="col"></th>
           </tr>
         </thead>
         <tbody class="govuk-table__body" *ngIf="!isFullyRefund">
@@ -436,28 +443,28 @@
                 </div>
               </div>
             </td>
-            <td class="govuk-table__cell  whitespace-inherit">{{fee.controls['description'].value}} </td>
-            <td class="govuk-table__cell  whitespace-inherit left" >
+            <td class="govuk-table__cell whitespace-inherit">{{fee.controls['description'].value}} </td>
+            <td class="govuk-table__cell whitespace-inherit left" >
               <div type="hidden" style="display:none;background-color:white;" id="feeVOl_{{fee.controls['id'].value}}">{{ fee.controls['calculated_amount'].value / fee.controls['volume'].value }}</div>
               {{ fee.controls['calculated_amount'].value / fee.controls['volume'].value | currency:'GBP':'symbol-narrow':'1.2-2' }}
             </td>
-            <td class="govuk-table__cell  whitespace-inherit left" >{{ fee.controls['apportion_amount'].value | currency:'GBP':'symbol-narrow':'1.2-2'}} </td>
-            <td class="govuk-table__cell  whitespace-inherit left" >
+            <td class="govuk-table__cell whitespace-inherit left" >{{ fee.controls['apportion_amount'].value | currency:'GBP':'symbol-narrow':'1.2-2'}} </td>
+            <td class="govuk-table__cell whitespace-inherit left" >
               <div type="hidden" style="display:none;background-color:white;" id="feeVOl_{{fee.controls['id'].value}}">{{ this.getRemissionsHwfAmount(fee.controls['code'].value)}}</div>
               {{ this.getRemissionsHwfAmount(fee.controls['code'].value) | currency:'GBP':'symbol-narrow':'1.2-2' }}
             </td>
-            <td class="govuk-table__cell  whitespace-inherit left"  *ngIf="fee.controls['volume'].value ===1">
+            <td class="govuk-table__cell whitespace-inherit left"  *ngIf="fee.controls['volume'].value ===1">
               <input disabled="disabled"  class="govuk-input govuk-input--width-4 center"  id="VolumeUpdated_{{fee.controls['id'].value}}" name="VolumeUpdated_{{fee.controls['id'].value}}" type="text"   value="{{fee.controls['volume'].value}}">
             </td>
-            <td class="govuk-table__cell  whitespace-inherit left"  *ngIf="fee.controls['volume'].value >1">
+            <td class="govuk-table__cell whitespace-inherit left"  *ngIf="fee.controls['volume'].value >1">
               <div [formGroupName]="i">
                 <input disabled="disabled"  class="govuk-input govuk-input--width-4 center"  id="feeVolumeUpdated_{{fee.controls['id'].value}}" (keyup)="calAmtToRefund($event.target.value,fee.controls['calculated_amount'].value,fee.controls['volume'].value,i)" value="{{fee.controls['updated_volume'].value}}"  name="feeVolumeUpdated_{{fee.controls['id'].value}}" formControlName="updated_volume" type="text" >
               </div>
             </td>
-            <td class="govuk-table__cell  whitespace-inherit center" scope="row">
-                <div  [formGroupName]="i"  class="hmcts-currency-input">
-                  <div class="hmcts-currency-input__symbol" aria-hidden="true">£</div>
-                  <input disabled="disabled" class="govuk-input govuk-input--width-small" id="feeAmount_{{fee.controls['id'].value}}" name="feeAmount_{{fee.controls['id'].value}}" type="text" aria-describedby="amount-currency "  pattern="[0-9]*" formControlName="refund_amount">
+            <td class="govuk-table__cell whitespace-inherit center" scope="row">
+                <div  [formGroupName]="i"  class="govuk-input__wrapper">
+                  <div class="govuk-input__prefix" aria-hidden="true">£</div>
+                  <input disabled="disabled" class="govuk-input app-input--width-small" id="feeAmount_{{fee.controls['id'].value}}" name="feeAmount_{{fee.controls['id'].value}}" type="text" aria-describedby="amount-currency "  pattern="[0-9]*" formControlName="refund_amount">
                   <input id="feeVolume_{{fee.controls['id'].value}}" name="feeVolume_{{fee.controls['id'].value}}" value= "{{fee.controls['volume'].value}}" type="hidden" formControlName="volume">
                   <input id="feeApportionAmount_{{fee.controls['id'].value}}" name="feeApportionAmount_{{fee.controls['id'].value}}" value= "{{fee.controls['apportion_amount'].value}}" type="hidden" formControlName="apportion_amount">
                   <input id="calculatedAmount_{{fee.controls['id'].value}}" name="calculatedAmount_{{fee.controls['id'].value}}" value= "{{fee.controls['calculated_amount'].value}}" type="hidden" formControlName="calculated_amount">
@@ -485,31 +492,31 @@
                 </div>
               </div>
             </td>
-            <td class="govuk-table__cell  whitespace-inherit">{{ fee.description | rpxTranslate }} </td>
-            <td class="govuk-table__cell  whitespace-inherit left" >
+            <td class="govuk-table__cell whitespace-inherit">{{ fee.description | rpxTranslate }} </td>
+            <td class="govuk-table__cell whitespace-inherit left" >
               <div type="hidden" style="display:none;background-color:white;" id="feeVOl_{{fee.id}}">{{ fee.calculated_amount / fee.volume }}</div>
               {{ fee.calculated_amount / fee.volume| currency:'GBP':'symbol-narrow':'1.2-2' }}
             </td>
-            <td class="govuk-table__cell  whitespace-inherit left" >{{ payment.amount | currency:'GBP':'symbol-narrow':'1.2-2'}} </td>
+            <td class="govuk-table__cell whitespace-inherit left" >{{ payment.amount | currency:'GBP':'symbol-narrow':'1.2-2'}} </td>
 
-            <td class="govuk-table__cell  whitespace-inherit left" >
+            <td class="govuk-table__cell whitespace-inherit left" >
               <div type="hidden" style="display:none;background-color:white;" id="feeRemission_{{fee.id}}">{{ this.getRemissionValueForFullyRefund()}}</div>
               {{ this.getRemissionsHwfAmount(fee.code) | currency:'GBP':'symbol-narrow':'1.2-2' }}
 
             </td>
 
-            <td class="govuk-table__cell  whitespace-inherit left">
+            <td class="govuk-table__cell whitespace-inherit left">
               <div >
               <input disabled="disabled"  class="govuk-input govuk-input--width-4 center"  id="feeVolumeUpdated_{{fee.id}}"  value="{{fee.volume}}"  name="feeVolumeUpdated_{{fee.id}}" type="text" >
             </div>
             </td>
 
-            <td class="govuk-table__cell  whitespace-inherit center" scope="row">
+            <td class="govuk-table__cell whitespace-inherit center" scope="row">
 
-                <div class="hmcts-currency-input">
+                <div class="govuk-input__wrapper">
 
-                  <div class="hmcts-currency-input__symbol" aria-hidden="true">£</div>
-                  <input disabled="disabled" class="govuk-input govuk-input-width-10-left" id="feeAmount_{{fee.id}}" name="feeAmount_{{fee.id}}" type="text" aria-describedby="amount-currency "  value="{{ payment.amount}}" pattern="[0-9]*" >
+                  <div class="govuk-input__prefix" aria-hidden="true">£</div>
+                  <input disabled="disabled" class="govuk-input app-input--width-small" id="feeAmount_{{fee.id}}" name="feeAmount_{{fee.id}}" type="text" aria-describedby="amount-currency "  value="{{ payment.amount}}" pattern="[0-9]*" >
                 </div>
 
             </td>
@@ -545,15 +552,15 @@
 <ng-container *ngIf="viewCompStatus === 'issuerefundpage1' && isRefundRemission">
 
     <input #myInput type='hidden' id='iFrameDrivenImageValue' value='ISSUEREFUNDPAGE'>
-    <h1 class="heading-large">{{ "Process refund" | rpxTranslate }}</h1>
-    <h1 class="heading-medium">{{ "Case reference" | rpxTranslate }}: {{ccdCaseNumber | ccdHyphens }}</h1>
-    <span id="how-contacted-conditional-hint govuk-font19px" *ngIf="payment" class="form-hint">
+    <h1 class="govuk-heading-l">{{ "Process refund" | rpxTranslate }}</h1>
+    <h1 class="govuk-heading-m">{{ "Case reference" | rpxTranslate }}: {{ccdCaseNumber | ccdHyphens }}</h1>
+    <span id="how-contacted-conditional-hint" *ngIf="payment" class="govuk-hint govuk-!-font-size-19">
       {{ "Payment reference" | rpxTranslate }}: {{paymentReference}}
     </span>
-    <span id="how-contacted-conditional-hint govuk-font19px" *ngIf="refundPaymentReference" class="form-hint">
+    <span id="how-contacted-conditional-hint" *ngIf="refundPaymentReference" class="govuk-hint govuk-!-font-size-19">
       {{ "Payment reference" | rpxTranslate }}: {{refundPaymentReference}}
     </span>
-    <h1 class="heading-large">{{ "Why are you making this refund" | rpxTranslate }}?
+    <h1 class="govuk-heading-l">{{ "Why are you making this refund" | rpxTranslate }}?
       </h1>
 
 
@@ -564,7 +571,7 @@
                   <fieldset class="govuk-fieldset" aria-describedby="how-contacted-conditional-hint">
 
                         <div
-                          [ngClass]="refundHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
+                          [ngClass]="refundHasError ? 'govuk-radios govuk-radios--conditional govuk-form-group--error' : 'govuk-radios govuk-radios--conditional'"
                           data-module="govuk-radios" >
                           <p class="inline-error-message" *ngIf="refundHasError">
                             <span *ngIf="refundHasError">{{ "Select a reason why you’re making this refund" | rpxTranslate }}</span>
@@ -587,7 +594,7 @@
                                     <label class="govuk-label govuk-label--m" for="{{refund.name}}">
                                         {{ "Enter reason" | rpxTranslate }}
                                     </label>
-                                    <div [ngClass]="{'form-group-error': isReasonEmpty}">
+                                    <div [ngClass]="{'govuk-form-group--error': isReasonEmpty}">
                                     <p  class="inline-error-message" *ngIf="isReasonEmpty">
                                         <span *ngIf="isReasonEmpty">{{ "Enter a reason why you’re making this refund" | rpxTranslate }}</span>
                                       </p>
@@ -610,7 +617,7 @@
                           </div>
                               <br/>
                               <div class="govuk-radios__conditional" *ngIf="showReasonText &&  !isRefundReasonsSelected" >
-                                <div [ngClass]="{'form-group-error': isReasonEmpty}">
+                                <div [ngClass]="{'govuk-form-group--error': isReasonEmpty}">
                                   <label class="govuk-label govuk-label--m" for="amount">
                                       {{ "Enter reason" | rpxTranslate }}
                                   </label>
@@ -642,8 +649,8 @@
 <ng-container *ngIf="viewStatus === 'contactDetailsPage'">
   <input #myInput type='hidden' id='iFrameDrivenImageValue' value='CAPTUREADDRESSDETAILSPAGE'>
     <h1 class="govuk-heading-l">{{ "Process refund" | rpxTranslate }}</h1>
-    <h2 class="govuk-heading-m govuk-font19px">{{ "Case reference" | rpxTranslate }}: {{ccdCaseNumber | ccdHyphens }}</h2>
-    <span id="how-contacted-conditional-hint" class="govuk-hint govuk-font19px">
+    <h2 class="govuk-heading-m govuk-!-font-size-19">{{ "Case reference" | rpxTranslate }}: {{ccdCaseNumber | ccdHyphens }}</h2>
+    <span id="how-contacted-conditional-hint" class="govuk-hint govuk-!-font-size-19">
       {{ "Payment reference" | rpxTranslate }}: {{paymentReference}}
     </span>
   <ccpay-contact-details
@@ -662,7 +669,7 @@
     <input #myInput type='hidden' id='iFrameDrivenImageValue' value='CHECKISSUEREFUNDPAGE'>
     <div class="govuk-warning-text">
 
-        <h1 class="heading-large"> {{ "Check your answers" | rpxTranslate }}</h1>
+        <h1 class="govuk-heading-l"> {{ "Check your answers" | rpxTranslate }}</h1>
     </div>
     <table class="govuk-table">
 
@@ -732,10 +739,10 @@
 
 
     <div class="govuk-button-group">
-    <button type="submit" class="button govuk-button--secondary" (click)="gotoContactDetailsPage(contactDetailsObj)"> {{ "Previous" | rpxTranslate }} </button>
+    <button type="submit" class="govuk-button govuk-button--secondary" (click)="gotoContactDetailsPage(contactDetailsObj)"> {{ "Previous" | rpxTranslate }} </button>
     <button type="submit"
     [disabled]="isConfirmationBtnDisabled"
-    [ngClass]='isConfirmationBtnDisabled ? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'
+    [ngClass]='isConfirmationBtnDisabled ? "govuk-button govuk-!-margin-right-1" : "govuk-button govuk-!-margin-right-1"'
     (click)="confirmIssueRefund(isFullyRefund)">
       {{ "Submit refund" | rpxTranslate }}
     </button>
@@ -752,8 +759,8 @@
 <ng-container *ngIf="viewCompStatus === 'addrefundforremission'">
   <input #myInput type='hidden' id='iFrameDrivenImageValue' value='ADDRESSDETAILSRETROREMISSIONPAGE'>
   <h1 class="govuk-heading-l">{{ "Process refund" | rpxTranslate }}</h1>
-  <h2 class="govuk-heading-m govuk-font19px">{{ "Case reference" | rpxTranslate }}: {{ccdCaseNumber | ccdHyphens }}</h2>
-  <span id="how-contacted-conditional-hint" class="govuk-hint govuk-font19px">
+  <h2 class="govuk-heading-m govuk-!-font-size-19">{{ "Case reference" | rpxTranslate }}: {{ccdCaseNumber | ccdHyphens }}</h2>
+  <span id="how-contacted-conditional-hint" class="govuk-hint govuk-!-font-size-19">
     {{ "Payment reference" | rpxTranslate }}: {{paymentReference}}
   </span>
 <ccpay-contact-details
@@ -770,7 +777,7 @@
     <input #myInput type='hidden' id='iFrameDrivenImageValue' value='ADDREFUNDFORREMISSION'>
     <div class="govuk-warning-text">
 
-        <h1 class="heading-large"> {{ "Check your answers" | rpxTranslate }}</h1>
+        <h1 class="govuk-heading-l"> {{ "Check your answers" | rpxTranslate }}</h1>
     </div>
     <table class="govuk-table">
         <tr class="govuk-table__row">
@@ -842,10 +849,10 @@
     [refundAmount]="remission.hwf_amount"></app-notification-preview>
 
     <div class="govuk-button-group">
-    <button type="submit" class="button govuk-button--secondary" (click)="gotoAddressPage(contactDetailsObj)">{{ "Previous" | rpxTranslate }}</button>
+    <button type="submit" class="govuk-button govuk-button--secondary" (click)="gotoAddressPage(contactDetailsObj)">{{ "Previous" | rpxTranslate }}</button>
     <button type="submit"
     [disabled]="isConfirmationBtnDisabled"
-    [ngClass]='isConfirmationBtnDisabled ? "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"'
+    [ngClass]='isConfirmationBtnDisabled ? "govuk-button govuk-!-margin-right-1" : "govuk-button govuk-!-margin-right-1"'
     (click)="processRefund()">
       {{ "Submit refund" | rpxTranslate }}
     </button>

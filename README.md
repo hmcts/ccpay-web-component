@@ -2,6 +2,12 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
 
+## GOV.UK Frontend
+
+Component templates use [GOV.UK Frontend](https://design-system.service.gov.uk/components/) classes (`govuk-*`) only. The legacy GOV.UK Elements / GOV.UK Template classes (`button`, `heading-large`, `form-hint`, `error-summary`, …) are no longer emitted.
+
+Host applications must install `govuk-frontend` v6, compile its Sass and serve its font and image assets. The library initialises GOV.UK JavaScript within the web component and re-initialises components when Angular renders new views. The host page must include the standard `govuk-template`, `govuk-template__body`, `js-enabled` and `govuk-frontend-supported` classes described in the [GOV.UK Frontend installation guidance](https://frontend.design-system.service.gov.uk/installing-with-npm/).
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

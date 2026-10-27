@@ -1,25 +1,25 @@
 
-  <h2 class="heading-large">Payment method</h2>
+  <h2 class="govuk-heading-l">Payment method</h2>
   <table>
     <tbody>
     <tr>
-      <td class="bold tb-col-w">Method</td>
+      <td class="govuk-!-font-weight-bold tb-col-w">Method</td>
       <td class="capitalize">{{ payment.method | lowercase}}</td>
     </tr>
     <tr>
-      <td class="bold tb-col-w">Type</td>
+      <td class="govuk-!-font-weight-bold tb-col-w">Type</td>
       <td>Credit</td>
     </tr>
     <tr *ngIf="payment.organisation_name">
-      <td class="bold tb-col-w">PBA account name</td>
+      <td class="govuk-!-font-weight-bold tb-col-w">PBA account name</td>
       <td>{{ payment.organisation_name }}</td>
     </tr>
     <tr *ngIf="payment.account_number">
-      <td class="bold tb-col-w">PBA number</td>
+      <td class="govuk-!-font-weight-bold tb-col-w">PBA number</td>
       <td>{{ payment.account_number }}</td>
     </tr>
     <tr *ngIf="payment.customer_reference">
-      <td class="bold tb-col-w">Customer internal reference</td>
+      <td class="govuk-!-font-weight-bold tb-col-w">Customer internal reference</td>
       <td>{{ payment.customer_reference }}</td>
     </tr>
     </tbody>

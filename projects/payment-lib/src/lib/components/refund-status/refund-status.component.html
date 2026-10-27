@@ -1,11 +1,13 @@
 
 <div *ngIf="errorMessage">
-  <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
-    <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
-      Error in processing the request
-    </h2>
-    <div class="govuk-error-summary__body">
-      {{ errorMessage }}
+  <div class="govuk-error-summary" data-module="govuk-error-summary">
+    <div role="alert">
+      <h2 class="govuk-error-summary__title">
+        Error in processing the request
+      </h2>
+      <div class="govuk-error-summary__body">
+        {{ errorMessage }}
+      </div>
     </div>
   </div>
 </div>
@@ -16,19 +18,19 @@
   <table class="govuk-table">
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
-        <td class="govuk-table__header col-16" scope="col">Status</td>
-        <td class="govuk-table__header col-11" scope="col">Amount</td>
-        <td class="govuk-table__header col-18" scope="col">Date</td>
-        <td class="govuk-table__header col-25" scope="col">Refund reference</td>
-        <td class="govuk-table__header col-24 " scope="col">Reason</td>
-        <td class="govuk-table__header" scope="col"></td>
+        <th class="govuk-table__header col-16" scope="col">Status</th>
+        <th class="govuk-table__header col-11" scope="col">Amount</th>
+        <th class="govuk-table__header col-18" scope="col">Date</th>
+        <th class="govuk-table__header col-25" scope="col">Refund reference</th>
+        <th class="govuk-table__header col-24 " scope="col">Reason</th>
+        <th class="govuk-table__header" scope="col"></th>
       </tr>
     </thead>
     <tbody class="govuk-table__body" *ngIf="rejectedRefundList?.length > 0">
       <tr class="govuk-table__row" *ngFor="let refundList of rejectedRefundList">
         <td class="govuk-table__cell whitespace-inherit">{{ refundList?.refund_status['name'] }}</td>
         <td class="channel govuk-table__cell whitespace-inherit">£{{ refundList?.amount | number:'.2' }}</td>
-        <td class="govuk-table__cell  whitespace-inherit">{{ refundList?.date_updated | date:'dd MMM yyyy'}}
+        <td class="govuk-table__cell whitespace-inherit">{{ refundList?.date_updated | date:'dd MMM yyyy'}}
         </td>
         <td class="govuk-table__cell whitespace-inherit">{{ refundList?.refund_reference }}</td>
         <td class="govuk-table__cell whitespace-inherit"> {{refundList?.reason}}</td>
@@ -56,19 +58,19 @@
 
     <tbody>
       <tr class="section">
-        <td class="bold tb-col-w">Refund reference</td>
+        <td class="govuk-!-font-weight-bold tb-col-w">Refund reference</td>
         <td>{{ refundlist?.refund_reference }}</td>
       </tr>
       <tr class="section">
-        <td class="bold tb-col-w">Payment to be refunded</td>
+        <td class="govuk-!-font-weight-bold tb-col-w">Payment to be refunded</td>
         <td>{{refundlist?.payment_reference }}</td>
       </tr>
       <tr class="section">
-        <td class="bold tb-col-w">Reason for refund</td>
+        <td class="govuk-!-font-weight-bold tb-col-w">Reason for refund</td>
         <td>{{ refundlist?.reason }}</td>
       </tr>
       <tr class="section">
-        <td class="bold tb-col-w">Amount refunded</td>
+        <td class="govuk-!-font-weight-bold tb-col-w">Amount refunded</td>
         <td>£{{refundlist?.amount | number:'.2' }}</td>
       </tr>
 
@@ -83,10 +85,10 @@
       <table class="govuk-table">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
-            <td class="govuk-table__header col-24 whitespace-inherit" scope="col">Date and time</td>
-            <td class="govuk-table__header col-27 whitespace-inherit" scope="col">Sent to</td>
-            <td class="govuk-table__header whitespace-inherit" scope="col">Sent via</td>
-            <td class="govuk-table__header whitespace-inherit" scope="col">Actions</td>
+            <th class="govuk-table__header col-24 whitespace-inherit" scope="col">Date and time</th>
+            <th class="govuk-table__header col-27 whitespace-inherit" scope="col">Sent to</th>
+            <th class="govuk-table__header whitespace-inherit" scope="col">Sent via</th>
+            <th class="govuk-table__header whitespace-inherit" scope="col">Actions</th>
           </tr>
         </thead>
         <tbody class="govuk-table__body" *ngIf="notificationList">
@@ -152,10 +154,10 @@
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          <td class="govuk-table__header col-24 whitespace-inherit" scope="col">Status</td>
-          <td class="govuk-table__header col-27 whitespace-inherit" scope="col">Date and time</td>
-          <td class="govuk-table__header whitespace-inherit" scope="col">Users</td>
-          <td class="govuk-table__header whitespace-inherit" scope="col">Notes</td>
+          <th class="govuk-table__header col-24 whitespace-inherit" scope="col">Status</th>
+          <th class="govuk-table__header col-27 whitespace-inherit" scope="col">Date and time</th>
+          <th class="govuk-table__header whitespace-inherit" scope="col">Users</th>
+          <th class="govuk-table__header whitespace-inherit" scope="col">Notes</th>
         </tr>
       </thead>
       <tbody class="govuk-table__body" *ngFor="let refundStatusHistory of refundStatusHistories;">
@@ -177,13 +179,13 @@
     <div  *ngIf="refundButtonState==='Update required'" >
       <!-- <div *ngIf="refundButtonState==='sent back'"> -->
       <br />
-      <button type="submit" class="button govuk-button--secondary btnmargin"
+      <button type="submit" class="govuk-button govuk-button--secondary btnmargin"
         (click)="gotoReviewAndReSubmitPage()">Change refund details</button>
     </div>
     <div *ngIf="isProcessRefund && !isLastUpdatedByCurrentUser && refundButtonState==='Sent for approval'" >
       <!-- <div *ngIf="isProcessRefund && !isLastUpdatedByCurrentUser && refundButtonState==='sent for approval'"> -->
       <br />
-      <button type="submit" class="button govuk-button--secondary"
+      <button type="submit" class="govuk-button govuk-button--secondary"
         (click)="goToRefundProcessComponent(refundlist.refund_reference,refundlist)">Process refund</button>
     </div>
   </ng-container>
@@ -200,7 +202,7 @@
     </ol>
   </div> -->
   <div class="govuk-warning-text">
-    <h1 class="heading-large">Check your answers</h1>
+    <h1 class="govuk-heading-l">Check your answers</h1>
   </div>
   <table class="govuk-table">
     <tr class="govuk-table__row">
@@ -278,14 +280,14 @@
 
   <div class="govuk-button-group">
     <button (click)="gotoReviewDetailsPage($event)" class="govuk-button govuk-button--secondary"> Previous</button>
-    <button [disabled]="isRefundBtnDisabled" (click)="gotoReviewRefundConfirmationPage()" class="govuk-button button"
+    <button [disabled]="isRefundBtnDisabled" (click)="gotoReviewRefundConfirmationPage()" class="govuk-button"
       data-module="govuk-button">
       Submit refund
     </button>
 </div>
 <p><a href="javascript:void(0)" (click)="loadRefundListPage()" class="govuk-link" data-module="govuk-button">Cancel</a></p>
   <!-- <div class="govuk-button-group">
-    <button [disabled]="isRefundBtnDisabled" (click)="gotoReviewRefundConfirmationPage()" class="govuk-button button"
+    <button [disabled]="isRefundBtnDisabled" (click)="gotoReviewRefundConfirmationPage()" class="govuk-button"
       data-module="govuk-button">
       Submit refund
     </button>
@@ -298,7 +300,7 @@
 <ng-container *ngIf="viewName === 'reviewandsubmitEditview' && isEditDetailsClicked">
   <input #myInput type='hidden' id='iFrameDrivenImageValue' value='EDITDETAILSPAGE'>
     <h1 class="govuk-heading-l">Edit contact details</h1>
-    <h2 class="govuk-heading-m govuk-font19px">Case reference: {{ccdCaseNumber | ccdHyphens }}</h2>
+    <h2 class="govuk-heading-m govuk-!-font-size-19">Case reference: {{ccdCaseNumber | ccdHyphens }}</h2>
     <span class="govuk-hint font-size-19px">
       Refund reference: {{ refundlist?.refund_reference}}
     </span>
@@ -378,7 +380,7 @@
 <ng-container *ngIf="viewName === 'refundEditView' && isEditDetailsClicked">
   <input #myInput type='hidden' id='iFrameDrivenImageValue' value='EDITDETAILSPAGE'>
     <h1 class="govuk-heading-l">Edit contact details</h1>
-    <h2 class="govuk-heading-m govuk-font19px">Case reference: {{ccdCaseNumber | ccdHyphens }}</h2>
+    <h2 class="govuk-heading-m govuk-!-font-size-19">Case reference: {{ccdCaseNumber | ccdHyphens }}</h2>
     <span class="govuk-hint font-size-19px">
       Refund reference: {{ refundlist?.refund_reference}}
     </span>
@@ -460,7 +462,7 @@
 
     <div class="govuk-button-group">
       <button (click)="gotoEditDetailsPage(addressDetails, 'refundEditView')" class="govuk-button govuk-button--secondary"> Previous</button>
-      <button (click)="submitEditDetail()" class="govuk-button button"
+      <button (click)="submitEditDetail()" class="govuk-button"
         data-module="govuk-button">
           Send notification
       </button>

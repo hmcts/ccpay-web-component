@@ -4,22 +4,30 @@
     box-shadow: 0 0 0 4px rgb(255, 175, 0)
   }
  
+.datefrom,
+.dateto{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width:50%;
+}
+
 .datefrom{
-width:50%;
-float:left;
+  float:left;
 }
 
 .dateto{
-  width:50%;
   float: right;
 }
+
+.datefrom .govuk-label,
+.dateto .govuk-label{
+  margin-bottom: 0;
+}
+
 .govuk-label--m{
     font-size: large;
   }
-
-.form-hint{
-  padding-left: 0.7em;
-}
 .header{
   margin-top:10px;
   margin-bottom: 15px;

@@ -1,16 +1,16 @@
 <div class="mkpay-unidentified">
   <div *ngIf="viewStatus === 'mainForm'">
   <ccpay-error-banner *ngIf="errorMessage.showError" [errorMessage]="errorMessage"></ccpay-error-banner>
-  <h1 class="heading-large">Mark payment as transferred</h1>
+  <h1 class="govuk-heading-l">Mark payment as transferred</h1>
   <div class="govuk-grid-column-full govuk-!-padding-bottom-3">
     <hr class="govuk-section-break govuk-section-break--visible">
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-            <td class="govuk-table__header" scope="col">Payment asset number (DCN)</td>
-            <td class="govuk-table__header" scope="col">Banked date</td>
-            <td class="govuk-table__header" scope="col">Amount</td>
-            <td class="govuk-table__header" scope="col">Method</td>
+            <th class="govuk-table__header" scope="col">Payment asset number (DCN)</th>
+            <th class="govuk-table__header" scope="col">Banked date</th>
+            <th class="govuk-table__header" scope="col">Amount</th>
+            <th class="govuk-table__header" scope="col">Method</th>
         </tr>
       </thead>
       <tbody class="govuk-table__body">
@@ -27,10 +27,10 @@
   <form [formGroup]="markPaymentUnsolicitedForm" novalidate>
     <input #myInput type='hidden' class='iFrameDrivenImageValue' value='MARKTRANSFERRED'>
     <div class="govuk-form-group">
-      <label class="govuk-label custom-govuk-label custom-govuk-label" for="reason">
+      <label class="govuk-label custom-govuk-label" for="reason">
         Reason for payment being marked as transferred   
       </label>
-        <textarea class="form-control form-control-3-4" [ngClass]="{'inline-error-class': reasonHasError || reasonMinHasError || reasonMaxHasError}" name="reason" id="reason" rows="5" formControlName="reason">
+        <textarea class="govuk-textarea govuk-!-width-three-quarters" [ngClass]="{'inline-error-class': reasonHasError || reasonMinHasError || reasonMaxHasError}" name="reason" id="reason" rows="5" formControlName="reason">
         </textarea>
         <p class="inline-error-message" *ngIf="isReasonEmpty || reasonHasError || reasonMinHasError || reasonMaxHasError">
           <span *ngIf="isReasonEmpty">Enter a reason for marking this payment as transferred.</span>
@@ -43,7 +43,7 @@
       <label class="govuk-label custom-govuk-label" for="responsibleOffice">
         Receiving Site ID (Receiving court/Bulk centre site ID)    
       </label>
-      <select class="form-control short-input" id="responsibleOffice" formControlName="responsibleOffice" (change)="selectchange($event)">
+      <select class="govuk-select short-input" id="responsibleOffice" formControlName="responsibleOffice" (change)="selectchange($event)">
         <option value="" selected='selected'>Please select</option>
         <option  *ngFor="let siteID of siteIDList;" value="{{siteID.siteId}}">{{siteID.siteName}} ({{siteID.siteId}})</option>
       </select>
@@ -52,11 +52,11 @@
         <span *ngIf="responsibleOfficeHasError">Please select a valid Receiving Site ID</span>
       </p>
     </div>
-   <div class="govuk-button--group">
-      <button type="submit" [disabled]="isContinueButtondisabled" class="button" (click)="saveAndContinue()">
+   <div class="govuk-button-group">
+      <button type="submit" [disabled]="isContinueButtondisabled" class="govuk-button" (click)="saveAndContinue()">
         Confirm
       </button>
-      <button type="button" class="button govuk-button--secondary" (click)="cancelMarkUnsolicitedPayments('cancel')">
+      <button type="button" class="govuk-button govuk-button--secondary" (click)="cancelMarkUnsolicitedPayments('cancel')">
         Cancel
       </button>
     </div>
@@ -68,8 +68,8 @@
       <div class="govuk-warning-text">
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
-        <span class="govuk-warning-text__assistive">Warning</span>
-        <h1 class="heading-small"> Are you sure you want to mark this payment as transferred? </h1>
+        <span class="govuk-visually-hidden">Warning</span>
+        <h1 class="govuk-heading-s"> Are you sure you want to mark this payment as transferred? </h1>
         </strong>
         <input #myInput type='hidden' class='iFrameDrivenImageValue' value='TRANSFERREDCONFIRMATION'>
         <div class="govuk-grid-column-full govuk-!-padding-bottom-3">
@@ -77,8 +77,8 @@
           <table class="govuk-table">
             <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" scope="col">Reason</td>
-              <td class="govuk-table__header" scope="col">Receiving site ID</td>
+              <th class="govuk-table__header" scope="col">Reason</th>
+              <th class="govuk-table__header" scope="col">Receiving site ID</th>
             </tr>
             </thead>
             <tbody class="govuk-table__body">
@@ -91,11 +91,11 @@
         </div>
 
       </div>
-      <div class="govuk-button--group">
-        <button type="submit" class="button" [disabled]="isConfirmButtondisabled" (click)="confirmPayments()">
+      <div class="govuk-button-group">
+        <button type="submit" class="govuk-button" [disabled]="isConfirmButtondisabled" (click)="confirmPayments()">
           Confirm
         </button>
-        <button type="button" class="button govuk-button--secondary" (click)="cancelMarkUnsolicitedPayments()">
+        <button type="button" class="govuk-button govuk-button--secondary" (click)="cancelMarkUnsolicitedPayments()">
           Cancel
         </button>
       </div>
@@ -105,15 +105,15 @@
       <div class="govuk-warning-text">
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
-        <span class="govuk-warning-text__assistive">Warning</span>
+        <span class="govuk-visually-hidden">Warning</span>
           Are you sure you want to cancel?
         </strong>
       </div>
-      <div class="govuk-button--group">
-        <button type="submit" class="button" (click)="gotoCasetransationPage()">
+      <div class="govuk-button-group">
+        <button type="submit" class="govuk-button" (click)="gotoCasetransationPage()">
           Yes
         </button>
-        <button type="button" class="button govuk-button--secondary" (click)="cancelMarkUnsolicitedPayments()">
+        <button type="button" class="govuk-button govuk-button--secondary" (click)="cancelMarkUnsolicitedPayments()">
           No
         </button>
       </div>

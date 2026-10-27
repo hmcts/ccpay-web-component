@@ -36,10 +36,6 @@
     outline-offset: 0;
     border-color:#c11717;
 }
-.form-group-error {
-    border-left: 5px solid #c11717;
-    padding-left: 15px;
-}
 .govuk-panel-refund--confirmation {
     color: #ffffff;
     background: #00703c;

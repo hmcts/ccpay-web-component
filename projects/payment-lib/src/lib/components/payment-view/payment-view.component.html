@@ -13,12 +13,14 @@
   <main class="govuk-main-wrapper govuk-!-padding-top-0" id="main-content" role="main">
 
     <div *ngIf="errorMessage">
-      <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
-        <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
-          {{ "Payment details could not be retrieved" | rpxTranslate }}
-        </h2>
-        <div class="govuk-error-summary__body">
-          {{ errorMessage | rpxTranslate }}
+      <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+          <h2 class="govuk-error-summary__title">
+            {{ "Payment details could not be retrieved" | rpxTranslate }}
+          </h2>
+          <div class="govuk-error-summary__body">
+            {{ errorMessage | rpxTranslate }}
+          </div>
         </div>
       </div>
     </div>
@@ -28,79 +30,79 @@
       <input #myInput type='hidden' class='iFrameDrivenImageValue' value='PAYMENTDETAILS'>
       <div class="govuk-grid-row">
         <div class="column">
-          <h1 class="heading-large govuk-!-margin-top-0">{{ "Payment details" | rpxTranslate }}</h1>
+          <h1 class="govuk-heading-l govuk-!-margin-top-0">{{ "Payment details" | rpxTranslate }}</h1>
         </div>
       </div>
       <table>
         <tbody>
 
         <tr class="section">
-          <td class="bold tb-col-w">{{ "Service request reference" | rpxTranslate }}</td>
+          <td class="govuk-!-font-weight-bold tb-col-w">{{ "Service request reference" | rpxTranslate }}</td>
           <td class="tb-col-w">{{ serviceReference  }}</td>
         </tr>
         <tr class="section">
-          <td class="bold tb-col-w">{{ "Payment reference" | rpxTranslate }}</td>
+          <td class="govuk-!-font-weight-bold tb-col-w">{{ "Payment reference" | rpxTranslate }}</td>
           <td class="tb-col-w">{{ paymentGroup?.payments[0]?.reference }}</td>
         </tr>
         <tr class="section">
-          <td class="bold tb-col-w">{{ "Payment amount" | rpxTranslate }}</td>
+          <td class="govuk-!-font-weight-bold tb-col-w">{{ "Payment amount" | rpxTranslate }}</td>
           <td class="tb-col-w">£{{ paymentGroup?.payments[0]?.amount | number:'.2' }}</td>
         </tr>
         <tr class="section" *ngIf="paymentGroup?.payments[0]?.over_payment > 0">
-          <td class="bold tb-col-w">{{ "Over payment" | rpxTranslate }}</td>
+          <td class="govuk-!-font-weight-bold tb-col-w">{{ "Over payment" | rpxTranslate }}</td>
           <td class="tb-col-w">£{{ getOverPaymentValue() | number:'.2' }}</td>
         </tr>
         <tr class="section" *ngIf="paymentGroup?.payments[0] && paymentGroup?.payments[0]?.document_control_number && !paymentGroup?.payments[0]?.external_reference">
-          <td class="bold tb-col-w">{{ "Payment asset number" | rpxTranslate}}(DCN)</td>
+          <td class="govuk-!-font-weight-bold tb-col-w">{{ "Payment asset number" | rpxTranslate}}(DCN)</td>
           <td class="tb-col-w">{{ paymentGroup?.payments[0]?.document_control_number }}</td>
         </tr>
         <tr class="section" *ngIf="paymentGroup?.payments[0] && paymentGroup?.payments[0]?.document_control_number && !paymentGroup?.payments[0]?.external_reference">
-          <td class="bold tb-col-w">{{ "Banked date" | rpxTranslate }}</td>
+          <td class="govuk-!-font-weight-bold tb-col-w">{{ "Banked date" | rpxTranslate }}</td>
           <td class="tb-col-w">{{ paymentGroup?.payments[0]?.banked_date | date:'dd MMM yyyy' }}</td>
         </tr>
         <tr class="section" *ngIf="paymentGroup?.payments[0] && paymentGroup?.payments[0]?.external_reference">
-          <td class="bold tb-col-w">{{ "GovPay Transaction ID" | rpxTranslate: {gov: "GovPay", id: "ID"} }}</td>
+          <td class="govuk-!-font-weight-bold tb-col-w">{{ "GovPay Transaction ID" | rpxTranslate: {gov: "GovPay", id: "ID"} }}</td>
           <td class="tb-col-w">{{ paymentGroup?.payments[0]?.external_reference }}</td>
         </tr>
         <tr class="section" >
-            <td class="bold tb-col-w">{{ "Payment method" | rpxTranslate }}</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">{{ "Payment method" | rpxTranslate }}</td>
             <td class="tb-col-w text-transform">{{ paymentGroup?.payments[0]?.method | rpxTranslate }}</td>
         </tr>
         <tr class="section" *ngIf="paymentGroup?.payments[0]?.method === 'payment by account'" >
-            <td class="bold tb-col-w">{{ "Type" | rpxTranslate }}</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">{{ "Type" | rpxTranslate }}</td>
             <td class="tb-col-w" *ngIf="paymentGroup?.payments[0]?.method !== 'card'">{{ "Credit" | rpxTranslate }}</td>
             <td class="tb-col-w" *ngIf="paymentGroup?.payments[0]?.method === 'card'">{{ "Card" | rpxTranslate }}</td>
         </tr>
         <tr class="section">
-            <td class="bold tb-col-w">{{ "Channel" | rpxTranslate }}</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">{{ "Channel" | rpxTranslate }}</td>
             <td class="tb-col-w text-transform">{{ paymentGroup?.payments[0]?.channel | rpxTranslate  }}</td>
         </tr>
         <!-- <tr class="section">
-            <td class="bold tb-col-w">Method</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">Method</td>
             <td *ngIf="paymentGroup?.payments[0]?.method !== 'card'">{{ paymentGroup?.payments[0]?.method }}</td>
             <td *ngIf="paymentGroup?.payments[0]?.method === 'card'">CARD</td>
         </tr> -->
         <!-- <tr class="section" *ngIf="paymentGroup?.payments[0]?.channel !== 'telephony'">
-            <td class="bold tb-col-w">Status</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">Status</td>
             <td>{{ paymentGroup?.payments[0]?.status }}</td>
          </tr> -->
         <tr class="section" *ngIf="paymentGroup?.payments[0]?.payment_allocation[0] !== undefined">
-            <td class="bold tb-col-w">{{ "Allocaton status" | rpxTranslate }}</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">{{ "Allocaton status" | rpxTranslate }}</td>
             <td class="tb-col-w">{{ paymentGroup?.payments[0]?.payment_allocation[0]?.allocation_status | rpxTranslate }}</td>
           </tr>
 
           <tr *ngIf="paymentGroup?.payments[0].organisation_name">
-            <td class="bold tb-col-w">{{ "PBA account name" | rpxTranslate: {pba: "PBA"} }}</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">{{ "PBA account name" | rpxTranslate: {pba: "PBA"} }}</td>
             <td class="tb-col-w">{{ paymentGroup?.payments[0]?.organisation_name }}</td>
           </tr>
 
           <tr *ngIf="paymentGroup?.payments[0].account_number">
-            <td class="bold tb-col-w">PBA {{ "number" | rpxTranslate }}</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">PBA {{ "number" | rpxTranslate }}</td>
             <td class="tb-col-w">{{ paymentGroup?.payments[0]?.account_number }}</td>
           </tr>
 
           <tr *ngIf="paymentGroup?.payments[0].customer_reference">
-            <td class="bold tb-col-w">{{ "Customer internal reference" | rpxTranslate }}</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">{{ "Customer internal reference" | rpxTranslate }}</td>
             <td class="tb-col-w">{{ paymentGroup?.payments[0]?.customer_reference }}</td>
           </tr>
 
@@ -116,7 +118,7 @@
      </div>
 <div *ngIf="ISPAYMENTSTATUSENABLED">
      <div class="column">
-      <h2 class="heading-medium">{{ "Disputed payment history" | rpxTranslate }}</h2>
+      <h2 class="govuk-heading-m">{{ "Disputed payment history" | rpxTranslate }}</h2>
     </div>
     
     <div>
@@ -161,7 +163,7 @@
         <div class="column">
           <br/>
           <br/>
-          <h2 class="heading-large">{{ "Fee and remission details" | rpxTranslate }}</h2>
+          <h2 class="govuk-heading-l">{{ "Fee and remission details" | rpxTranslate }}</h2>
 
         </div>
       </div>
@@ -170,20 +172,20 @@
         <table class="table">
           <tbody>
           <tr class="section">
-            <td class="bold tb-col-w">{{ "Description" | rpxTranslate }}</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">{{ "Description" | rpxTranslate }}</td>
             <td class="tb-col-w">{{ "Application for" | rpxTranslate }} {{ fee.description | rpxTranslate }}</td>
           </tr>
           <tr class="section">
-            <td class="bold tb-col-w">{{ "Fee code" | rpxTranslate }}</td>
+            <td class="govuk-!-font-weight-bold tb-col-w">{{ "Fee code" | rpxTranslate }}</td>
             <td class="tb-col-w">{{ fee?.code }}</td>
           </tr>
           <tr class="section">
-            <td class="bold tb-col-w" [ngClass]="{'tr-border': !fee.apportion_amount && !fee.remissions && !isTurnOff }">{{ "Fee amount" | rpxTranslate }}</td>
+            <td class="govuk-!-font-weight-bold tb-col-w" [ngClass]="{'tr-border': !fee.apportion_amount && !fee.remissions && !isTurnOff }">{{ "Fee amount" | rpxTranslate }}</td>
             <td [ngClass]="{'tr-border': !fee.apportion_amount && !fee.remissions && !isTurnOff}">£{{ fee?.calculated_amount | number:'.2' }}</td>
           </tr>
 
           <tr *ngIf="fee.apportion_amount">
-            <td class="bold tb-col-w tr-border" [ngClass]="{'tr-border': !fee.remissions}">{{ "Allocated amount" | rpxTranslate }}</td>
+            <td class="govuk-!-font-weight-bold tb-col-w tr-border" [ngClass]="{'tr-border': !fee.remissions}">{{ "Allocated amount" | rpxTranslate }}</td>
             <td [ngClass]="{'tr-border': !fee.remissions}">£{{ fee?.apportion_amount | number:'.2' }}</td>
           </tr>
 
@@ -198,11 +200,11 @@
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-           <td class="govuk-table__header col-24 whitespace-inherit" scope="col">{{ "Help with fees or remission code" | rpxTranslate }}</td>
-            <td class="govuk-table__header col-27 whitespace-inherit" scope="col">{{ "Reference" | rpxTranslate }}</td>
-            <td class="govuk-table__header whitespace-inherit" scope="col">{{ "Fee" | rpxTranslate }}</td>
-            <td class="govuk-table__header whitespace-inherit" scope="col">{{ "Remission Amount" | rpxTranslate }}</td>
-            <td  class="govuk-table__header whitespace-inherit refundBtn" scope="col"></td>
+           <th class="govuk-table__header col-24 whitespace-inherit" scope="col">{{ "Help with fees or remission code" | rpxTranslate }}</th>
+            <th class="govuk-table__header col-27 whitespace-inherit" scope="col">{{ "Reference" | rpxTranslate }}</th>
+            <th class="govuk-table__header whitespace-inherit" scope="col">{{ "Fee" | rpxTranslate }}</th>
+            <th class="govuk-table__header whitespace-inherit" scope="col">{{ "Remission Amount" | rpxTranslate }}</th>
+            <th class="govuk-table__header whitespace-inherit refundBtn" scope="col"></th>
           </tr>
       </thead>
       <tbody class="govuk-table__body"  *ngFor="let remission of paymentGroup.remissions">
@@ -336,36 +338,36 @@
 <div class="over-payment">
 <ng-container *ngIf="viewCompStatus === 'overpayment'">
   <input #myInput type='hidden' id='iFrameDrivenImageValue' value='OVERPAYMENTPAGE'> 
-  <h1 class="heading-large">{{ "Issue refund" | rpxTranslate }}</h1>
-  <h1 class="heading-medium">{{ "Case reference" | rpxTranslate}}: {{ccdCaseNumber | ccdHyphens }}</h1>
-  <span id="how-contacted-conditional-hint govuk-font19px" class="form-hint">
+  <h1 class="govuk-heading-l">{{ "Issue refund" | rpxTranslate }}</h1>
+  <h1 class="govuk-heading-m">{{ "Case reference" | rpxTranslate}}: {{ccdCaseNumber | ccdHyphens }}</h1>
+  <span id="how-contacted-conditional-hint" class="govuk-hint govuk-!-font-size-19">
     {{ "Payment reference" | rpxTranslate }}: {{paymentGroup?.payments[0]?.reference}}
   </span>
 <div class="govuk-form-group">
   <fieldset class="govuk-fieldset">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-      <h1 class="heading-medium">{{ "Select payment to refund" | rpxTranslate }}</h1>
+      <h1 class="govuk-heading-m">{{ "Select payment to refund" | rpxTranslate }}</h1>
     </legend>
     <div class="govuk-radios" data-module="govuk-radios">
       <div class="govuk-radios__item">
         <input class="govuk-radios__input" id="over-payment" name="over-payment" type="radio" (click)="selectPymentOption('op')" value="op">
-        <label class="govuk-label govuk-radios__label govuk-font19px" for="where-do-you-live">
+        <label class="govuk-label govuk-radios__label govuk-!-font-size-19" for="where-do-you-live">
           {{ "Over payment" | rpxTranslate }} £{{getOverPaymentValue() | number:'.2'}}
         </label>
       </div>
       <div class="govuk-radios__item">
         <input class="govuk-radios__input" id="full-payment" name="over-payment" type="radio" (click)="selectPymentOption('fp')" value="fp">
-        <label class="govuk-label govuk-radios__label govuk-font19px" for="where-do-you-live-2">
+        <label class="govuk-label govuk-radios__label govuk-!-font-size-19" for="where-do-you-live-2">
           {{ "Full payment" | rpxTranslate }} £{{paymentGroup?.payments[0]?.amount | number:'.2'}}
         </label>
       </div>
     </div>
-      <button class="govuk-button govuk-button--secondary over-payment-alignment govuk-font19px"
+      <button class="govuk-button govuk-button--secondary over-payment-alignment govuk-!-font-size-19"
       (click)="goToPaymentViewComponent()"> {{ "Previous" | rpxTranslate }}</button>
       <button 
       (click)="continuePayment(paymentGroup)"
       [disabled]="isContinueBtnDisabled"
-      [ngClass]='isContinueBtnDisabled ? "button button--disabled govuk-!-margin-right-1 govuk-font19px" : "button govuk-!-margin-right-1 govuk-font19px"'
+      [ngClass]='isContinueBtnDisabled ? "govuk-button govuk-!-margin-right-1 govuk-!-font-size-19" : "govuk-button govuk-!-margin-right-1 govuk-!-font-size-19"'
       class="govuk-button"> {{ "Continue" | rpxTranslate }}</button>
   </fieldset>
 </div>
@@ -374,8 +376,8 @@
 <ng-container *ngIf="viewCompStatus === 'overPaymentAddressCapture'">
   <input #myInput type='hidden' id='iFrameDrivenImageValue' value='OVERPAYMENTADDRESSCAPTUREPAGE'>      
   <h1 class="govuk-heading-l">{{ "Issue refund" | rpxTranslate }}</h1>
-  <h2 class="govuk-heading-m govuk-font19px">{{ "Case reference" | rpxTranslate }}: {{ccdCaseNumber | ccdHyphens }}</h2>
-  <span id="how-contacted-conditional-hint" class="govuk-hint govuk-font19px">
+  <h2 class="govuk-heading-m govuk-!-font-size-19">{{ "Case reference" | rpxTranslate }}: {{ccdCaseNumber | ccdHyphens }}</h2>
+  <span id="how-contacted-conditional-hint" class="govuk-hint govuk-!-font-size-19">
     {{ "Payment reference" | rpxTranslate }}: {{paymentGroup?.payments[0]?.reference}}
   </span>
 <ccpay-contact-details 
@@ -393,7 +395,7 @@
   <input #myInput type='hidden' id='iFrameDrivenImageValue' value='ADDREFUNDFORREMISSION'> 
   <div class="govuk-warning-text">
    
-      <h1 class="heading-large"> {{ "Check your answers" | rpxTranslate }}</h1>
+      <h1 class="govuk-heading-l"> {{ "Check your answers" | rpxTranslate }}</h1>
   </div>
   <table class="govuk-table">
       <tr class="govuk-table__row">
@@ -456,14 +458,14 @@
   [refundReason]="'RR037'"
   [refundAmount]="getOverPaymentValue()"></app-notification-preview>
 
-  <button type="submit" class="button govuk-button--secondary over-payment-alignment govuk-font19px" (click)="gotoAddressPage(contactDetailsObj)">{{ "Previous" | rpxTranslate }}</button>
+  <button type="submit" class="govuk-button govuk-button--secondary over-payment-alignment govuk-!-font-size-19" (click)="gotoAddressPage(contactDetailsObj)">{{ "Previous" | rpxTranslate }}</button>
   <button type="submit"
-  [ngClass]='isContinueBtnDisabled ? "button button--disabled govuk-!-margin-right-1 govuk-font19px" : "button govuk-!-margin-right-1 govuk-font19px"'
+  [ngClass]='isContinueBtnDisabled ? "govuk-button govuk-!-margin-right-1 govuk-!-font-size-19" : "govuk-button govuk-!-margin-right-1 govuk-!-font-size-19"'
   (click)="processRefund()">
     {{ "Submit refund" | rpxTranslate }}
   </button>
   <p>
-      <a href="javascript:void(0)"  (click)="goToCaseTransationPage($event)" class="govuk-link govuk-font19px" data-module="govuk-button">
+      <a href="javascript:void(0)"  (click)="goToCaseTransationPage($event)" class="govuk-link govuk-!-font-size-19" data-module="govuk-button">
           {{ "Cancel" | rpxTranslate }}
       </a>
   </p>
@@ -509,55 +511,55 @@
     </div>
     <div class="govuk-grid-row">
       <div class="column">
-        <h1 class="heading-large govuk-!-margin-top-0">{{ "Failure event details" | rpxTranslate }}</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-top-0">{{ "Failure event details" | rpxTranslate }}</h1>
       </div>
     </div>
     <table>
       <tbody>
 
       <tr class="section">
-        <td class="bold">{{ "Failure reference" | rpxTranslate }}</td>
+        <td class="govuk-!-font-weight-bold">{{ "Failure reference" | rpxTranslate }}</td>
         <td>	{{selectedPaymentsStatus.failure_reference}}</td>
       </tr>
       <tr class="section">
-        <td class="bold">{{ "Failure reason" | rpxTranslate }}</td>
+        <td class="govuk-!-font-weight-bold">{{ "Failure reason" | rpxTranslate }}</td>
         <td>	{{selectedPaymentsStatus.failure_reason | rpxTranslate}}</td>
       </tr>
       <tr class="section">
-          <td class="bold">{{ "Payment reference" | rpxTranslate }}</td>
+          <td class="govuk-!-font-weight-bold">{{ "Payment reference" | rpxTranslate }}</td>
           <td>{{ selectedPaymentsStatus.payment_reference }}</td>
       </tr>
       <tr class="section">
-          <td class="bold">{{ "Payment amount" | rpxTranslate }}</td>
+          <td class="govuk-!-font-weight-bold">{{ "Payment amount" | rpxTranslate }}</td>
           <td> £{{ paymentGroup?.payments[0]?.amount | number:'.2' }}</td>
 
       </tr>
       <tr class="section">
-          <td class="bold">{{ "Disputed amount" | rpxTranslate }}</td>
+          <td class="govuk-!-font-weight-bold">{{ "Disputed amount" | rpxTranslate }}</td>
           <td>	£{{selectedPaymentsStatus.disputed_amount  | number:'.2'}}</td>
       </tr>
       <tr class="section">
-        <td class="bold">{{ "Additional information" | rpxTranslate }}</td>
+        <td class="govuk-!-font-weight-bold">{{ "Additional information" | rpxTranslate }}</td>
         <td>	{{selectedPaymentsStatus.additional_reference }}</td>
       </tr>
       <tr class="section">
-        <td class="bold">{{ "Failure type" | rpxTranslate }}</td>
+        <td class="govuk-!-font-weight-bold">{{ "Failure type" | rpxTranslate }}</td>
         <td>	{{ selectedPaymentsStatus.failure_type }}</td>
       </tr>
       <tr class="section">
-        <td class="bold">{{ "Failure event date and time" | rpxTranslate }}</td>
+        <td class="govuk-!-font-weight-bold">{{ "Failure event date and time" | rpxTranslate }}</td>
         <td> {{ selectedPaymentsStatus.failure_event_date_time | date:'dd MMM yyyy HH:mm:ss' }}</td>
       </tr>
       <tr class="section" *ngIf="selectedPaymentsStatus.has_amount_debited">
-        <td class="bold">{{ "Has disputed amount debited" | rpxTranslate }}</td>
+        <td class="govuk-!-font-weight-bold">{{ "Has disputed amount debited" | rpxTranslate }}</td>
         <td>	{{selectedPaymentsStatus.has_amount_debited}}</td>
       </tr>
       <tr class="section" *ngIf="selectedPaymentsStatus.representment_status">
-        <td class="bold">{{ "Status following representation of payment" | rpxTranslate }}</td>
+        <td class="govuk-!-font-weight-bold">{{ "Status following representation of payment" | rpxTranslate }}</td>
         <td>	{{(selectedPaymentsStatus.representment_status === 'Yes' || selectedPaymentsStatus.representment_status === 'yes') ? 'Success' : 'Failure'}}</td>
       </tr>
       <tr class="section" *ngIf="selectedPaymentsStatus.representment_date">
-        <td class="bold">{{ "Date payment represented" | rpxTranslate }}</td>
+        <td class="govuk-!-font-weight-bold">{{ "Date payment represented" | rpxTranslate }}</td>
         <td>	{{selectedPaymentsStatus.representment_date  | date:'dd MMM yyyy HH:mm:ss'}}</td>
       </tr>
       </tbody>

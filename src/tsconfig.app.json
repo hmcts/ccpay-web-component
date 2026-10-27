@@ -6,7 +6,8 @@
   },
   "files": [
     "main.ts",
-    "polyfills.ts"
+    "polyfills.ts",
+    "govuk-frontend.d.ts"
   ],
   "include": [
     "src/**/*.d.ts"
