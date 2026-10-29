@@ -49,7 +49,7 @@
   <div class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
-        <a  href="javascript:void(0)" (click)="loadRefundListPage()" class="govuk-back-link govuk-label">Back</a>
+        <a  href="javascript:void(0)" (click)="loadRefundListPage()" class="govuk-back-link">Back</a>
       </li>
     </ol>
   </div>
@@ -197,7 +197,7 @@
   <!-- <div class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
-        <a (click)="gotoReviewDetailsPage($event)" class="govuk-back-link govuk-label">Back</a>
+        <a href="javascript:void(0)" (click)="gotoReviewDetailsPage($event)" class="govuk-back-link">Back</a>
       </li>
     </ol>
   </div> -->
@@ -252,7 +252,7 @@
           <br/>
           {{refundlist?.contact_details?.address_line?.trim()}} {{refundlist?.contact_details?.city?.trim()}} {{refundlist?.contact_details?.county?.trim()}} {{refundlist?.contact_details?.country?.trim()}} {{refundlist?.contact_details?.postal_code?.trim()}}
         </div>
-        <a class="govuk-link" href="Javascript:void(0)" *ngIf="refundlist?.contact_details !=null"  class="govuk-link right" (click)="gotoEditDetailsPage(refundlist?.contact_details, 'reviewandsubmitEditview')">
+        <a class="govuk-link right" href="Javascript:void(0)" *ngIf="refundlist?.contact_details !=null" (click)="gotoEditDetailsPage(refundlist?.contact_details, 'reviewandsubmitEditview')">
           Change
         </a>
       </td>

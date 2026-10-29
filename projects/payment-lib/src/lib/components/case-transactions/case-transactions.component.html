@@ -83,10 +83,10 @@
                       <td class="govuk-table__cell govuk-!-font-weight-bold"  [attr.rowspan]="paymentGroup.fees.length" *ngIf="paymentGroup.old && i==0"> {{getGroupOutstandingAmount(paymentGroup)| currency:'GBP':'symbol-narrow':'1.2-2'}}* </td>
                       <td class="govuk-table__cell" *ngIf="!paymentGroup.old"> {{calculateAmountDue(fee) | currency:'GBP':'symbol-narrow':'1.2-2'}} </td>
                       <td class="govuk-table__cell" *ngIf="!paymentGroup.old">
-                        <a (click)="confirmRemoveFee(fee.id)" [ngClass]='!isCheckAmountdueExist(fee.amount_due) || fee.remissions ? "disable-link" : ""'>Remove</a>
+                        <a href="javascript:void(0)" (click)="confirmRemoveFee(fee.id)" [ngClass]='!isCheckAmountdueExist(fee.amount_due) || fee.remissions ? "disable-link" : ""'>Remove</a>
                       </td>
                       <td class="govuk-table__cell" *ngIf="paymentGroup.old">
-                        <a (click)="confirmRemoveFee(fee.id)" [ngClass]='paymentGroup.payments?.length > 0 || paymentGroup.remissions?.length > 0 ? "disable-link" : ""'>Remove</a>
+                        <a href="javascript:void(0)" (click)="confirmRemoveFee(fee.id)" [ngClass]='paymentGroup.payments?.length > 0 || paymentGroup.remissions?.length > 0 ? "disable-link" : ""'>Remove</a>
                     </td>
                     </tr>
                   </tbody>
@@ -562,7 +562,7 @@
               </ng-container> -->
               <span>
                   <br/>
-                  <a (click)="redirectToFeeSearchPage($event)"
+                  <a href="javascript:void(0)" (click)="redirectToFeeSearchPage($event)"
                     [class.disable-link]="!isAddFeeBtnEnabled">{{ "Create service request" | rpxTranslate }}</a><br/>
             </span>
           </div>

@@ -30,14 +30,14 @@
     <input #myInput type='hidden' id='iFrameDrivenImageValue' value='ADDREMISSION'>
     <h1 class="govuk-heading-l govuk-!-margin-top-7 govuk-!-margin-bottom-4">{{ "Add remission" | rpxTranslate }} </h1>
     <form novalidate>
-      <div class="govuk-form-group">
+      <div>
         <form [formGroup]="remissionForm" novalidate>
           <div class="govuk-form-group">
-            <label class="govuk-label govuk-label--s" for="remission-code">
+            <label class="govuk-label govuk-label--s" for="remissionCode">
                 {{ "Add remission to" | rpxTranslate }} {{ fee?.code }}: {{ fee?.description | rpxTranslate }}
-              <span class="govuk-hint">{{ "Enter remission for reference" | rpxTranslate }}. {{ "For example" | rpxTranslate }}: HWF-A1B-23C OR PA21-123456</span>
             </label>
-            <input [ngClass]="{'inline-error-class': isRemissionCodeEmpty || remissionCodeHasError}" class="govuk-input govuk-input--width-20 govuk-!-margin-right-1" id="remissionCode" aria-label="remissionCode"  name="remissionCode" type="text" formControlName="remissionCode">
+            <div id="remissionCode-hint" class="govuk-hint">{{ "Enter remission for reference" | rpxTranslate }}. {{ "For example" | rpxTranslate }}: HWF-A1B-23C OR PA21-123456</div>
+            <input [ngClass]="{'inline-error-class': isRemissionCodeEmpty || remissionCodeHasError}" class="govuk-input govuk-input--width-20 govuk-!-margin-right-1" id="remissionCode" aria-describedby="remissionCode-hint" name="remissionCode" type="text" formControlName="remissionCode">
             <p class="inline-error-message" *ngIf="isRemissionCodeEmpty || remissionCodeHasError">
               <span *ngIf="isRemissionCodeEmpty">{{ "Enter a remission code" | rpxTranslate }}</span>
               <span *ngIf="remissionCodeHasError">{{ "Enter a vaild remission code" | rpxTranslate }}</span>
@@ -115,19 +115,21 @@
     <input #myInput type='hidden' id='iFrameDrivenImageValue' value='PROCESSADDRETROREMISSIONPAGE'>
     <h1 class="govuk-heading-l govuk-!-margin-top-7 govuk-!-margin-bottom-4">{{ "Process remission" | rpxTranslate }}</h1>
     <h1 class="govuk-heading-m govuk-!-margin-top-7">#{{ccdCaseNumber | ccdHyphens}}</h1>
-    <h1 class="govuk-heading-l govuk-!-margin-top-7 govuk-!-margin-bottom-4">{{ "Enter help with fees or remission reference" | rpxTranslate }}</h1>
     <form novalidate>
-        <div class="govuk-form-group">
+        <div>
           <form [formGroup]="remissionForm" novalidate>
             <div class="govuk-form-group">
-              <label class="govuk-label govuk-label--s" for="remission-code">
-                <span class="govuk-hint">{{ "For example" | rpxTranslate }}: HWF-A1B-23C OR PA21-123456</span>
-              </label>
+              <h1 class="govuk-label-wrapper govuk-!-margin-top-7">
+                <label class="govuk-label govuk-label--l" for="remissionCode">
+                  {{ "Enter help with fees or remission reference" | rpxTranslate }}
+                </label>
+              </h1>
+              <div id="remissionCode-hint" class="govuk-hint">{{ "For example" | rpxTranslate }}: HWF-A1B-23C OR PA21-123456</div>
               <p class="inline-error-message" *ngIf="isRemissionCodeEmpty || remissionCodeHasError">
                 <span *ngIf="isRemissionCodeEmpty">{{ "Enter a remission code" | rpxTranslate }}</span>
                 <span *ngIf="remissionCodeHasError">{{ "Enter a vaild remission code" | rpxTranslate }}</span>
               </p>
-              <input [ngClass]="{'inline-error-class': isRemissionCodeEmpty || remissionCodeHasError}" class="govuk-input govuk-input--width-20 govuk-!-margin-right-1" id="remissionCode" aria-label="remissionCode"  name="remissionCode" type="text" formControlName="remissionCode">
+              <input [ngClass]="{'inline-error-class': isRemissionCodeEmpty || remissionCodeHasError}" class="govuk-input govuk-input--width-20 govuk-!-margin-right-1" id="remissionCode" aria-describedby="remissionCode-hint" name="remissionCode" type="text" formControlName="remissionCode">
 
             </div>
 

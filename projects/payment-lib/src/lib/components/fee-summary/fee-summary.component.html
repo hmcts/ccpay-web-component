@@ -2,15 +2,15 @@
 <div class="govuk-breadcrumbs" *ngIf="isBackButtonEnable">
   <ol class="govuk-breadcrumbs__list">
     <li class="govuk-breadcrumbs__list-item" *ngIf="!isTurnOff">
-      <a (click)="loadCaseTransactionPage()" class="govuk-back-link govuk-label">Back</a>
+      <a href="javascript:void(0)" (click)="loadCaseTransactionPage()" class="govuk-back-link">Back</a>
     </li>
     <li class="govuk-breadcrumbs__list-item" *ngIf="isTurnOff">
-        <a (click)="redirectToFeeSearchPage($event,'summary')" class="govuk-back-link govuk-label">Back</a>
+        <a href="javascript:void(0)" (click)="redirectToFeeSearchPage($event,'summary')" class="govuk-back-link">Back</a>
       </li>
   </ol>
 </div>
 <div class="fee-summary" *ngIf="viewStatus === 'main'">
-    <main class="govuk-main-wrapper">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0">
       <input #myInput type='hidden' class='iFrameDrivenImageValue' value='FEESUMMARY'>
       <div class="summaryheader">
           <h1 class="govuk-heading-l govuk-!-margin-top-3 govuk-!-margin-bottom-4">Summary</h1>
@@ -55,10 +55,10 @@
       <table class="govuk-table govuk-!-margin-bottom-2" *ngIf="paymentGroup">
           <thead class="govuk-table__head">
               <tr class="govuk-table__row">
-                  <th class="govuk-table__header" scope="col" class="class600">Description</th>
-                  <th class="govuk-table__header" scope="col" class="class60">Quantity</th>
-                  <th class="govuk-table__header" scope="col" class="class80"></th>
-                  <th class="govuk-table__header" scope="col" class="class100">Amount</th>
+                  <th class="govuk-table__header class600" scope="col">Description</th>
+                  <th class="govuk-table__header class60" scope="col">Quantity</th>
+                  <th class="govuk-table__header class80" scope="col"></th>
+                  <th class="govuk-table__header class100" scope="col">Amount</th>
               </tr>
           </thead>
 
