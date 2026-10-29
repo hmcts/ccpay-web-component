@@ -1,5 +1,5 @@
 <div class="column">
-  <h2 class="govuk-heading-m">{{ pageTitle }}</h2>
+  <h2 class="govuk-heading-m govuk-!-margin-top-7">{{ pageTitle }}</h2>
 </div>
 
 
@@ -15,21 +15,21 @@
 </div>
 
 <div *ngIf="!errorMessage && statuses">
-  <table>
-      <thead>
-        <tr>
-          <th>Status</th>
-          <th *ngIf="isDisplayFailureReasonColumn">Failure reason</th>
-          <th *ngIf="isTakePayment">Amount</th>
-          <th>Date and time</th>
+  <table class="govuk-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th class="govuk-table__header">Status</th>
+          <th class="govuk-table__header" *ngIf="isDisplayFailureReasonColumn">Failure reason</th>
+          <th class="govuk-table__header" *ngIf="isTakePayment">Amount</th>
+          <th class="govuk-table__header">Date and time</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let status of statuses.status_histories; let i = index">
-          <td>{{ status.status }}</td>
-          <td *ngIf="isDisplayFailureReasonColumn">{{ isDisplayReasons[i] ? status.error_message : '' }}</td>
-          <td *ngIf="isTakePayment">£{{ statuses.amount | number:'.2' }}</td>
-          <td>{{ status.date_created | date:'dd MMMM yyyy HH:mm:ss'}}</td>
+      <tbody class="govuk-table__body">
+        <tr class="govuk-table__row" *ngFor="let status of statuses.status_histories; let i = index">
+          <td class="govuk-table__cell">{{ status.status }}</td>
+          <td class="govuk-table__cell" *ngIf="isDisplayFailureReasonColumn">{{ isDisplayReasons[i] ? status.error_message : '' }}</td>
+          <td class="govuk-table__cell" *ngIf="isTakePayment">£{{ statuses.amount | number:'.2' }}</td>
+          <td class="govuk-table__cell">{{ status.date_created | date:'dd MMMM yyyy HH:mm:ss'}}</td>
         </tr>
     </tbody>
   </table>

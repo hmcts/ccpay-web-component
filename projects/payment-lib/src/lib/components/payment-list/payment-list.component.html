@@ -15,27 +15,27 @@
 
   <div *ngIf="!errorMessage && payments">
 
-    <table class="table">
-      <tr>
-        <th class="govuk-!-font-weight-bold govuk-!-font-size-16">Payment group reference</th>
-        <th class="govuk-!-font-weight-bold govuk-!-font-size-16">Payment reference</th>
-        <th class="govuk-!-font-weight-bold govuk-!-font-size-16">Date created</th>
-        <th class="govuk-!-font-weight-bold govuk-!-font-size-16">Channel</th>
-        <th class="govuk-!-font-weight-bold govuk-!-font-size-16">Method</th>
-        <th class="govuk-!-font-weight-bold govuk-!-font-size-16">Amount</th>
-        <th class="govuk-!-font-weight-bold govuk-!-font-size-16">Status</th>
+    <table class="govuk-table table">
+      <tr class="govuk-table__row">
+        <th class="govuk-table__header govuk-!-font-weight-bold govuk-!-font-size-16">Payment group reference</th>
+        <th class="govuk-table__header govuk-!-font-weight-bold govuk-!-font-size-16">Payment reference</th>
+        <th class="govuk-table__header govuk-!-font-weight-bold govuk-!-font-size-16">Date created</th>
+        <th class="govuk-table__header govuk-!-font-weight-bold govuk-!-font-size-16">Channel</th>
+        <th class="govuk-table__header govuk-!-font-weight-bold govuk-!-font-size-16">Method</th>
+        <th class="govuk-table__header govuk-!-font-weight-bold govuk-!-font-size-16">Amount</th>
+        <th class="govuk-table__header govuk-!-font-weight-bold govuk-!-font-size-16">Status</th>
       </tr>
-      <tr *ngFor="let payment of payments.payments">
-        <td class="govuk-!-font-size-16">
+      <tr class="govuk-table__row" *ngFor="let payment of payments.payments">
+        <td class="govuk-table__cell govuk-!-font-size-16">
           <a href="javascript:void(0)" (click)="loadPaymentViewComponent(payment.payment_group_reference, payment.payment_reference, payment.method)">{{ payment.payment_group_reference }}</a>
-        <td class="govuk-!-font-size-16">{{ payment.payment_reference }}</td>
-        <td class="govuk-!-font-size-16">{{ payment.date_created | date:'dd MMM yyyy' }}</td>
-        <td class="govuk-!-font-size-16">{{ payment.channel | titlecase }}</td>
-        <td class="govuk-!-font-size-16">{{ payment.method | titlecase }}</td>
-        <td class="govuk-!-font-size-16">£{{ payment.amount | number:'.2' }}</td>
-        <td *ngIf="payment.method === 'card' && payment.channel === 'online'">
-          <details>
-            <summary><span class="summary govuk-!-font-size-16">{{ payment.status }}</span></summary>
+        <td class="govuk-table__cell govuk-!-font-size-16">{{ payment.payment_reference }}</td>
+        <td class="govuk-table__cell govuk-!-font-size-16">{{ payment.date_created | date:'dd MMM yyyy' }}</td>
+        <td class="govuk-table__cell govuk-!-font-size-16">{{ payment.channel | titlecase }}</td>
+        <td class="govuk-table__cell govuk-!-font-size-16">{{ payment.method | titlecase }}</td>
+        <td class="govuk-table__cell govuk-!-font-size-16">£{{ payment.amount | number:'.2' }}</td>
+        <td class="govuk-table__cell" *ngIf="payment.method === 'card' && payment.channel === 'online'">
+          <details class="govuk-details govuk-!-margin-bottom-0">
+            <summary class="govuk-details__summary"><span class="govuk-details__summary-text govuk-!-font-size-16">{{ payment.status }}</span></summary>
             <div class="govuk-inset-text" *ngIf="payment.status === 'Failed'">
               <div *ngFor="let statusHistory of payment.status_histories">
                 <p class="govuk-!-font-size-16" *ngIf="statusHistory.error_code === 'P0010'">
@@ -54,12 +54,12 @@
             </div>
           </details>
         </td>
-        <td *ngIf="payment.method === 'card' && payment.channel === 'telephony'" class="govuk-!-font-size-16">
+        <td *ngIf="payment.method === 'card' && payment.channel === 'telephony'" class="govuk-table__cell govuk-!-font-size-16">
           {{ payment.status}}
         </td>
-        <td *ngIf="payment.method === 'payment by account'">
-          <details>
-            <summary><span class="summary govuk-!-font-size-16">{{ payment.status }}</span></summary>
+        <td class="govuk-table__cell" *ngIf="payment.method === 'payment by account'">
+          <details class="govuk-details govuk-!-margin-bottom-0">
+            <summary class="govuk-details__summary"><span class="govuk-details__summary-text govuk-!-font-size-16">{{ payment.status }}</span></summary>
             <div class="govuk-inset-text" *ngIf="payment.status === 'Pending'">
               <p class="govuk-!-font-size-16">This means the transaction is being processed by Liberata.</p>
             </div>

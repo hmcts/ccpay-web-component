@@ -1,8 +1,8 @@
 <!-- <ng-container *ngIf="IS_BUTTON_ENABLE">
     <div class="unprocessed-payments govuk-grid-column-full govuk-!-padding-bottom-3">
         <input #myInput type='hidden' class='iFrameDrivenImageValue' value='CASETRANSACTION'>
-        <h3 class="govuk-heading-m" *ngIf="!IS_BUTTON_ENABLE">Unprocessed payments</h3>
-        <h3 class="govuk-heading-m" *ngIf="IS_BUTTON_ENABLE">Unallocated payments</h3>
+        <h3 class="govuk-heading-m govuk-!-margin-top-7" *ngIf="!IS_BUTTON_ENABLE">Unprocessed payments</h3>
+        <h3 class="govuk-heading-m govuk-!-margin-top-7" *ngIf="IS_BUTTON_ENABLE">Unallocated payments</h3>
           <table class="govuk-table">
             <thead class="govuk-table__head">
               <tr class="govuk-table__row">
@@ -125,7 +125,7 @@
 <ng-container *ngIf="IS_BUTTON_ENABLE">
     <div class="unprocessed-payments">
         <input #myInput type='hidden' class='iFrameDrivenImageValue' value='CASETRANSACTION'>
-          <table class="table">
+          <table class="govuk-table table">
              
               <thead class="govuk-table__head">
                   <tr class="govuk-table__row">
@@ -137,9 +137,9 @@
                       <th class="govuk-table__header" scope="col"></th>
                     </tr>
                 </thead>
-              <tbody>
+              <tbody class="govuk-table__body">
             <ng-container *ngFor="let unassignedRecord of unassignedRecordList; let i = index;">
-             <tr>
+             <tr class="govuk-table__row">
                 <td  class="govuk-table__cell whitespace-inherit col-13" >
                   Unallocated 
                </td>
@@ -164,8 +164,8 @@
              </tr>
            
               <!-- <ng-container> -->
-             <tr>
-                  <td class="unassigned noborders" colspan="10">
+             <tr class="govuk-table__row">
+                  <td class="govuk-table__cell unassigned noborders" colspan="10">
                       <summary (click)="unassignedRecord.expanded = !unassignedRecord.expanded" class="govuk-details__summary">
                           <span class="govuk-details__summary-text">
                               More details and actions

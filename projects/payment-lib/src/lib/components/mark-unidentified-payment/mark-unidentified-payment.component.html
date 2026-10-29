@@ -1,7 +1,7 @@
 <div class="mkpay-unidentified" >
   <div *ngIf="viewStatus === 'mainForm'">
     <input #myInput  type='hidden' class='iFrameDrivenImageValue' value='MARKUNIDENTIFIED'>
-    <h1 class="govuk-heading-l">Mark payment as unidentified</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-top-7 govuk-!-margin-bottom-4">Mark payment as unidentified</h1>
 
     <div class="govuk-grid-column-full govuk-!-padding-bottom-3">
       <hr class="govuk-section-break govuk-section-break--visible">
@@ -32,7 +32,7 @@
           <br/>
           Include any investigations you've made.
         </p>
-        <label class="govuk-heading-s" for="investicationDetail">
+        <label class="govuk-heading-s govuk-!-margin-top-4 govuk-!-margin-bottom-1" for="investicationDetail">
 
         </label>
         <textarea class="govuk-textarea govuk-!-width-three-quarters" [ngClass]="{'inline-error-class': isInvesticationDetailEmpty || investicationDetailHasError || investicationDetailMinHasError || investicationDetailMaxHasError}" name="investicationDetail" id="investicationDetail" rows="5" formControlName="investicationDetail">
@@ -61,7 +61,7 @@
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
         <span class="govuk-visually-hidden">Warning</span>
-        <h1 class="govuk-heading-s"> Are you sure you want to mark this payment as unidentified? </h1>
+        <h1 class="govuk-heading-s govuk-!-margin-top-4 govuk-!-margin-bottom-1"> Are you sure you want to mark this payment as unidentified? </h1>
          
         </strong>
 

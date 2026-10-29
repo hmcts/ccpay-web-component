@@ -54,24 +54,24 @@
     </ol>
   </div>
   <h2 class="govuk-heading-l">Refund details</h2>
-  <table>
+  <table class="govuk-table">
 
-    <tbody>
-      <tr class="section">
-        <td class="govuk-!-font-weight-bold tb-col-w">Refund reference</td>
-        <td>{{ refundlist?.refund_reference }}</td>
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row section">
+        <td class="govuk-table__cell tb-col-w">Refund reference</td>
+        <td class="govuk-table__cell">{{ refundlist?.refund_reference }}</td>
       </tr>
-      <tr class="section">
-        <td class="govuk-!-font-weight-bold tb-col-w">Payment to be refunded</td>
-        <td>{{refundlist?.payment_reference }}</td>
+      <tr class="govuk-table__row section">
+        <td class="govuk-table__cell tb-col-w">Payment to be refunded</td>
+        <td class="govuk-table__cell">{{refundlist?.payment_reference }}</td>
       </tr>
-      <tr class="section">
-        <td class="govuk-!-font-weight-bold tb-col-w">Reason for refund</td>
-        <td>{{ refundlist?.reason }}</td>
+      <tr class="govuk-table__row section">
+        <td class="govuk-table__cell tb-col-w">Reason for refund</td>
+        <td class="govuk-table__cell">{{ refundlist?.reason }}</td>
       </tr>
-      <tr class="section">
-        <td class="govuk-!-font-weight-bold tb-col-w">Amount refunded</td>
-        <td>£{{refundlist?.amount | number:'.2' }}</td>
+      <tr class="govuk-table__row section">
+        <td class="govuk-table__cell tb-col-w">Amount refunded</td>
+        <td class="govuk-table__cell">£{{refundlist?.amount | number:'.2' }}</td>
       </tr>
 
     </tbody>
@@ -118,7 +118,7 @@
 
               <td class="govuk-table__cell whitespace-inherit" *ngIf="i > 0"><a *ngIf="!notificationSentView || i != notificationSentViewIndex" href="Javascript:void(0);" (click)="showNotificationSentView(i)">View</a><a *ngIf="i === notificationSentViewIndex && notificationSentView" href="Javascript:void(0);" (click)="hideNotificationSentView()">Hide</a></td>
             </tr>
-            <tr *ngIf="i === notificationSentViewIndex && notificationSentView">
+            <tr class="govuk-table__row" *ngIf="i === notificationSentViewIndex && notificationSentView">
               <td class="govuk-table__cell" colspan="4">
                 <app-notification-preview
                   [previewJourney]="'Notifications sent'" [notificationSent]="notification?.sent_notification">
@@ -202,7 +202,7 @@
     </ol>
   </div> -->
   <div class="govuk-warning-text">
-    <h1 class="govuk-heading-l">Check your answers</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-top-7 govuk-!-margin-bottom-4">Check your answers</h1>
   </div>
   <table class="govuk-table">
     <tr class="govuk-table__row">

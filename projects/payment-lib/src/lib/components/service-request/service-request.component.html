@@ -1,40 +1,40 @@
 <!-- Order Full View Details-->
 <ng-container *ngIf="viewStatus === 'order-full-view'">
-  <div class="govuk-breadcrumbs">
-      <ol class="govuk-breadcrumbs__list">
-        <li class="govuk-breadcrumbs__list-item" *ngIf="isServiceRequest === 'false'">
-          <a href="javascript:void(0)" (click)="goToCaseTransationPage($event)" class="govuk-back-link">{{ "Back" | rpxTranslate }}</a>
-        </li>
-        <li class="govuk-breadcrumbs__list-item" *ngIf="isServiceRequest !== 'false'">
-          <a href="javascript:void(0)" (click)="goToServiceRequestPage()" id="bckLnksize" class="govuk-back-link">{{ "Back" | rpxTranslate }}</a>
-        </li>
-      </ol>
-    </div>
   <div class="govuk-grid-column-full">
-      <div class="column">
-        <h1 class="govuk-heading-l govuk-!-margin-top-0">{{ "Service request" | rpxTranslate }}</h1>
+      <div class="govuk-breadcrumbs">
+        <ol class="govuk-breadcrumbs__list">
+          <li class="govuk-breadcrumbs__list-item" *ngIf="isServiceRequest === 'false'">
+            <a href="javascript:void(0)" (click)="goToCaseTransationPage($event)" class="govuk-back-link">{{ "Back" | rpxTranslate }}</a>
+          </li>
+          <li class="govuk-breadcrumbs__list-item" *ngIf="isServiceRequest !== 'false'">
+            <a href="javascript:void(0)" (click)="goToServiceRequestPage()" id="bckLnksize" class="govuk-back-link">{{ "Back" | rpxTranslate }}</a>
+          </li>
+        </ol>
       </div>
-      <table >
-          <tbody>
-            <tr class="section">
-              <td class="govuk-!-font-weight-bold tb-col-w">{{ "Service request reference" | rpxTranslate }}</td>
-              <td>{{orderRef}}</td>
+      <div class="column">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-4 govuk-!-margin-top-0">{{ "Service request" | rpxTranslate }}</h1>
+      </div>
+      <table class="govuk-table" >
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row section">
+              <td class="govuk-table__cell tb-col-w">{{ "Service request reference" | rpxTranslate }}</td>
+              <td class="govuk-table__cell">{{orderRef}}</td>
             </tr>
-            <tr class="section">
-              <td class="govuk-!-font-weight-bold tb-col-w">{{ "Status" | rpxTranslate }}</td>
-              <td>{{ orderStatus | rpxTranslate }}</td>
+            <tr class="govuk-table__row section">
+              <td class="govuk-table__cell tb-col-w">{{ "Status" | rpxTranslate }}</td>
+              <td class="govuk-table__cell">{{ orderStatus | rpxTranslate }}</td>
             </tr>
-            <tr class="section">
-              <td class="govuk-!-font-weight-bold tb-col-w">{{ "Date created" | rpxTranslate }}</td>
-              <td>{{orderCreated | date:'dd MMMM yyyy'}}</td>
+            <tr class="govuk-table__row section">
+              <td class="govuk-table__cell tb-col-w">{{ "Date created" | rpxTranslate }}</td>
+              <td class="govuk-table__cell">{{orderCreated | date:'dd MMMM yyyy'}}</td>
             </tr>
-            <tr class="section">
-              <td class="govuk-!-font-weight-bold tb-col-w">{{ "Party" | rpxTranslate }}</td>
-              <td>{{orderParty}}</td>
+            <tr class="govuk-table__row section">
+              <td class="govuk-table__cell tb-col-w">{{ "Party" | rpxTranslate }}</td>
+              <td class="govuk-table__cell">{{orderParty}}</td>
             </tr>
-            <tr class="section">
-              <td class="govuk-!-font-weight-bold tb-col-w">CCD {{ "event" | rpxTranslate }}</td>
-              <td>{{ orderCCDEvent | rpxTranslate}}</td>
+            <tr class="govuk-table__row section">
+              <td class="govuk-table__cell tb-col-w">CCD {{ "event" | rpxTranslate }}</td>
+              <td class="govuk-table__cell">{{ orderCCDEvent | rpxTranslate}}</td>
             </tr>
           </tbody>
         </table>
@@ -122,7 +122,7 @@
    <!--Payments-->
   <ng-container *ngFor="let order of orderDetail;" >
    <div class="govuk-grid-column-full" *ngIf="order.payments && hasPaymentsRole()">
-      <h3 class="govuk-heading-m">{{ "Payments" | rpxTranslate }}</h3>
+      <h3 class="govuk-heading-m govuk-!-margin-top-7">{{ "Payments" | rpxTranslate }}</h3>
    <table class="govuk-table ">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
@@ -149,7 +149,7 @@
     </table>
 
   <div *ngIf="order.payments === undefined || order.payments === null">
-      <!-- <h3 class="govuk-heading-m mar-17">Payments</h3> -->
+      <!-- <h3 class="govuk-heading-m govuk-!-margin-top-7 mar-17">Payments</h3> -->
             <span class="mar-17" >{{ "No Payments recorded" | rpxTranslate }}</span>
   </div>
 </div>
@@ -281,15 +281,15 @@
 <div class="over-payment">
   <ng-container *ngIf="viewCompStatus === 'overpayment'">
     <input #myInput type='hidden' id='iFrameDrivenImageValue' value='OVERPAYMENTPAGE'>
-    <h1 class="govuk-heading-l">{{ "Issue refund" | rpxTranslate }}</h1>
-    <h1 class="govuk-heading-m">{{ "Case reference" | rpxTranslate }}: {{ccdCaseNumber | ccdHyphens }}</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-top-7 govuk-!-margin-bottom-4">{{ "Issue refund" | rpxTranslate }}</h1>
+    <h1 class="govuk-heading-m govuk-!-margin-top-7">{{ "Case reference" | rpxTranslate }}: {{ccdCaseNumber | ccdHyphens }}</h1>
     <span id="how-contacted-conditional-hint" class="govuk-hint govuk-!-font-size-19">
       {{ "Payment reference" | rpxTranslate }}: {{paymentGroupList?.payments[0]?.reference}}
     </span>
   <div class="govuk-form-group">
     <fieldset class="govuk-fieldset">
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-        <h1 class="govuk-heading-m">{{ "Select payment to refund" | rpxTranslate }}</h1>
+        <h1 class="govuk-heading-m govuk-!-margin-top-7">{{ "Select payment to refund" | rpxTranslate }}</h1>
       </legend>
       <div class="govuk-radios" data-module="govuk-radios">
         <div class="govuk-radios__item">
@@ -338,7 +338,7 @@
     <input #myInput type='hidden' id='iFrameDrivenImageValue' value='ADDREFUNDFORREMISSION'>
     <div class="govuk-warning-text">
 
-        <h1 class="govuk-heading-l"> {{ "Check your answers" | rpxTranslate }}</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-top-7 govuk-!-margin-bottom-4"> {{ "Check your answers" | rpxTranslate }}</h1>
     </div>
     <table class="govuk-table govuk-table-mb">
         <tr class="govuk-table__row">

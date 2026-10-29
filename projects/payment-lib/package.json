@@ -1,6 +1,6 @@
 {
   "name": "@hmcts/ccpay-web-component",
-  "version": "6.5.28-v2",
+  "version": "6.5.28-v3",
   "publishConfig": {
     "access": "public"
   },
@@ -12,6 +12,11 @@
     "@angular/common": "^20.3.1",
     "@angular/core": "~20.3.1",
     "govuk-frontend": "^6.4.0"
+  },
+  "exports": {
+    "./styles/legacy-govuk-shim": {
+      "sass": "./styles/_legacy-govuk-shim.scss"
+    }
   },
   "license": "MIT",
   "repository": "https://github.com/hmcts/ccpay-web-component.git",

@@ -1,6 +1,6 @@
 
 <div class="column">
-  <h2 class="govuk-heading-m">Payment method</h2>
+  <h2 class="govuk-heading-m govuk-!-margin-top-7">Payment method</h2>
 </div>
 
 <div class="govuk-error-summary" data-module="govuk-error-summary" *ngIf="errorMessage">
@@ -14,15 +14,15 @@
 
 <div *ngIf="!errorMessage && cardDetails">
 
-<table>
-  <tbody>
-  <tr>
-    <td class="govuk-!-font-weight-bold tb-col-w">Method</td>
-    <td>Card</td>
+<table class="govuk-table">
+  <tbody class="govuk-table__body">
+  <tr class="govuk-table__row">
+    <td class="govuk-table__cell tb-col-w">Method</td>
+    <td class="govuk-table__cell">Card</td>
   </tr>
-  <tr>
-    <td class="govuk-!-font-weight-bold tb-col-w">Type</td>
-    <td>{{ cardDetails.card_brand }}</td>
+  <tr class="govuk-table__row">
+    <td class="govuk-table__cell tb-col-w">Type</td>
+    <td class="govuk-table__cell">{{ cardDetails.card_brand }}</td>
   </tr>
   </tbody>
 </table>

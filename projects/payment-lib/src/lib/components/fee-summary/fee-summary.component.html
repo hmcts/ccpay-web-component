@@ -19,7 +19,7 @@
 
   <!-- <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">Fee Summary</h1>
+      <h1 class="govuk-heading-xl govuk-!-margin-top-6 govuk-!-margin-bottom-9">Fee Summary</h1>
     </div>
 
 
@@ -91,16 +91,16 @@
                       </td>
               </tr>
               <tr class="govuk-table__row" *ngIf="getRemissionByFeeCode(fee.code)?.hwf_amount > 0">
-                    <td>
+                    <td class="govuk-table__cell">
                       <div>Remission {{ getRemissionByFeeCode(fee.code)?.hwf_reference }}</div>
                     </td>
-                    <td>
+                    <td class="govuk-table__cell">
                       <div>1</div>
                     </td>
-                    <td>
+                    <td class="govuk-table__cell">
                       <div></div>
                     </td>
-                    <td>
+                    <td class="govuk-table__cell">
                       <div style="text-align: right;">
                         -{{ getRemissionByFeeCode(fee.code)?.hwf_amount? ( getRemissionByFeeCode(fee.code)?.hwf_amount  | currency:'GBP':'symbol-narrow':'1.2-2') : '-' }}
                       </div>

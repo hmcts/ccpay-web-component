@@ -3,6 +3,7 @@
 @use "node_modules/govuk-frontend/dist/govuk" with (
   $govuk-assets-path: "/assets/govuk/"
 );
+@use "../../../projects/payment-lib/src/styles/legacy-govuk-shim";
 
 .govuk-grid-row {
   margin-left: 0;

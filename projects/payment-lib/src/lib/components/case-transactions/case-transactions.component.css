@@ -59,9 +59,6 @@
 .align-center {
     text-align: center;
 }
-details summary {
-    display: list-item;
-}
 .case-transaction__color {
     color:  #a71414;
     font-weight: bold;
@@ -213,11 +210,6 @@ td {
     margin-bottom: 1px;
 }
 
-.hmcts-banner > .hmcts-banner__message {
-    font-size:19px;
-    line-height: 1.25;
-}
-
 .summary-table-font {
   font-size: 36px;
 }
@@ -292,10 +284,6 @@ th, td {
     padding-right: 14px;
     float: right;
     margin-top:2em;
-}
-
-.govuk-back-link {
-    font-size: 1.5rem !important;
 }
 
 .totalfees {

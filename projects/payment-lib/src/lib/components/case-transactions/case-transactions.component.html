@@ -11,12 +11,12 @@
 
           <div   *ngIf="takePayment" class="govuk-grid-row">
             <div *ngIf='!isExceptionRecord' class="govuk-grid-column-two-thirds govuk-!-padding-bottom-6 govuk-!-padding-top-6">
-              <h3 class="govuk-heading-m">CCD reference:</h3>
+              <h3 class="govuk-heading-m govuk-!-margin-top-7">CCD reference:</h3>
               <span> {{ ccdCaseNumber | ccdHyphens }}</span>
             </div>
 
             <div *ngIf='isExceptionRecord' class="govuk-grid-column-two-thirds govuk-!-padding-bottom-6 govuk-!-padding-top-6">
-              <h3 class="govuk-heading-m">Exception reference:</h3>
+              <h3 class="govuk-heading-m govuk-!-margin-top-7">Exception reference:</h3>
               <span> {{ ccdCaseNumber | ccdHyphens }}</span>
             </div>
             <div class="govuk-grid-column-full govuk-!-padding-bottom-3">
@@ -57,7 +57,7 @@
 
             <div class="govuk-grid-row">
               <div class="govuk-grid-column-full">
-                  <h3 class="govuk-heading-m">Fees</h3>
+                  <h3 class="govuk-heading-m govuk-!-margin-top-7">Fees</h3>
               </div>
               <div class="govuk-grid-column-full">
                 <table class="govuk-table">
@@ -92,25 +92,25 @@
                   </tbody>
                   <tbody class="govuk-table__body" *ngIf="paymentGroups?.length === 0">
                     <tr class="govuk-table__row" >
-                      <td class="govuk-table__cell" colspan="7">No fees recorded</td>
+                      <td class="govuk-table__cell alignleft" colspan="7">No fees recorded</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-            <div class="hmcts-banner" *ngIf="isHistoricGroupAvailable">
-              <svg class="hmcts-banner__icon" fill="currentColor" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" height="25" width="25">
-                  <path d="M13.7,18.5h-2.4v-2.4h2.4V18.5z M12.5,13.7c-0.7,0-1.2-0.5-1.2-1.2V7.7c0-0.7,0.5-1.2,1.2-1.2s1.2,0.5,1.2,1.2v4.8
-                C13.7,13.2,13.2,13.7,12.5,13.7z M12.5,0.5c-6.6,0-12,5.4-12,12s5.4,12,12,12s12-5.4,12-12S19.1,0.5,12.5,0.5z"></path>
-              </svg>
-              <div class="hmcts-banner__message">
-                <span class="hmcts-banner__assistive">information</span>
-                * These fees have already been processed offline. Check the notes in CCD for more information.
+            <div class="govuk-notification-banner" role="region" aria-labelledby="historic-fees-banner-title" data-module="govuk-notification-banner" *ngIf="isHistoricGroupAvailable">
+              <div class="govuk-notification-banner__header">
+                <h2 class="govuk-notification-banner__title" id="historic-fees-banner-title">Important</h2>
+              </div>
+              <div class="govuk-notification-banner__content">
+                <p class="govuk-notification-banner__heading">
+                  * These fees have already been processed offline. Check the notes in CCD for more information.
+                </p>
               </div>
             </div>
             <div class="govuk-inset-text panel-no--style" *ngIf="allPayments?.length > 0 || remissions?.length > 0">
                 <!-- payments -->
-                <h3 class="govuk-heading-m">Payments</h3>
+                <h3 class="govuk-heading-m govuk-!-margin-top-7">Payments</h3>
                   <table class="govuk-table">
                     <thead class="govuk-table__head">
                       <tr class="govuk-table__row">
@@ -137,12 +137,12 @@
                         </tr>
                     </tbody>
                     <tbody class="govuk-table__body" *ngIf="allPayments?.length === 0">
-                      <td class="govuk-table__cell" colspan="7">No payments recorded</td>
+                      <td class="govuk-table__cell alignleft" colspan="7">No payments recorded</td>
                     </tbody>
                   </table>
 
                   <!-- remissions -->
-                  <h3 class="govuk-heading-m">Remissions</h3>
+                  <h3 class="govuk-heading-m govuk-!-margin-top-7">Remissions</h3>
                   <table class="govuk-table">
                     <thead class="govuk-table__head">
                       <tr class="govuk-table__row">
@@ -163,7 +163,7 @@
                         </tr>
                     </tbody>
                     <tbody class="govuk-table__body" *ngIf="remissions?.length === 0">
-                      <td class="govuk-table__cell" colspan="5">No remissions recorded</td>
+                      <td class="govuk-table__cell alignleft" colspan="5">No remissions recorded</td>
                     </tbody>
                   </table>
             </div>
@@ -183,7 +183,7 @@
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds govuk-!-padding-bottom-6">
-          <h3 class="govuk-heading-m">CCD reference:</h3>
+          <h3 class="govuk-heading-m govuk-!-margin-top-7">CCD reference:</h3>
           <span> {{ ccdCaseNumber | ccdHyphens }}</span>
         </div>
 
@@ -213,7 +213,7 @@
       <div *ngIf="paymentGroups?.length === 0">
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
-            <span class="govuk-heading-s">Existing fees</span>
+            <span class="govuk-heading-s govuk-!-margin-top-4 govuk-!-margin-bottom-1">Existing fees</span>
           </div>
 
           <div class="govuk-grid-column-full">
@@ -230,7 +230,7 @@
               </thead>
               <tbody class="govuk-table__body">
               <tr class="govuk-table__row">
-                <td class="govuk-table__cell" colspan="6">No fees recorded</td>
+                <td class="govuk-table__cell alignleft" colspan="6">No fees recorded</td>
               </tr>
               </tbody>
             </table>
@@ -244,7 +244,7 @@
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full govuk-grid-column-full--gr">
-          <span class="govuk-heading-m">Group reference: {{paymentGroup.payment_group_reference}}</span>
+          <span class="govuk-heading-m govuk-!-margin-top-7">Group reference: {{paymentGroup.payment_group_reference}}</span>
         </div>
       </div>
         <div class="govuk-grid-row">
@@ -252,7 +252,7 @@
           <!--New Code start-->
 
           <div class="govuk-grid-column-full">
-            <span class="govuk-heading-s">Exisiting fees</span>
+            <span class="govuk-heading-s govuk-!-margin-top-4 govuk-!-margin-bottom-1">Exisiting fees</span>
           </div>
           <div class=feeclass>
           <table class="govuk-table">
@@ -278,20 +278,20 @@
             </tr>
             </tbody>
             <tbody class="govuk-table__body" *ngIf="paymentGroup.fees.length==0">
-            <td class="govuk-table__cell" colspan="6">No payments recorded</td>
+            <td class="govuk-table__cell alignleft" colspan="6">No payments recorded</td>
             </tbody>
           </table>
         </div>
         </div>
       <div class="govuk-inset-text govuk-inset-text__no-border" *ngIf="paymentGroup.payments || paymentGroup.remissions">
-        <details>
-          <summary class="govuk-hidetext">
-          <span class="summary">Allocated payments and remissions</span>
+        <details class="govuk-details">
+          <summary class="govuk-details__summary govuk-hidetext">
+          <span class="govuk-details__summary-text">Allocated payments and remissions</span>
           </summary>
 
             <div class="govuk-inset-text">
                 <!-- payments -->
-                <span class="govuk-heading-m">Payments</span>
+                <span class="govuk-heading-m govuk-!-margin-top-7">Payments</span>
                   <table class="govuk-table">
                     <thead class="govuk-table__head">
                       <tr class="govuk-table__row">
@@ -318,12 +318,12 @@
                         </tr>
                     </tbody>
                     <tbody class="govuk-table__body" *ngIf="paymentGroup.payments?.length === 0">
-                      <td class="govuk-table__cell" colspan="6">No payments recorded</td>
+                      <td class="govuk-table__cell alignleft" colspan="6">No payments recorded</td>
                     </tbody>
                   </table>
 
                   <!-- remissions -->
-                  <span class="govuk-heading-m">Remissions</span>
+                  <span class="govuk-heading-m govuk-!-margin-top-7">Remissions</span>
                   <table class="govuk-table">
                     <thead class="govuk-table__head">
                       <tr class="govuk-table__row">
@@ -344,7 +344,7 @@
                         </tr>
                     </tbody>
                     <tbody class="govuk-table__body" *ngIf="paymentGroup.remissions?.length === 0">
-                      <td class="govuk-table__cell" colspan="5">No remissions recorded</td>
+                      <td class="govuk-table__cell alignleft" colspan="5">No remissions recorded</td>
                     </tbody>
                   </table>
             </div>
@@ -384,7 +384,7 @@
       </ccpay-app-unprocessed-payments>
       <div class="govuk-grid-row govuk-grid__surplus-payments"  *ngIf="totalRefundAmount > 0 && takePayment">
         <div class="govuk-grid-column-full govuk-grid__surplus-payments-col1">
-          <h3 class="govuk-heading-m">Surplus payments</h3>
+          <h3 class="govuk-heading-m govuk-!-margin-top-7">Surplus payments</h3>
         </div>
         <div class="govuk-grid-column-full">
           Total surplus payments received: {{totalRefundAmount | currency :'GBP':'symbol':'1.2-2'}}
@@ -421,7 +421,7 @@
 
         <div class="govuk-grid-column-full">
 
-          <span class="govuk-heading-m">{{ "Payments" | rpxTranslate }}</span>
+          <span class="govuk-heading-m govuk-!-margin-top-7">{{ "Payments" | rpxTranslate }}</span>
           <table class="govuk-table">
               <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
@@ -514,7 +514,7 @@
 
             <!--Payment Request-->
           <div class="paymentrequest">
-              <span class="govuk-heading-m">{{ "Service requests" | rpxTranslate }}</span>
+              <span class="govuk-heading-m govuk-!-margin-top-7">{{ "Service requests" | rpxTranslate }}</span>
               <ng-container>
               <table class="govuk-table">
                   <thead class="govuk-table__head">
@@ -528,7 +528,7 @@
                   </tr>
                   </thead>
                   <tbody class="govuk-table__body"  *ngIf="orderLevelFees?.length > 0">
-                    <tr *ngFor="let orderRef of orderLevelFees;let i = index;">
+                    <tr class="govuk-table__row" *ngFor="let orderRef of orderLevelFees;let i = index;">
                       <td class="govuk-table__cell whitespace-inherit">{{ orderRef.orderStatus | rpxTranslate }}</td>
                       <td class="govuk-table__cell whitespace-inherit">{{ orderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2' }}</td>
                       <td *ngIf="cpoDetails !== null && cpoDetails.length !== 0" class="govuk-table__cell whitespace-inherit">
@@ -543,7 +543,7 @@
                       <td class="govuk-table__cell">
                               <a href="javascript:void(0)" (click)="goToOrderViewDetailSection(orderRef)">{{ "Review" | rpxTranslate }}</a>
                       </td>
-                      <td  class="alignright">
+                      <td  class="govuk-table__cell alignright">
 
                         <button type="submit" (click)="redirectToOrderFeeSearchPage($event,orderRef)"
                         [disabled]="!orderRef.orderAddBtnEnable"
@@ -553,7 +553,7 @@
                     </tr>
                   </tbody>
                   <tbody class="govuk-table__body alignleft" *ngIf="orderLevelFees?.length === 0">
-                    <td colspan="6">{{ "No service requests on this case." | rpxTranslate }}</td>
+                    <td class="govuk-table__cell alignleft" colspan="6">{{ "No service requests on this case." | rpxTranslate }}</td>
                   </tbody>
               </table>
             </ng-container>
@@ -567,7 +567,7 @@
             </span>
           </div>
           <div>
-              <span class="govuk-heading-m"><br/>{{ "Payments" | rpxTranslate }}</span>
+              <span class="govuk-heading-m govuk-!-margin-top-7"><br/>{{ "Payments" | rpxTranslate }}</span>
               <ccpay-app-unprocessed-payments
               *ngIf="isBulkScanEnable"
               [IS_BUTTON_ENABLE]="takePayment"
@@ -609,7 +609,7 @@
                   </tbody>
 
                   <tbody class="govuk-table__body" *ngIf="allPayments?.length === 0 && unprocessedRecordCount <= 0">
-                    <td colspan="6">{{ "No payments recorded" | rpxTranslate }}</td>
+                    <td class="govuk-table__cell alignleft" colspan="6">{{ "No payments recorded" | rpxTranslate }}</td>
                   </tbody>
                 </table>
 
@@ -617,7 +617,7 @@
 
           </div>
           <div *ngIf="!check4AllowedRoles2AccessPBApayment()">
-              <span class="govuk-heading-m"><br/>{{ "Refunds" | rpxTranslate }}</span>
+              <span class="govuk-heading-m govuk-!-margin-top-7"><br/>{{ "Refunds" | rpxTranslate }}</span>
               <ccpay-refund-status
               [ccdCaseNumber]="ccdCaseNumber"
               [isTurnOff]="isTurnOff"
@@ -630,7 +630,7 @@
 
    <ng-container *ngIf="!takePayment && viewStatus === 'main'">
       <div  class="govuk-grid-column-full" [ngClass]='serviceRequestValue!== "false" ? "govuk-margin-btm-20px" : ""'>
-        <!-- <span *ngIf="serviceRequestValue === 'false'" class="govuk-heading-m">Service requests</span> -->
+        <!-- <span *ngIf="serviceRequestValue === 'false'" class="govuk-heading-m govuk-!-margin-top-7">Service requests</span> -->
         <ng-container *ngIf="!(orderLevelFees?.length === 0 && !isAnyFeeGroupAvilable) && serviceRequestValue !== 'false' ">
           <table class="govuk-table">
               <thead class="govuk-table__head">
@@ -665,7 +665,7 @@
               </tbody>
               <tbody class="govuk-table__body" *ngIf="orderLevelFees?.length === 0 && serviceRequestValue === 'false'">
                 <tr class="govuk-table__row" >
-                  <td class="alignleft" colspan="7">{{ "No service requests on this case." | rpxTranslate }}</td>
+                  <td class="govuk-table__cell alignleft" colspan="7">{{ "No service requests on this case." | rpxTranslate }}</td>
                 </tr>
               </tbody>
           </table>
@@ -678,7 +678,7 @@
         </div>
         <div class="govuk-grid-column-full">
             <div  *ngIf="serviceRequestValue === 'false'">
-            <span class="govuk-heading-m"><br/>{{ "Payments" | rpxTranslate }}</span>
+            <span class="govuk-heading-m govuk-!-margin-top-7"><br/>{{ "Payments" | rpxTranslate }}</span>
             <ng-container >
               <table class="govuk-table">
               <thead class="govuk-table__head">
@@ -705,7 +705,7 @@
               </tbody>
 
               <tbody class="govuk-table__body" *ngIf="allPayments?.length === 0">
-                <td colspan="6">{{ "No payments recorded" | rpxTranslate }}</td>
+                <td class="govuk-table__cell alignleft" colspan="6">{{ "No payments recorded" | rpxTranslate }}</td>
               </tbody>
               </table>
               <ccpay-app-unprocessed-payments class="govuk-table"
@@ -735,7 +735,7 @@
           </div>
         </div>
         <div class="govuk-grid-column-full" *ngIf="!check4AllowedRoles2AccessPBApayment()">
-            <span class="govuk-heading-m"><br/>Refunds</span>
+            <span class="govuk-heading-m govuk-!-margin-top-7"><br/>Refunds</span>
             <ccpay-refund-status
             [ccdCaseNumber]="ccdCaseNumber"
             [orderParty] ="orderParty"

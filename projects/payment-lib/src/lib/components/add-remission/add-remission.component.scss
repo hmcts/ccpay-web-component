@@ -1,5 +1,14 @@
 .add-remission {
 
+  .govuk-radios__item {
+    display: inline-flex !important;
+    vertical-align: top;
+  }
+
+  > p:last-child {
+    padding-bottom: 30px;
+  }
+
   td.govuk-table__cell {
     width: 50%;
   }
