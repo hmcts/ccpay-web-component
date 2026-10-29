@@ -5725,7 +5725,7 @@ __metadata:
     local-storage: ^2.0.0
     ng-packagr: ^20.3.0
     protractor: ~7.0.0
-    rpx-xui-translation: 1.2.0
+    rpx-xui-translation: 1.2.18
     rxjs: ~6.6.7
     rxjs-compat: ^6.6.7
     sass: ^1.64.1
@@ -6570,10 +6570,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dexie@npm:^3.2.2":
-  version: 3.2.7
-  resolution: "dexie@npm:3.2.7"
-  checksum: 257504ed23cea2e5ed5c18a17a031c0a44aff70c5b3d6a63536b544cec9027c4c492a608165d5e7a44a104570c92dec2aa59c7bcec0c65f52000f979e1193dfd
+"dexie@npm:^4.4.4":
+  version: 4.4.7
+  resolution: "dexie@npm:4.4.7"
+  checksum: 817a97da176040742503aeb672d1809140dc54b2d6ae280aa80f0ab59e640c216cdc8b15c0b45de2a4340d42e13f26757a7e6a8d157ed6a8388054cb7ea80a81
   languageName: node
   linkType: hard
 
@@ -9893,7 +9893,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"luxon@npm:^2.4.0":
+"luxon@npm:^2.5.2":
   version: 2.5.2
   resolution: "luxon@npm:2.5.2"
   checksum: d8b671ffd2ff0b438af862ac11082a81b3aedd9f8b6a4ca636f944224f8dd381125cd4d274ca0a8aedcaf2cfca0fc2ca96fe4cc1b16a28b7af701afb95c0bff8
@@ -12067,17 +12067,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rpx-xui-translation@npm:1.2.0":
-  version: 1.2.0
-  resolution: "rpx-xui-translation@npm:1.2.0"
+"rpx-xui-translation@npm:1.2.18":
+  version: 1.2.18
+  resolution: "rpx-xui-translation@npm:1.2.18"
   dependencies:
-    dexie: ^3.2.2
-    luxon: ^2.4.0
+    dexie: ^4.4.4
+    luxon: ^2.5.2
     tslib: ^2.0.0
   peerDependencies:
-    "@angular/common": ^20.3.1
-    "@angular/core": ^20.3.1
-  checksum: 618fab277ad412c710c8aa85de1f9527f1ab955a0e8525ebf2f9bcb2253079da21638e3d9cc53b767c8ba5f874f27d34fa1830391d5cdd610d353f46790e1237
+    "@angular/common": ^20.3.27
+    "@angular/core": ^20.3.27
+    rxjs: ^7.8.0
+  checksum: 0c2bed556840d392f3aa365a12408b8838f48293348b368045814a37d82f16e78340bf43d0407224db3d20c7c0cdeec13281c87a17ceb6224a4c0b23a3a9dc4f
   languageName: node
   linkType: hard
 
