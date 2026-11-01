@@ -50,10 +50,6 @@
   line-height: 1.3157894737;
 }
 
-.heading-medium {
-  font-size: 20px;
-  line-height: 1.11111;
-}
 
 table th {
   font-weight: 700;
@@ -81,7 +77,7 @@ table th {
     cursor: default;
 }
 
-.heading-xlarge{
+.govuk-heading-xl{
   margin:0 0 14px -20px;
 }
 .govuk-select--custom {
@@ -116,8 +112,8 @@ table th {
 .govuk-button {
   font-size: 19px;
 }
-.feeAddButton {
-  padding-left: 65rem;
+.centerDiv .govuk-button {
+  font-size: 24px;
 }
 
 .remissionActive {
@@ -127,10 +123,6 @@ table th {
 .paddigleft {
   padding-left: 2em;
 }
-.govuk-back-link {
-  font-size: 1.5rem !important;
-}
-
 .govuk-warning-text__text  {
   font-size: 19px;
 }
@@ -176,6 +168,7 @@ table th {
 .addfee {
   display:flex;
   flex-direction:row;
+  justify-content: space-between;
 }
 
 .white {

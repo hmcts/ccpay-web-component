@@ -1,14 +1,19 @@
-<div class="govuk-header__content">
-  <a href="/" class="govuk-header__link govuk-header__link--service-name">
-    Payment management
-  </a>
-  <button role="button" class="govuk-header__menu-button js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
-  <nav>
-    <ul id="navigation" class="govuk-header__navigation " aria-label="Top Level Navigation">
-      <li class="govuk-header__navigation-item">
-        <a class="govuk-header__link" routerLink="/ccd-search" [queryParams]="{ viewName: 'case-transactions' }">CCD-SEARCH</a>
-      </li>
-    </ul>
-  </nav>
-</div>
-
+<section aria-label="Service information" class="govuk-service-navigation" data-module="govuk-service-navigation">
+  <div class="govuk-width-container">
+    <div class="govuk-service-navigation__container">
+      <span class="govuk-service-navigation__service-name">
+        <a href="/" class="govuk-service-navigation__link">Payment management</a>
+      </span>
+      <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+        <button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden aria-hidden="true">
+          Menu
+        </button>
+        <ul class="govuk-service-navigation__list" id="navigation">
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" routerLink="/ccd-search" [queryParams]="{ viewName: 'case-transactions' }">CCD-SEARCH</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</section>
