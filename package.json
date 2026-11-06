@@ -82,7 +82,7 @@
     "webpack-cli": "^4.10.0"
   },
   "resolutions": {
-    "tmp": "0.2.5",
+    "tmp": "0.2.6",
     "axios": ">=1.8.4",
     "pug": ">=3.0.1",
     "nwmatcher": ">=1.4.4",
