@@ -99,8 +99,11 @@ export class CaseTransactionsComponent implements OnInit {
   cpoDetails: any[] = null;
   orderRef: string;
   orderStatus: string;
-  orderCancelDate: Date;
   orderCancelReason: string;
+  orderCancelDate: Date | null = null;
+  cancelled: boolean = false;
+  cancelledBy: string = '';
+  dateCancelled: Date | null = null;
   orderParty: string;
   orderCreated: Date;
   orderCCDEvent: string;
@@ -384,8 +387,8 @@ export class CaseTransactionsComponent implements OnInit {
           orderCCDEvent: this.cpoDetails[index].action,
           orderCreated: paymentGroup['date_created'],
           orderAddBtnEnable: this.orderAddBtnEnable,
-          orderCancelReason: paymentGroup['service_request_cancel_reason'],
-          orderCancelDate: paymentGroup['service_request_cancel_date'] });
+          orderCancelReason: paymentGroup['cancellation_reason'],
+          orderCancelDate: paymentGroup['date_cancelled']});
 
       } else {
         this.orderLevelFees.push({
@@ -396,8 +399,8 @@ export class CaseTransactionsComponent implements OnInit {
           orderCCDEvent: '',
           orderCreated: paymentGroup['date_created'],
           orderAddBtnEnable: this.orderAddBtnEnable,
-          orderCancelReason: paymentGroup['service_request_cancel_reason'],
-          orderCancelDate: paymentGroup['service_request_cancel_date'] });
+          orderCancelReason: paymentGroup['cancellation_reason'],
+          orderCancelDate: paymentGroup['date_cancelled'] });
       }
 
       if (this.orderStatus !== 'Paid') {
@@ -450,9 +453,9 @@ export class CaseTransactionsComponent implements OnInit {
         }
       }
       this.orderStatus = orderDetail.service_request_status;
-      this.orderCancelReason = orderDetail.service_request_cancel_reason || '';
-      this.orderCancelDate = orderDetail.service_request_cancel_date
-        ? new Date(orderDetail.service_request_cancel_date)
+      this.orderCancelReason = orderDetail.cancellation_reason || '';
+      this.orderCancelDate = orderDetail.date_cancelled
+        ? new Date(orderDetail.date_cancelled)
         : null;
       this.OrderslistService.setorderCancelReason(this.orderCancelReason);
       this.OrderslistService.setorderCancelDate(this.orderCancelDate);

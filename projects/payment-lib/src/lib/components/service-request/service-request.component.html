@@ -24,9 +24,9 @@
               <td class="bold tb-col-w">{{ "Status" | rpxTranslate }}</td>
               <td>{{ orderStatus | rpxTranslate }}</td>
             </tr>
-            <tr class="section" *ngIf="cancelReason">
+            <tr class="section" *ngIf="orderCancelReason">
               <td class="bold tb-col-w">{{ "Cancellation Reason" | rpxTranslate }}</td>
-              <td>{{ cancelReason | rpxTranslate }}</td>
+              <td>{{ orderCancelReason | rpxTranslate }}</td>
             </tr>
             <tr class="section" *ngIf="cancelDate">
               <td class="bold tb-col-w">{{ "Cancellation Date" | rpxTranslate }}</td>

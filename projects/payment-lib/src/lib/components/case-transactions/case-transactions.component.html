@@ -437,7 +437,7 @@
                 <tr class="govuk-table__row"  *ngFor="let payment of allPayments">
                     <td class="govuk-table__cell col-13 whitespace-inherit">{{ payment.status | rpxTranslate }}</td>
                     <td class="govuk-table__cell col-10 whitespace-inherit">{{ payment.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
-                    <td class="govuk-table__cell col-17 whitespace-inherit">{{ payment.date_created | date:'dd MMM yyyy HH:mm:ss' }}</td>
+                    <td class="govuk-table__cell col-17 whitespace-inherit">{{ payment.date_created | date:'dd MMM yyyy' }}</td>
                     <td class="govuk-table__cell col-24 whitespace-inherit">{{ payment.paymentGroupReference }}</td>
                     <td class="govuk-table__cell col-13 whitespace-inherit"></td>
                     <td class="govuk-table__cell whitespace-inherit">
@@ -657,7 +657,7 @@
                   </td>
                   <td *ngIf="cpoDetails === null || cpoDetails.length === 0" class="govuk-table__cell whitespace-inherit"></td>
                   <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderRefId}}</td>
-                  <td class="govuk-table__cell of-visible"> <a href="javascript:void(0)" (click)="loadPBAAccountPage(orderRef)" *ngIf="serviceRequestValue !== 'false' && check4AllowedRoles2AccessPBApayment() && (orderRef.orderStatus === 'Not paid' || orderRef.orderStatus === 'Cancelled')"> {{ "Ollie Pay now" | rpxTranslate }}</a></td>
+                  <td class="govuk-table__cell of-visible"> <a href="javascript:void(0)" (click)="loadPBAAccountPage(orderRef)" *ngIf="serviceRequestValue !== 'false' && check4AllowedRoles2AccessPBApayment() && (orderRef.orderStatus === 'Not paid' || orderRef.orderStatus !== 'Cancelled')"> {{ "Pay now" | rpxTranslate }}</a></td>
                   <td class="govuk-table__cell">
                       <a href="javascript:void(0)" (click)="goToOrderViewDetailSection(orderRef)">{{ "Review" | rpxTranslate }}</a>
                 </td>
@@ -759,6 +759,7 @@
   [orderCCDEvent] = "orderCCDEvent"
   [orderCancelReason] = "orderCancelReason"
   [orderCancelDate] = "orderCancelDate"
+  [cancelledBy] = "cancelledBy"
   [orderDetail] = "orderDetail"
   [paymentGroupList] = "paymentGroups"
   [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES"

@@ -51,6 +51,9 @@ export class ServiceRequestComponent implements OnInit {
   @Input('orderStatus') orderStatus: string;
   @Input('orderParty') orderParty: string;
   @Input('orderCreated') orderCreated: Date;
+  @Input('orderCancelBy') orderCancelBy: string;
+  @Input('cancelledBy') cancelledBy: string = '';
+  @Input('dateCancelled') dateCancelled: Date | null = null;
   @Input('orderCCDEvent') orderCCDEvent: string;
   @Input('orderCancelReason') orderCancelReason: string = '';
   @Input('orderCancelDate') orderCancelDate: Date | null = null;
@@ -140,7 +143,7 @@ export class ServiceRequestComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private router: Router) { }
 
-  ngOnInit() {
+   ngOnInit() {
 
     this.isTurnOff = this.paymentLibComponent.ISTURNOFF;
     this.isServiceRequest = 'false';
