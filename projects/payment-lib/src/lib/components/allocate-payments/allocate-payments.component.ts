@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject, AfterViewInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, Inject, AfterViewInit, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import type { PaymentLibComponent } from '../../payment-lib.component';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
@@ -19,6 +19,7 @@ type PaymentLibAlias = PaymentLibComponent;
     selector: 'app-allocate-payments',
     templateUrl: './allocate-payments.component.html',
     styleUrls: ['./allocate-payments.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AllocatePaymentsComponent implements OnInit {

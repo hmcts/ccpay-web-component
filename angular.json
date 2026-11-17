@@ -18,7 +18,10 @@
               "base": "dist/ccpay-web-component"
             },
             "index": "src/index.html",
-            "polyfills": ["zone.js", "zone.js/testing"],
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -79,7 +82,10 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
-            "polyfills": ["zone.js", "zone.js/testing"],
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "styles": [
@@ -96,7 +102,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "eslintConfig": ".eslintrc.js",
+            "eslintConfig": "eslint.config.js",
             "lintFilePatterns": [
               "**/*.spec.ts",
               "**/*.d.ts"
@@ -124,7 +130,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "eslintConfig": ".eslintrc.js",
+            "eslintConfig": "eslint.config.js",
             "lintFilePatterns": [
               "**/*.spec.ts",
               "**/*.d.ts"
@@ -163,13 +169,10 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "eslintConfig": ".eslintrc.js",
+            "eslintConfig": "eslint.config.js",
             "lintFilePatterns": [
               "**/*.spec.ts",
               "**/*.d.ts"
-            ],
-            "exclude": [
-              "**/node_modules/**"
             ]
           }
         }
@@ -178,7 +181,9 @@
   },
   "cli": {
     "analytics": "740f19be-587b-4f7e-a5ac-ba6ffff3aa41",
-    "schematicCollections": ["@angular-eslint/schematics"]
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   },
   "schematics": {
     "@schematics/angular:component": {

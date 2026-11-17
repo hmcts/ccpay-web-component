@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { BulkScaningPaymentService } from '../../services/bulk-scaning-payment/bulk-scaning-payment.service';
 import { IBSPayments } from '../../interfaces/IBSPayments';
 import { Router } from '@angular/router';
@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './unprocessed-payments.component.html',
   styleUrls: ['./unprocessed-payments.component.scss'],
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class UnprocessedPaymentsComponent implements OnInit {

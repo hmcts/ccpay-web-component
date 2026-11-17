@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {Router} from '@angular/router';
 
@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
     selector: 'app-ccd-search',
     templateUrl: './ccd-search.component.html',
     styleUrls: ['./ccd-search.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CcdSearchComponent implements OnInit {

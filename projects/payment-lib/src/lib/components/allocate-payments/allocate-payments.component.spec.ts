@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, withXhr } from '@angular/common/http';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AllocatePaymentsComponent } from './allocate-payments.component';
 import { CaseTransactionsService} from "../../services/case-transactions/case-transactions.service";
@@ -42,7 +42,7 @@ describe('AllocatePaymentsComponent (basic setup)', () => {
         { provide: BulkScaningPaymentService, useFactory: bulkScaningPaymentServiceStub },
         { provide: ErrorHandlerService, useFactory: errorHandlerServiceStub },
         { provide: OrderslistService, useFactory: orderslistServiceStub },
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withXhr(), withInterceptorsFromDi())
       ]
     });
     fixture = TestBed.createComponent(AllocatePaymentsComponent);

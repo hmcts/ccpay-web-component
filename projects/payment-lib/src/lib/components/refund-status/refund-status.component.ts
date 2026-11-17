@@ -1,4 +1,4 @@
-import {Component, forwardRef, Inject, Input, OnInit} from '@angular/core';
+import {Component, forwardRef, Inject, Input, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {RefundsService} from '../../services/refunds/refunds.service';
 import {NotificationService} from '../../services/notification/notification.service';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -36,6 +36,7 @@ type PaymentLibAlias = PaymentLibComponent;
     CcdHyphensPipe,
     CapitalizePipe,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class RefundStatusComponent implements OnInit {

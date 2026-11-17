@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { IStatusHistories } from '../../interfaces/IStatusHistories';
 import {IPaymentGroup} from '../../interfaces/IPaymentGroup';
 import { StatusHistoryService } from '../../services/status-history/status-history.service';
@@ -13,6 +13,7 @@ type PaymentLibAlias = PaymentLibComponent;
   templateUrl: './status-history.component.html',
   styleUrls: ['./status-history.component.css'],
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class StatusHistoryComponent implements OnInit {

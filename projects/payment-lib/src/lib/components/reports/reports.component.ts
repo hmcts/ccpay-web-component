@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, forwardRef, isStandalone, Inject } from '@angular/core';
+import { Component, Input, OnInit, forwardRef, isStandalone, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { formatDate } from "@angular/common";
 import type { PaymentLibComponent } from '../../payment-lib.component';
@@ -15,6 +15,7 @@ type PaymentLibAlias = PaymentLibComponent;
     selector: 'ccpay-reports',
     templateUrl: './reports.component.html',
     styleUrls: ['./reports.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ReportsComponent implements OnInit {

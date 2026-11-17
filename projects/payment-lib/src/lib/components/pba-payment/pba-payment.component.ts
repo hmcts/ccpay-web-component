@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import type { PaymentLibComponent } from '../../payment-lib.component';
 import { IserviceRequestCardPayment } from '../../interfaces/IserviceRequestCardPayment';
@@ -17,6 +17,7 @@ const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
     CommonModule,
     RpxTranslationModule
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class PbaPaymentComponent implements OnInit {

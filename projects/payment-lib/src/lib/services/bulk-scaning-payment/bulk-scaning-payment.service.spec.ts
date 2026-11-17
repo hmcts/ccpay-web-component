@@ -6,7 +6,7 @@ import { PaymentLibService } from '../../payment-lib.service';
 import { AllocatePaymentRequest } from '../../interfaces/AllocatePaymentRequest';
 import { IPaymentGroup } from '../../interfaces/IPaymentGroup';
 import { BulkScaningPaymentService } from './bulk-scaning-payment.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { TelephonyToPayhubRequest } from '../../interfaces/TelephonyToPayhubRequest';
 
 describe('BulkScaningPaymentService', () => {
@@ -33,7 +33,7 @@ describe('BulkScaningPaymentService', () => {
             useFactory: webComponentHttpClientStub
         },
         { provide: PaymentLibService, useFactory: paymentLibServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting()
     ]
 });

@@ -3,32 +3,46 @@
 </div>
 
 
-<div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1" *ngIf="errorMessage">
-  <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
-    Payment status history could not be retrieved
-  </h2>
-  <div class="govuk-error-summary__body">
-    {{ errorMessage }}
+@if (errorMessage) {
+  <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
+    <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
+      Payment status history could not be retrieved
+    </h2>
+    <div class="govuk-error-summary__body">
+      {{ errorMessage }}
+    </div>
   </div>
-</div>
+}
 
-<div *ngIf="!errorMessage && statuses">
-  <table>
+@if (!errorMessage && statuses) {
+  <div>
+    <table>
       <thead>
         <tr>
           <th>Status</th>
-          <th *ngIf="isDisplayFailureReasonColumn">Failure reason</th>
-          <th *ngIf="isTakePayment">Amount</th>
+          @if (isDisplayFailureReasonColumn) {
+            <th>Failure reason</th>
+          }
+          @if (isTakePayment) {
+            <th>Amount</th>
+          }
           <th>Date and time</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let status of statuses.status_histories; let i = index">
-          <td>{{ status.status }}</td>
-          <td *ngIf="isDisplayFailureReasonColumn">{{ isDisplayReasons[i] ? status.error_message : '' }}</td>
-          <td *ngIf="isTakePayment">£{{ statuses.amount | number:'.2' }}</td>
-          <td>{{ status.date_created | date:'dd MMMM yyyy HH:mm:ss'}}</td>
-        </tr>
-    </tbody>
-  </table>
-</div>
+        @for (status of statuses.status_histories; track status; let i = $index) {
+          <tr>
+            <td>{{ status.status }}</td>
+            @if (isDisplayFailureReasonColumn) {
+              <td>{{ isDisplayReasons[i] ? status.error_message : '' }}</td>
+            }
+            @if (isTakePayment) {
+              <td>£{{ statuses.amount | number:'.2' }}</td>
+            }
+            <td>{{ status.date_created | date:'dd MMMM yyyy HH:mm:ss'}}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

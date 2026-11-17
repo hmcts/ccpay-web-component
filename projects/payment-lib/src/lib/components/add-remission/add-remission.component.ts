@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, forwardRef, Inject, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, forwardRef, Inject, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -56,6 +56,7 @@ const resolvedPromise = Promise.resolve(null);
     ReactiveFormsModule,
     RpxTranslationModule
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class AddRemissionComponent implements OnInit {

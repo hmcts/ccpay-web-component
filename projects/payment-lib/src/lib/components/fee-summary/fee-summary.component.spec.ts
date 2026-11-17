@@ -1,7 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { FeeSummaryComponent } from './fee-summary.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
@@ -26,7 +26,7 @@ describe('Fee Summary component', () => {
         { provide: 'PAYMENT_LIB', useFactory: paymentLibComponentStub },
         { provide: BulkScaningPaymentService, useFactory: emptyServiceStub },
         { provide: PaymentViewService, useFactory: emptyServiceStub },
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withXhr(), withInterceptorsFromDi())
     ]
 });
 

@@ -4,7 +4,7 @@ import { LoggerService } from '../shared/logger/logger.service';
 import { ErrorHandlerService } from '../shared/error-handler.service';
 import { PaymentLibService } from '../../payment-lib.service';
 import { CaseTransactionsService } from './case-transactions.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('CaseTransactionsService', () => {
   let service: CaseTransactionsService;
@@ -20,7 +20,7 @@ describe('CaseTransactionsService', () => {
         { provide: LoggerService, useFactory: loggerServiceStub },
         { provide: ErrorHandlerService, useFactory: errorHandlerServiceStub },
         { provide: PaymentLibService, useFactory: paymentLibServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting()
     ]
 });
