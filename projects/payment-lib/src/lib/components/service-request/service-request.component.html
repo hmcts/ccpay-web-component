@@ -67,7 +67,7 @@
               <td class="govuk-table__cell">{{fee.volume? fee.volume : '-'}} X {{ fee.calculated_amount/fee.volume| currency:'GBP':'symbol-narrow':'1.2-2' }}</td>
               <td class="govuk-table__cell">{{ fee?.net_amount | currency:'GBP':'symbol-narrow':'1.2-2' }}</td>
               <td class="govuk-table__cell alignright" *ngIf="isServiceRequest === 'false'">
-                  <button [disabled]="!chkIsAddRemissionBtnEnable(fee) && chkServiceRequestStatus()"   (click)="addRemission(fee)" class="govuk-button govuk-button--secondary">{{ "Add remission" | rpxTranslate }}</button>
+                  <button [disabled]="chkServiceRequestStatus() || !chkIsAddRemissionBtnEnable(fee)" (click)="addRemission(fee)" class="govuk-button govuk-button--secondary">{{ "Add remission" | rpxTranslate }}</button>
               </td>
 
             </tr>
