@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { IPayment } from '../../interfaces/IPayment';
 
 @Component({
     selector: 'ccpay-pba-details',
     templateUrl: './pba-details.component.html',
     styleUrls: ['./pba-details.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PbaDetailsComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { RefundsService } from '../../services/refunds/refunds.service';
 import { IRefundAction } from '../../interfaces/IRefundAction';
@@ -17,6 +17,7 @@ type PaymentLibAlias = PaymentLibComponent;
     selector: 'ccpay-process-refund',
     templateUrl: './process-refund.component.html',
     styleUrls: ['./process-refund.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ProcessRefundComponent implements OnInit {

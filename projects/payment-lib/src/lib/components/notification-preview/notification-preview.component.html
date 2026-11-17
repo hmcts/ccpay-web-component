@@ -1,52 +1,56 @@
 <div class="govuk-grid-column-full">
   <table class="govuk-table">
     <tbody class="govuk-table__body">
-      <ng-container *ngIf="notification?.template_type === 'email'">
+      @if (notification?.template_type === 'email') {
         <tr class="govuk-table__row">
           <td class="govuk-table__cell whitespace-inherit"><span class="govuk-!-font-weight-bold">From:</span>
-            {{notification?.from?.from_email_address}}</td>
-        </tr>
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell whitespace-inherit"><span class="govuk-!-font-weight-bold">To:</span>
-            {{notification?.recipient_contact?.recipient_email_address}}</td>
-        </tr>
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell whitespace-inherit"><span class="govuk-!-font-weight-bold">Subject:</span>
-            {{notification?.subject}}</td>
-        </tr>
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell whitespace-inherit">
-            <div [innerHTML]="notification?.html"></div>
-          </td>
-        </tr>
-      </ng-container>
-      <ng-container *ngIf="notification?.template_type === 'letter'">
-        <tr class="govuk-table__row">
-          <td class="letter-row-border">
-            <ng-container *ngIf="notification?.recipient_contact?.recipient_mail_address?.address_line">
-              {{notification?.recipient_contact?.recipient_mail_address?.address_line}}<br /></ng-container>
-            <ng-container *ngIf="notification?.recipient_contact?.recipient_mail_address?.city">
-              {{notification?.recipient_contact?.recipient_mail_address?.city}}<br /></ng-container>
-            <ng-container *ngIf="notification?.recipient_contact?.recipient_mail_address?.county">
-              {{notification?.recipient_contact?.recipient_mail_address?.county}}<br /></ng-container>
-            <ng-container *ngIf="notification?.recipient_contact?.recipient_mail_address?.country">
-              {{notification?.recipient_contact?.recipient_mail_address?.country}}<br /></ng-container>
-            {{notification?.recipient_contact?.recipient_mail_address?.postal_code}}
-          </td>
-        </tr>
-        <tr class="govuk-table__row">
-          <td class="letter-row-border">{{ today | date:'d MMMM y' }}</td>
-        </tr>
-        <tr class="govuk-table__row">
-          <td class="letter-row-border"><span class="govuk-!-font-weight-bold">{{notification?.subject}}</span></td>
-        </tr>
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell whitespace-inherit">
-            <div [innerHTML]="notification?.body"></div>
-          </td>
-        </tr>
-      </ng-container>
-  
-    </tbody>
-  </table>
+        {{notification?.from?.from_email_address}}</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell whitespace-inherit"><span class="govuk-!-font-weight-bold">To:</span>
+      {{notification?.recipient_contact?.recipient_email_address}}</td>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell whitespace-inherit"><span class="govuk-!-font-weight-bold">Subject:</span>
+    {{notification?.subject}}</td>
+  </tr>
+  <tr class="govuk-table__row">
+    <td class="govuk-table__cell whitespace-inherit">
+      <div [innerHTML]="$safeNavigationMigration(notification?.html)"></div>
+    </td>
+  </tr>
+}
+@if (notification?.template_type === 'letter') {
+  <tr class="govuk-table__row">
+    <td class="letter-row-border">
+      @if (notification?.recipient_contact?.recipient_mail_address?.address_line) {
+        {{notification?.recipient_contact?.recipient_mail_address?.address_line}}<br />
+      }
+      @if (notification?.recipient_contact?.recipient_mail_address?.city) {
+        {{notification?.recipient_contact?.recipient_mail_address?.city}}<br />
+      }
+      @if (notification?.recipient_contact?.recipient_mail_address?.county) {
+        {{notification?.recipient_contact?.recipient_mail_address?.county}}<br />
+      }
+      @if (notification?.recipient_contact?.recipient_mail_address?.country) {
+        {{notification?.recipient_contact?.recipient_mail_address?.country}}<br />
+      }
+      {{notification?.recipient_contact?.recipient_mail_address?.postal_code}}
+    </td>
+  </tr>
+  <tr class="govuk-table__row">
+    <td class="letter-row-border">{{ today | date:'d MMMM y' }}</td>
+  </tr>
+  <tr class="govuk-table__row">
+    <td class="letter-row-border"><span class="govuk-!-font-weight-bold">{{notification?.subject}}</span></td>
+  </tr>
+  <tr class="govuk-table__row">
+    <td class="govuk-table__cell whitespace-inherit">
+      <div [innerHTML]="$safeNavigationMigration(notification?.body)"></div>
+    </td>
+  </tr>
+}
+
+</tbody>
+</table>
 </div>

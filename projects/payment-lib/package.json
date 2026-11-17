@@ -9,8 +9,8 @@
     "file-saver": "^2.0.2"
   },
   "peerDependencies": {
-    "@angular/common": "^20.3.1",
-    "@angular/core": "~20.3.1"
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0"
   },
   "license": "MIT",
   "repository": "https://github.com/hmcts/ccpay-web-component.git",

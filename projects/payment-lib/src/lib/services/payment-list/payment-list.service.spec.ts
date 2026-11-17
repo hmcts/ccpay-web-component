@@ -4,7 +4,7 @@ import { PaymentLibService } from '../../payment-lib.service';
 import { ErrorHandlerService } from '../shared/error-handler.service';
 import { LoggerService } from '../shared/logger/logger.service';
 import { PaymentListService } from './payment-list.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('PaymentListService', () => {
   let service: PaymentListService;
@@ -20,7 +20,7 @@ describe('PaymentListService', () => {
         { provide: PaymentLibService, useFactory: paymentLibServiceStub },
         { provide: ErrorHandlerService, useFactory: errorHandlerServiceStub },
         { provide: LoggerService, useFactory: loggerServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting()
     ]
 });

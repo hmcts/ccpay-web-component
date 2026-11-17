@@ -1,217 +1,256 @@
 <div class="allocate-payments">
-  <ng-container *ngIf="viewStatus === 'mainForm' && !isTurnOff">
-
-      <div class="govuk-breadcrumbs">
-          <ol class="govuk-breadcrumbs__list">
-            <li class="govuk-breadcrumbs__list-item">
-              <a (click)="gotoCasetransationPage()" class="govuk-back-link govuk-label">Back</a>
-            </li>
-          </ol>
-        </div>
-
-    <div class="paymentrequest">
-        <h1 class="govuk-heading-xl govuk-!-margin-top-3 govuk-!-margin-bottom-4">Select payment request</h1>
-        <p class="govuk-!-margin-top-5 casererf">Case reference: {{ccdReference}}</p>
-    </div>
-
-    <div  *ngFor="let orderRef of orderLevelFees; let i = index;" class="multiple-choice unprocessed-payments--radio-button">
-      <input id="'orderfee'+i+''"
-      aria-label="orderLevelRecord"
-      name="orderLevelRecord"
-
-      (click)="OrderListSelectEvent(orderRef.orderRefId)"
-      type="radio"
-      value="{{orderRef.orderTotalFees}}" />
-      <label for="radio-inline-1"> {{orderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2'}}({{orderRef.orderStatus}})</label>
-    </div>
-
-    <div class="paymentrequest">
-        <button [disabled]="isContinueButtondisabled" type="submit" (click)="redirectToOrderFeeSearchPage()" class="button allbtb button--disabled govuk-!-margin-right-1">
-          Continue
-        </button>
-      </div>
-
-  </ng-container>
-
-   <div *ngIf="viewStatus==='mainForm' && isTurnOff">
-    <input #myInput type='hidden' class='iFrameDrivenImageValue' value='ALLOCATEPAYMENTS'>
-    <div class="govuk-breadcrumbs" *ngIf="paymentRef">
+  @if (viewStatus === 'mainForm' && !isTurnOff) {
+    <div class="govuk-breadcrumbs">
       <ol class="govuk-breadcrumbs__list">
         <li class="govuk-breadcrumbs__list-item">
-          <a href="#" (click)="gotoSummaryPage($event)" class="govuk-back-link">Back</a>
+          <a (click)="gotoCasetransationPage()" class="govuk-back-link govuk-label">Back</a>
         </li>
       </ol>
     </div>
-    <div class="govuk-heading-section">
-      <h1 class="govuk-heading-xl">Allocate payment to fee group</h1>
-      <h2 class="govuk-heading-l">Amount left to be allocated:
-        {{ unAllocatedPayment.amount | currency:'GBP':'symbol-narrow':'1.2-2' }}</h2>
+    <div class="paymentrequest">
+      <h1 class="govuk-heading-xl govuk-!-margin-top-3 govuk-!-margin-bottom-4">Select payment request</h1>
+      <p class="govuk-!-margin-top-5 casererf">Case reference: {{ccdReference}}</p>
     </div>
-    <div class="payment-group-section" *ngFor="let paymentGroup of paymentGroups">
-      <h3 class="govuk-heading-m">Group reference: {{paymentGroup.payment_group_reference}}</h3>
-      <table class="govuk-table">
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <td class="govuk-table__header" scope="col"></td>
-            <td class="govuk-table__header" scope="col">Code</td>
-            <td class="govuk-table__header" scope="col">Description</td>
-            <td class="govuk-table__header" scope="col">Volume</td>
-            <td class="govuk-table__header" scope="col">Fee amount</td>
-            <td class="govuk-table__header" scope="col">Calculated amount</td>
-            <td class="govuk-table__header" scope="col">Group amount outstanding</td>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          <tr class="govuk-table__row" *ngFor="let fee of paymentGroup.fees;  let i = index;">
-            <td class="govuk-table__cell govuk-table__cell--col1 govuk-table__custom--col1"
-              [attr.rowspan]="paymentGroup.fees.length" *ngIf="i==0">
-              <div class="multiple-choice">
-                <input id="unpaiedFee-{{i}}" name="unassignedRecord" type="radio"
-                  (click)="selectedPaymentGroup(paymentGroup)" />
-                <label for="unpaiedFee-{{i}}"></label>
-              </div>
-            </td>
-            <td class="govuk-table__cell govuk-table__cell--col1">{{fee.code}}</td>
-            <td class="govuk-table__cell govuk-table__cell--col2"> {{fee.description}} </td>
-            <td class="govuk-table__cell govuk-table__cell--col3"> {{fee.volume? fee.volume : '-'}} </td>
-            <td class="govuk-table__cell govuk-table__cell--col4">
-              {{ fee.fee_amount | currency:'GBP':'symbol-narrow':'1.2-2' }} </td>
-            <td class="govuk-table__cell govuk-table__cell--col5">
-              {{fee.calculated_amount | currency:'GBP':'symbol-narrow':'1.2-2' }} </td>
-            <td class="govuk-table__cell govuk-table__cell--col6 govuk-table__custom--col6"
-              [attr.rowspan]="paymentGroup.fees.length" *ngIf="i==0">
-              {{getGroupOutstandingAmount(paymentGroup) | currency:'GBP':'symbol-narrow':'1.2-2' }} </td>
-
-          </tr>
-
-        </tbody>
-        <tbody class="govuk-table__body" *ngIf="paymentGroup.fees.length==0">
-          <td class="govuk-table__cell" colspan="6">No payments recorded</td>
-        </tbody>
-      </table>
-    </div>
-    <div class="govuk-button-group-allocate">
-      <button type="button" class="button govuk-!-margin-right-1" [disabled]="isContinueButtondisabled"
-        (click)="saveAndContinue()">
+    @for (orderRef of orderLevelFees; track orderRef; let i = $index) {
+      <div  class="multiple-choice unprocessed-payments--radio-button">
+        <input id="'orderfee'+i+''"
+          aria-label="orderLevelRecord"
+          name="orderLevelRecord"
+          (click)="OrderListSelectEvent(orderRef.orderRefId)"
+          type="radio"
+          value="{{orderRef.orderTotalFees}}" />
+        <label for="radio-inline-1"> {{orderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2'}}({{orderRef.orderStatus}})</label>
+      </div>
+    }
+    <div class="paymentrequest">
+      <button [disabled]="isContinueButtondisabled" type="submit" (click)="redirectToOrderFeeSearchPage()" class="button allbtb button--disabled govuk-!-margin-right-1">
         Continue
       </button>
-      <button type="button" class="button govuk-button--secondary" (click)="gotoCasetransationPage()">
-        Cancel
-      </button>
     </div>
-  </div>
+  }
 
-  <ng-container *ngIf="(viewStatus === 'mainForm' && isTurnOff) || viewStatus === 'allocatePaymentConfirmation'">
-    <ccpay-error-banner *ngIf="errorMessage.showError" [errorMessage]="errorMessage"></ccpay-error-banner>
+  @if (viewStatus==='mainForm' && isTurnOff) {
+    <div>
+      <input #myInput type='hidden' class='iFrameDrivenImageValue' value='ALLOCATEPAYMENTS'>
+      @if (paymentRef) {
+        <div class="govuk-breadcrumbs">
+          <ol class="govuk-breadcrumbs__list">
+            <li class="govuk-breadcrumbs__list-item">
+              <a href="#" (click)="gotoSummaryPage($event)" class="govuk-back-link">Back</a>
+            </li>
+          </ol>
+        </div>
+      }
+      <div class="govuk-heading-section">
+        <h1 class="govuk-heading-xl">Allocate payment to fee group</h1>
+        <h2 class="govuk-heading-l">Amount left to be allocated:
+        {{ unAllocatedPayment.amount | currency:'GBP':'symbol-narrow':'1.2-2' }}</h2>
+      </div>
+      @for (paymentGroup of paymentGroups; track paymentGroup) {
+        <div class="payment-group-section">
+          <h3 class="govuk-heading-m">Group reference: {{paymentGroup.payment_group_reference}}</h3>
+          <table class="govuk-table">
+            <thead class="govuk-table__head">
+              <tr class="govuk-table__row">
+                <td class="govuk-table__header" scope="col"></td>
+                <td class="govuk-table__header" scope="col">Code</td>
+                <td class="govuk-table__header" scope="col">Description</td>
+                <td class="govuk-table__header" scope="col">Volume</td>
+                <td class="govuk-table__header" scope="col">Fee amount</td>
+                <td class="govuk-table__header" scope="col">Calculated amount</td>
+                <td class="govuk-table__header" scope="col">Group amount outstanding</td>
+              </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+              @for (fee of paymentGroup.fees; track fee; let i = $index) {
+                <tr class="govuk-table__row">
+                  @if (i==0) {
+                    <td class="govuk-table__cell govuk-table__cell--col1 govuk-table__custom--col1"
+                      [attr.rowspan]="paymentGroup.fees.length">
+                      <div class="multiple-choice">
+                        <input id="unpaiedFee-{{i}}" name="unassignedRecord" type="radio"
+                          (click)="selectedPaymentGroup(paymentGroup)" />
+                        <label for="unpaiedFee-{{i}}"></label>
+                      </div>
+                    </td>
+                  }
+                  <td class="govuk-table__cell govuk-table__cell--col1">{{fee.code}}</td>
+                  <td class="govuk-table__cell govuk-table__cell--col2"> {{fee.description}} </td>
+                  <td class="govuk-table__cell govuk-table__cell--col3"> {{fee.volume? fee.volume : '-'}} </td>
+                  <td class="govuk-table__cell govuk-table__cell--col4">
+                  {{ fee.fee_amount | currency:'GBP':'symbol-narrow':'1.2-2' }} </td>
+                  <td class="govuk-table__cell govuk-table__cell--col5">
+                  {{fee.calculated_amount | currency:'GBP':'symbol-narrow':'1.2-2' }} </td>
+                  @if (i==0) {
+                    <td class="govuk-table__cell govuk-table__cell--col6 govuk-table__custom--col6"
+                      [attr.rowspan]="paymentGroup.fees.length">
+                    {{getGroupOutstandingAmount(paymentGroup) | currency:'GBP':'symbol-narrow':'1.2-2' }} </td>
+                  }
+                </tr>
+              }
+            </tbody>
+            @if (paymentGroup.fees.length==0) {
+              <tbody class="govuk-table__body">
+                <td class="govuk-table__cell" colspan="6">No payments recorded</td>
+              </tbody>
+            }
+          </table>
+        </div>
+      }
+      <div class="govuk-button-group-allocate">
+        <button type="button" class="button govuk-!-margin-right-1" [disabled]="isContinueButtondisabled"
+          (click)="saveAndContinue()">
+          Continue
+        </button>
+        <button type="button" class="button govuk-button--secondary" (click)="gotoCasetransationPage()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  }
+
+  @if ((viewStatus === 'mainForm' && isTurnOff) || viewStatus === 'allocatePaymentConfirmation') {
+    @if (errorMessage.showError) {
+      <ccpay-error-banner [errorMessage]="errorMessage"></ccpay-error-banner>
+    }
     <input #myInput type='hidden' class='iFrameDrivenImageValue' value='{{feedbackUrlLabel}}'>
     <h1 class="govuk-heading-xl">Confirm allocation</h1>
     <h2 class="govuk-heading-l govuk-heading-l--custom">
       Amount to be allocated: {{amountForAllocation | currency:'GBP':'symbol-narrow':'1.2-2'}}
     </h2>
-    <div class="payment-group-section" *ngIf="paymentGroup">
-      <h3 class="govuk-heading-m--custom" *ngIf="isTurnOff">Group reference: {{paymentGroup.payment_group_reference}}
-      </h3>
-      <table class="govuk-table">
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <td class="govuk-table__header" scope="col">Code</td>
-            <td class="govuk-table__header" scope="col">Description</td>
-            <td class="govuk-table__header" scope="col">Volume</td>
-            <td class="govuk-table__header" scope="col">Fee amount</td>
-            <td class="govuk-table__header" scope="col">Calculated amount</td>
-            <td class="govuk-table__header" scope="col">Amount Due</td>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          <tr class="govuk-table__row" *ngFor="let fee of paymentGroup.fees; let i = index;">
-            <td class="govuk-table__cell govuk-table__cell--col1">{{fee.code}}</td>
-            <td class="govuk-table__cell govuk-table__cell--col2"> {{fee.description}} </td>
-            <td class="govuk-table__cell govuk-table__cell--col3"> {{fee.volume? fee.volume : '-'}} </td>
-            <td class="govuk-table__cell govuk-table__cell--col4">
-              {{ fee.fee_amount | currency:'GBP':'symbol-narrow':'1.2-2' }} </td>
-            <td class="govuk-table__cell govuk-table__cell--col5">
-              {{fee.calculated_amount | currency:'GBP':'symbol-narrow':'1.2-2'}} </td>
-            <td class="govuk-table__cell govuk-table__cell--col6" [attr.rowspan]="paymentGroup.fees.length"
-              *ngIf="i==0"> {{afterFeeAllocateOutstanding | currency:'GBP':'symbol-narrow':'1.2-2'}} </td>
-          </tr>
-        </tbody>
-        <tbody class="govuk-table__body" *ngIf="paymentGroup.fees.length == 0">
-          <td class="govuk-table__cell" colspan="6">No payments recorded</td>
-        </tbody>
-      </table>
-    </div>
-    <div class="govuk-warning-text" *ngIf="isRemainingAmountGtZero || isRemainingAmountLtZero || remainingAmount === 0">
-      <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-      <strong class="govuk-warning-text__text govuk-warning-text__custom">
-        <span class="govuk-warning-text__assistive">Warning</span>
-        {{paymentSectionLabel.title}} {{ remainingAmount | currency:'GBP':'symbol-narrow':'1.2-2' }}
-      </strong>
-    </div>
-    <div class="govuk-form-group" *ngIf="isRemainingAmountGtZero || isRemainingAmountLtZero">
-      <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset" aria-describedby="how-contacted-conditional-hint">
-          <span id="how-contacted-conditional-hint" class="govuk-hint"
-            [ngClass]="{'inline-error-message': paymentReasonHasError}">
-            {{paymentSectionLabel.reason}}
-          </span>
-          <div
-            [ngClass]="paymentReasonHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
-            data-module="govuk-radios" *ngIf="isRemainingAmountGtZero">
-            <div class="govuk-radios__item" *ngFor="let reason of reasonList.overPayment | keyValue">
-              <input class="govuk-radios__input" id="{{reason.key}}" name="paymentReason" type="radio"
-                     [value]="reason.key" (input)="getReasonValue(reason.value)"/>
-              <label class="govuk-label govuk-radios__label govuk-font__custom" for="how-contacted-conditional">
-                {{reason.value}}
-              </label>
-            </div>
-          </div>
-          <div
-            [ngClass]="paymentReasonHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
-            data-module="govuk-radios" *ngIf="isRemainingAmountLtZero">
-            <div class="govuk-radios__item" *ngFor="let reason of reasonList.shortFall | keyValue">
-              <input class="govuk-radios__input" id="{{reason.key}}" name="paymentReason" type="radio"
-                     [value]="reason.key" (input)="getReasonValue(reason.value)"/>
-              <label class="govuk-label govuk-radios__label govuk-font__custom" for="how-contacted-conditional">
-                {{reason.value}}
-              </label>
-            </div>
-          </div>
-        </fieldset>
+    @if (paymentGroup) {
+      <div class="payment-group-section">
+        @if (isTurnOff) {
+          <h3 class="govuk-heading-m--custom">Group reference: {{paymentGroup.payment_group_reference}}
+          </h3>
+        }
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__header" scope="col">Code</td>
+              <td class="govuk-table__header" scope="col">Description</td>
+              <td class="govuk-table__header" scope="col">Volume</td>
+              <td class="govuk-table__header" scope="col">Fee amount</td>
+              <td class="govuk-table__header" scope="col">Calculated amount</td>
+              <td class="govuk-table__header" scope="col">Amount Due</td>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            @for (fee of paymentGroup.fees; track fee; let i = $index) {
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell govuk-table__cell--col1">{{fee.code}}</td>
+                <td class="govuk-table__cell govuk-table__cell--col2"> {{fee.description}} </td>
+                <td class="govuk-table__cell govuk-table__cell--col3"> {{fee.volume? fee.volume : '-'}} </td>
+                <td class="govuk-table__cell govuk-table__cell--col4">
+                {{ fee.fee_amount | currency:'GBP':'symbol-narrow':'1.2-2' }} </td>
+                <td class="govuk-table__cell govuk-table__cell--col5">
+                {{fee.calculated_amount | currency:'GBP':'symbol-narrow':'1.2-2'}} </td>
+                @if (i==0) {
+                  <td class="govuk-table__cell govuk-table__cell--col6" [attr.rowspan]="paymentGroup.fees.length"
+                  > {{afterFeeAllocateOutstanding | currency:'GBP':'symbol-narrow':'1.2-2'}} </td>
+                }
+              </tr>
+            }
+          </tbody>
+          @if (paymentGroup.fees.length == 0) {
+            <tbody class="govuk-table__body">
+              <td class="govuk-table__cell" colspan="6">No payments recorded</td>
+            </tbody>
+          }
+        </table>
       </div>
-      <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset" aria-describedby="how-contacted-conditional-hint">
-          <span id="how-contacted-conditional-hint" class="govuk-hint"
-            [ngClass]="{'inline-error-message': paymentExplanationHasError}">
-            Provide an explanatory note
-          </span>
-          <div
-            [ngClass]="paymentExplanationHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
-            data-module="govuk-radios" *ngIf="isRemainingAmountGtZero">
-            <div class="govuk-radios__item" *ngFor="let explanation of explanationList.overPayment | keyValue">
-              <input class="govuk-radios__input" id="{{explanation.key}}" name="paymentExplanation" type="radio"
-                     [value]="explanation.key" (input)="getExplanationValue(explanation.value)"
-                (click)="selectRadioButton(explanation.key, 'explanation')"/>
-              <label class="govuk-label govuk-radios__label govuk-font__custom" for="how-contacted-conditional">
-                {{explanation.value}}
-              </label>
-            </div>
-          </div>
-          <div
-            [ngClass]="paymentExplanationHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
-            data-module="govuk-radios" *ngIf="isRemainingAmountLtZero">
-            <div class="govuk-radios__item" *ngFor="let explanation of explanationList.shortFall | keyValue">
-              <input class="govuk-radios__input" id="{{explanation.key}}" name="paymentExplanation" type="radio"
-                     [value]="explanation.key" (input)="getExplanationValue(explanation.value)"
-                (click)="selectRadioButton(explanation.key, 'explanation')"/>
-              <label class="govuk-label govuk-radios__label govuk-font__custom" for="how-contacted-conditional">
-                {{explanation.value}}
-              </label>
-            </div>
-          </div>
-        </fieldset>
+    }
+    @if (isRemainingAmountGtZero || isRemainingAmountLtZero || remainingAmount === 0) {
+      <div class="govuk-warning-text">
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text govuk-warning-text__custom">
+          <span class="govuk-warning-text__assistive">Warning</span>
+          {{paymentSectionLabel.title}} {{ remainingAmount | currency:'GBP':'symbol-narrow':'1.2-2' }}
+        </strong>
       </div>
-    </div>
-
+    }
+    @if (isRemainingAmountGtZero || isRemainingAmountLtZero) {
+      <div class="govuk-form-group">
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset" aria-describedby="how-contacted-conditional-hint">
+            <span id="how-contacted-conditional-hint" class="govuk-hint"
+              [ngClass]="{'inline-error-message': paymentReasonHasError}">
+              {{paymentSectionLabel.reason}}
+            </span>
+            @if (isRemainingAmountGtZero) {
+              <div
+                [ngClass]="paymentReasonHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
+                data-module="govuk-radios">
+                @for (reason of reasonList.overPayment | keyValue; track reason) {
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="{{reason.key}}" name="paymentReason" type="radio"
+                      [value]="reason.key" (input)="getReasonValue(reason.value)"/>
+                    <label class="govuk-label govuk-radios__label govuk-font__custom" for="how-contacted-conditional">
+                      {{reason.value}}
+                    </label>
+                  </div>
+                }
+              </div>
+            }
+            @if (isRemainingAmountLtZero) {
+              <div
+                [ngClass]="paymentReasonHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
+                data-module="govuk-radios">
+                @for (reason of reasonList.shortFall | keyValue; track reason) {
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="{{reason.key}}" name="paymentReason" type="radio"
+                      [value]="reason.key" (input)="getReasonValue(reason.value)"/>
+                    <label class="govuk-label govuk-radios__label govuk-font__custom" for="how-contacted-conditional">
+                      {{reason.value}}
+                    </label>
+                  </div>
+                }
+              </div>
+            }
+          </fieldset>
+        </div>
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset" aria-describedby="how-contacted-conditional-hint">
+            <span id="how-contacted-conditional-hint" class="govuk-hint"
+              [ngClass]="{'inline-error-message': paymentExplanationHasError}">
+              Provide an explanatory note
+            </span>
+            @if (isRemainingAmountGtZero) {
+              <div
+                [ngClass]="paymentExplanationHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
+                data-module="govuk-radios">
+                @for (explanation of explanationList.overPayment | keyValue; track explanation) {
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="{{explanation.key}}" name="paymentExplanation" type="radio"
+                      [value]="explanation.key" (input)="getExplanationValue(explanation.value)"
+                      (click)="selectRadioButton(explanation.key, 'explanation')"/>
+                    <label class="govuk-label govuk-radios__label govuk-font__custom" for="how-contacted-conditional">
+                      {{explanation.value}}
+                    </label>
+                  </div>
+                }
+              </div>
+            }
+            @if (isRemainingAmountLtZero) {
+              <div
+                [ngClass]="paymentExplanationHasError ? 'govuk-radios govuk-radios--conditional form-group-error' : 'govuk-radios govuk-radios--conditional'"
+                data-module="govuk-radios">
+                @for (explanation of explanationList.shortFall | keyValue; track explanation) {
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="{{explanation.key}}" name="paymentExplanation" type="radio"
+                      [value]="explanation.key" (input)="getExplanationValue(explanation.value)"
+                      (click)="selectRadioButton(explanation.key, 'explanation')"/>
+                    <label class="govuk-label govuk-radios__label govuk-font__custom" for="how-contacted-conditional">
+                      {{explanation.value}}
+                    </label>
+                  </div>
+                }
+              </div>
+            }
+          </fieldset>
+        </div>
+      </div>
+    }
     <form [formGroup]="overUnderPaymentForm" novalidate>
       <div
         [ngClass]="isMoreDetailsBoxHide ? 'govuk-radios__conditional govuk-radios__conditional--hidden' : isPaymentDetailsEmpty || isPaymentDetailsInvalid || paymentDetailsMinHasError || paymentDetailsMaxHasError ? 'govuk-radios__conditional inline-error-border' : 'govuk-radios__conditional'"
@@ -224,13 +263,23 @@
             [ngClass]="{'inline-error-class': isPaymentDetailsEmpty || isPaymentDetailsInvalid || paymentDetailsMinHasError || paymentDetailsMaxHasError}"
             id="moreDetails" name="moreDetails" rows="5" formControlName="moreDetails">
           </textarea>
-          <p class="inline-error-message"
-            *ngIf="isPaymentDetailsEmpty || isPaymentDetailsInvalid || paymentDetailsMinHasError || paymentDetailsMaxHasError">
-            <span *ngIf="isPaymentDetailsEmpty">Enter a explanation</span>
-            <span *ngIf="isPaymentDetailsInvalid">Enter a valid explanation</span>
-            <span *ngIf="paymentDetailsMinHasError">Explanation should be at least 3 characters.</span>
-            <span *ngIf="paymentDetailsMaxHasError">Explanation should be 255 characters or under.</span>
-          </p>
+          @if (isPaymentDetailsEmpty || isPaymentDetailsInvalid || paymentDetailsMinHasError || paymentDetailsMaxHasError) {
+            <p class="inline-error-message"
+              >
+              @if (isPaymentDetailsEmpty) {
+                <span>Enter a explanation</span>
+              }
+              @if (isPaymentDetailsInvalid) {
+                <span>Enter a valid explanation</span>
+              }
+              @if (paymentDetailsMinHasError) {
+                <span>Explanation should be at least 3 characters.</span>
+              }
+              @if (paymentDetailsMaxHasError) {
+                <span>Explanation should be 255 characters or under.</span>
+              }
+            </p>
+          }
         </div>
       </div>
       <div class="govuk-button--group">
@@ -244,5 +293,5 @@
         </button>
       </div>
     </form>
-  </ng-container>
+  }
 </div>

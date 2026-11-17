@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { PaymentListService } from '../../services/payment-list/payment-list.service';
 import { IPayments } from '../../interfaces/IPayments';
 import type { PaymentLibComponent } from '../../payment-lib.component';
@@ -8,6 +8,7 @@ type PaymentLibAlias = PaymentLibComponent;
     selector: 'ccpay-payment-list',
     templateUrl: './payment-list.component.html',
     styleUrls: ['./payment-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PaymentListComponent implements OnInit {

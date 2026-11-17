@@ -1,4 +1,4 @@
-import {Component, forwardRef, Inject, Input, OnInit} from '@angular/core';
+import {Component, forwardRef, Inject, Input, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {IPaymentGroup} from '../../interfaces/IPaymentGroup';
 import {CaseTransactionsService} from '../../services/case-transactions/case-transactions.service';
 import {BulkScaningPaymentService} from '../../services/bulk-scaning-payment/bulk-scaning-payment.service';
@@ -40,6 +40,7 @@ const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
     FormsModule,
     RpxTranslationModule
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class CaseTransactionsComponent implements OnInit {

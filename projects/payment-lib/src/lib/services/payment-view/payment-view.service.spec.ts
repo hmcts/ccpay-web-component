@@ -11,7 +11,7 @@ import { IAllocationPaymentsRequest } from '../../interfaces/IAllocationPayments
 import { PostRefundRetroRemission } from '../../interfaces/PostRefundRetroRemission';
 import { PostIssueRefundRetroRemission } from '../../interfaces/PostIssueRefundRetroRemission';
 import { PaymentViewService } from './payment-view.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('PaymentViewService', () => {
   let service: PaymentViewService;
@@ -38,7 +38,7 @@ describe('PaymentViewService', () => {
         },
         { provide: ErrorHandlerService, useFactory: errorHandlerServiceStub },
         { provide: LoggerService, useFactory: loggerServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting()
     ]
 });

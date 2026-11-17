@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, Inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import type { PaymentLibComponent } from '../../payment-lib.component';
 import { NotificationService } from '../../services/notification/notification.service';
@@ -14,6 +14,7 @@ type PaymentLibAlias = PaymentLibComponent;
     ReactiveFormsModule,
     CommonModule
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class ContactDetailsComponent implements OnInit {

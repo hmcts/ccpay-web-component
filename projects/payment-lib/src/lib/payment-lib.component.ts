@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, forwardRef, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, forwardRef, Input, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {PaymentLibService} from './payment-lib.service';
 import {IBSPayments} from './interfaces/IBSPayments';
 import {OrderslistService} from './services/orderslist.service';
@@ -13,45 +13,70 @@ import {AddRetroRemissionRequest} from "./interfaces/AddRetroRemissionRequest";
 @Component({
     selector: 'ccpay-payment-lib',
     template: `
-  <ccpay-refund-list [USERID]="USERID" [LOGGEDINUSERROLES]="LOGGEDINUSERROLES" [LOGGEDINUSEREMAIL]="LOGGEDINUSEREMAIL" *ngIf="viewName === 'refund-list'"></ccpay-refund-list>
-    <ccpay-payment-list *ngIf="viewName === 'payment-list'"></ccpay-payment-list>
+  @if (viewName === 'refund-list') {
+    <ccpay-refund-list [USERID]="USERID" [LOGGEDINUSERROLES]="LOGGEDINUSERROLES" [LOGGEDINUSEREMAIL]="LOGGEDINUSEREMAIL"></ccpay-refund-list>
+  }
+  @if (viewName === 'payment-list') {
+    <ccpay-payment-list></ccpay-payment-list>
+  }
+  @if (viewName === 'refundstatuslist') {
     <ccpay-refund-status
-    [LOGGEDINUSERROLES]="LOGGEDINUSERROLES"
-    [API_ROOT]="API_ROOT"
-    *ngIf="viewName === 'refundstatuslist'"> </ccpay-refund-status >
-    <ccpay-payment-view [LOGGEDINUSERROLES]="LOGGEDINUSERROLES" *ngIf="viewName === 'payment-view'"
-    [isTurnOff]="ISTURNOFF" [isTakePayment]="TAKEPAYMENT"  [caseType]="CASETYPE"
-    [ISPAYMENTSTATUSENABLED] = "ISPAYMENTSTATUSENABLED"
+      [LOGGEDINUSERROLES]="LOGGEDINUSERROLES"
+      [API_ROOT]="API_ROOT"
+    > </ccpay-refund-status >
+  }
+  @if (viewName === 'payment-view') {
+    <ccpay-payment-view [LOGGEDINUSERROLES]="LOGGEDINUSERROLES"
+      [isTurnOff]="ISTURNOFF" [isTakePayment]="TAKEPAYMENT"  [caseType]="CASETYPE"
+      [ISPAYMENTSTATUSENABLED] = "ISPAYMENTSTATUSENABLED"
     ></ccpay-payment-view>
+  }
 
-    <ccpay-process-refund *ngIf="viewName === 'process-refund'"
-    [refundReference]="refundReference"
-    [refundlistsource]="refundlistsource"
+  @if (viewName === 'process-refund') {
+    <ccpay-process-refund
+      [refundReference]="refundReference"
+      [refundlistsource]="refundlistsource"
     ></ccpay-process-refund>
-    <ccpay-pba-payment *ngIf="viewName === 'pba-payment'"
-    [pbaPayOrderRef]="pbaPayOrderRef"
+  }
+  @if (viewName === 'pba-payment') {
+    <ccpay-pba-payment
+      [pbaPayOrderRef]="pbaPayOrderRef"
     ></ccpay-pba-payment>
-    <ccpay-case-transactions [isTakePayment]="isTakePayment" [isFromServiceRequestPage]="isFromServiceRequestPage" [LOGGEDINUSERROLES]="LOGGEDINUSERROLES" *ngIf="viewName === 'case-transactions'"></ccpay-case-transactions>
-    <app-mark-unidentified-payment *ngIf="viewName === 'unidentifiedPage'"
+  }
+  @if (viewName === 'case-transactions') {
+    <ccpay-case-transactions [isTakePayment]="isTakePayment" [isFromServiceRequestPage]="isFromServiceRequestPage" [LOGGEDINUSERROLES]="LOGGEDINUSERROLES"></ccpay-case-transactions>
+  }
+  @if (viewName === 'unidentifiedPage') {
+    <app-mark-unidentified-payment
     [caseType]="CASETYPE"></app-mark-unidentified-payment>
-    <app-mark-unsolicited-payment *ngIf="viewName === 'unsolicitedPage'"
+  }
+  @if (viewName === 'unsolicitedPage') {
+    <app-mark-unsolicited-payment
     [caseType]="CASETYPE"></app-mark-unsolicited-payment>
-    <app-allocate-payments *ngIf="viewName === 'allocate-payments'"
-    [isTurnOff]="ISTURNOFF"
-    [caseType]="CASETYPE"
+  }
+  @if (viewName === 'allocate-payments') {
+    <app-allocate-payments
+      [isTurnOff]="ISTURNOFF"
+      [caseType]="CASETYPE"
     ></app-allocate-payments>
-    <ccpay-fee-summary *ngIf="viewName === 'fee-summary'"
+  }
+  @if (viewName === 'fee-summary') {
+    <ccpay-fee-summary
       [ccdCaseNumber]="CCD_CASE_NUMBER"
       [paymentGroupRef]="paymentGroupReference"
       [isTurnOff]="ISTURNOFF"
       [caseType]="CASETYPE"
       [telephonySelectionEnable] ="telephonySelectionEnable"
-      ></ccpay-fee-summary>
-    <ccpay-reports *ngIf="viewName === 'reports'"
-    [ISPAYMENTSTATUSENABLED] = "ISPAYMENTSTATUSENABLED"
+    ></ccpay-fee-summary>
+  }
+  @if (viewName === 'reports') {
+    <ccpay-reports
+      [ISPAYMENTSTATUSENABLED] = "ISPAYMENTSTATUSENABLED"
     ></ccpay-reports>
-    `,
+  }
+  `,
     providers: [{ provide: 'PAYMENT_LIB', useExisting: forwardRef(() => PaymentLibComponent) }],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

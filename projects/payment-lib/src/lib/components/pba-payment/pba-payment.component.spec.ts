@@ -1,6 +1,6 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {CommonModule} from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import {PbaPaymentComponent} from './pba-payment.component';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -54,7 +54,7 @@ describe('PBA payment component', () => {
             patch: () => ({ subscribe: (f: any) => f({}) })
           }
         },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         { provide: RpxTranslationService, useValue: { getTranslation$: (v: any) => of(v), getTranslationWithReplacements$: (v: any) => of(v) } }
     ]
 });

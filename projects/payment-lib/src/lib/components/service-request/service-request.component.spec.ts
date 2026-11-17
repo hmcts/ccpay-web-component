@@ -1,6 +1,6 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Pipe, PipeTransform } from '@angular/core';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { ServiceRequestComponent } from './service-request.component';
 import { PaymentLibComponent } from '../../payment-lib.component';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
@@ -43,7 +43,7 @@ describe('ServiceRequestComponent', () => {
         { provide: PaymentViewService, useFactory: paymentViewServiceStub },
         { provide: NotificationService, useFactory: notificationServiceStub },
         { provide: OrderslistService, useFactory: orderslistServiceStub },
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withXhr(), withInterceptorsFromDi())
       ]
     })
     .compileComponents();

@@ -6,7 +6,7 @@ import { WebComponentHttpClient } from '../shared/httpclient/webcomponent.http.c
 import { PaymentLibService } from '../../payment-lib.service';
 import { IssueRefundRequest } from '../../interfaces/IssueRefundRequest';
 import { RefundsService } from './refunds.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('RefundsService', () => {
   let service: RefundsService;
@@ -30,7 +30,7 @@ describe('RefundsService', () => {
             useFactory: webComponentHttpClientStub
         },
         { provide: PaymentLibService, useFactory: paymentLibServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting()
     ]
 });

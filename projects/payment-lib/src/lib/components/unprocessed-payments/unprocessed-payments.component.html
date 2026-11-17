@@ -1,225 +1,224 @@
 <!-- <ng-container *ngIf="IS_BUTTON_ENABLE">
-    <div class="unprocessed-payments govuk-grid-column-full govuk-!-padding-bottom-3">
-        <input #myInput type='hidden' class='iFrameDrivenImageValue' value='CASETRANSACTION'>
-        <h3 class="heading-medium" *ngIf="!IS_BUTTON_ENABLE">Unprocessed payments</h3>
-        <h3 class="heading-medium" *ngIf="IS_BUTTON_ENABLE">Unallocated payments</h3>
-          <table class="govuk-table">
-            <thead class="govuk-table__head">
-              <tr class="govuk-table__row">
-                  <td class="govuk-table__header" scope="col" *ngIf="IS_BUTTON_ENABLE && !isTurnOff">Select</td>
-                  <td class="govuk-table__header" scope="col" *ngIf="IS_BUTTON_ENABLE && isTurnOff"><a href="#" (click)="unprocessedPaymentUnSelectEvent($event)">Unselect</a></td>
-      
-                  <td class="govuk-table__header" scope="col">Payment asset number (DCN)</td>
-                  <td class="govuk-table__header" scope="col">Banked date</td>
-                  <td class="govuk-table__header" scope="col">Amount</td>
-                  <td class="govuk-table__header" scope="col">Method</td>
-                 </tr>
-            </thead>
-            <tbody class="govuk-table__body" >
-              <tr class="govuk-table__row" *ngFor="let unassignedRecord of unassignedRecordList; let i of index;">
-                  <td class="govuk-table__cell" *ngIf="IS_BUTTON_ENABLE">
-                    <div class="multiple-choice unprocessed-payments--radio-button">
-                      <input id="'unpaiedFee'+i+''"
-                      aria-label="unassignedRecord"
-                      name="unassignedRecord"
-                      type="radio"
-                      [(ngModel)]="recordId"
-                      (click)="unprocessedPaymentSelectEvent(unassignedRecord.dcn_reference)"
-                      value="{{unassignedRecord.dcn_reference}}" />
-                      <label for="radio-inline-1"></label>
-                    </div>
-                  </td>
-                  <td class="govuk-table__cell whitespace-inherit">
-                    {{unassignedRecord.dcn_reference}}
-                  </td>
-                  <td class="govuk-table__cell whitespace-inherit"> {{unassignedRecord.date_banked | date:'dd MMM yyyy'}}</td>
-                  <td class="govuk-table__cell whitespace-inherit"> {{unassignedRecord.amount | currency :'GBP':'symbol':'1.2-2'}}</td>
-                  <td class="capitalize govuk-table__cell whitespace-inherit"> {{ trimUnderscore(unassignedRecord.payment_method) | lowercase}}  </td>
-                </tr>
-            </tbody>
-            <tbody class="govuk-table__body" *ngIf="upPaymentErrorMessage !== null">
-              <td class="govuk-table__cell" colspan="6">No unallocated payments record available</td>
-            </tbody>
-          </table>
-         <div class="button-grb" *ngIf="IS_BUTTON_ENABLE && !isTurnOff">
-            <button type="button"
-            [disabled]="!isAllocatedToNewFeebtnEnabled"
-            [ngClass]="!isAllocatedToNewFeebtnEnabled ? 'button govuk-button--secondary button--disabled govuk-!-margin-right-1' : 'button govuk-button--secondary govuk-!-margin-right-1'" (click)="redirectToFeeSearchPage($event)">
-              Allocate to a new fee
-            </button>
-            <button type="button" 
-            [disabled]="!isAllocateToExistingFeebtnEnabled"
-            [ngClass]='!isAllocateToExistingFeebtnEnabled ?  "button govuk-button--secondary button--disabled govuk-!-margin-right-1" : "button govuk-button--secondary govuk-!-margin-right-1"' (click)="goToAllocatePage()">
-              Allocate to an existing fee
-            </button>
-            <button type="button" 
-            [disabled]="!isMarkAsUnidentifiedbtnEnabled"
-            [ngClass]='!isMarkAsUnidentifiedbtnEnabled ?  "button govuk-button--secondary button--disabled govuk-!-margin-right-1" : "button govuk-button--secondary govuk-!-margin-right-1"' (click)="loadUnsolicitedPage('unidentifiedPage')">
-              Mark as unidentified
-            </button>
-            <button type="button" 
-            [disabled]="!isUnprocessedRecordSelected"
-            [ngClass]='!isUnprocessedRecordSelected ?  "button govuk-button--secondary button--disabled govuk-!-margin-right-1" : "button govuk-button--secondary govuk-!-margin-right-1"' (click)="loadUnsolicitedPage('unsolicitedPage')">
-              Mark as transferred
-            </button>  
-         </div>
-      
-         <div class="button-grb" *ngIf="IS_BUTTON_ENABLE && isTurnOff">
-            <button type="button"
-            [disabled]="!isAllocatedToNewFeebtnEnabled"
-            [ngClass]="!isAllocatedToNewFeebtnEnabled ? 'button button--disabled govuk-!-margin-right-1' : 'button govuk-!-margin-right-1'" (click)="redirectToFeeSearchPage($event)">
-              Allocate to a new fee
-            </button>
-            <button type="button" 
-            [disabled]="!isAllocateToExistingFeebtnEnabled"
-            [ngClass]='!isAllocateToExistingFeebtnEnabled ?  "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"' (click)="goToAllocatePage()">
-              Allocate to an existing fee
-            </button>
-            <button type="button" 
-            [disabled]="!isMarkAsUnidentifiedbtnEnabled"
-            [ngClass]='!isMarkAsUnidentifiedbtnEnabled ?  "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"' (click)="loadUnsolicitedPage('unidentifiedPage')">
-              Mark as unidentified
-            </button>
-            <button type="button" 
-            [disabled]="!isUnprocessedRecordSelected"
-            [ngClass]='!isUnprocessedRecordSelected ?  "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"' (click)="loadUnsolicitedPage('unsolicitedPage')">
-              Mark as transferred
-            </button> 
-         </div>
-      </div>
+<div class="unprocessed-payments govuk-grid-column-full govuk-!-padding-bottom-3">
+  <input #myInput type='hidden' class='iFrameDrivenImageValue' value='CASETRANSACTION'>
+  <h3 class="heading-medium" *ngIf="!IS_BUTTON_ENABLE">Unprocessed payments</h3>
+  <h3 class="heading-medium" *ngIf="IS_BUTTON_ENABLE">Unallocated payments</h3>
+  <table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <td class="govuk-table__header" scope="col" *ngIf="IS_BUTTON_ENABLE && !isTurnOff">Select</td>
+        <td class="govuk-table__header" scope="col" *ngIf="IS_BUTTON_ENABLE && isTurnOff"><a href="#" (click)="unprocessedPaymentUnSelectEvent($event)">Unselect</a></td>
+
+        <td class="govuk-table__header" scope="col">Payment asset number (DCN)</td>
+        <td class="govuk-table__header" scope="col">Banked date</td>
+        <td class="govuk-table__header" scope="col">Amount</td>
+        <td class="govuk-table__header" scope="col">Method</td>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body" >
+      <tr class="govuk-table__row" *ngFor="let unassignedRecord of unassignedRecordList; let i of index;">
+        <td class="govuk-table__cell" *ngIf="IS_BUTTON_ENABLE">
+          <div class="multiple-choice unprocessed-payments--radio-button">
+            <input id="'unpaiedFee'+i+''"
+              aria-label="unassignedRecord"
+              name="unassignedRecord"
+              type="radio"
+              [(ngModel)]="recordId"
+              (click)="unprocessedPaymentSelectEvent(unassignedRecord.dcn_reference)"
+              value="{{unassignedRecord.dcn_reference}}" />
+            <label for="radio-inline-1"></label>
+          </div>
+        </td>
+        <td class="govuk-table__cell whitespace-inherit">
+          {{unassignedRecord.dcn_reference}}
+        </td>
+        <td class="govuk-table__cell whitespace-inherit"> {{unassignedRecord.date_banked | date:'dd MMM yyyy'}}</td>
+        <td class="govuk-table__cell whitespace-inherit"> {{unassignedRecord.amount | currency :'GBP':'symbol':'1.2-2'}}</td>
+        <td class="capitalize govuk-table__cell whitespace-inherit"> {{ trimUnderscore(unassignedRecord.payment_method) | lowercase}}  </td>
+      </tr>
+    </tbody>
+    <tbody class="govuk-table__body" *ngIf="upPaymentErrorMessage !== null">
+      <td class="govuk-table__cell" colspan="6">No unallocated payments record available</td>
+    </tbody>
+  </table>
+  <div class="button-grb" *ngIf="IS_BUTTON_ENABLE && !isTurnOff">
+    <button type="button"
+      [disabled]="!isAllocatedToNewFeebtnEnabled"
+      [ngClass]="!isAllocatedToNewFeebtnEnabled ? 'button govuk-button--secondary button--disabled govuk-!-margin-right-1' : 'button govuk-button--secondary govuk-!-margin-right-1'" (click)="redirectToFeeSearchPage($event)">
+      Allocate to a new fee
+    </button>
+    <button type="button"
+      [disabled]="!isAllocateToExistingFeebtnEnabled"
+      [ngClass]='!isAllocateToExistingFeebtnEnabled ?  "button govuk-button--secondary button--disabled govuk-!-margin-right-1" : "button govuk-button--secondary govuk-!-margin-right-1"' (click)="goToAllocatePage()">
+      Allocate to an existing fee
+    </button>
+    <button type="button"
+      [disabled]="!isMarkAsUnidentifiedbtnEnabled"
+      [ngClass]='!isMarkAsUnidentifiedbtnEnabled ?  "button govuk-button--secondary button--disabled govuk-!-margin-right-1" : "button govuk-button--secondary govuk-!-margin-right-1"' (click)="loadUnsolicitedPage('unidentifiedPage')">
+      Mark as unidentified
+    </button>
+    <button type="button"
+      [disabled]="!isUnprocessedRecordSelected"
+      [ngClass]='!isUnprocessedRecordSelected ?  "button govuk-button--secondary button--disabled govuk-!-margin-right-1" : "button govuk-button--secondary govuk-!-margin-right-1"' (click)="loadUnsolicitedPage('unsolicitedPage')">
+      Mark as transferred
+    </button>
+  </div>
+
+  <div class="button-grb" *ngIf="IS_BUTTON_ENABLE && isTurnOff">
+    <button type="button"
+      [disabled]="!isAllocatedToNewFeebtnEnabled"
+      [ngClass]="!isAllocatedToNewFeebtnEnabled ? 'button button--disabled govuk-!-margin-right-1' : 'button govuk-!-margin-right-1'" (click)="redirectToFeeSearchPage($event)">
+      Allocate to a new fee
+    </button>
+    <button type="button"
+      [disabled]="!isAllocateToExistingFeebtnEnabled"
+      [ngClass]='!isAllocateToExistingFeebtnEnabled ?  "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"' (click)="goToAllocatePage()">
+      Allocate to an existing fee
+    </button>
+    <button type="button"
+      [disabled]="!isMarkAsUnidentifiedbtnEnabled"
+      [ngClass]='!isMarkAsUnidentifiedbtnEnabled ?  "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"' (click)="loadUnsolicitedPage('unidentifiedPage')">
+      Mark as unidentified
+    </button>
+    <button type="button"
+      [disabled]="!isUnprocessedRecordSelected"
+      [ngClass]='!isUnprocessedRecordSelected ?  "button button--disabled govuk-!-margin-right-1" : "button govuk-!-margin-right-1"' (click)="loadUnsolicitedPage('unsolicitedPage')">
+      Mark as transferred
+    </button>
+  </div>
+</div>
 </ng-container> -->
 
 
-<ng-container *ngIf="!IS_BUTTON_ENABLE">
-    <table class="govuk-table">
-       
-        <thead class="govuk-table__head" *ngIf='PAYMENTSLENGTH === 0 '>
-            <!-- <tr class="govuk-table__row">
-                <td class="govuk-table__header col-14" scope="col">Status</td>
-                <td class="govuk-table__header col-10" scope="col">Amount</td>
-                <td class="govuk-table__header col-14" scope="col">Date</td>
-                <td class="govuk-table__header col-20" scope="col">Request reference</td>
-                <td class="govuk-table__header col-9" scope="col"></td>
-                <td class="govuk-table__header" scope="col"></td>
-              </tr> -->
-          </thead>
-          <tbody class="govuk-table__body">
-          <tr class="govuk-table__row" *ngFor="let unassignedRecord of unassignedRecordList; let i = index;">
-                    <td class="govuk-table__cell whitespace-inherit" class="col-13">
-                    Unallocated 
-                    </td>
-                    <td class="govuk-table__cell whitespace-inherit"> {{unassignedRecord.amount | currency :'GBP':'symbol':'1.2-2'}}</td>
-                    <td class="govuk-table__cell whitespace-inherit"></td>
-                    <td class="govuk-table__cell whitespace-inherit"></td>
-                    <td class="govuk-table__cell whitespace-inherit"></td>
-                    <td class="govuk-table__cell whitespace-inherit"></td>
-          </tr>
-          </tbody>
-       
-    </table>
-
-</ng-container>
+@if (!IS_BUTTON_ENABLE) {
+  <table class="govuk-table">
+    @if (PAYMENTSLENGTH === 0 ) {
+      <thead class="govuk-table__head">
+        <!-- <tr class="govuk-table__row">
+        <td class="govuk-table__header col-14" scope="col">Status</td>
+        <td class="govuk-table__header col-10" scope="col">Amount</td>
+        <td class="govuk-table__header col-14" scope="col">Date</td>
+        <td class="govuk-table__header col-20" scope="col">Request reference</td>
+        <td class="govuk-table__header col-9" scope="col"></td>
+        <td class="govuk-table__header" scope="col"></td>
+      </tr> -->
+    </thead>
+  }
+  <tbody class="govuk-table__body">
+    @for (unassignedRecord of unassignedRecordList; track unassignedRecord; let i = $index) {
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell whitespace-inherit" class="col-13">
+          Unallocated
+        </td>
+        <td class="govuk-table__cell whitespace-inherit"> {{unassignedRecord.amount | currency :'GBP':'symbol':'1.2-2'}}</td>
+        <td class="govuk-table__cell whitespace-inherit"></td>
+        <td class="govuk-table__cell whitespace-inherit"></td>
+        <td class="govuk-table__cell whitespace-inherit"></td>
+        <td class="govuk-table__cell whitespace-inherit"></td>
+      </tr>
+    }
+  </tbody>
+</table>
+}
 
 
 <!--Orders Unallocated changes-->
-<ng-container *ngIf="IS_BUTTON_ENABLE">
-    <div class="unprocessed-payments">
-        <input #myInput type='hidden' class='iFrameDrivenImageValue' value='CASETRANSACTION'>
-          <table class="table">
-             
-              <thead class="govuk-table__head">
-                  <tr class="govuk-table__row">
-                      <td class="govuk-table__header col-13" scope="col">Status</td>
-                      <td class="govuk-table__header col-9" scope="col">Amount</td>
-                      <td class="govuk-table__header col-16" scope="col">Date allocated</td>
-                      <td class="govuk-table__header col-24" colspan="3" scope="col">Request reference</td>
-                      <td class="govuk-table__header col-13" scope="col"></td>
-                      <td class="govuk-table__header" scope="col"></td>
-                    </tr>
-                </thead>
-              <tbody>
-            <ng-container *ngFor="let unassignedRecord of unassignedRecordList; let i = index;">
-             <tr>
-                <td  class="govuk-table__cell whitespace-inherit col-13" >
-                  Unallocated 
-               </td>
-                <td class="govuk-table__cell whitespace-inherit col-10">
-                    {{unassignedRecord.amount | currency :'GBP':'symbol':'1.2-2'}}
-                </td>
-                <td class="govuk-table__cell whitespace-inherit" colspan="8">
-                    <div  *ngIf="IS_BUTTON_ENABLE && !isTurnOff" class="alignright">
-                        <button type="button"
-                        [disabled]="!isAllocatedToNewFeebtnEnabled"
-                        [ngClass]="!isAllocatedToNewFeebtnEnabled ? 'button govuk-button--secondary button--disabled' : 'button govuk-button--secondary'" (click)="redirectToFeeSearchPage($event,unassignedRecord.dcn_reference)">
-                          Allocate to new service request
-                        </button><br/>
-                        <button type="button" 
-                        [disabled]="!isAllocateToExistingFeebtnEnabled"
-                        [ngClass]='!isAllocateToExistingFeebtnEnabled ?  "button govuk-button--secondary button--disabled" : "button govuk-button--secondary"' (click)="goToAllocatePage(unassignedRecord.dcn_reference)">
-                          Allocate to existing service request 
-                        </button>
+@if (IS_BUTTON_ENABLE) {
+  <div class="unprocessed-payments">
+    <input #myInput type='hidden' class='iFrameDrivenImageValue' value='CASETRANSACTION'>
+    <table class="table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header col-13" scope="col">Status</td>
+          <td class="govuk-table__header col-9" scope="col">Amount</td>
+          <td class="govuk-table__header col-16" scope="col">Date allocated</td>
+          <td class="govuk-table__header col-24" colspan="3" scope="col">Request reference</td>
+          <td class="govuk-table__header col-13" scope="col"></td>
+          <td class="govuk-table__header" scope="col"></td>
+        </tr>
+      </thead>
+      <tbody>
+        @for (unassignedRecord of unassignedRecordList; track unassignedRecord; let i = $index) {
+          <tr>
+            <td  class="govuk-table__cell whitespace-inherit col-13" >
+              Unallocated
+            </td>
+            <td class="govuk-table__cell whitespace-inherit col-10">
+              {{unassignedRecord.amount | currency :'GBP':'symbol':'1.2-2'}}
+            </td>
+            <td class="govuk-table__cell whitespace-inherit" colspan="8">
+              @if (IS_BUTTON_ENABLE && !isTurnOff) {
+                <div  class="alignright">
+                  <button type="button"
+                    [disabled]="!isAllocatedToNewFeebtnEnabled"
+                    [ngClass]="!isAllocatedToNewFeebtnEnabled ? 'button govuk-button--secondary button--disabled' : 'button govuk-button--secondary'" (click)="redirectToFeeSearchPage($event,unassignedRecord.dcn_reference)">
+                    Allocate to new service request
+                  </button><br/>
+                  <button type="button"
+                    [disabled]="!isAllocateToExistingFeebtnEnabled"
+                    [ngClass]='!isAllocateToExistingFeebtnEnabled ?  "button govuk-button--secondary button--disabled" : "button govuk-button--secondary"' (click)="goToAllocatePage(unassignedRecord.dcn_reference)">
+                    Allocate to existing service request
+                  </button>
                 </div>
-            
-                </td>
-             </tr>
-           
-              <!-- <ng-container> -->
-             <tr>
-                  <td class="unassigned noborders" colspan="10">
-                      <summary (click)="unassignedRecord.expanded = !unassignedRecord.expanded" class="govuk-details__summary">
-                          <span class="govuk-details__summary-text">
-                              More details and actions
-                          </span>
-                      </summary>
-                      <div *ngIf="unassignedRecord.expanded" class="govuk-details__text  govuk-!-margin-bottom-5 paddingright">
-                          <dl class="govuk-summary-list govuk-!-margin-bottom-5">
-                              <div class="govuk-summary-list__row">
-                                  <dt class="govuk-summary-list__key">
-                                      Method
-                                  </dt>
-                                  <dd class="govuk-summary-list__value">
-                                      {{ trimUnderscore(unassignedRecord.payment_method) | lowercase}}
-                                  </dd>
-                              </div>
-                              <div class="govuk-summary-list__row">
-                                  <dt class="govuk-summary-list__key">
-                                      Payment assest number (DCN) 
-                                  </dt>
-                                  <dd class="govuk-summary-list__value">
-                                      {{unassignedRecord.dcn_reference}}
-                                  </dd>
-                              </div>
-                          </dl>
-                          <div class=" govuk-!-margin-bottom-5">
-                              <button type="button" 
-                              [disabled]="!isMarkAsUnidentifiedbtnEnabled"
-                              [ngClass]='!isMarkAsUnidentifiedbtnEnabled ?  "button govuk-button--secondary button--disabled" : "button govuk-button--secondary"' (click)="loadUnsolicitedPage('unidentifiedPage',unassignedRecord.dcn_reference)">
-                                Mark as unidentified
-                              </button>
-                          </div>
-                          <div>
-                              <button type="button" 
-                          [disabled]="!isUnprocessedRecordSelected"
-                          [ngClass]='!isUnprocessedRecordSelected ?  "button govuk-button--secondary button--disabled" : "button govuk-button--secondary"' (click)="loadUnsolicitedPage('unsolicitedPage',unassignedRecord.dcn_reference)">
-                            Mark as transferred
-                          </button>  
-                          </div>
+              }
+            </td>
+          </tr>
+          <!-- <ng-container> -->
+          <tr>
+            <td class="unassigned noborders" colspan="10">
+              <summary (click)="unassignedRecord.expanded = !unassignedRecord.expanded" class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                  More details and actions
+                </span>
+              </summary>
+              @if (unassignedRecord.expanded) {
+                <div class="govuk-details__text  govuk-!-margin-bottom-5 paddingright">
+                  <dl class="govuk-summary-list govuk-!-margin-bottom-5">
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key">
+                        Method
+                      </dt>
+                      <dd class="govuk-summary-list__value">
+                        {{ trimUnderscore(unassignedRecord.payment_method) | lowercase}}
+                      </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key">
+                        Payment assest number (DCN)
+                      </dt>
+                      <dd class="govuk-summary-list__value">
+                        {{unassignedRecord.dcn_reference}}
+                      </dd>
+                    </div>
+                  </dl>
+                  <div class=" govuk-!-margin-bottom-5">
+                    <button type="button"
+                      [disabled]="!isMarkAsUnidentifiedbtnEnabled"
+                      [ngClass]='!isMarkAsUnidentifiedbtnEnabled ?  "button govuk-button--secondary button--disabled" : "button govuk-button--secondary"' (click)="loadUnsolicitedPage('unidentifiedPage',unassignedRecord.dcn_reference)">
+                      Mark as unidentified
+                    </button>
+                  </div>
+                  <div>
+                    <button type="button"
+                      [disabled]="!isUnprocessedRecordSelected"
+                      [ngClass]='!isUnprocessedRecordSelected ?  "button govuk-button--secondary button--disabled" : "button govuk-button--secondary"' (click)="loadUnsolicitedPage('unsolicitedPage',unassignedRecord.dcn_reference)">
+                      Mark as transferred
+                    </button>
+                  </div>
+                </div>
+              }
+            </td>
+          </tr>
+        <!-- </ng-container> -->
+      }
+    </tbody>
+  </table>
+</div>
+}
 
-                      </div>
-                  </td> 
-                </tr> 
-              <!-- </ng-container> -->
-             </ng-container>
-              </tbody>
-              </table>
-      
-        </div>
-</ng-container>
-
-<ng-container *ngIf="viewStatus === 'main'">
-
-</ng-container>
+@if (viewStatus === 'main') {
+}
 <!-- <ng-container *ngIf="PAYMENTSLENGTH === 0 && unassignedRecordListLength === 0">
-  <br/>No payments.<br/>
+<br/>No payments.<br/>
 </ng-container> -->
 

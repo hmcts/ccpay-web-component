@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {IPaymentGroup} from '../../interfaces/IPaymentGroup';
 import {PaymentViewService} from '../../services/payment-view/payment-view.service';
 import {BulkScaningPaymentService} from '../../services/bulk-scaning-payment/bulk-scaning-payment.service';
@@ -26,6 +26,7 @@ const KERV_VALUE = 'kerv';
     selector: 'ccpay-fee-summary',
     templateUrl: './fee-summary.component.html',
     styleUrls: ['./fee-summary.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 import { PaymentListComponent } from './components/payment-list/payment-list.component';
@@ -102,7 +102,7 @@ import { RpxTranslationModule } from 'rpx-xui-translation';
         { provide: LoggerService, useClass: ConsoleLoggerService },
         XlFileService,
         WebComponentHttpClient,
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withXhr(), withInterceptorsFromDi())
     ] })
 
 export class PaymentLibModule { }

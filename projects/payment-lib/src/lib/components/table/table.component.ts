@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, ChangeDetectorRef, Inject } from '@angular/core';
+import { Component, ViewChild, Input, ChangeDetectorRef, Inject, ChangeDetectionStrategy } from '@angular/core';
 import type { PaymentLibComponent } from '../../payment-lib.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -11,6 +11,7 @@ type PaymentLibAlias = PaymentLibComponent;
     selector: 'ccpay-table',
     templateUrl: './table.component.html',
     styleUrls: ['./table.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TableComponent {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import type { PaymentLibComponent } from '../../payment-lib.component';
 import { BulkScaningPaymentService } from '../../services/bulk-scaning-payment/bulk-scaning-payment.service';
@@ -13,6 +13,7 @@ type PaymentLibAlias = PaymentLibComponent;
     selector: 'app-mark-unsolicited-payment',
     templateUrl: './mark-unsolicited-payment.component.html',
     styleUrls: ['./mark-unsolicited-payment.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MarkUnsolicitedPaymentComponent implements OnInit {
