@@ -9,8 +9,8 @@
           Menu
         </button>
         <ul class="govuk-service-navigation__list" id="navigation">
-          <li class="govuk-service-navigation__item">
-            <a class="govuk-service-navigation__link" routerLink="/ccd-search" [queryParams]="{ viewName: 'case-transactions' }">CCD-SEARCH</a>
+          <li class="govuk-service-navigation__item" routerLinkActive="govuk-service-navigation__item--active">
+            <a class="govuk-service-navigation__link" ariaCurrentWhenActive="page" routerLink="/ccd-search" [queryParams]="{ viewName: 'case-transactions' }">CCD-SEARCH</a>
           </li>
         </ul>
       </nav>
