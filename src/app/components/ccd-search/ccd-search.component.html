@@ -1,9 +1,9 @@
 <form novalidate>
   <div class="govuk-form-group">
     <form [formGroup]="searchForm" novalidate>
-      <label class="govuk-label heading-small" for="ccd-search">
+      <label class="govuk-label govuk-heading-s" for="ccd-search">
         Enter ccd-case number:
-        <span class="form-hint">For example: 1111-2222-3333-4444</span>
+        <span class="govuk-hint">For example: 1111-2222-3333-4444</span>
       </label>
       <input class="govuk-input govuk-input--width-20 govuk-!-margin-right-1" id="ccd-search" name="ccd-search" type="text" formControlName="searchInput">
       <button class="govuk-button" type="submit" (click)="showCaseTransactions()">

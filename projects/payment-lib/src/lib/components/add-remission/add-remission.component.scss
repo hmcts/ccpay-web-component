@@ -1,12 +1,12 @@
 .add-remission {
-  .button {
-    margin-top: 20px;
-    margin-left: 2px;
-    margin-right: 2px;
-    margin-bottom: 20px;
-    padding: 0.5em;
-    font-size: 19px;
-    font-weight: 200;
+
+  .govuk-radios__item {
+    display: inline-flex !important;
+    vertical-align: top;
+  }
+
+  > p:last-child {
+    padding-bottom: 30px;
   }
 
   td.govuk-table__cell {
@@ -51,21 +51,15 @@
     padding-top: 2em;
   }
 
-  .heading-medium {
-    margin-top: 0.875em;
-  }
-  .heading-large {
-    margin-top: 0.25em;
-  }
   .govuk-panel--confirmation {
     color: #FFFFFF;
     background: #00703C;
   }
   .govuk-panel__title {
-    font-size: 5rem;
+    font-size: 50px;
   }
   .govuk-body-m, .govuk-body {
-    font-size: 2.1875rem;
+    font-size: 22px;
   }
 
   .govuk-radios__item {
@@ -88,7 +82,7 @@
   }
 }
 
-.govuk-input, .govuk-font19px {
+.govuk-input {
   font-size: 19px;
 }
 
@@ -97,17 +91,8 @@
   font-weight: 400;
  }
 
-.govuk-input--width-10 {
-  max-width: 50ex;
-}
-
-.govuk-input--width-small{
+.app-input--width-small{
   max-width: 110px;
-}
-
-.govuk-input-width-10-left{
-  max-width: 50ex;
-  padding-left: 40px;
 }
 
 .govuk-label--m {
@@ -143,9 +128,6 @@
 
 .pointer {
   cursor: pointer;
-}
-.form-hint {
-  font-size: 19px !important;
 }
 
 .col-18 {
@@ -189,9 +171,6 @@
 .right {
   cursor: pointer;
 }
-.form-hint {
-  font-size: 19px !important;
-}
 .govuk-panel-border--confirmation {
   color: #0b0c0c;
   border: 5px solid #00703C;
@@ -203,19 +182,4 @@
 
 .govuk-link {
   cursor: pointer;
-}
-
-.hmcts-currency-input__symbol {
-  font-family: nta,Arial,sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 16px;
-  line-height: initial;
-  position: absolute;
-  font-weight: 200;
-  padding: 8px 10px;
-  height: 40px;
-  box-sizing: border-box;
-  background-color: #dee0e2;
-  border: 2px solid #0b0c0c;
 }

@@ -1,4 +1,14 @@
-import {ChangeDetectorRef, Component, forwardRef, Input, OnInit} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  forwardRef,
+  Input,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
+import {initAll} from 'govuk-frontend';
 import {PaymentLibService} from './payment-lib.service';
 import {IBSPayments} from './interfaces/IBSPayments';
 import {OrderslistService} from './services/orderslist.service';
@@ -55,7 +65,7 @@ import {AddRetroRemissionRequest} from "./interfaces/AddRetroRemissionRequest";
     standalone: false
 })
 
-export class PaymentLibComponent implements OnInit {
+export class PaymentLibComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input('API_ROOT') API_ROOT: string;
   @Input('BULKSCAN_API_ROOT') BULKSCAN_API_ROOT: string;
   @Input('REFUNDS_API_ROOT') REFUNDS_API_ROOT: string;
@@ -106,6 +116,8 @@ export class PaymentLibComponent implements OnInit {
   isFromPaymentDetailPage: boolean;
   pbaPayOrderRef: IPayment;
   isTakePayment: boolean;
+  private govukObserver?: MutationObserver;
+  private govukInitialisationQueued = false;
 
   orderDetail: any[];
   orderRef: string;
@@ -126,7 +138,8 @@ export class PaymentLibComponent implements OnInit {
 
   constructor(private paymentLibService: PaymentLibService,
     private cd: ChangeDetectorRef,
-    private OrderslistService: OrderslistService) { }
+    private OrderslistService: OrderslistService,
+    private hostElement: ElementRef<HTMLElement>) { }
   ngAfterContentChecked(): void {
     this.cd.detectChanges();
   }
@@ -167,6 +180,40 @@ export class PaymentLibComponent implements OnInit {
     if (this.API_ROOT == 'api/payment-history') {
       this.isFromPayBubble = true;
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.queueGovukInitialisation();
+
+    this.govukObserver = new MutationObserver(() => this.queueGovukInitialisation());
+    this.govukObserver.observe(this.hostElement.nativeElement, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.govukObserver?.disconnect();
+  }
+
+  private queueGovukInitialisation(): void {
+    if (this.govukInitialisationQueued) {
+      return;
+    }
+
+    this.govukInitialisationQueued = true;
+    queueMicrotask(() => {
+      this.govukInitialisationQueued = false;
+      initAll({
+        scope: this.hostElement.nativeElement,
+        onError: (error: Error) => {
+          // Angular can leave already-initialised components in the scoped subtree.
+          if (error.name !== 'InitError') {
+            console.error(error);
+          }
+        }
+      });
+    });
   }
 
 

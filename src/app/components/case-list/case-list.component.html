@@ -1,26 +1,24 @@
-<main class="govuk-main-wrapper " id="main-content" role="main">
-<div>
-  <h1 class="govuk-heading-xl">Cases</h1>
-</div>
+<h1 class="govuk-heading-xl">Cases</h1>
 
-<div class="container">
-    <table class="govuk-table">
-      <tr class="govuk-table__row">
-        <th class="govuk-table__header">Case reference</th>
-        <th class="govuk-table__header">Petitioner</th>
-        <th class="govuk-table__header">Respondent</th>
-        <th class="govuk-table__header">DataOfLastCourtAction</th>
-        <th class="govuk-table__header">ApplicationStatus</th>
-      </tr>
-      <tr *ngFor="let case of cases" class="govuk-table__row">
-        <td class="govuk-table__cell">
-          <a routerLink="/payment-lib-int/{{ case.ccdCaseNumber }}" [queryParams]="{ paymentMethod: 'card' }">{{ case.ccdCaseNumber }}</a>
-        </td>
-        <td class="govuk-table__cell">{{ case.petitioner }}</td>
-        <td class="govuk-table__cell">{{ case.respondent }}</td>
-        <td class="govuk-table__cell">{{ case.dateOfLastCourtAction }}</td>
-        <td class="govuk-table__cell">{{ case.applicationStatus }}</td>
-      </tr>
-    </table>
-</div>
-</main>
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Case reference</th>
+      <th scope="col" class="govuk-table__header">Petitioner</th>
+      <th scope="col" class="govuk-table__header">Respondent</th>
+      <th scope="col" class="govuk-table__header">Date of last court action</th>
+      <th scope="col" class="govuk-table__header">Application status</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <tr *ngFor="let case of cases" class="govuk-table__row">
+      <td class="govuk-table__cell">
+        <a class="govuk-link" routerLink="/payment-lib-int/{{ case.ccdCaseNumber }}" [queryParams]="{ paymentMethod: 'card' }">{{ case.ccdCaseNumber }}</a>
+      </td>
+      <td class="govuk-table__cell">{{ case.petitioner }}</td>
+      <td class="govuk-table__cell">{{ case.respondent }}</td>
+      <td class="govuk-table__cell">{{ case.dateOfLastCourtAction }}</td>
+      <td class="govuk-table__cell">{{ case.applicationStatus }}</td>
+    </tr>
+  </tbody>
+</table>
