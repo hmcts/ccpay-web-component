@@ -21,10 +21,10 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
-      - name: use node.js 20.19.0
+      - name: use node.js 22.23.4
         uses: actions/setup-node@v4
         with:
-          node-version: 20.19.0
+          node-version: 22.23.4
       - name: Ensure npm version (Trusted Publishing)
         run: |
           npm --version
