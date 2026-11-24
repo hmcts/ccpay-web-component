@@ -1,226 +1,246 @@
-<ng-container *ngIf="viewStatus === 'RefundProcess'">
-<div class="govuk-width-container">
-
-  <main class="govuk-main-wrapper govuk-!-padding-top-0" [ngClass]="{'govuk-radios__conditional--hidden': isSuccesspageEnable}" id="main-content" role="main">
-    <div *ngIf="errorMessage.showError">
-      <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
-        <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
-          {{errorMessage.title}}
-        </h2>
-        <div class="govuk-error-summary__body process-refund-font">
-          {{errorMessage.body}}
-        </div>
-      </div>
-    </div>
-
-    <div class="payment-view-alignment">
-
-      <div class="govuk-grid-row">
-        <div class="column">
-          <h1 class="heading-large govuk-!-margin-top-0">Review refund details</h1>
-        </div>
-      </div>
-      <table>
-        <tbody>
-
-        <tr class="section">
-          <td class="bold tb-col-w">Payment to be refunded</td>
-          <td colspan="2">{{refundlistsource?.refund_reference}} ({{refundlistsource.amount  | currency :'GBP':'symbol':'1.2-2'  }})</td>
-        </tr>
-        <tr class="section">
-          <td class="bold tb-col-w">Reason for refund</td>
-          <td colspan="2">{{refundlistsource?.reason?.trim()}}</td>
-        </tr>
-        <tr class="section">
-            <td class="bold tb-col-w">Amount to be refunded</td>
-            <td colspan="2">{{refundlistsource?.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
-        </tr>
-        <tr class="section">
-          <td class="bold tb-col-w">Sent to</td>
-          <td colspan="2">{{cpoDetails?.responsibleParty}}</td>
-        </tr>
-        <tr class="section">
-          <td class="bold tb-col-w">Sent via</td>
-          <td colspan="2">
-          <div *ngIf="refundlistsource?.contact_details?.notification_type === 'EMAIL'" class="contactDetails-width font-size-19px">
-            <strong>Email</strong>
-            <br/>
-            {{refundlistsource?.contact_details?.email?.trim()}}
-          </div>
-          <div *ngIf="refundlistsource?.contact_details?.notification_type === 'LETTER'" class="contactDetails-width font-size-19px">
-            <strong>Post</strong>
-            <br/>
-            {{refundlistsource?.contact_details?.address_line?.trim()}} {{refundlistsource?.contact_details?.city?.trim()}} {{refundlistsource?.contact_details?.county?.trim()}} {{refundlistsource?.contact_details?.country?.trim()}} {{refundlistsource?.contact_details?.postal_code?.trim()}}
-          </div> 
-          </td>
-        </tr>
-        <tr class="section">
-            <td class="bold tb-col-w">Submitted by</td>
-            <td colspan="2">{{refundlistsource?.user_full_name}}</td>
-
-        </tr>
-        <tr class="section">
-            <td class="bold tb-col-w">Date submitted</td>
-            <td colspan="2">{{refundlistsource?.date_created | date:'d MMMM yyyy' }}</td>
-        </tr>
-        <tr class="section">
-          <td class="bold tb-col-w">Notification</td>
-          <td>{{templateInstructionType}}</td>
-          <td>
-            <a *ngIf="!notificationPreview" href="Javascript:void(0)" class="govuk-link pointer right" (click)="showNotificationPreview()">
-              Preview
-            </a>
-            <a *ngIf="notificationPreview" href="Javascript:void(0)" class="govuk-link pointer right" (click)="hideNotificationPreview()">
-              Hide Preview
-            </a>
-        </td>
-
-      </tr>
-
-        </tbody>
-      </table>
-
-      <app-notification-preview *ngIf="notificationPreview" [paymentReference]="refundlistsource?.payment_reference"
-        [payment]="paymentObj"
-        [contactDetails]="refundlistsource?.contact_details"
-        [refundReason]="refundlistsource?.reason_code" [refundAmount]="refundlistsource?.amount"
-        [refundReference]="refundlistsource?.refund_reference"
-        (notificationPreviewEvent) = "getNotificationPreviewObj($event)">
-      </app-notification-preview>
-
-      <div>
-      </div>
-    </div>
-    <div class="process-refund__panel">
-      <form [formGroup]="processRefundForm" novalidate>
-        <div class="">
-        <fieldset class="govuk-fieldset" aria-describedby="sign-in-hint">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="heading-large">
-              What do you want to do with this refund?
-            </h1>
-          </legend>
-          <div class="govuk-radios"  [ngClass]="{'form-group-error': refundActionsHasError}">
-            <p class="inline-error-message"
-            *ngIf="refundActionsHasError">
-            <span *ngIf="refundActionsHasError">Please select an action</span>
-          </p>
-            <div class="govuk-radios__item" *ngFor="let refundAction of refundActionList; let i = index;">
-              <input class="govuk-radios__input" 
-              id="refundAction-{{i}}" 
-              name="refundActionField"
-              type="radio"
-              formControlName="refundActionField"
-              (click)="checkRefundActions(refundAction.code)"
-                value="{{refundAction.code}}">
-              <label class="govuk-label govuk-radios__label process-refund-font" for="refundAction-{{i}}">
-                {{refundAction.code}}
-              </label>
-              <div id="sign-in-item-hint" class="govuk-hint govuk-radios__hint process-refund-font">
-                {{refundAction.label}}
-              </div>
-            </div>
-            <div class="govuk-radios__conditional" [ngClass]="{'govuk-radios__conditional--hidden': !isSendMeBackClicked}">
-              <div class="govuk-form-group">
-                <label class="govuk-label process-refund-font" for="contact-by-text">
-                  Add a reason
-                </label>
-                <p class="inline-error-message"
-                *ngIf="isReasonFieldEmpty || isReasonFieldInvalid || reasonFieldMinHasError || reasonFieldMaxHasError">
-                <span *ngIf="isReasonFieldEmpty">Add a reason</span>
-                <span *ngIf="isReasonFieldInvalid">Add a valid reason</span>
-                <span *ngIf="reasonFieldMinHasError">Reason should be at least 3 characters.</span>
-                <span *ngIf="reasonFieldMaxHasError">Reason should be 255 characters or under.</span>
-              </p>
-                <textarea class="govuk-textarea govuk-!-width-one-third reason-font"
-                [ngClass]="{'inline-error-class': isReasonFieldEmpty || isReasonFieldInvalid || reasonFieldMinHasError || reasonFieldMaxHasError}"
-                  id="sendmeback"
-                  name="sendMeBackField" 
-                  formControlName="sendMeBackField"
-                rows="5"></textarea>
-              
-              </div>
-
-            </div>
-  
-          </div>
-      
-        </fieldset>
-      </div>
-
-      <div [ngClass]="{'govuk-radios__conditional--hidden': !isRejectClicked}">
-        <fieldset class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h2 class="heading-medium">
-              Why are you rejecting this refund?
+@if (viewStatus === 'RefundProcess') {
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" [ngClass]="{'govuk-radios__conditional--hidden': isSuccesspageEnable}" id="main-content" role="main">
+      @if (errorMessage.showError) {
+        <div>
+          <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
+            <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
+              {{errorMessage.title}}
             </h2>
-          </legend>
-          <div class="govuk-radios" [ngClass]="{'form-group-error': refundRejectReasonHasError}">
-            <p class="inline-error-message"
-            *ngIf="refundRejectReasonHasError">
-            <span *ngIf="refundRejectReasonHasError">Please select a reject reason</span>
-          </p>
-            <div class="govuk-radios__item" *ngFor="let refundRejectReason of refundRejectReasonList; let j = index;">
-              <input class="govuk-radios__input" 
-              id="refundRejectReason-{{j}}"
-              formControlName="refundRejectReasonField"
-              name="refundRejectReasonField"
-              (click)="checkRefundActions(refundRejectReason.code)"
-              type="radio" value="{{refundRejectReason.code}}">
-              <label class="govuk-label govuk-radios__label process-refund-font" for="refundRejectReason-{{j}}">
-                {{refundRejectReason.name}}
-              </label>
+            <div class="govuk-error-summary__body process-refund-font">
+              {{errorMessage.body}}
             </div>
+          </div>
+        </div>
+      }
+      <div class="payment-view-alignment">
+        <div class="govuk-grid-row">
+          <div class="column">
+            <h1 class="heading-large govuk-!-margin-top-0">Review refund details</h1>
+          </div>
+        </div>
+        <table>
+          <tbody>
+            <tr class="section">
+              <td class="bold tb-col-w">Payment to be refunded</td>
+              <td colspan="2">{{refundlistsource?.refund_reference}} ({{refundlistsource.amount  | currency :'GBP':'symbol':'1.2-2'  }})</td>
+            </tr>
+            <tr class="section">
+              <td class="bold tb-col-w">Reason for refund</td>
+              <td colspan="2">{{refundlistsource?.reason?.trim()}}</td>
+            </tr>
+            <tr class="section">
+              <td class="bold tb-col-w">Amount to be refunded</td>
+              <td colspan="2">{{$safeNavigationMigration(refundlistsource?.amount) | currency :'GBP':'symbol':'1.2-2' }}</td>
+            </tr>
+            <tr class="section">
+              <td class="bold tb-col-w">Sent to</td>
+              <td colspan="2">{{cpoDetails?.responsibleParty}}</td>
+            </tr>
+            <tr class="section">
+              <td class="bold tb-col-w">Sent via</td>
+              <td colspan="2">
+                @if (refundlistsource?.contact_details?.notification_type === 'EMAIL') {
+                  <div class="contactDetails-width font-size-19px">
+                    <strong>Email</strong>
+                    <br/>
+                    {{refundlistsource?.contact_details?.email?.trim()}}
+                  </div>
+                }
+                @if (refundlistsource?.contact_details?.notification_type === 'LETTER') {
+                  <div class="contactDetails-width font-size-19px">
+                    <strong>Post</strong>
+                    <br/>
+                    {{refundlistsource?.contact_details?.address_line?.trim()}} {{refundlistsource?.contact_details?.city?.trim()}} {{refundlistsource?.contact_details?.county?.trim()}} {{refundlistsource?.contact_details?.country?.trim()}} {{refundlistsource?.contact_details?.postal_code?.trim()}}
+                  </div>
+                }
+              </td>
+            </tr>
+            <tr class="section">
+              <td class="bold tb-col-w">Submitted by</td>
+              <td colspan="2">{{refundlistsource?.user_full_name}}</td>
+            </tr>
+            <tr class="section">
+              <td class="bold tb-col-w">Date submitted</td>
+              <td colspan="2">{{$safeNavigationMigration(refundlistsource?.date_created) | date:'d MMMM yyyy' }}</td>
+            </tr>
+            <tr class="section">
+              <td class="bold tb-col-w">Notification</td>
+              <td>{{templateInstructionType}}</td>
+              <td>
+                @if (!notificationPreview) {
+                  <a href="Javascript:void(0)" class="govuk-link pointer right" (click)="showNotificationPreview()">
+                    Preview
+                  </a>
+                }
+                @if (notificationPreview) {
+                  <a href="Javascript:void(0)" class="govuk-link pointer right" (click)="hideNotificationPreview()">
+                    Hide Preview
+                  </a>
+                }
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        @if (notificationPreview) {
+          <app-notification-preview [paymentReference]="$safeNavigationMigration(refundlistsource?.payment_reference)"
+            [payment]="paymentObj"
+            [contactDetails]="$safeNavigationMigration(refundlistsource?.contact_details)"
+            [refundReason]="$safeNavigationMigration(refundlistsource?.reason_code)" [refundAmount]="$safeNavigationMigration(refundlistsource?.amount)"
+            [refundReference]="$safeNavigationMigration(refundlistsource?.refund_reference)"
+            (notificationPreviewEvent) = "getNotificationPreviewObj($event)">
+          </app-notification-preview>
+        }
+        <div>
+        </div>
+      </div>
+      <div class="process-refund__panel">
+        <form [formGroup]="processRefundForm" novalidate>
+          <div class="">
+            <fieldset class="govuk-fieldset" aria-describedby="sign-in-hint">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="heading-large">
+                  What do you want to do with this refund?
+                </h1>
+              </legend>
+              <div class="govuk-radios"  [ngClass]="{'form-group-error': refundActionsHasError}">
+                @if (refundActionsHasError) {
+                  <p class="inline-error-message"
+                    >
+                    @if (refundActionsHasError) {
+                      <span>Please select an action</span>
+                    }
+                  </p>
+                }
+                @for (refundAction of refundActionList; track refundAction; let i = $index) {
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input"
+                      id="refundAction-{{i}}"
+                      name="refundActionField"
+                      type="radio"
+                      formControlName="refundActionField"
+                      (click)="checkRefundActions(refundAction.code)"
+                      value="{{refundAction.code}}">
+                    <label class="govuk-label govuk-radios__label process-refund-font" for="refundAction-{{i}}">
+                      {{refundAction.code}}
+                    </label>
+                    <div id="sign-in-item-hint" class="govuk-hint govuk-radios__hint process-refund-font">
+                      {{refundAction.label}}
+                    </div>
+                  </div>
+                }
+                <div class="govuk-radios__conditional" [ngClass]="{'govuk-radios__conditional--hidden': !isSendMeBackClicked}">
+                  <div class="govuk-form-group">
+                    <label class="govuk-label process-refund-font" for="contact-by-text">
+                      Add a reason
+                    </label>
+                    @if (isReasonFieldEmpty || isReasonFieldInvalid || reasonFieldMinHasError || reasonFieldMaxHasError) {
+                      <p class="inline-error-message"
+                        >
+                        @if (isReasonFieldEmpty) {
+                          <span>Add a reason</span>
+                        }
+                        @if (isReasonFieldInvalid) {
+                          <span>Add a valid reason</span>
+                        }
+                        @if (reasonFieldMinHasError) {
+                          <span>Reason should be at least 3 characters.</span>
+                        }
+                        @if (reasonFieldMaxHasError) {
+                          <span>Reason should be 255 characters or under.</span>
+                        }
+                      </p>
+                    }
+                    <textarea class="govuk-textarea govuk-!-width-one-third reason-font"
+                      [ngClass]="{'inline-error-class': isReasonFieldEmpty || isReasonFieldInvalid || reasonFieldMinHasError || reasonFieldMaxHasError}"
+                      id="sendmeback"
+                      name="sendMeBackField"
+                      formControlName="sendMeBackField"
+                    rows="5"></textarea>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div [ngClass]="{'govuk-radios__conditional--hidden': !isRejectClicked}">
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h2 class="heading-medium">
+                  Why are you rejecting this refund?
+                </h2>
+              </legend>
+              <div class="govuk-radios" [ngClass]="{'form-group-error': refundRejectReasonHasError}">
+                @if (refundRejectReasonHasError) {
+                  <p class="inline-error-message"
+                    >
+                    @if (refundRejectReasonHasError) {
+                      <span>Please select a reject reason</span>
+                    }
+                  </p>
+                }
+                @for (refundRejectReason of refundRejectReasonList; track refundRejectReason; let j = $index) {
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input"
+                      id="refundRejectReason-{{j}}"
+                      formControlName="refundRejectReasonField"
+                      name="refundRejectReasonField"
+                      (click)="checkRefundActions(refundRejectReason.code)"
+                      type="radio" value="{{refundRejectReason.code}}">
+                    <label class="govuk-label govuk-radios__label process-refund-font" for="refundRejectReason-{{j}}">
+                      {{refundRejectReason.name}}
+                    </label>
+                  </div>
+                }
+              </div>
+              <div class="govuk-radios__conditional" [ngClass]="{'govuk-radios__conditional--hidden': !isOtherClicked}" id="conditional-contact-3">
+                <div class="govuk-form-group">
+                  <label class="govuk-label process-refund-font " for="contact-by-text">
+                    Enter reason
+                  </label>
+                  @if (isReasonEmpty || isReasonInvalid) {
+                    <p class="inline-error-message">
+                      @if (isReasonEmpty) {
+                        <span>Enter reason.</span>
+                      }
+                      @if (isReasonInvalid) {
+                        <span>Enter a valid reason</span>
+                      }
+                    </p>
+                  }
+                  <input class="govuk-input govuk-!-width-one-third reason-font" id="otherReason"
+                    [ngClass]="{'inline-error-class': isReasonEmpty || isReasonInvalid}"
+                  formControlName="enterReasonField" name="enterReasonField" type="text"></div>
+                </div>
+              </fieldset>
             </div>
-      <div class="govuk-radios__conditional" [ngClass]="{'govuk-radios__conditional--hidden': !isOtherClicked}" id="conditional-contact-3">
-        <div class="govuk-form-group">
-          <label class="govuk-label process-refund-font " for="contact-by-text">
-            Enter reason
-          </label>
-          <p class="inline-error-message" *ngIf="isReasonEmpty || isReasonInvalid">
-            <span *ngIf="isReasonEmpty">Enter reason.</span>
-            <span *ngIf="isReasonInvalid">Enter a valid reason</span>
-          </p>
-          <input class="govuk-input govuk-!-width-one-third reason-font" id="otherReason" 
-          [ngClass]="{'inline-error-class': isReasonEmpty || isReasonInvalid}"
-          formControlName="enterReasonField" name="enterReasonField" type="text"></div>
-        
+            <div class="govuk-button-group">
+              <button (click)="redirecttoRefundListPage()" class="govuk-button govuk-button--secondary marginright"> Previous</button>
+              <button (click)="processRefundSubmit()" class="govuk-button button"
+                data-module="govuk-button">
+              Submit
+            </button>
+            <br/><br/>
+          </div>
+          @if (!isFromRefundListPage) {
+            <div class="govuk-button-group margin">
+              <p><a (click)="loadRefundsHomePage()" class="govuk-link pointer" data-module="govuk-button">Cancel</a></p>
+            </div>
+          }
+        </form>
       </div>
-      
-        </fieldset>
-      </div>
-
-      <div class="govuk-button-group">
-        <button (click)="redirecttoRefundListPage()" class="govuk-button govuk-button--secondary marginright"> Previous</button>
-        <button (click)="processRefundSubmit()" class="govuk-button button"
-          data-module="govuk-button">
-          Submit 
-        </button>
-      <br/><br/>
-    </div>
-   
-  <div *ngIf="!isFromRefundListPage" class="govuk-button-group margin">
-
-  <p><a (click)="loadRefundsHomePage()" class="govuk-link pointer" data-module="govuk-button">Cancel</a></p>
-</div>
-</form>
-  </div>
- 
-
-  </main>
- 
-  <main class="govuk-main-wrapper govuk-main-wrapper--l success-page-padding--top25" [ngClass]="{'govuk-radios__conditional--hidden': !isSuccesspageEnable}" id="main-content" role="main" >
-    <div class="govuk-grid-row pagesize">
+    </main>
+    <main class="govuk-main-wrapper govuk-main-wrapper--l success-page-padding--top25" [ngClass]="{'govuk-radios__conditional--hidden': !isSuccesspageEnable}" id="main-content" role="main" >
+      <div class="govuk-grid-row pagesize">
         <div class="govuk-panel govuk-panel-refund--confirmation">
           <h1 class="heading-refunds-xlarge">
             {{successMsg}}
           </h1>
         </div>
         <p class="govuk-body process-refund-font">
-        <a href="Javascript:void(0)" (click)="goToCaseReview()" class="govuk-link pointer">Return to case</a>
+          <a href="Javascript:void(0)" (click)="goToCaseReview()" class="govuk-link pointer">Return to case</a>
         </p>
       </div>
-  </main>
-</div>
-</ng-container>
+    </main>
+  </div>
+}
 

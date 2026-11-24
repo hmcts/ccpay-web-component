@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import type { PaymentLibComponent } from '../../payment-lib.component';
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
@@ -12,6 +12,7 @@ type PaymentLibAlias = PaymentLibComponent;
     selector: 'app-mark-unidentified-payment',
     templateUrl: './mark-unidentified-payment.component.html',
     styleUrls: ['./mark-unidentified-payment.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MarkUnidentifiedPaymentComponent implements OnInit {

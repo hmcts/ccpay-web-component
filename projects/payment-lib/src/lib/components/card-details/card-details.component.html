@@ -3,23 +3,26 @@
   <h2 class="heading-medium">Payment method</h2>
 </div>
 
-<div role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1" *ngIf="errorMessage">
+@if (errorMessage) {
+  <div role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
     Payment method unavailable, The payment has either expired or unsuccessful.
-</div>
+  </div>
+}
 
-<div *ngIf="!errorMessage && cardDetails">
-
-<table>
-  <tbody>
-  <tr>
-    <td class="bold tb-col-w">Method</td>
-    <td>Card</td>
-  </tr>
-  <tr>
-    <td class="bold tb-col-w">Type</td>
-    <td>{{ cardDetails.card_brand }}</td>
-  </tr>
-  </tbody>
-</table>
-</div>
+@if (!errorMessage && cardDetails) {
+  <div>
+    <table>
+      <tbody>
+        <tr>
+          <td class="bold tb-col-w">Method</td>
+          <td>Card</td>
+        </tr>
+        <tr>
+          <td class="bold tb-col-w">Type</td>
+          <td>{{ cardDetails.card_brand }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+}
 

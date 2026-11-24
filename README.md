@@ -1,6 +1,8 @@
 # CcpayWebComponent
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+This project uses Angular 22.2 and TypeScript 6.0.
+
+Use the Node.js version in `.nvmrc` (`nvm use`), then install dependencies with `yarn install --immutable`. Angular 22 requires Node.js `^22.22.3 || ^24.15.0 || >=26.0.0`.
 
 ## Development server
 
@@ -12,11 +14,17 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Run `yarn build` to build the payment library, or `yarn build-prod` for its production package. Run `yarn ng build ccpay-web-component --configuration production` to build the demo application. Build artifacts are stored in `dist/`.
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `yarn test --watch=false --browsers=ChromeHeadless --progress=false` to execute both projects' unit tests via [Karma](https://karma-runner.github.io). Chrome must be installed. To run one project, use `yarn ng test payment-lib` or `yarn ng test ccpay-web-component`.
+
+## Upgrade compatibility
+
+The library's Angular peer dependencies require Angular 22. Browser targets follow Angular 22's baseline of 7 May 2026.
+
+The translation package is pinned to the Angular 22 prerelease `rpx-xui-translation@1.2.20-angular-22-upgrade`, with RxJS 7.8. The payment library declares both packages as peer dependencies so consumers install the supported versions.
 
 ## Running end-to-end tests
 

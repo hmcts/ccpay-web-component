@@ -4,7 +4,7 @@ import { ErrorHandlerService } from '../shared/error-handler.service';
 import { WebComponentHttpClient } from '../shared/httpclient/webcomponent.http.client';
 import { PaymentLibService } from '../../payment-lib.service';
 import { NotificationService } from './notification.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('BulkScaningPaymentService', () => {
   let service: NotificationService;
@@ -30,7 +30,7 @@ describe('BulkScaningPaymentService', () => {
             useFactory: webComponentHttpClientStub
         },
         { provide: PaymentLibService, useFactory: paymentLibServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting()
     ]
 });

@@ -1,7 +1,7 @@
 
-  <h2 class="heading-large">Payment method</h2>
-  <table>
-    <tbody>
+<h2 class="heading-large">Payment method</h2>
+<table>
+  <tbody>
     <tr>
       <td class="bold tb-col-w">Method</td>
       <td class="capitalize">{{ payment.method | lowercase}}</td>
@@ -10,17 +10,23 @@
       <td class="bold tb-col-w">Type</td>
       <td>Credit</td>
     </tr>
-    <tr *ngIf="payment.organisation_name">
-      <td class="bold tb-col-w">PBA account name</td>
-      <td>{{ payment.organisation_name }}</td>
-    </tr>
-    <tr *ngIf="payment.account_number">
-      <td class="bold tb-col-w">PBA number</td>
-      <td>{{ payment.account_number }}</td>
-    </tr>
-    <tr *ngIf="payment.customer_reference">
-      <td class="bold tb-col-w">Customer internal reference</td>
-      <td>{{ payment.customer_reference }}</td>
-    </tr>
-    </tbody>
-  </table>
+    @if (payment.organisation_name) {
+      <tr>
+        <td class="bold tb-col-w">PBA account name</td>
+        <td>{{ payment.organisation_name }}</td>
+      </tr>
+    }
+    @if (payment.account_number) {
+      <tr>
+        <td class="bold tb-col-w">PBA number</td>
+        <td>{{ payment.account_number }}</td>
+      </tr>
+    }
+    @if (payment.customer_reference) {
+      <tr>
+        <td class="bold tb-col-w">Customer internal reference</td>
+        <td>{{ payment.customer_reference }}</td>
+      </tr>
+    }
+  </tbody>
+</table>

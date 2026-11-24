@@ -6,35 +6,37 @@
   </div>
 </div>
 
-<ng-container *ngIf="isAuthorized">
-<div class="hmcts-page-heading">
+@if (isAuthorized) {
+  <div class="hmcts-page-heading">
     <div class="hmcts-page-heading__title">
       <h2 class="govuk-heading-l">{{tableApprovalHeader}}</h2>
     </div>
   </div>
-  <div  *ngIf="!isApproveTableVisible">
+  @if (!isApproveTableVisible) {
+    <div >
       <div class="govuk-label dropdpwn" >No records to display</div>
-  </div>
-</ng-container>
-  
-<ng-container *ngIf="isApproveTableVisible">
-    
+    </div>
+  }
+}
+
+@if (isApproveTableVisible) {
   <div><ccpay-table [DATASOURCE]="submittedRefundList" [STATUS]="approvalStatus" [errorMessage]="errorMessage"></ccpay-table></div>
-</ng-container>
+}
 
 
 <div class="hmcts-page-heading">
-    <div class="hmcts-page-heading__title">
-      <h2 class="govuk-heading-l">{{tableRejectedHeader}}</h2>
-    </div>
-    
+  <div class="hmcts-page-heading__title">
+    <h2 class="govuk-heading-l">{{tableRejectedHeader}}</h2>
   </div>
-  <div  *ngIf="!isRejectTableVisible">
-      <div class="govuk-label dropdpwn">No records to display</div>
+
+</div>
+@if (!isRejectTableVisible) {
+  <div >
+    <div class="govuk-label dropdpwn">No records to display</div>
   </div>
-<ng-container *ngIf="isRejectTableVisible">
-    
+}
+@if (isRejectTableVisible) {
   <div><ccpay-table [DATASOURCE]="rejectedRefundList" [STATUS]="rejectStatus" [errorMessage]="errorMessage"></ccpay-table></div>
-</ng-container>
+}
 
 

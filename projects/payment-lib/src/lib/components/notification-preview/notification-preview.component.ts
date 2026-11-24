@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { IPayment } from '../../interfaces/IPayment';
 import { INotificationPreview } from '../../interfaces/INotificationPreview';
 import { IRefundContactDetails } from '../../interfaces/IRefundContactDetails';
@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './notification-preview.component.html',
   styleUrls: ['./notification-preview.component.scss'],
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class NotificationPreviewComponent implements OnInit {

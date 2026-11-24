@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { Meta } from '@angular/platform-browser';
 
 import { WebComponentHttpClient } from './webcomponent.http.client';
@@ -10,7 +10,7 @@ describe('PaymentService', () => {
       providers: [
         WebComponentHttpClient,
         Meta,
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withXhr(), withInterceptorsFromDi())
       ]
     });
   });

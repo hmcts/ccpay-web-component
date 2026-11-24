@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, forwardRef, Inject, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, forwardRef, Inject, Input, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {PaymentViewService} from '../../services/payment-view/payment-view.service';
 import {NotificationService} from '../../services/notification/notification.service';
 import {IPaymentGroup} from '../../interfaces/IPaymentGroup';
@@ -38,6 +38,7 @@ const BS_ENABLE_FLAG = 'bulk-scan-enabling-fe';
     CapitalizePipe,
     RpxTranslationModule
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 

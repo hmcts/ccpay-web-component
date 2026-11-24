@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "module": "esnext",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -14,17 +13,14 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
     "paths": {
       "payment-lib": [
-        "dist/payment-lib"
+        "./dist/payment-lib"
       ],
       "payment-lib/*": [
-        "dist/payment-lib/*"
+        "./dist/payment-lib/*"
       ]
-    }
+    },
+    "strict": false
   }
 }

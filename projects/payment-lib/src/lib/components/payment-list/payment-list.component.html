@@ -1,71 +1,95 @@
 <div class="govuk-width-container">
 
-  <div *ngIf="errorMessage">
-    <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
-      <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
-        Payments list could not be retrieved
-      </h2>
-      <div class="govuk-error-summary__body">
-        {{ errorMessage }}
+  @if (errorMessage) {
+    <div>
+      <div class="error-summary" role="group" aria-labelledby="failure-error-summary-heading" tabindex="-1">
+        <h2 class="heading-medium error-summary-heading" id="failure-error-summary-heading">
+          Payments list could not be retrieved
+        </h2>
+        <div class="govuk-error-summary__body">
+          {{ errorMessage }}
+        </div>
       </div>
     </div>
+  }
+
+  @if (!errorMessage && payments) {
+    <div>
+      <table class="table">
+        <tr>
+          <th class="bold font-xsmall">Payment group reference</th>
+          <th class="bold font-xsmall">Payment reference</th>
+          <th class="bold font-xsmall">Date created</th>
+          <th class="bold font-xsmall">Channel</th>
+          <th class="bold font-xsmall">Method</th>
+          <th class="bold font-xsmall">Amount</th>
+          <th class="bold font-xsmall">Status</th>
+        </tr>
+        @for (payment of payments.payments; track payment) {
+          <tr>
+            <td class="font-xsmall">
+              <a href="javascript:void(0)" (click)="loadPaymentViewComponent(payment.payment_group_reference, payment.payment_reference, payment.method)">{{ payment.payment_group_reference }}</a>
+              <td class="font-xsmall">{{ payment.payment_reference }}</td>
+              <td class="font-xsmall">{{ payment.date_created | date:'dd MMM yyyy' }}</td>
+              <td class="font-xsmall">{{ payment.channel | titlecase }}</td>
+              <td class="font-xsmall">{{ payment.method | titlecase }}</td>
+              <td class="font-xsmall">£{{ payment.amount | number:'.2' }}</td>
+              @if (payment.method === 'card' && payment.channel === 'online') {
+                <td>
+                  <details>
+                    <summary><span class="summary font-xsmall">{{ payment.status }}</span></summary>
+                    @if (payment.status === 'Failed') {
+                      <div class="panel panel-border-narrow">
+                        @for (statusHistory of payment.status_histories; track statusHistory) {
+                          <div>
+                            @if (statusHistory.error_code === 'P0010') {
+                              <p class="font-xsmall">
+                                Payment rejected due to payment method selected or payment information entered, for example, failed fraud check, a 3D Secure authentication failure, or the user does not have enough money in account
+                              </p>
+                            }
+                            @if (statusHistory.error_code === 'P0020') {
+                              <p class="font-xsmall">
+                                Payment was not confirmed and completed within 90 minutes of being created
+                              </p>
+                            }
+                            @if (statusHistory.error_code === 'P0030') {
+                              <p class="font-xsmall">
+                                User clicked on the “Cancel payment” button during the payment journey
+                              </p>
+                            }
+                            @if (statusHistory.error_code === 'P0050') {
+                              <p class="font-xsmall">
+                                Multiple possible causes, for example a configuration problem with the payment provider, or incorrect login credentials
+                              </p>
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
+                  </details>
+                </td>
+              }
+              @if (payment.method === 'card' && payment.channel === 'telephony') {
+                <td class="font-xsmall">
+                  {{ payment.status}}
+                </td>
+              }
+              @if (payment.method === 'payment by account') {
+                <td>
+                  <details>
+                    <summary><span class="summary font-xsmall">{{ payment.status }}</span></summary>
+                    @if (payment.status === 'Pending') {
+                      <div class="panel panel-border-narrow">
+                        <p class="font-xsmall">This means the transaction is being processed by Liberata.</p>
+                      </div>
+                    }
+                  </details>
+                </td>
+              }
+            </tr>
+          }
+        </table>
+      </div>
+    }
+
   </div>
-
-  <div *ngIf="!errorMessage && payments">
-
-    <table class="table">
-      <tr>
-        <th class="bold font-xsmall">Payment group reference</th>
-        <th class="bold font-xsmall">Payment reference</th>
-        <th class="bold font-xsmall">Date created</th>
-        <th class="bold font-xsmall">Channel</th>
-        <th class="bold font-xsmall">Method</th>
-        <th class="bold font-xsmall">Amount</th>
-        <th class="bold font-xsmall">Status</th>
-      </tr>
-      <tr *ngFor="let payment of payments.payments">
-        <td class="font-xsmall">
-          <a href="javascript:void(0)" (click)="loadPaymentViewComponent(payment.payment_group_reference, payment.payment_reference, payment.method)">{{ payment.payment_group_reference }}</a>
-        <td class="font-xsmall">{{ payment.payment_reference }}</td>
-        <td class="font-xsmall">{{ payment.date_created | date:'dd MMM yyyy' }}</td>
-        <td class="font-xsmall">{{ payment.channel | titlecase }}</td>
-        <td class="font-xsmall">{{ payment.method | titlecase }}</td>
-        <td class="font-xsmall">£{{ payment.amount | number:'.2' }}</td>
-        <td *ngIf="payment.method === 'card' && payment.channel === 'online'">
-          <details>
-            <summary><span class="summary font-xsmall">{{ payment.status }}</span></summary>
-            <div class="panel panel-border-narrow" *ngIf="payment.status === 'Failed'">
-              <div *ngFor="let statusHistory of payment.status_histories">
-                <p class="font-xsmall" *ngIf="statusHistory.error_code === 'P0010'">
-                  Payment rejected due to payment method selected or payment information entered, for example, failed fraud check, a 3D Secure authentication failure, or the user does not have enough money in account
-                </p>
-                <p class="font-xsmall" *ngIf="statusHistory.error_code === 'P0020'">
-                  Payment was not confirmed and completed within 90 minutes of being created
-                </p>
-                <p class="font-xsmall" *ngIf="statusHistory.error_code === 'P0030'">
-                  User clicked on the “Cancel payment” button during the payment journey
-                </p>
-                <p class="font-xsmall" *ngIf="statusHistory.error_code === 'P0050'">
-                  Multiple possible causes, for example a configuration problem with the payment provider, or incorrect login credentials
-                </p>
-              </div>
-            </div>
-          </details>
-        </td>
-        <td *ngIf="payment.method === 'card' && payment.channel === 'telephony'" class="font-xsmall">
-          {{ payment.status}}
-        </td>
-        <td *ngIf="payment.method === 'payment by account'">
-          <details>
-            <summary><span class="summary font-xsmall">{{ payment.status }}</span></summary>
-            <div class="panel panel-border-narrow" *ngIf="payment.status === 'Pending'">
-              <p class="font-xsmall">This means the transaction is being processed by Liberata.</p>
-            </div>
-          </details>
-        </td>
-      </tr>
-    </table>
-
-  </div>
-
-</div>

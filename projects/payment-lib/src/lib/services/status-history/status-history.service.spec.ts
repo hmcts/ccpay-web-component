@@ -4,7 +4,7 @@ import { PaymentLibService } from '../../payment-lib.service';
 import { ErrorHandlerService } from '../shared/error-handler.service';
 import { LoggerService } from '../shared/logger/logger.service';
 import { StatusHistoryService } from './status-history.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('StatusHistoryService', () => {
   let service: StatusHistoryService;
@@ -22,7 +22,7 @@ describe('StatusHistoryService', () => {
         { provide: PaymentLibService, useFactory: paymentLibServiceStub },
         { provide: ErrorHandlerService, useFactory: errorHandlerServiceStub },
         { provide: LoggerService, useFactory: loggerServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting()
     ]
 });

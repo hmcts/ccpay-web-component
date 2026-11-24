@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { BulkScaningPaymentService } from '../../services/bulk-scaning-payment/bulk-scaning-payment.service';
 import {IPayment} from '../../interfaces/IPayment';
 import {Router} from '@angular/router';
@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
     selector: 'ccpay-app-processed-payments',
     templateUrl: './processed-payments.component.html',
     styleUrls: ['./processed-payments.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ProcessedPaymentsComponent implements OnInit {

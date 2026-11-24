@@ -1,321 +1,334 @@
-<ng-container *ngIf="viewStatus === 'pba-payment'">
-
-  <div class="govuk-breadcrumbs" *ngIf="!errorMsg && !isPBAAccountPaymentSuccess && !isCardPaymentSuccess">
-    <ol class="govuk-breadcrumbs__list">
-      <li class="govuk-breadcrumbs__list-item">
-        <a href="javascript:void(0)" (click)="gotoCasetransationPage()" class="govuk-back-link pba-payments-16-font">Back</a>
-      </li>
-    </ol>
-  </div>
-  <div class="pba-payment" *ngIf="(pbaAccountList?.length > 0 || errorMsg) && !isInSufficiantFund && !isPBAAccountNotExist && !isPBAServerError && !isPBAAccountHold && !isPBAAccountPaymentSuccess && isCardPaymentSuccess">
-
-    <div *ngIf="errorMsg" class="govuk-error-summary pba-payments-error-box--size" aria-labelledby="error-summary-title" >
-      <h2 class="govuk-error-summary__title govuk-error-summary__title-custom pba-payments-24-font" id="error-summary-title">
-        {{ "There is a problem"  | rpxTranslate }}
-      </h2>
-      <div class="govuk-error-summary__body">
-        <ul class="govuk-list govuk-error-summary__list">
-          <li class="pba-payments-error-16-font">
-            {{ "Your PBA account cannot be found." | rpxTranslate }}
-          </li>
-          <li class="pba-payments-error-16-font">
-            {{ "If you know your organisation has a PBA, try again." | rpxTranslate : {pba: "PBA"} }}
-          </li>
-          <li class="pba-payments-error-16-font">
-            {{ "You can also pay by credit or debit card." | rpxTranslate }}
-          </li>
-        </ul>
-      </div>
+@if (viewStatus === 'pba-payment') {
+  @if (!errorMsg && !isPBAAccountPaymentSuccess && !isCardPaymentSuccess) {
+    <div class="govuk-breadcrumbs">
+      <ol class="govuk-breadcrumbs__list">
+        <li class="govuk-breadcrumbs__list-item">
+          <a href="javascript:void(0)" (click)="gotoCasetransationPage()" class="govuk-back-link pba-payments-16-font">Back</a>
+        </li>
+      </ol>
     </div>
-    <!-- <h1 class="heading-medium margin-top-10-px">Pay fee using Payment by Account (PBA)</h1> -->
-    <div class="govuk-form-group margin-top-10-px">
-      <label class="govuk-label pba-payments-govuk__label pba-payments-19-font">
-        {{ "Amount to pay" | rpxTranslate }}
-      </label>
-      <span class="pba-payments-19-font">{{pbaPayOrderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2'}}</span>
-    </div>
-
-    <div class="govuk-form-group" *ngIf="!errorMsg">
-      <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
-        <div class="govuk-radios" data-module="govuk-radios">
-          <div class="govuk-radios__item">
-            <input class="govuk-radios__input" id="pbaAccount" name="paymentSelection" type="radio" value="PBA" (click)="selectPaymentMethod('PBA')" data-aria-controls="pba-account">
-            <label class="govuk-label govuk-radios__label pba-payments-19-font pba-payments-font-bld" for="pbaAccount">
-              {{ "Pay fee using Payment by Account (PBA)" | rpxTranslate: {pba: "(PBA)"} }}
-            </label>
-          </div>
-          <div class="govuk-radios__conditional" id="conditional-contact" *ngIf="isPbaAccountSelected">
-            <div class="govuk-form-group pba-payments-select-box--size">
-              <label class="govuk-label pba-payments-govuk__label pba-payments-19-font" for="pbaAccountNumber">
-                {{ "Select a PBA" | rpxTranslate: {pba: "PBA"} }}
-              </label>
-              <select class="form-control short-input" id="pbaAccountNumber" (change)="selectpbaaccount($event)">
-                <option value="" selected='selected'>{{ "Select option" | rpxTranslate }}</option>
-                <option  *ngFor="let pbaAccount of pbaAccountList;" value="{{pbaAccount}}">{{pbaAccount}}</option>
-              </select>
-            </div>
-            <div class="govuk-form-group" *ngIf="!errorMsg && selectedPbaAccount">
-              <label class="govuk-label pba-payments-govuk__label pba-payments-24-font" for="pbaAccountNumber">
-                {{ "Enter a reference for your PBA account statements" | rpxTranslate: {pba: "PBA"} }}
-              </label>
-              <div id="event-name-hint" class="govuk-hint pba-payments-19-font pba-payment-width">
-                {{ "This should be your own unique reference to identify the case. It will appear on your statements." | rpxTranslate }}
-            </div>
-            <input class="govuk-input pba-payments-ref-box--size pba-payments-19-font" id="pbaAccountRef" (change)="selectpbaaccount($event)" (keyup)="selectpbaaccount($event)" name="pbaAccountRef" type="text" aria-describedby="pbaAccountRef-hint">
-            </div>
-
-          </div>
-          <div class="govuk-radios__item">
-            <input class="govuk-radios__input" id="cardPayment" name="paymentSelection" type="radio" value="card" (click)="selectPaymentMethod('CARD')" data-aria-controls="card-payment">
-            <label class="govuk-label govuk-radios__label pba-payments-19-font pba-payments-font-bld" for="cardPayment">
-              {{ "Pay by credit or debit card" | rpxTranslate }}
-            </label>
-          </div>
-        </div>
-      </fieldset>
-    </div>
-
-    <div class="govuk-button--group"  *ngIf="errorMsg">
-      <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
-        {{ "View Service Request" | rpxTranslate }}
-      </button>
-      <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
-        {{ "Pay by card" | rpxTranslate }}
-      </button>
-    </div>
-    <div class="govuk-button--group"  *ngIf="!errorMsg">
-      <button type="submit" [disabled]="isContinueButtondisabled" class="button pba-payments-19-font pba-payments-20-margin" (click)="saveAndContinue()">
-        <span *ngIf="!isPBADropdownSelected" class="white">{{ "Continue" | rpxTranslate }}</span>
-        <span *ngIf="isPBADropdownSelected" class="white">{{ "Confirm payment" | rpxTranslate }}</span>
-      </button>
-    </div>
-  </div>
-<ng-container *ngIf="pbaAccountList?.length <= 0 && !errorMsg && isGetPBAAccountSucceed && isCardPaymentSuccess">
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
-      <div class="govuk-grid-row">
-        <div class="govuk-warning-text">
-          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-          <strong class="govuk-warning-text__text">
-            <span class="govuk-warning-text__assistive">{{ "Warning" | rpxTranslate }}</span>
-            <h2 class="warning-heading-m">{{ "You don’t have a registered PBA." | rpxTranslate: {pba: "PBA"} }}</h2>
-          </strong>
-        </div>
-        <div class="pba-payments-margin-top-10">
-          <h2 class="heading-medium">{{ "Pay by credit or debit card" | rpxTranslate }}</h2>
-          <p class="govuk-body pba-payments-19-font">
-            {{ "We recommend that you apply to get a new PBA to pay for fees." | rpxTranslate }}
-          </p>
-          <p class="govuk-bod ypba-payments-19-font">
-            {{ "you can also pay by credit or debit card if you need to pay now" | rpxTranslate }}
-          </p>
-          <p class="govuk-body">
-            <button type="submit" (click)="cardPayment()" class="button pba-payments-19-font pba-payments-20-margin">
-              {{ "Pay by card" | rpxTranslate }}
-            </button>
-          </p>
-
-        </div>
-        <div class="pba-payments-margin-top-10">
-          <h2 class="heading-medium">{{ "Register an existing PBA with MyHMCTS" | rpxTranslate: {pba: "PBA", myhmcts: "MyHMCTS"} }}</h2>
-          <p class="govuk-body pba-payments-19-font">
-            {{ "You may find it easier in future to pay by PBA, your organisation administrator will need to
-            email" | rpxTranslate: {pba: "PBA"} }} <a href="mailto: MyHMCTSsupport@justice.gov.uk">MyHMCTSsupport&#64;justice.gov.uk</a>{{ "to ask for your PBA to be registered with your
-            MyHMCTS account. You should include your organisation name and PBA number." | rpxTranslate: {pba: "PBA", myhmcts: "MyHMCTS"} }}
-          </p>
-          <p class="govuk-body pba-payments-19-font">
-            {{ "It can then take up to 3 days for your account to be updated. You’ll need to start your claim
-            again to pay the fee." | rpxTranslate }}
-          </p>
-        </div>
-        <div class="pba-payments-margin-top-10">
-          <h2 class="heading-medium">{{ "Apply to get a new PBA" | rpxTranslate: {pba: "PBA"} }}</h2>
-          <p class="govuk-body pba-payments-19-font">
-            {{ "You’ll need to provide details for you and your organisation, including the required credit
-             limit for your account." | rpxTranslate }}
-          </p>
-          <p class="govuk-body pba-payments-19-font">
-            {{ "Once your account has been registered, you’ll need to start your claim again to pay the fee." | rpxTranslate }}
-          </p>
-          <p class="govuk-body pba-payments-19-font">
-            {{ "Read more information on" | rpxTranslate }} <a target="_blank" href="https://www.gov.uk/guidance/hmcts-payment-by-account-for-online-services">{{ "registering for PBA" | rpxTranslate: {pba: "PBA"} }}</a>.
-          </p>
-        </div>
-      </div>
-    </main>
-  </div>
-</ng-container>
-
-<ng-container *ngIf="isInSufficiantFund && isCardPaymentSuccess">
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
-      <div class="govuk-grid-row">
-        <div class="govuk-error-summary pba-payments-error-box--size" aria-labelledby="error-summary-title">
+  }
+  @if ((pbaAccountList?.length > 0 || errorMsg) && !isInSufficiantFund && !isPBAAccountNotExist && !isPBAServerError && !isPBAAccountHold && !isPBAAccountPaymentSuccess && isCardPaymentSuccess) {
+    <div class="pba-payment">
+      @if (errorMsg) {
+        <div class="govuk-error-summary pba-payments-error-box--size" aria-labelledby="error-summary-title" >
           <h2 class="govuk-error-summary__title govuk-error-summary__title-custom pba-payments-24-font" id="error-summary-title">
-            {{ "There is a problem" | rpxTranslate }}
+            {{ "There is a problem"  | rpxTranslate }}
           </h2>
           <div class="govuk-error-summary__body">
             <ul class="govuk-list govuk-error-summary__list">
               <li class="pba-payments-error-16-font">
-                {{ "You don't have enough funds in your PBA account to pay for this fee." | rpxTranslate }}
+                {{ "Your PBA account cannot be found." | rpxTranslate }}
               </li>
               <li class="pba-payments-error-16-font">
-                {{ "If you have already topped up your PBA account, wait up to 24 hours for the new balance to become available." | rpxTranslate: {pba: "PBA", number: "24"} }}
+                {{ "If you know your organisation has a PBA, try again." | rpxTranslate : {pba: "PBA"} }}
+              </li>
+              <li class="pba-payments-error-16-font">
+                {{ "You can also pay by credit or debit card." | rpxTranslate }}
               </li>
             </ul>
           </div>
         </div>
-        <div class="pba-payments-margin-top-10">
-          <h2 class="heading-medium">{{ "Should you need any further advice" | rpxTranslate }}</h2>
-          <p class="govuk-body pba-payments-19-font">
-            {{ "Email" | rpxTranslate }} <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices&#64;liberata.com</a> {{ "or call" | rpxTranslate }} <a href="tel:01633-652-125">01633 652 125</a> ({{ "option" | rpxTranslate }} 3) {{ "to try to fix the issue." | rpxTranslate }}
-          </p>
-          <p class="govuk-body pba-payments-19-font">
-            {{ "you can also pay by credit or debit card." | rpxTranslate }}
-          </p>
-          <div class="govuk-button--group">
-            <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
-              {{ "View Service Request" | rpxTranslate }}
-            </button>
-            <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
-              {{ "Pay by card" | rpxTranslate }}
-            </button>
-          </div>
-        </div>
+      }
+      <!-- <h1 class="heading-medium margin-top-10-px">Pay fee using Payment by Account (PBA)</h1> -->
+      <div class="govuk-form-group margin-top-10-px">
+        <label class="govuk-label pba-payments-govuk__label pba-payments-19-font">
+          {{ "Amount to pay" | rpxTranslate }}
+        </label>
+        <span class="pba-payments-19-font">{{pbaPayOrderRef.orderTotalFees | currency :'GBP':'symbol':'1.2-2'}}</span>
       </div>
-    </main>
-  </div>
-</ng-container>
-<ng-container *ngIf="isPBAAccountNotExist && isCardPaymentSuccess">
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
-      <div class="govuk-grid-row">
-        <div class="govuk-error-summary pba-payments-error-box--size" aria-labelledby="error-summary-title">
-          <h2 class="govuk-error-summary__title govuk-error-summary__title-custom pba-payments-24-font" id="error-summary-title">
-            {{ "There is a problem" | rpxTranslate }}
-          </h2>
-          <div class="govuk-error-summary__body">
-            <ul class="govuk-list govuk-error-summary__list">
-              <li class="pba-payments-error-16-font">
-                {{ "Your PBA account " | rpxTranslate: {pba: "PBA"} }} ({{ selectedPbaAccount }}) {{ " no longer exists." | rpxTranslate }}
-              </li>
-            </ul>
+      @if (!errorMsg) {
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+            <div class="govuk-radios" data-module="govuk-radios">
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="pbaAccount" name="paymentSelection" type="radio" value="PBA" (click)="selectPaymentMethod('PBA')" data-aria-controls="pba-account">
+                <label class="govuk-label govuk-radios__label pba-payments-19-font pba-payments-font-bld" for="pbaAccount">
+                  {{ "Pay fee using Payment by Account (PBA)" | rpxTranslate: {pba: "(PBA)"} }}
+                </label>
+              </div>
+              @if (isPbaAccountSelected) {
+                <div class="govuk-radios__conditional" id="conditional-contact">
+                  <div class="govuk-form-group pba-payments-select-box--size">
+                    <label class="govuk-label pba-payments-govuk__label pba-payments-19-font" for="pbaAccountNumber">
+                      {{ "Select a PBA" | rpxTranslate: {pba: "PBA"} }}
+                    </label>
+                    <select class="form-control short-input" id="pbaAccountNumber" (change)="selectpbaaccount($event)">
+                      <option value="" selected='selected'>{{ "Select option" | rpxTranslate }}</option>
+                      @for (pbaAccount of pbaAccountList; track pbaAccount) {
+                        <option  value="{{pbaAccount}}">{{pbaAccount}}</option>
+                      }
+                    </select>
+                  </div>
+                  @if (!errorMsg && selectedPbaAccount) {
+                    <div class="govuk-form-group">
+                      <label class="govuk-label pba-payments-govuk__label pba-payments-24-font" for="pbaAccountNumber">
+                        {{ "Enter a reference for your PBA account statements" | rpxTranslate: {pba: "PBA"} }}
+                      </label>
+                      <div id="event-name-hint" class="govuk-hint pba-payments-19-font pba-payment-width">
+                        {{ "This should be your own unique reference to identify the case. It will appear on your statements." | rpxTranslate }}
+                      </div>
+                      <input class="govuk-input pba-payments-ref-box--size pba-payments-19-font" id="pbaAccountRef" (change)="selectpbaaccount($event)" (keyup)="selectpbaaccount($event)" name="pbaAccountRef" type="text" aria-describedby="pbaAccountRef-hint">
+                    </div>
+                  }
+                </div>
+              }
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="cardPayment" name="paymentSelection" type="radio" value="card" (click)="selectPaymentMethod('CARD')" data-aria-controls="card-payment">
+                <label class="govuk-label govuk-radios__label pba-payments-19-font pba-payments-font-bld" for="cardPayment">
+                  {{ "Pay by credit or debit card" | rpxTranslate }}
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      }
+      @if (errorMsg) {
+        <div class="govuk-button--group" >
+          <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
+            {{ "View Service Request" | rpxTranslate }}
+          </button>
+          <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
+            {{ "Pay by card" | rpxTranslate }}
+          </button>
+        </div>
+      }
+      @if (!errorMsg) {
+        <div class="govuk-button--group" >
+          <button type="submit" [disabled]="isContinueButtondisabled" class="button pba-payments-19-font pba-payments-20-margin" (click)="saveAndContinue()">
+            @if (!isPBADropdownSelected) {
+              <span class="white">{{ "Continue" | rpxTranslate }}</span>
+            }
+            @if (isPBADropdownSelected) {
+              <span class="white">{{ "Confirm payment" | rpxTranslate }}</span>
+            }
+          </button>
+        </div>
+      }
+    </div>
+  }
+  @if (pbaAccountList?.length <= 0 && !errorMsg && isGetPBAAccountSucceed && isCardPaymentSuccess) {
+    <div class="govuk-width-container">
+      <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+        <div class="govuk-grid-row">
+          <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+              <span class="govuk-warning-text__assistive">{{ "Warning" | rpxTranslate }}</span>
+              <h2 class="warning-heading-m">{{ "You don’t have a registered PBA." | rpxTranslate: {pba: "PBA"} }}</h2>
+            </strong>
+          </div>
+          <div class="pba-payments-margin-top-10">
+            <h2 class="heading-medium">{{ "Pay by credit or debit card" | rpxTranslate }}</h2>
+            <p class="govuk-body pba-payments-19-font">
+              {{ "We recommend that you apply to get a new PBA to pay for fees." | rpxTranslate }}
+            </p>
+            <p class="govuk-bod ypba-payments-19-font">
+              {{ "you can also pay by credit or debit card if you need to pay now" | rpxTranslate }}
+            </p>
+            <p class="govuk-body">
+              <button type="submit" (click)="cardPayment()" class="button pba-payments-19-font pba-payments-20-margin">
+                {{ "Pay by card" | rpxTranslate }}
+              </button>
+            </p>
+          </div>
+          <div class="pba-payments-margin-top-10">
+            <h2 class="heading-medium">{{ "Register an existing PBA with MyHMCTS" | rpxTranslate: {pba: "PBA", myhmcts: "MyHMCTS"} }}</h2>
+            <p class="govuk-body pba-payments-19-font">
+              {{ "You may find it easier in future to pay by PBA, your organisation administrator will need to
+              email" | rpxTranslate: {pba: "PBA"} }} <a href="mailto: MyHMCTSsupport@justice.gov.uk">MyHMCTSsupport&#64;justice.gov.uk</a>{{ "to ask for your PBA to be registered with your
+              MyHMCTS account. You should include your organisation name and PBA number." | rpxTranslate: {pba: "PBA", myhmcts: "MyHMCTS"} }}
+            </p>
+            <p class="govuk-body pba-payments-19-font">
+              {{ "It can then take up to 3 days for your account to be updated. You’ll need to start your claim
+              again to pay the fee." | rpxTranslate }}
+            </p>
+          </div>
+          <div class="pba-payments-margin-top-10">
+            <h2 class="heading-medium">{{ "Apply to get a new PBA" | rpxTranslate: {pba: "PBA"} }}</h2>
+            <p class="govuk-body pba-payments-19-font">
+              {{ "You’ll need to provide details for you and your organisation, including the required credit
+              limit for your account." | rpxTranslate }}
+            </p>
+            <p class="govuk-body pba-payments-19-font">
+              {{ "Once your account has been registered, you’ll need to start your claim again to pay the fee." | rpxTranslate }}
+            </p>
+            <p class="govuk-body pba-payments-19-font">
+              {{ "Read more information on" | rpxTranslate }} <a target="_blank" href="https://www.gov.uk/guidance/hmcts-payment-by-account-for-online-services">{{ "registering for PBA" | rpxTranslate: {pba: "PBA"} }}</a>.
+            </p>
           </div>
         </div>
-        <div class="pba-payments-margin-top-10">
-          <h2 class="heading-medium">{{ "Should you need any further advice" | rpxTranslate }}</h2>
-          <p class="govuk-body pba-payments-19-font govuk-body-width">
-            {{ "Email" | rpxTranslate }} <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices&#64;liberata.com</a> {{ "or call" | rpxTranslate }} <a href="tel:01633-652-125">01633 652 125</a> ({{ "option" | rpxTranslate }} 3) {{ "to try to fix the issue." | rpxTranslate }}
-          </p>
-          <p class="govuk-body pba-payments-19-font">
-            {{ "you can also pay by credit or debit card." | rpxTranslate }}
-          </p>
-          <div class="govuk-button--group">
-            <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
-              {{ "View Service Request" | rpxTranslate }}
-            </button>
-            <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
-              {{ "Pay by card" | rpxTranslate }}
-            </button>
+      </main>
+    </div>
+  }
+  @if (isInSufficiantFund && isCardPaymentSuccess) {
+    <div class="govuk-width-container">
+      <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+        <div class="govuk-grid-row">
+          <div class="govuk-error-summary pba-payments-error-box--size" aria-labelledby="error-summary-title">
+            <h2 class="govuk-error-summary__title govuk-error-summary__title-custom pba-payments-24-font" id="error-summary-title">
+              {{ "There is a problem" | rpxTranslate }}
+            </h2>
+            <div class="govuk-error-summary__body">
+              <ul class="govuk-list govuk-error-summary__list">
+                <li class="pba-payments-error-16-font">
+                  {{ "You don't have enough funds in your PBA account to pay for this fee." | rpxTranslate }}
+                </li>
+                <li class="pba-payments-error-16-font">
+                  {{ "If you have already topped up your PBA account, wait up to 24 hours for the new balance to become available." | rpxTranslate: {pba: "PBA", number: "24"} }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="pba-payments-margin-top-10">
+            <h2 class="heading-medium">{{ "Should you need any further advice" | rpxTranslate }}</h2>
+            <p class="govuk-body pba-payments-19-font">
+              {{ "Email" | rpxTranslate }} <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices&#64;liberata.com</a> {{ "or call" | rpxTranslate }} <a href="tel:01633-652-125">01633 652 125</a> ({{ "option" | rpxTranslate }} 3) {{ "to try to fix the issue." | rpxTranslate }}
+            </p>
+            <p class="govuk-body pba-payments-19-font">
+              {{ "you can also pay by credit or debit card." | rpxTranslate }}
+            </p>
+            <div class="govuk-button--group">
+              <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
+                {{ "View Service Request" | rpxTranslate }}
+              </button>
+              <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
+                {{ "Pay by card" | rpxTranslate }}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
-  </div>
-</ng-container>
-<ng-container *ngIf="isPBAAccountHold && isCardPaymentSuccess">
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
-      <div class="govuk-grid-row">
-        <div class="govuk-error-summary pba-payments-error-box--size" aria-labelledby="error-summary-title">
-          <h2 class="govuk-error-summary__title govuk-error-summary__title-custom pba-payments-24-font" id="error-summary-title">
-            {{ "There is a problem" | rpxTranslate }}
-          </h2>
-          <div class="govuk-error-summary__body">
-            <ul class="govuk-list govuk-error-summary__list">
-              <li class="pba-payments-error-16-font">
-                {{ "Your PBA account " | rpxTranslate: {pba: "PBA"} }}  ({{selectedPbaAccount}}) {{ " has been put on hold." | rpxTranslate }}
-              </li>
-            </ul>
+      </main>
+    </div>
+  }
+  @if (isPBAAccountNotExist && isCardPaymentSuccess) {
+    <div class="govuk-width-container">
+      <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+        <div class="govuk-grid-row">
+          <div class="govuk-error-summary pba-payments-error-box--size" aria-labelledby="error-summary-title">
+            <h2 class="govuk-error-summary__title govuk-error-summary__title-custom pba-payments-24-font" id="error-summary-title">
+              {{ "There is a problem" | rpxTranslate }}
+            </h2>
+            <div class="govuk-error-summary__body">
+              <ul class="govuk-list govuk-error-summary__list">
+                <li class="pba-payments-error-16-font">
+                  {{ "Your PBA account " | rpxTranslate: {pba: "PBA"} }} ({{ selectedPbaAccount }}) {{ " no longer exists." | rpxTranslate }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="pba-payments-margin-top-10">
+            <h2 class="heading-medium">{{ "Should you need any further advice" | rpxTranslate }}</h2>
+            <p class="govuk-body pba-payments-19-font govuk-body-width">
+              {{ "Email" | rpxTranslate }} <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices&#64;liberata.com</a> {{ "or call" | rpxTranslate }} <a href="tel:01633-652-125">01633 652 125</a> ({{ "option" | rpxTranslate }} 3) {{ "to try to fix the issue." | rpxTranslate }}
+            </p>
+            <p class="govuk-body pba-payments-19-font">
+              {{ "you can also pay by credit or debit card." | rpxTranslate }}
+            </p>
+            <div class="govuk-button--group">
+              <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
+                {{ "View Service Request" | rpxTranslate }}
+              </button>
+              <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
+                {{ "Pay by card" | rpxTranslate }}
+              </button>
+            </div>
           </div>
         </div>
-        <div class="pba-payments-margin-top-10">
-          <h2 class="heading-medium">{{ "Should you need any further advice" | rpxTranslate }}</h2>
-          <p class="govuk-body pba-payments-19-font govuk-body-width">
-            {{ "Email" | rpxTranslate }} <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices&#64;liberata.com</a> {{ "or call" | rpxTranslate }} <a href="tel:01633-652-125">01633 652 125</a> ({{ "option" | rpxTranslate }} 3) {{ "to try to fix the issue." | rpxTranslate }}
-          </p>
-          <p class="govuk-body pba-payments-19-font">
-            {{ "you can also pay by credit or debit card." | rpxTranslate }}
-          </p>
-          <div class="govuk-button--group">
-            <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
-              {{ "View Service Request" | rpxTranslate }}
-            </button>
-            <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
-              {{ "Pay by card" | rpxTranslate }}
-            </button>
+      </main>
+    </div>
+  }
+  @if (isPBAAccountHold && isCardPaymentSuccess) {
+    <div class="govuk-width-container">
+      <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+        <div class="govuk-grid-row">
+          <div class="govuk-error-summary pba-payments-error-box--size" aria-labelledby="error-summary-title">
+            <h2 class="govuk-error-summary__title govuk-error-summary__title-custom pba-payments-24-font" id="error-summary-title">
+              {{ "There is a problem" | rpxTranslate }}
+            </h2>
+            <div class="govuk-error-summary__body">
+              <ul class="govuk-list govuk-error-summary__list">
+                <li class="pba-payments-error-16-font">
+                  {{ "Your PBA account " | rpxTranslate: {pba: "PBA"} }}  ({{selectedPbaAccount}}) {{ " has been put on hold." | rpxTranslate }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="pba-payments-margin-top-10">
+            <h2 class="heading-medium">{{ "Should you need any further advice" | rpxTranslate }}</h2>
+            <p class="govuk-body pba-payments-19-font govuk-body-width">
+              {{ "Email" | rpxTranslate }} <a href="mailto:MiddleOffice.DDservices@liberata.com">MiddleOffice.DDservices&#64;liberata.com</a> {{ "or call" | rpxTranslate }} <a href="tel:01633-652-125">01633 652 125</a> ({{ "option" | rpxTranslate }} 3) {{ "to try to fix the issue." | rpxTranslate }}
+            </p>
+            <p class="govuk-body pba-payments-19-font">
+              {{ "you can also pay by credit or debit card." | rpxTranslate }}
+            </p>
+            <div class="govuk-button--group">
+              <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
+                {{ "View Service Request" | rpxTranslate }}
+              </button>
+              <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
+                {{ "Pay by card" | rpxTranslate }}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
-  </div>
-</ng-container>
-<ng-container *ngIf="isPBAServerError && isCardPaymentSuccess">
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
-      <div class="govuk-grid-row">
-        <div class="pba-payments-margin-top-10">
-          <h2 class="pba-payments-heading-lg">{{ "Sorry, there is a problem with the service" | rpxTranslate }}</h2>
-          <p class="govuk-body pba-payments-19-font">
-            {{ "Try again later." | rpxTranslate }}
-          </p>
-          <p class="govuk-body pba-payments-19-font">
-            {{ "you can also pay by credit or debit card." | rpxTranslate }}
-          </p>
-          <div class="govuk-button--group">
-            <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
-              {{ "View Service Request" | rpxTranslate }}
-            </button>
-            <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
-              {{ "Pay by card" | rpxTranslate }}
-            </button>
+      </main>
+    </div>
+  }
+  @if (isPBAServerError && isCardPaymentSuccess) {
+    <div class="govuk-width-container">
+      <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+        <div class="govuk-grid-row">
+          <div class="pba-payments-margin-top-10">
+            <h2 class="pba-payments-heading-lg">{{ "Sorry, there is a problem with the service" | rpxTranslate }}</h2>
+            <p class="govuk-body pba-payments-19-font">
+              {{ "Try again later." | rpxTranslate }}
+            </p>
+            <p class="govuk-body pba-payments-19-font">
+              {{ "you can also pay by credit or debit card." | rpxTranslate }}
+            </p>
+            <div class="govuk-button--group">
+              <button type="button" class="button pba-payments-19-font govuk-button--secondary pba-payments-margin-10" (click)="gotoCasetransationPage()">
+                {{ "View Service Request" | rpxTranslate }}
+              </button>
+              <button type="submit" class="button pba-payments-19-font pba-payments-20-margin" (click)="cardPayment()">
+                {{ "Pay by card" | rpxTranslate }}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
-  </div>
-</ng-container>
-
-<ng-container *ngIf="isPBAAccountPaymentSuccess && isCardPaymentSuccess">
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
-      <div class="govuk-grid-row">
-        <div class="govuk-panel govuk-panel--confirmation pba-payments--confirmation">
-          <h1 class="govuk-panel__title pba-payments--title white">
-             {{ "Payment successful" | rpxTranslate }}
-          </h1>
-          <div class="govuk-panel__body pba-payments__body white">
+      </main>
+    </div>
+  }
+  @if (isPBAAccountPaymentSuccess && isCardPaymentSuccess) {
+    <div class="govuk-width-container">
+      <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+        <div class="govuk-grid-row">
+          <div class="govuk-panel govuk-panel--confirmation pba-payments--confirmation">
+            <h1 class="govuk-panel__title pba-payments--title white">
+              {{ "Payment successful" | rpxTranslate }}
+            </h1>
+            <div class="govuk-panel__body pba-payments__body white">
               {{ "Your payment reference is" | rpxTranslate }} <br><strong class="white">{{pbaAccountrPaymentResult.payment_reference}}</strong>
+            </div>
           </div>
-      </div>
-      <p class="govuk-body pba-payments-19-font">
-        <a href="javascript:void(0)" (click)="gotoCasetransationPage()">{{ "View service requests" | rpxTranslate }}</a>
-      </p>
-      </div>
-    </main>
-  </div>
-</ng-container>
-
-<ng-container *ngIf="!isCardPaymentSuccess">
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
-      <div class="govuk-grid-row">
-        <div class="pba-payments-margin-top-10">
-          <h2 class="pba-payments-heading-lg">{{ "Sorry, there is a problem with the service" | rpxTranslate }}</h2>
           <p class="govuk-body pba-payments-19-font">
-            {{ "Try again later." | rpxTranslate }}
+            <a href="javascript:void(0)" (click)="gotoCasetransationPage()">{{ "View service requests" | rpxTranslate }}</a>
           </p>
-          <!-- <p class="govuk-body pba-payments-19-font">
+        </div>
+      </main>
+    </div>
+  }
+  @if (!isCardPaymentSuccess) {
+    <div class="govuk-width-container">
+      <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+        <div class="govuk-grid-row">
+          <div class="pba-payments-margin-top-10">
+            <h2 class="pba-payments-heading-lg">{{ "Sorry, there is a problem with the service" | rpxTranslate }}</h2>
+            <p class="govuk-body pba-payments-19-font">
+              {{ "Try again later." | rpxTranslate }}
+            </p>
+            <!-- <p class="govuk-body pba-payments-19-font">
             you can also <a href="javascript:void(0)" (click)="cardPayment()" >pay by credit or debit card</a>.
           </p> -->
           <p class="govuk-body pba-payments-19-font">
@@ -325,8 +338,8 @@
       </div>
     </main>
   </div>
-</ng-container>
-</ng-container>
+}
+}
 
 
 
