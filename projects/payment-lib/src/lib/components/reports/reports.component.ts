@@ -8,7 +8,6 @@ import { ErrorHandlerService } from '../../services/shared/error-handler.service
 import { PaymentViewService } from '../../services/payment-view/payment-view.service';
 import { RefundsService } from '../../services/refunds/refunds.service';
 import {XlFileService} from '../../services/xl-file/xl-file.service';
-import { FindValueSubscriber } from 'rxjs/internal/operators/find';
 type PaymentLibAlias = PaymentLibComponent;
 
 @Component({

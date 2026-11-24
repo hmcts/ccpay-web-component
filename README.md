@@ -24,7 +24,7 @@ Run `yarn test --watch=false --browsers=ChromeHeadless --progress=false` to exec
 
 The library's Angular peer dependencies require Angular 22. Browser targets follow Angular 22's baseline of 7 May 2026.
 
-`rpx-xui-translation@1.2.0` still declares Angular 20 peer dependencies; the latest published version (`1.2.18`) also targets Angular 20. Yarn reports this mismatch. The application and library builds and unit tests pass with the installed Angular 22 packages, but the translation package does not yet declare Angular 22 support.
+The translation package is pinned to the Angular 22 prerelease `rpx-xui-translation@1.2.20-angular-22-upgrade`, with RxJS 7.8. The payment library declares both packages as peer dependencies so consumers install the supported versions.
 
 ## Running end-to-end tests
 

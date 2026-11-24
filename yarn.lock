@@ -6092,8 +6092,8 @@ __metadata:
     local-storage: ^2.0.0
     ng-packagr: ~22.2.6
     protractor: ~7.0.0
-    rpx-xui-translation: 1.2.0
-    rxjs: ~6.6.7
+    rpx-xui-translation: 1.2.20-angular-22-upgrade
+    rxjs: ~7.8.2
     rxjs-compat: ^6.6.7
     sass: ^1.64.1
     server: ^1.0.37
@@ -6940,10 +6940,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dexie@npm:^3.2.2":
-  version: 3.2.7
-  resolution: "dexie@npm:3.2.7"
-  checksum: 257504ed23cea2e5ed5c18a17a031c0a44aff70c5b3d6a63536b544cec9027c4c492a608165d5e7a44a104570c92dec2aa59c7bcec0c65f52000f979e1193dfd
+"dexie@npm:^4.4.4":
+  version: 4.4.7
+  resolution: "dexie@npm:4.4.7"
+  checksum: 817a97da176040742503aeb672d1809140dc54b2d6ae280aa80f0ab59e640c216cdc8b15c0b45de2a4340d42e13f26757a7e6a8d157ed6a8388054cb7ea80a81
   languageName: node
   linkType: hard
 
@@ -10144,7 +10144,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"luxon@npm:^2.4.0":
+"luxon@npm:^2.5.2":
   version: 2.5.2
   resolution: "luxon@npm:2.5.2"
   checksum: d8b671ffd2ff0b438af862ac11082a81b3aedd9f8b6a4ca636f944224f8dd381125cd4d274ca0a8aedcaf2cfca0fc2ca96fe4cc1b16a28b7af701afb95c0bff8
@@ -12411,17 +12411,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rpx-xui-translation@npm:1.2.0":
-  version: 1.2.0
-  resolution: "rpx-xui-translation@npm:1.2.0"
+"rpx-xui-translation@npm:1.2.20-angular-22-upgrade":
+  version: 1.2.20-angular-22-upgrade
+  resolution: "rpx-xui-translation@npm:1.2.20-angular-22-upgrade"
   dependencies:
-    dexie: ^3.2.2
-    luxon: ^2.4.0
+    dexie: ^4.4.4
+    luxon: ^2.5.2
     tslib: ^2.0.0
   peerDependencies:
-    "@angular/common": ^20.3.1
-    "@angular/core": ^20.3.1
-  checksum: 618fab277ad412c710c8aa85de1f9527f1ab955a0e8525ebf2f9bcb2253079da21638e3d9cc53b767c8ba5f874f27d34fa1830391d5cdd610d353f46790e1237
+    "@angular/common": ^22.2.6
+    "@angular/core": ^22.2.6
+    rxjs: ^7.8.0
+  checksum: 52da2536511ef54f049b9e76e56813615cce2df18f0a1dd68606b7017bda65fb540de369879fe17b25d6586e6a16af73261c6c3fcee1677d929c2b4af4116457
   languageName: node
   linkType: hard
 
@@ -12439,21 +12440,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:7.8.2, rxjs@npm:^7.4.0, rxjs@npm:^7.8.1":
+"rxjs@npm:7.8.2, rxjs@npm:^7.4.0, rxjs@npm:^7.8.1, rxjs@npm:~7.8.2":
   version: 7.8.2
   resolution: "rxjs@npm:7.8.2"
   dependencies:
     tslib: ^2.1.0
   checksum: 2f233d7c832a6c255dabe0759014d7d9b1c9f1cb2f2f0d59690fd11c883c9826ea35a51740c06ab45b6ade0d9087bde9192f165cba20b6730d344b831ef80744
-  languageName: node
-  linkType: hard
-
-"rxjs@npm:~6.6.7":
-  version: 6.6.7
-  resolution: "rxjs@npm:6.6.7"
-  dependencies:
-    tslib: ^1.9.0
-  checksum: bc334edef1bb8bbf56590b0b25734ba0deaf8825b703256a93714308ea36dff8a11d25533671adf8e104e5e8f256aa6fdfe39b2e248cdbd7a5f90c260acbbd1b
   languageName: node
   linkType: hard
 
@@ -13944,7 +13936,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.13.0, tslib@npm:^1.8.1, tslib@npm:^1.9.0, tslib@npm:^1.9.3":
+"tslib@npm:^1.13.0, tslib@npm:^1.8.1, tslib@npm:^1.9.3":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd
