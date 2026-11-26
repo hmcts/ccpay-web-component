@@ -1,39 +1,26 @@
 
 
-<div class="hmcts-page-heading">
-  <div class="hmcts-page-heading__title">
-    <h1 class="govuk-heading-xl">Refund list</h1>
-  </div>
-</div>
+<h1 class="govuk-heading-xl govuk-!-margin-bottom-7">Refund list</h1>
 
 <ng-container *ngIf="isAuthorized">
-<div class="hmcts-page-heading">
-    <div class="hmcts-page-heading__title">
-      <h2 class="govuk-heading-l">{{tableApprovalHeader}}</h2>
-    </div>
-  </div>
+  <h2 class="govuk-heading-l govuk-!-margin-bottom-7">{{tableApprovalHeader}}</h2>
   <div  *ngIf="!isApproveTableVisible">
       <div class="govuk-label dropdpwn" >No records to display</div>
   </div>
 </ng-container>
-  
+
 <ng-container *ngIf="isApproveTableVisible">
-    
+
   <div><ccpay-table [DATASOURCE]="submittedRefundList" [STATUS]="approvalStatus" [errorMessage]="errorMessage"></ccpay-table></div>
 </ng-container>
 
 
-<div class="hmcts-page-heading">
-    <div class="hmcts-page-heading__title">
-      <h2 class="govuk-heading-l">{{tableRejectedHeader}}</h2>
-    </div>
-    
-  </div>
+<h2 class="govuk-heading-l govuk-!-margin-bottom-7">{{tableRejectedHeader}}</h2>
   <div  *ngIf="!isRejectTableVisible">
       <div class="govuk-label dropdpwn">No records to display</div>
   </div>
 <ng-container *ngIf="isRejectTableVisible">
-    
+
   <div><ccpay-table [DATASOURCE]="rejectedRefundList" [STATUS]="rejectStatus" [errorMessage]="errorMessage"></ccpay-table></div>
 </ng-container>
 

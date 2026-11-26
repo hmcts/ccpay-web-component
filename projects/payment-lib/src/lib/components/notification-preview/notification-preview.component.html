@@ -22,7 +22,7 @@
       </ng-container>
       <ng-container *ngIf="notification?.template_type === 'letter'">
         <tr class="govuk-table__row">
-          <td class="letter-row-border">
+          <td class="govuk-table__cell letter-row-border">
             <ng-container *ngIf="notification?.recipient_contact?.recipient_mail_address?.address_line">
               {{notification?.recipient_contact?.recipient_mail_address?.address_line}}<br /></ng-container>
             <ng-container *ngIf="notification?.recipient_contact?.recipient_mail_address?.city">
@@ -35,10 +35,10 @@
           </td>
         </tr>
         <tr class="govuk-table__row">
-          <td class="letter-row-border">{{ today | date:'d MMMM y' }}</td>
+          <td class="govuk-table__cell letter-row-border">{{ today | date:'d MMMM y' }}</td>
         </tr>
         <tr class="govuk-table__row">
-          <td class="letter-row-border"><span class="govuk-!-font-weight-bold">{{notification?.subject}}</span></td>
+          <td class="govuk-table__cell letter-row-border"><span class="govuk-!-font-weight-bold">{{notification?.subject}}</span></td>
         </tr>
         <tr class="govuk-table__row">
           <td class="govuk-table__cell whitespace-inherit">

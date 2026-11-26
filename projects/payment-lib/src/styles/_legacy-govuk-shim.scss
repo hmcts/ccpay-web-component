@@ -1,0 +1,55 @@
+// Legacy GOV.UK shim
+// ==========================================================================
+// Recreates the global styles the library templates rely on that the host
+// app used to provide. Mirrors the rules rpx-xui-webapp (manage-case) applies
+// around this library: src/style/app.scss (base reset). Everything else
+// (headings, tables, details, banners) uses GOV.UK Frontend v6 classes.
+//
+// Selectors are wrapped in :where(ccpay-payment-lib) so they stay scoped to the
+// library but keep the same specificity they have in manage-case, meaning
+// GOV.UK Frontend classes and component styles still win over them.
+//
+// Usage (host app global stylesheet, after govuk-frontend):
+//   @use "@hmcts/ccpay-web-component/styles/legacy-govuk-shim";
+
+$ccpay-legacy-font-family: "nta", arial, sans-serif !default;
+$ccpay-legacy-blue: #1d70b8 !default;
+$ccpay-legacy-link-visited-colour: #4c2c92 !default;
+
+// Base text (manage-case: body font-family, browser default 16px)
+:where(ccpay-payment-lib) {
+  font-family: $ccpay-legacy-font-family;
+  font-size: 16px;
+}
+
+// Base reset (manage-case: src/style/app.scss)
+:where(ccpay-payment-lib) :where(div, span, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address,
+  big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center,
+  dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article,
+  aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,
+  time, mark) {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+:where(ccpay-payment-lib) :where(h1, h2, h3, h4, h5, h6, p, blockquote, pre, small, strike, strong, sub, sup, tt, var,
+  b, u, i, center, input, textarea, table, caption, tbody, tfoot, thead, tr, th, td) {
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+  font-weight: 400;
+}
+
+:where(ccpay-payment-lib) :where(ul, ol) {
+  list-style-type: none;
+}
+
+// Links
+:where(ccpay-payment-lib) a:link {
+  color: $ccpay-legacy-blue;
+}
+
+:where(ccpay-payment-lib) a:visited {
+  color: $ccpay-legacy-link-visited-colour;
+}

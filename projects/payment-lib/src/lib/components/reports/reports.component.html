@@ -20,7 +20,7 @@
               value="DATA_LOSS"
                data-aria-controls="DataLoss"/>
               <label class="govuk-label govuk-radios__label govuk-label--m" for="DataLoss">Data loss</label>
-              <span class="form-hint">Missing transactions where data has been received from only either of Exela or Bulk scan</span>
+              <span class="govuk-hint govuk-radios__hint">Missing transactions where data has been received from only either of Exela or Bulk scan</span>
           </div>
 
          <div class="govuk-radios__item">
@@ -34,7 +34,7 @@
               value="UNPROCESSED"
               data-aria-controls="UnprocessedTransactions"/>
               <label class="govuk-label govuk-radios__label govuk-label--m" for="UnprocessedTransactions">Unprocessed transactions</label>
-              <span class="form-hint">Transaction records that are still unprocessed by staff.</span>
+              <span class="govuk-hint govuk-radios__hint">Transaction records that are still unprocessed by staff.</span>
          </div>
 
          <div class="govuk-radios__item">
@@ -48,7 +48,7 @@
             value="PROCESSED_UNALLOCATED"
             data-aria-controls="ProcessedUnallocated"/>
             <label class="govuk-label govuk-radios__label govuk-label--m" for="ProcessedUnallocated">Processed unallocated</label>
-            <span class="form-hint">Payments that are marked as ‘Unidentified’ or ‘Transferred’ (Unsolicited requests)</span>
+            <span class="govuk-hint govuk-radios__hint">Payments that are marked as ‘Unidentified’ or ‘Transferred’ (Unsolicited requests)</span>
          </div>
 
          <div class="govuk-radios__item">
@@ -62,7 +62,7 @@
             value="SURPLUS_AND_SHORTFALL"
             data-aria-controls="ShortfallsandSurplus"/>
             <label class="govuk-label govuk-radios__label govuk-label--m" for="ShortfallsandSurplus">Under payment and Over payment</label>
-            <span class="form-hint">Requests where balances are marked as Under payment/Over payment further case management.
+            <span class="govuk-hint govuk-radios__hint">Requests where balances are marked as Under payment/Over payment further case management.
                E.g: Refund approval, Customer contact</span>
          </div>
          <div class="govuk-radios__item">
@@ -76,7 +76,7 @@
             value="PAYMENT_FAILURE_EVENT"
             data-aria-controls="PaymentFailureEvent"/>
             <label class="govuk-label govuk-radios__label govuk-label--m" for="PaymentFailureEvent">Payment failure event</label>
-            <span class="form-hint">Failed payment transaction details</span>
+            <span class="govuk-hint govuk-radios__hint">Failed payment transaction details</span>
          </div>
           <div class="govuk-radios__item">
             <input
@@ -89,7 +89,7 @@
               value="TELEPHONY_PAYMENTS"
               data-aria-controls="TelephonyPayments"/>
             <label class="govuk-label govuk-radios__label govuk-label--m" for="TelephonyPayments">Telephony Payments</label>
-            <span class="form-hint">All Telephony Payments</span>
+            <span class="govuk-hint govuk-radios__hint">All Telephony Payments</span>
           </div>
           <div class="govuk-radios__item">
             <input
@@ -102,19 +102,19 @@
               value="REFUNDS"
               data-aria-controls="RefundsEvent"/>
             <label class="govuk-label govuk-radios__label govuk-label--m" for="RefundsEvent">Refunds</label>
-            <span class="form-hint">Details of refunds</span>
+            <span class="govuk-hint govuk-radios__hint">Details of refunds</span>
           </div>
        </div>
      </div>
      <div  class="govuk-form-group">
       <div class="datefrom">
-      <label class="govuk-label govuk-radios__label govuk-label--m" for="date-from">Date from</label>
-      <input (change)="getSelectedFromDate()" [max]="getToday()" class="form-control" id="date-from" name="date-from" type="date"  formControlName="startDate" required/>
+      <label class="govuk-label govuk-label--m" for="date-from">Date from</label>
+      <input (change)="getSelectedFromDate()" [max]="getToday()" class="govuk-input govuk-input--width-10" id="date-from" name="date-from" type="date"  formControlName="startDate" required/>
       </div>
 
       <div class="dateto">
-      <label class="govuk-label govuk-radios__label govuk-label--m" for="date-to">Date to</label>
-      <input (change)="getSelectedFromDate()" [max]="getToday()" class="form-control" id="date-to" name="search" type="date" formControlName="endDate" required/>
+      <label class="govuk-label govuk-label--m" for="date-to">Date to</label>
+      <input (change)="getSelectedFromDate()" [max]="getToday()" class="govuk-input govuk-input--width-10" id="date-to" name="search" type="date" formControlName="endDate" required/>
       </div>
      </div>
    <p class="inline-error-message" *ngIf="isStartDateLesthanEndDate || isDateRangeBetnWeek || isDateBetwnMonth">
@@ -123,7 +123,7 @@
       <span *ngIf="isDateBetwnMonth"> Please select the date range between 30 days</span>
    </p>
     <div class="btnsubmit">
-     <button type="submit" (click)="downloadReport()" class="button" [disabled]="!reportsForm.valid || isDownLoadButtondisabled || isStartDateLesthanEndDate || isDateRangeBetnWeek || isDateBetwnMonth">Download report</button>
+     <button type="submit" (click)="downloadReport()" class="govuk-button" [disabled]="!reportsForm.valid || isDownLoadButtondisabled || isStartDateLesthanEndDate || isDateRangeBetnWeek || isDateBetwnMonth">Download report</button>
    </div>
  </form>
 
