@@ -63,6 +63,7 @@ export class CaseTransactionsComponent implements OnInit {
   selectedOption: string;
   dcnNumber: string;
   paymentRef: string;
+  hasEligibleNonCancelledServiceRequest: boolean = false;
   isTurnOff: boolean;
   isRefundRemission: boolean = true;
   isStrategicFixEnable: boolean;
@@ -663,7 +664,10 @@ export class CaseTransactionsComponent implements OnInit {
   }
 
   calculateRefundAmount() {
+    this.updateEligibleNonCancelledServiceRequest();
+
     if (!this.isTurnOff) {
+
       let isNewPaymentGroup = false;
 
       this.paymentGroups.forEach((paymentGroup, index) => {
@@ -1045,5 +1049,23 @@ export class CaseTransactionsComponent implements OnInit {
 
   private toPence(amount: number): number {
     return Math.round(Number(amount) * 100);
+  }
+
+  updateEligibleNonCancelledServiceRequest(): void {
+    this.hasEligibleNonCancelledServiceRequest = this.paymentGroups.some(paymentGroup => {
+      if (paymentGroup.service_request_status === 'Cancelled' || !paymentGroup.fees?.length) {
+        return false;
+      }
+
+      const outstandingAmount = this.bulkScaningPaymentService.calculateOutStandingAmount(paymentGroup);
+
+      if (!this.isTurnOff) {
+        const hasNewFee = paymentGroup.fees.some(fee => !!fee.date_created);
+        return hasNewFee && outstandingAmount > 0;
+      }
+
+      const hasZeroFee = paymentGroup.fees.some(fee => fee.calculated_amount === 0);
+      return outstandingAmount > 0 || (outstandingAmount === 0 && hasZeroFee);
+    });
   }
 }

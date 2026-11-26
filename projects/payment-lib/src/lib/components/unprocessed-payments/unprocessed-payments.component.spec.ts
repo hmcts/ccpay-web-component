@@ -149,6 +149,44 @@ describe('UnprocessedPaymentsComponent', () => {
     });
   });
 
+  describe('applyCancelledServiceRequestButtonState', () => {
+    it('enables existing allocation and disables new allocation when an eligible non-cancelled request exists', () => {
+      component.isUnprocessedRecordSelected = true;
+      component.isExceptionCase = false;
+      component.HAS_ELIGIBLE_NON_CANCELLED_SR = true;
+      (component as any).applyCancelledServiceRequestButtonState();
+      expect(component.isAllocateToExistingFeebtnEnabled).toBe(true);
+      expect(component.isAllocatedToNewFeebtnEnabled).toBe(false);
+    });
+    it('disables existing allocation and enables new allocation when no eligible non-cancelled request exists', () => {
+      component.isUnprocessedRecordSelected = true;
+      component.isExceptionCase = false;
+      component.HAS_ELIGIBLE_NON_CANCELLED_SR = false;
+      (component as any).applyCancelledServiceRequestButtonState();
+      expect(component.isAllocateToExistingFeebtnEnabled).toBe(false);
+      expect(component.isAllocatedToNewFeebtnEnabled).toBe(true);
+    });
+    it('does not change allocation buttons for an exception case', () => {
+      component.isUnprocessedRecordSelected = true;
+      component.isExceptionCase = true;
+      component.HAS_ELIGIBLE_NON_CANCELLED_SR = true;
+      component.isAllocateToExistingFeebtnEnabled = false;
+      component.isAllocatedToNewFeebtnEnabled = false;
+      (component as any).applyCancelledServiceRequestButtonState();
+      expect(component.isAllocateToExistingFeebtnEnabled).toBe(false);
+      expect(component.isAllocatedToNewFeebtnEnabled).toBe(false);
+    });
+    it('does not change allocation buttons when no unprocessed record is selected', () => {
+      component.isUnprocessedRecordSelected = false;
+      component.isExceptionCase = false;
+      component.HAS_ELIGIBLE_NON_CANCELLED_SR = true;
+      component.isAllocateToExistingFeebtnEnabled = false;
+      component.isAllocatedToNewFeebtnEnabled = false;
+      (component as any).applyCancelledServiceRequestButtonState();
+      expect(component.isAllocateToExistingFeebtnEnabled).toBe(false);
+      expect(component.isAllocatedToNewFeebtnEnabled).toBe(false);
+    });
+  });
   // describe('getUnassignedPaymentlist', () => {
   //   it('makes expected calls', () => {
   //     const bulkScaningPaymentServiceStub: BulkScaningPaymentService = fixture.debugElement.injector.get(
