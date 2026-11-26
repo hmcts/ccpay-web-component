@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import {IOrderReferenceFee} from '../interfaces/IOrderReferenceFee';
 import { IRefundList } from '../interfaces/IRefundList';
-import { IPaymentView } from '../interfaces/IPaymentView';  
+import { IPaymentView } from '../interfaces/IPaymentView';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +31,10 @@ export class OrderslistService {
   getorderCreated = this.orderCreated.asObservable();
   private orderParty = new BehaviorSubject("");
   getorderParty = this.orderParty.asObservable();
+  private orderCancelReason = new BehaviorSubject<string>(null);
+  getorderCancelReason = this.orderCancelReason.asObservable();
+  private orderCancelDate = new BehaviorSubject<Date>(null);
+  getorderCancelDate = this.orderCancelDate.asObservable();
   private orderRemissionTotal = new BehaviorSubject<number>(null);
   getorderRemissionTotal = this.orderRemissionTotal.asObservable();
   private orderFeesTotal = new BehaviorSubject<number>(null);
@@ -78,7 +82,7 @@ export class OrderslistService {
   }
   getFeeExists(){
     return this.feeExists;
-  } 
+  }
 
   setisFromServiceRequestPage(isFromServiceRequestPage: boolean){
     this.isFromServiceRequestPage.next(isFromServiceRequestPage);
@@ -148,6 +152,20 @@ export class OrderslistService {
   }
   getorderPartys(){
     return this.orderParty;
+  }
+
+  setorderCancelReason(orderCancelReason: string){
+    this.orderCancelReason.next(orderCancelReason);
+  }
+  getorderCancelReasons(){
+    return this.orderCancelReason;
+  }
+
+  setorderCancelDate(orderCancelDate: Date){
+    this.orderCancelDate.next(orderCancelDate);
+  }
+  getorderCancelDates(){
+    return this.orderCancelDate;
   }
 
   setorderRemissionTotal(orderRemissionTotal: number){

@@ -28,6 +28,7 @@ export class UnprocessedPaymentsComponent implements OnInit {
   @Input('DCN_NUMBER') DCN_NUMBER: string;
   @Input('ISBSENABLE') ISBSENABLE: boolean;
   @Input('CASETYPE') CASETYPE: string;
+  @Input('HAS_ELIGIBLE_NON_CANCELLED_SR') HAS_ELIGIBLE_NON_CANCELLED_SR: boolean = false;
 
   @Output() selectedUnprocessedFeeEvent: EventEmitter<string> = new EventEmitter();
   @Output() getUnprocessedFeeCount: EventEmitter<string> = new EventEmitter();
@@ -200,9 +201,23 @@ export class UnprocessedPaymentsComponent implements OnInit {
           this.isAllocatedToNewFeebtnEnabled = true;
         }
       }
+
+      this.applyCancelledServiceRequestButtonState();
     }, 4000);
   }
 
+  private applyCancelledServiceRequestButtonState(): void {
+    if (!this.isUnprocessedRecordSelected || this.isExceptionCase) {
+      return;
+    }
+    if (this.HAS_ELIGIBLE_NON_CANCELLED_SR) {
+      this.isAllocateToExistingFeebtnEnabled = true;
+      this.isAllocatedToNewFeebtnEnabled = false;
+    } else {
+      this.isAllocateToExistingFeebtnEnabled = false;
+      this.isAllocatedToNewFeebtnEnabled = true;
+    }
+  }
   unprocessedPaymentUnSelectEvent(event: any) {
     event.preventDefault();
     this.recordId = null;

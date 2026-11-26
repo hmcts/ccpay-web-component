@@ -63,6 +63,7 @@ export class CaseTransactionsComponent implements OnInit {
   selectedOption: string;
   dcnNumber: string;
   paymentRef: string;
+  hasEligibleNonCancelledServiceRequest: boolean = false;
   isTurnOff: boolean;
   isRefundRemission: boolean = true;
   isStrategicFixEnable: boolean;
@@ -99,6 +100,11 @@ export class CaseTransactionsComponent implements OnInit {
   cpoDetails: any[] = null;
   orderRef: string;
   orderStatus: string;
+  orderCancelReason: string;
+  orderCancelDate: Date | null = null;
+  cancelled: boolean = false;
+  cancelledBy: string = '';
+  dateCancelled: Date | null = null;
   orderParty: string;
   orderCreated: Date;
   orderCCDEvent: string;
@@ -172,7 +178,9 @@ export class CaseTransactionsComponent implements OnInit {
       this.caseTransactionsService.getPaymentGroups(this.ccdCaseNumber).subscribe(
         paymentGroups => {
           this.isAnyFeeGroupAvilable = true;
-          this.paymentGroups = paymentGroups['payment_groups'];
+          this.paymentGroups = Array.isArray(paymentGroups)
+            ? paymentGroups
+            : (paymentGroups?.['payment_groups'] ?? []);
           this.calculateAmounts();
           this.calculateOrderFeesAmounts();
           this.calculateRefundAmount();
@@ -209,7 +217,9 @@ export class CaseTransactionsComponent implements OnInit {
       this.caseTransactionsService.getPaymentGroups(this.ccdCaseNumber).subscribe(
         paymentGroups => {
           this.isAnyFeeGroupAvilable = true;
-          this.paymentGroups = paymentGroups['payment_groups'];
+          this.paymentGroups = Array.isArray(paymentGroups)
+            ? paymentGroups
+            : (paymentGroups?.['payment_groups'] ?? []);
           this.calculateAmounts();
           this.calculateOrderFeesAmounts();
           this.calculateAmountDueTo();
@@ -358,6 +368,9 @@ export class CaseTransactionsComponent implements OnInit {
       } else if (paymentGroup.service_request_status === 'Disputed') {
         this.orderStatus = paymentGroup.service_request_status;
         this.orderAddBtnEnable = true;
+      }else if (paymentGroup.service_request_status === 'Cancelled') {
+        this.orderStatus = paymentGroup.service_request_status;
+        this.orderAddBtnEnable = false;
       }
 
       if (this.cpoDetails !== null && this.cpoDetails.length !== 0 ) {
@@ -367,10 +380,28 @@ export class CaseTransactionsComponent implements OnInit {
                     index = i;
                     }
               });
-        this.orderLevelFees.push({ orderRefId: paymentGroup['payment_group_reference'], orderTotalFees: this.orderFeesTotal, orderStatus: this.orderStatus, orderParty: this.cpoDetails[index].responsibleParty, orderCCDEvent: this.cpoDetails[index].action, orderCreated: paymentGroup['date_created'], orderAddBtnEnable: this.orderAddBtnEnable });
+        this.orderLevelFees.push({
+          orderRefId: paymentGroup['payment_group_reference'],
+          orderTotalFees: this.orderFeesTotal,
+          orderStatus: this.orderStatus,
+          orderParty: this.cpoDetails[index].responsibleParty,
+          orderCCDEvent: this.cpoDetails[index].action,
+          orderCreated: paymentGroup['date_created'],
+          orderAddBtnEnable: this.orderAddBtnEnable,
+          orderCancelReason: paymentGroup['cancellation_reason'],
+          orderCancelDate: paymentGroup['date_cancelled']});
 
       } else {
-        this.orderLevelFees.push({ orderRefId: paymentGroup['payment_group_reference'], orderTotalFees: this.orderFeesTotal, orderStatus: this.orderStatus, orderParty: '', orderCCDEvent: '', orderCreated: paymentGroup['date_created'], orderAddBtnEnable: this.orderAddBtnEnable });
+        this.orderLevelFees.push({
+          orderRefId: paymentGroup['payment_group_reference'],
+          orderTotalFees: this.orderFeesTotal,
+          orderStatus: this.orderStatus,
+          orderParty: '',
+          orderCCDEvent: '',
+          orderCreated: paymentGroup['date_created'],
+          orderAddBtnEnable: this.orderAddBtnEnable,
+          orderCancelReason: paymentGroup['cancellation_reason'],
+          orderCancelDate: paymentGroup['date_cancelled'] });
       }
 
       if (this.orderStatus !== 'Paid') {
@@ -423,6 +454,12 @@ export class CaseTransactionsComponent implements OnInit {
         }
       }
       this.orderStatus = orderDetail.service_request_status;
+      this.orderCancelReason = orderDetail.cancellation_reason || '';
+      this.orderCancelDate = orderDetail.date_cancelled
+        ? new Date(orderDetail.date_cancelled)
+        : null;
+      this.OrderslistService.setorderCancelReason(this.orderCancelReason);
+      this.OrderslistService.setorderCancelDate(this.orderCancelDate);
     });
 
     let position = -1;
@@ -472,6 +509,8 @@ export class CaseTransactionsComponent implements OnInit {
               let a = fee.amount_due === undefined;
               let b = fee.amount_due <= 0;
               this.clAmountDue = a ? this.addCurrency(this.clAmountDue, fee.net_amount) : b ? this.clAmountDue : this.addCurrency(this.clAmountDue, fee.amount_due);
+              if(paymentGroup.service_request_status =='Cancelled'){
+                this.clAmountDue = 0;}
             }
             fee['payment_group_reference'] = paymentGroup['payment_group_reference'];
             this.fees.push(fee);
@@ -625,7 +664,10 @@ export class CaseTransactionsComponent implements OnInit {
   }
 
   calculateRefundAmount() {
+    this.updateEligibleNonCancelledServiceRequest();
+
     if (!this.isTurnOff) {
+
       let isNewPaymentGroup = false;
 
       this.paymentGroups.forEach((paymentGroup, index) => {
@@ -1007,5 +1049,23 @@ export class CaseTransactionsComponent implements OnInit {
 
   private toPence(amount: number): number {
     return Math.round(Number(amount) * 100);
+  }
+
+  updateEligibleNonCancelledServiceRequest(): void {
+    this.hasEligibleNonCancelledServiceRequest = this.paymentGroups.some(paymentGroup => {
+      if (paymentGroup.service_request_status === 'Cancelled' || !paymentGroup.fees?.length) {
+        return false;
+      }
+
+      const outstandingAmount = this.bulkScaningPaymentService.calculateOutStandingAmount(paymentGroup);
+
+      if (!this.isTurnOff) {
+        const hasNewFee = paymentGroup.fees.some(fee => !!fee.date_created);
+        return hasNewFee && outstandingAmount > 0;
+      }
+
+      const hasZeroFee = paymentGroup.fees.some(fee => fee.calculated_amount === 0);
+      return outstandingAmount > 0 || (outstandingAmount === 0 && hasZeroFee);
+    });
   }
 }

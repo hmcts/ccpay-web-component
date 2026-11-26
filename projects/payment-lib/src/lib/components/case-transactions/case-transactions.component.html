@@ -376,6 +376,7 @@
         [DCN_NUMBER]="dcnNumber"
         [ISBSENABLE]="isBulkScanEnable"
         [CASETYPE]="caseType"
+        [HAS_ELIGIBLE_NON_CANCELLED_SR]="hasEligibleNonCancelledServiceRequest"
         (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)"
         (setBspaymentdcn) = "setBspaymentdcn($event)"
         (setViewName) = "setViewName($event)"
@@ -409,6 +410,7 @@
         [DCN_NUMBER]="dcnNumber"
         [ISBSENABLE]="isBulkScanEnable"
         [CASETYPE]="caseType"
+        [HAS_ELIGIBLE_NON_CANCELLED_SR]="hasEligibleNonCancelledServiceRequest"
         (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)"
         (setBspaymentdcn) = "setBspaymentdcn($event)"
         (setViewName) = "setViewName($event)"
@@ -437,7 +439,7 @@
                 <tr class="govuk-table__row"  *ngFor="let payment of allPayments">
                     <td class="govuk-table__cell col-13 whitespace-inherit">{{ payment.status | rpxTranslate }}</td>
                     <td class="govuk-table__cell col-10 whitespace-inherit">{{ payment.amount | currency :'GBP':'symbol':'1.2-2' }}</td>
-                    <td class="govuk-table__cell col-17 whitespace-inherit">{{ payment.date_created | date:'dd MMM yyyy HH:mm:ss' }}</td>
+                    <td class="govuk-table__cell col-17 whitespace-inherit">{{ payment.date_created | date:'dd MMM yyyy' }}</td>
                     <td class="govuk-table__cell col-24 whitespace-inherit">{{ payment.paymentGroupReference }}</td>
                     <td class="govuk-table__cell col-13 whitespace-inherit"></td>
                     <td class="govuk-table__cell whitespace-inherit">
@@ -462,6 +464,7 @@
             [DCN_NUMBER]="dcnNumber"
             [ISBSENABLE]="isBulkScanEnable"
             [CASETYPE]="caseType"
+            [HAS_ELIGIBLE_NON_CANCELLED_SR]="hasEligibleNonCancelledServiceRequest"
             (getUnprocessedFeeCount) = "getUnprocessedFeeCount($event)"
             (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)"
             (setBspaymentdcn) = "setBspaymentdcn($event)"
@@ -584,6 +587,7 @@
               [DCN_NUMBER]="dcnNumber"
               [ISBSENABLE]="isBulkScanEnable"
               [CASETYPE]="caseType"
+              [HAS_ELIGIBLE_NON_CANCELLED_SR]="hasEligibleNonCancelledServiceRequest"
               (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)"
               (setBspaymentdcn) = "setBspaymentdcn($event)"
               (setViewName) = "setViewName($event)"
@@ -657,7 +661,7 @@
                   </td>
                   <td *ngIf="cpoDetails === null || cpoDetails.length === 0" class="govuk-table__cell whitespace-inherit"></td>
                   <td class="govuk-table__cell whitespace-inherit">{{orderRef.orderRefId}}</td>
-                  <td class="govuk-table__cell of-visible"> <a href="javascript:void(0)" (click)="loadPBAAccountPage(orderRef)" *ngIf="serviceRequestValue !== 'false' && check4AllowedRoles2AccessPBApayment() && orderRef.orderStatus === 'Not paid'"> {{ "Pay now" | rpxTranslate }}</a></td>
+                  <td class="govuk-table__cell of-visible"> <a href="javascript:void(0)" (click)="loadPBAAccountPage(orderRef)" *ngIf="serviceRequestValue !== 'false' && check4AllowedRoles2AccessPBApayment() && (orderRef.orderStatus === 'Not paid' || orderRef.orderStatus !== 'Cancelled')"> {{ "Pay now" | rpxTranslate }}</a></td>
                   <td class="govuk-table__cell">
                       <a href="javascript:void(0)" (click)="goToOrderViewDetailSection(orderRef)">{{ "Review" | rpxTranslate }}</a>
                 </td>
@@ -724,6 +728,7 @@
             [DCN_NUMBER]="dcnNumber"
             [ISBSENABLE]="isBulkScanEnable"
             [CASETYPE]="caseType"
+            [HAS_ELIGIBLE_NON_CANCELLED_SR]="hasEligibleNonCancelledServiceRequest"
             (selectedUnprocessedFeeEvent) = "selectedUnprocessedFeeEvent($event)"
             (setBspaymentdcn) = "setBspaymentdcn($event)"
             (setViewName) = "setViewName($event)"
@@ -757,6 +762,9 @@
   [orderCreated] = "orderCreated"
   [orderParty] = "orderParty"
   [orderCCDEvent] = "orderCCDEvent"
+  [orderCancelReason] = "orderCancelReason"
+  [orderCancelDate] = "orderCancelDate"
+  [cancelledBy] = "cancelledBy"
   [orderDetail] = "orderDetail"
   [paymentGroupList] = "paymentGroups"
   [LOGGEDINUSERROLES] = "LOGGEDINUSERROLES"

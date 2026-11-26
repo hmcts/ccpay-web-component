@@ -144,7 +144,10 @@ export class AllocatePaymentsComponent implements OnInit {
       ])),
     });
     this.OrderslistService.getOrdersList().subscribe((data) =>
-      this.orderLevelFees = data.filter(data => data.orderStatus !== 'Paid'));
+      this.orderLevelFees = data.filter(data => {
+        const status = (data.orderStatus || '').toLowerCase();
+        return status !== 'paid' && status !== 'cancelled';
+      }));
     this.OrderslistService.getCaseType().subscribe((data) => this.caseType = data);
     this.getUnassignedPayment();
   }

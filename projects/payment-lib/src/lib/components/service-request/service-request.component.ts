@@ -51,7 +51,12 @@ export class ServiceRequestComponent implements OnInit {
   @Input('orderStatus') orderStatus: string;
   @Input('orderParty') orderParty: string;
   @Input('orderCreated') orderCreated: Date;
+  @Input('orderCancelBy') orderCancelBy: string;
+  @Input('cancelledBy') cancelledBy: string = '';
+  @Input('dateCancelled') dateCancelled: Date | null = null;
   @Input('orderCCDEvent') orderCCDEvent: string;
+  @Input('orderCancelReason') orderCancelReason: string = '';
+  @Input('orderCancelDate') orderCancelDate: Date | null = null;
   @Input('orderFeesTotal') orderFeesTotal: number;
   @Input('orderTotalPayments') orderTotalPayments: number;
   @Input('orderRemissionTotal') orderRemissionTotal: number;
@@ -138,7 +143,8 @@ export class ServiceRequestComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private router: Router) { }
 
-  ngOnInit() {
+   ngOnInit() {
+
     this.isTurnOff = this.paymentLibComponent.ISTURNOFF;
     this.isServiceRequest = 'false';
     if (this.viewStatus === undefined) {
@@ -150,6 +156,8 @@ export class ServiceRequestComponent implements OnInit {
       this.OrderslistService.getorderCreateds().subscribe((data) => this.orderCreated = data);
       this.OrderslistService.getorderDetail().subscribe((data) => this.orderDetail = data);
       this.OrderslistService.getorderPartys().subscribe((data) => this.orderParty = data);
+      this.OrderslistService.getorderCancelReasons().subscribe((data) => this.orderCancelReason = data);
+      this.OrderslistService.getorderCancelDates().subscribe((data) => this.orderCancelDate = data);
       this.OrderslistService.getorderRemissionTotals().subscribe((data) => this.orderRemissionTotal = data);
       this.OrderslistService.getorderFeesTotals().subscribe((data) => this.orderFeesTotal = data);
       this.OrderslistService.getoorderTotalPaymentss().subscribe((data) => this.orderTotalPayments = data);
@@ -401,6 +409,15 @@ export class ServiceRequestComponent implements OnInit {
     }
   }
 
+ chkServiceRequestStatus(): boolean {
+    if (this.orderStatus !== null && this.orderStatus !== undefined) {
+      if (this.orderStatus.toLowerCase() === 'cancelled') {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
 
   resetOrderData() {
     this.OrderslistService.setOrderRef(null);
@@ -519,5 +536,14 @@ export class ServiceRequestComponent implements OnInit {
 
   hasPaymentsRole(): boolean {
     return this.LOGGEDINUSERROLES.includes('payments');
+  }
+
+  // template compatibility aliases for cancelled service request metadata
+  get cancelReason(): string {
+    return this.orderCancelReason;
+  }
+
+  get cancelDate(): Date {
+    return this.orderCancelDate;
   }
 }
