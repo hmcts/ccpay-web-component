@@ -64,8 +64,25 @@
 
   .govuk-radios__item {
     clear: initial !important;
-    display: inline-block;
     width: 45% !important;
+    align-items: center;
+  }
+
+  .govuk-radios__item > .govuk-radios__input {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+  }
+
+  .govuk-radios__item > .govuk-radios__label {
+    align-self: center;
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  .govuk-radios__item > .govuk-radios__conditional {
+    flex-basis: 100%;
   }
 
   .govuk-radios__conditional {
